@@ -1,0 +1,105 @@
+Arena Mode missions are stored in series\ARENAMISSION_*.txt
+
+They are written as scenes, but may also request elements like plots.
+
+A mission must have a "requires" SATt which describes what factions can
+take it. This string can include:
+
+- Faction type, designation
+- Difficulcy rating:
+	!Ex, !Hi, !Md, !Lo, !Ne
+- Unspent coupons for reward missions:
+	SKILL_TRAIN_MISSION, MECHA_SOURCE_MISSION
+- Mecha sources which haven't been earned
+	[f(faction id number)]
+- Skill trainers which haven't been earned
+	[s(skill id)]
+
+As with plots, the first invcoms of the mission will be taken as the
+prefab elements. To assign a faction to a prefab NPC, use a negative
+value to assign one of the elements (E1..E10 = -1..-10).
+
+The plot string substitutions can now be used in arena missions.
+
+
+
+****************************
+***   COMBAT  MISSIONS   ***
+****************************
+
+This is the default mission type. These missions must include a *MISSION tag
+in their requires attribute.
+
+
+****************************
+***   REWARD  MISSIONS   ***
+****************************
+
+These are difficult missions which offer special rewards. They don't appear as
+often as combat missions do. Reward missions must include a *REWARD tag in their
+requires attribute, and all the good rewards need a coupon as well.
+
+Remember to spend the coupon when applying the reward at the end of the mission.
+
+
+**************************
+***   CORE  CAMPAIGN   ***
+**************************
+
+The context for the core campaign is stored in a SAtt in the adventure named
+CORE_CONTEXT. Oooh, such nice alliteration.
+
+The context information includes:
+- The story context, stored as CORE_CONTEXT
+- The context of the player faction, marked as "P:"
+- The context of the enemy faction, marked as "F:"
+- The difficulcy rating of the mission (!Ne..!Ex)
+
+If KEY is requested as an element, it selects the core campaign enemy faction.
+
+As of right now the story context contains only one thing, the propp state.
+The propp states for the arena campaign are as follows:
+
+	+P--	Initial State
+	+Pin	We Want Information
+
+	+Pha	Home under attack
+	+Pls	Looking for something
+
+	+Par	Arms Race
+
+	+Ptf	Take the fight to them
+	+Ppt	Peace Talks
+	+Pfm	Fleet mobilized
+	+Pew	Enemy superweapon
+
+- Initial State
+  The PC's faction will fight the enemy faction. Probably.
+
+- We Want Information
+  The PC must discover what the enemy faction is up to.
+
+- Home Under Attack
+  The enemy faction plans to attack the PC's home turf.
+
+- Looking for Something
+  The enemy faction is searching for something, and the PC faction
+  should find it first.
+
+- Arms Race
+  Both sides rush to produce new weapons.
+
+- Take the Fight to Them
+  The PC's team will take the fight to the enemy's home turf.
+
+- Peace Talks
+  The enemy faction has agreed to negotiate.
+
+- Fleet Mobilized
+  The enemy has launched its fleet; prepare for total war.
+
+- Enemy Weapons Program
+  The enemy is working on a new superweapon.
+
+
+

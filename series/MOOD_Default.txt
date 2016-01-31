@@ -1,0 +1,234 @@
+%
+% *****************
+% ***   MOODS   ***
+% *****************
+%
+%  Moods affect the plots loaded by cities. Here's a brief explanation
+%  of how they work.
+%
+%  The Mood definition takes as its parameter the number of plots which
+%  may be attached to this mood. Normally, each city can have up to ten
+%  attached plots at any one time, but a mood will increase this number
+%  by the provided amount.
+%
+%  The REQUIRES attribute is compared to a city's Scene Context to
+%  determine whether or not this mood is appropriate. The Scene Context
+%  includes the city's type, terrain, context, designation, faction
+%  designation, persona type, and world designation.
+%
+%  The Mood's TYPE attribute is added to the city's TYPE attribute.
+%
+%  The Mood's PLOT_TYPE attribute determines what sort of plots will be
+%  associated with this mood. The normal plot type is *GENERAL, but moods
+%  can use custom types.
+%
+%  Custom plots associated with a mood should be stored in a file
+%  named PLOT_MOOD_[custom label].
+%
+%  The Mood's ELEMENTs are selected just as they are for plots.
+%
+%  The UPDATE script is called when the mood is initialized. It should
+%  generally set an initialization counter and record a news message.
+%
+%  The MSG_x strings act as a meme; NPCs in the city will say these lines
+%  for as long as the mood is in effect.
+%
+%  MoodTimeLimit is set automatically for these moods; no need to define it.
+%
+%  Substitute strings:
+%    %me_X%		Element X's ID
+%    %me_nameX%		Element X's Name
+%    %city%		The city where this mood is installed
+%
+
+Mood 3
+	name <Epidemic>
+	desc <There's an epidemic in town. Better wear a mask.>
+	requires <Town (dangerous|dystopia|poor) -Safe>
+	type <>
+	plot_type <*Epidemic>
+
+	% No Elements
+
+	% Scripts- just being in town can make the PC sick.
+	halfhour <ifPCSealed else GoNotSealed if= d20 1 ifUToughness 5 else GoGetSick>
+	GoNotSealed <if= d4 1 ifUToughness SkillTar %threat% else GoGetSick>
+	GoGetSick <Print 2 PCVerySick>
+	Msg2 <You don't feel very well...>
+
+	% V1 = Initialization Counter
+	update <if= V1 0 V= 1 1 News 1>
+	Msg1_1 <%city% suffering from viral epidemic. Travelers are advised to keep away until the outbreak is contained.>
+	Msg1_2 <%city%'s health services strained as new viral illness appears. Pharmaceutical spokesmen expected to name the new disease shortly.>
+	Msg1_3 <Travelers advised to avoid %city% like the plague, owing to an outbreak of arcturian plague.>
+	Msg1_4 <%city%'s viral epidemic blamed on poor sanitation. Travelers advised to keep away.>
+	Msg1_5 <%city% government attempts to keep tourism industry going despite outbreak of futsie fever. Visitors advised to wear full-body containment suits.>
+
+	% Meme Messages
+	Msg_1 <I feel kind of light-headed... I hope I'm not getting sick...>
+	Msg_2 <How come we can build computers and jetpacks, but there's still no cure for the common cold?>
+	Msg_3 <That's close enough... I don't want to breathe the same air as you.>
+	Msg_4 <How can anybody stay healthy with all these sickos walking around?>
+	Msg_5 <Stand back! I coughed once yesterday; I may be infected.>
+
+
+Mood 5
+	name <Boom Times>
+	desc <The economy is good; nothing much else going on.>
+	requires <Town ~Rich ~Financial -Poor -Lawless -Dangerous>
+	type <>
+	plot_type <>
+
+	% No Elements
+
+	% V1 = Initialization Counter
+	update <if= V1 0 V= 1 1 News 1>
+	Msg1_1 <%city%'s economy showing signs of rapid growth.>
+	Msg1_2 <Job seekers flock to %city% to benefit from economic boom.>
+	Msg1_3 <Unemployment down in %city%.>
+	Msg1_4 <%city% announces urban renewal plan; many jobs to be created.>
+	Msg1_5 <%city% selected as "Best City to Work In" by online poll.>
+
+	% Meme Messages
+	Msg_1 <>
+	Msg_2 <>
+	Msg_3 <>
+	Msg_4 <>
+	Msg_5 <>
+
+Mood 5
+	name <Pirates Amok>
+	desc <This city is under siege by pirates.>
+	requires <(FCOMS|RISHI|MAQUI|BOHEM) ~Industrial ~Tradehub>
+	type <Dangerous>
+	plot_type <*CrimeWave>
+
+	% E1 is the city proper
+	% E2 is the pirate faction
+	Element1 <Scene Town>
+	Element2 <Faction (CRIHN|REDMA) !XClude 1>
+
+	% V1 = Initialization Counter
+	update <if= V1 0 V= 1 1 News 1>
+	Msg1_1 <%city%'s defenses clash with pirates from %me_name2%.>
+	Msg1_2 <Pirates bring trade to a halt in %city%; administration calls for mecha pilots to combat threat.>
+	Msg1_3 <%city% experiencing a crime wave; pirates from %me_name2% blamed for situation.>
+	Msg1_4 <%city%'s security force contends with rising number of pirate attacks.>
+	Msg1_5 <Pirates from %me_name2% attacking trade routes near %city%.>
+
+	% Meme Messages
+	Msg_1 <>
+	Msg_2 <>
+	Msg_3 <>
+	Msg_4 <>
+	Msg_5 <>
+
+Mood 5
+	name <Skirmishing: Alliance vs Aegis>
+	desc <The L5 Alliance and the Aegis Space Force are at it again.>
+	requires <MAQUI>
+	type <>
+	plot_type <*Skirmishing>
+
+	% E1 is the city proper
+	% E2 is the pirate faction
+	Element1 <Scene Town>
+	Element2 <Faction AEGSF !XClude 1>
+
+	% V1 = Initialization Counter
+	update <if= V1 0 V= 1 1 News 1>
+	Msg1_1 <%city%'s defenses clash with mecha from %me_name2%.>
+	Msg1_2 <Privateers capture Lunar vessel near %city%; Aegis Overlord promises retaliation.>
+	Msg1_3 <Skirmishing between Aegis Space Force and the Silver Knights reported near %city%.>
+	Msg1_4 <%city% accuses Aegis Space Force of entering their territory.>
+	Msg1_5 <Aegis ambassador denies responsibility for mecha attacks in %city%.>
+
+	% Meme Messages
+	Msg_1 <>
+	Msg_2 <>
+	Msg_3 <>
+	Msg_4 <>
+	Msg_5 <>
+
+Mood 5
+	name <Skirmishing: Rishiri vs Blades>
+	desc <The Blades of Crihna are launching a terror attack against this city.>
+	requires <RISHI>
+	type <>
+	plot_type <*Skirmishing>
+
+	% E1 is the city proper
+	% E2 is the pirate faction
+	Element1 <Scene Town>
+	Element2 <Faction CRIHN !Enemy 1>
+
+	% V1 = Initialization Counter
+	update <if= V1 0 V= 1 1 News 1>
+	Msg1_1 <%city%'s defenses clash with pirates from %me_name2%.>
+	Msg1_2 <Pirates from %me_name2% stage terror attack in %city%.>
+	Msg1_3 <The Blades of Crihna launch revenge attack against %city%; local defenses struggle to maintain peace.>
+	Msg1_4 <%city% requests support from Aegis Space Force to repel Crihna attacks.>
+	Msg1_5 <Luna offers to aid %city% against pirate terror attacks.>
+
+	% Meme Messages
+	Msg_1 <>
+	Msg_2 <>
+	Msg_3 <>
+	Msg_4 <>
+	Msg_5 <>
+
+Mood 5
+	name <Skirmishing>
+	desc <This city is under attack by a foreign government.>
+	requires <Target ~dangerous>
+	type <>
+	plot_type <*Skirmishing>
+
+	% E1 is the city proper
+	% E2 is a foreign government
+	Element1 <Scene Town>
+	Element2 <Faction Government !Enemy 1>
+
+	% V1 = Initialization Counter
+	update <if= V1 0 V= 1 1 News 1>
+	Msg1_1 <%city%'s defenses clash with mecha from %me_name2%.>
+	Msg1_2 <Could %me_name2% be planning an invasion? %city% reports clashes with security forces.>
+	Msg1_3 <Trouble in %city% as raiders from %me_name2% clash with defense force.>
+	Msg1_4 <Infiltrators from %me_name2% suspected to be operating in %city%.>
+	Msg1_5 <Official from %me_name2% denies responsibility for series of mecha attacks in %city%.>
+
+	% Meme Messages
+	Msg_1 <>
+	Msg_2 <>
+	Msg_3 <>
+	Msg_4 <>
+	Msg_5 <>
+
+Mood 2
+	name <Fungal Infestation>
+	desc <This station is suffering from a fungus infestation.>
+	requires <L5PAT ~cuisine ~research ~sleazy>
+	type <>
+	plot_type <*FUNFESTATION>
+
+	% No Elements
+
+	% V1 = Initialization Counter
+	update <if= V1 0 V= 1 1 News 1>
+	Msg1_1 <%city% is dealing with a bad fungus infestation. Citizens are advised to report any suspicious smells to the authorities.>
+	Msg1_2 <%city%'s bio-defenses overwhelmed as mutant fungi invade the colony core.>
+	Msg1_3 <Exterminators sought for %city% as technocrats deal with fungal infestation.>
+	Msg1_4 <Fungal outbreak in %city% blamed on malfunction in agricultural facilities.>
+	Msg1_5 <Mutant exo-fungus discovered in %city% core; integrity of life support infrastructure questioned.>
+
+	% Meme Messages
+	Msg_1 <All it takes is one tiny spore, and the entire station can get infested.>
+	Msg_2 <My friend discovered a mushroom the size of a cleanbot under \PPR ChatNPCID bed. At least it wasn't one of those carnivorous ones.>
+	Msg_3 <You see? This is what happens when you outsource bio-defense to the lowest bidder.>
+	Msg_4 <You see? This is what happens when let the technocrats run the bio-defense system.>
+	Msg_5 <I heard that spaceworms are coming up through the toilets. I really don't want to see that.>
+	Msg_6 <They're fumigating my res-module. I hope the smell goes away soon.>
+	Msg_7 <You know all these exo-fungus running around? I imagine that must be what it's like to live on Earth.>
+	Msg_8 <I used to like mushrooms, but not any more.>
+
+

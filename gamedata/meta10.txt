@@ -1,0 +1,5 @@
+% Default Stairs Up %
+name <Building>
+use <if= StatVal STAT_MetaVisibility 0  Print 1 Exit StatVal 4>
+roguechar <&>
+Msg1 <You enter the building.>

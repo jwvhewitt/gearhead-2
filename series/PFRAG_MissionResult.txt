@@ -1,0 +1,261 @@
+% TYPE: *TargetEscaped
+%	The PC was sent to capture a target, but the target escaped.
+%   PARAM1: Exit script label
+%   PARAM2: Allied Faction [optional]
+
+	Persona
+	requires <*TargetEscaped>
+	START <NewChat Say %id%01 Goto %1%>
+	Msg%id%01 <Your target has escaped. The mission is a failure.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <The target escaped.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%01_11 <>
+	CMsg%id%01_11 <ifNPCSociable ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_12 <>
+	CMsg%id%01_12 <ifNPCShy ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_13 <>
+	CMsg%id%01_13 <ifNPCEasygoing ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_14 <>
+	CMsg%id%01_14 <ifNPCPassionate ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_15 <>
+	CMsg%id%01_15 <ifNPCCheerful ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_16 <>
+	CMsg%id%01_16 <ifNPCMelancholy ifFactionExists %2% if= ChatNPCFac %2% Accept>
+
+
+% TYPE: *HaveKilledTarget
+%	The PC was sent to capture a target, but actually killed him.
+%	Note that this is not an outright failure, but it is a less
+%	desirable result than having caught the target alive.
+%   PARAM1: Exit script label
+%   PARAM2: Allied Faction [optional]
+
+	Persona
+	requires <*HaveKilledTarget>
+	START <NewChat Say %id%01 Goto %1%>
+	Msg%id%01 <Your target has been killed. That's still worth something, I guess.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <The target died. Here's your pay.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%01_11 <>
+	CMsg%id%01_11 <ifNPCSociable ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_12 <>
+	CMsg%id%01_12 <ifNPCShy ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_13 <>
+	CMsg%id%01_13 <ifNPCEasygoing ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_14 <>
+	CMsg%id%01_14 <ifNPCPassionate ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_15 <>
+	CMsg%id%01_15 <ifNPCCheerful ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_16 <>
+	CMsg%id%01_16 <ifNPCMelancholy ifFactionExists %2% if= ChatNPCFac %2% Accept>
+
+
+% TYPE: *HaveCapturedTarget
+%	The PC was sent to capture a target, and has successfully done so.
+%   PARAM1: Exit script label
+%   PARAM2: Allied Faction [optional]
+
+	Persona
+	requires <*HaveCapturedTarget>
+	START <NewChat Say %id%01 Goto %1%>
+	Msg%id%01 <Congratulations on a successful capture. Here's your pay.>
+	Msg%id%01_1 <Your target has been successfully aprehended. Good job, \PC . Here's the reward you earned for that mission.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <The target is in custody. Here's your pay.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%01_11 <>
+	CMsg%id%01_11 <ifNPCSociable ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_12 <>
+	CMsg%id%01_12 <ifNPCShy ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_13 <>
+	CMsg%id%01_13 <ifNPCEasygoing ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_14 <>
+	CMsg%id%01_14 <ifNPCPassionate ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_15 <>
+	CMsg%id%01_15 <ifNPCCheerful ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_16 <>
+	CMsg%id%01_16 <ifNPCMelancholy ifFactionExists %2% if= ChatNPCFac %2% Accept>
+
+
+
+% TYPE: *MissionWasFailure
+%                         &Mecha        it was a mecha mission
+%                         &Chara        it was a personal-scale mission
+%   PARAM1: Exit script label
+%   PARAM2: Allied Faction [optional]
+%   PARAM3: Enemy Faction  [optional]
+
+	Persona
+	requires <*MissionWasFailure>
+	START <NewChat Say %id%01 Goto %1%>
+	Msg%id%01 <The mission was a failure.>
+	Msg%id%01_1 <Well, that mission didn't go as well as planned. I'm afraid that it was a complete failure.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <You failed.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <That mission really could have gone a lot better. It seems that you lost.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <You really got your ass handed to you out there... That mission was a complete disaster.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <You lost the battle... cheer up, you'll do better next time.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <You failed to complete the mission. This will look bad on your record.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%01_10 <You have failed \FACTION %2% ... This mission was a failure.>
+	CMsg%id%01_10 <ifFactionExists %2% Accept>
+	Msg%id%01_11 <If you expect to advance within \FACTION %2% , you're going to have to improve your combat skills. That last mission was a disaster.>
+	CMsg%id%01_11 <ifNPCSociable ifFactionExists %2% Accept>
+	Msg%id%01_12 <You've failed \FACTION %2% ...>
+	CMsg%id%01_12 <ifNPCShy ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_13 <You win some, you lose some... Today, \FACTION %2% lost.>
+	CMsg%id%01_13 <ifNPCEasygoing ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_14 <Your defeat has brought shame unto \FACTION %2% . Don't let this happen again.>
+	CMsg%id%01_14 <ifNPCPassionate ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_15 <You lost out there, but don't worry... I'm sure \FACTION %2% will give you another mission someday.>
+	CMsg%id%01_15 <ifNPCCheerful ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_16 <I trusted you with this mission, and now you've let all of \FACTION %2% down.>
+	CMsg%id%01_16 <ifNPCMelancholy ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_20 <You were defeated by \FACTION %3% . The mission was a failure.>
+	CMsg%id%01_20 <ifFactionExists %3% Accept>
+	Msg%id%01_21 <I heard about your battle. You were defeated by \FACTION %3% ... The bad part is, by now everybody knows about it.>
+	CMsg%id%01_21 <ifNPCSociable ifFactionExists %3% Accept>
+	Msg%id%01_22 <You were beaten by \FACTION %3% .>
+	CMsg%id%01_22 <ifNPCShy ifFactionExists %3% Accept>
+	Msg%id%01_23 <You were defeated by \FACTION %3% ... They're pretty tough.>
+	CMsg%id%01_23 <ifNPCEasygoing ifFactionExists %3% Accept>
+	Msg%id%01_24 <How could you let \FACTION %3% defeat you? Get out of here; I don't even want to see you...>
+	CMsg%id%01_24 <ifNPCPassionate ifFactionExists %3% Accept>
+	Msg%id%01_25 <Even though \FACTION %3% kicked your ass today, next time you face them it'll be your chance to win.>
+	CMsg%id%01_25 <ifNPCCheerful ifFactionExists %3% Accept>
+	Msg%id%01_26 <You were soundly defeated by \FACTION %3% . Maybe you just aren't as skilled as you thought.>
+	CMsg%id%01_26 <ifNPCMelancholy ifFactionExists %3% Accept>
+
+
+% TYPE: *MissionWasSuccess
+%                         &Reward	PC will get a reward for this mission
+%                         &Mecha        it was a mecha mission
+%                         &Chara        it was a personal-scale mission
+%   PARAM1: Exit script label
+%   PARAM2: Allied Faction [optional]
+%   PARAM3: Enemy Faction  [optional]
+
+	Persona
+	requires <*MissionWasSuccess &Reward>
+	START <NewChat Say %id%01 Goto %1%>
+	Msg%id%01 <The mission was a success. Here's your reward.>
+	Msg%id%01_1 <You did good work out there, \PC . Here's your pay. I hope we can work together again in the future.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <You did it. Here's your pay.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <That wasn't so hard, now was it? Here's the pay you earned for that mission.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <It was a glorious battle! Here's the cash you earned for winning.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <That was a stunning victory... Here's your pay for a job well done.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <You live to fight another day... Here's your reward for the mission.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%01_7 <You actually won the mission? I never expected you to come back... Here, I guess I better give you your pay.>
+	CMsg%id%01_7 <ifG 5 React Accept>
+	Msg%id%01_10 <You've scored a victory for \FACTION %2% . Here's the reward you earned.>
+	CMsg%id%01_10 <ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_11 <Chalk one up for \FACTION %2% . That was a good fight... I certainly hope we'll be able to work together again sometime in the future.>
+	CMsg%id%01_11 <ifNPCSociable ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_12 <Score one for \FACTION %2% . Here's your reward.>
+	CMsg%id%01_12 <ifNPCShy ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_13 <You win some, you lose some... Today \FACTION %2% wins. Here's your money, \PC .>
+	CMsg%id%01_13 <ifNPCEasygoing ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_14 <You've made all of \FACTION %2% proud! Here's your reward for winning the battle.>
+	CMsg%id%01_14 <ifNPCPassionate ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_15 <You really came through for \FACTION %2% . Here's your pay.>
+	CMsg%id%01_15 <ifNPCCheerful ifFactionExists %2% if= ChatNPCFac %2%  Accept>
+	Msg%id%01_16 <It's a victory snatched from the jaws of defeat for \FACTION %2% . Here's your reward.>
+	CMsg%id%01_16 <ifNPCMelancholy ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_20 <You have defeated \FACTION %3% . Here's your reward for a job well done.>
+	CMsg%id%01_20 <ifFactionExists %3% Accept>
+	Msg%id%01_21 <Good job out there, \PC ... You soundly defeated \FACTION %3% and won the day for our side. Here's your reward.>
+	CMsg%id%01_21 <ifNPCSociable ifFactionExists %3% Accept>
+	Msg%id%01_22 <Here's the reward you get for defeating \FACTION %3% .>
+	CMsg%id%01_22 <ifNPCShy ifFactionExists %3% Accept>
+	Msg%id%01_23 <Looks like it's a bad day to be \FACTION %3% . Here's the cash you earned.>
+	CMsg%id%01_23 <ifNPCEasygoing ifFactionExists %3% Accept>
+	Msg%id%01_24 <Once again \FACTION %3% has been defeated! Good job, \PC . Here's your reward.>
+	CMsg%id%01_24 <ifNPCPassionate ifFactionExists %3% Accept>
+	Msg%id%01_25 <I guess \FACTION %3% won't be bothering us again for a while. Good job, \PC ... Here's your pay.>
+	CMsg%id%01_25 <ifNPCCheerful ifFactionExists %3% Accept>
+	Msg%id%01_26 <It's been a very bad day for \FACTION %3% . Here's your reward.>
+	CMsg%id%01_26 <ifNPCMelancholy ifFactionExists %3% Accept>
+
+	Persona
+	requires <*MissionWasSuccess>
+	START <NewChat Say %id%01 Goto %1%>
+	Msg%id%01 <The mission was a complete success. Good job.>
+	Msg%id%01_1 <Your mission was a complete success. Good work out there, \PC . Everyone's bound to be talking about your skills.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <The mission was a success.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <That went well. Your mission was a complete success.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <You did it! Congratulations on a job well done.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <You really did an excellent job out there, \PC . The mission was a complete success.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <I can't believe you really did it. The mission was a success.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%01_10 <You've secured a victory for \FACTION %2% . The mission was a success.>
+	CMsg%id%01_10 <ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_11 <You've done a good job on behaf of \FACTION %2% , \PC . Hopefully we will work together again in the future.>
+	CMsg%id%01_11 <ifNPCSociable ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_12 <Thanks to you, \FACTION %2% is victorious. Good work.>
+	CMsg%id%01_12 <ifNPCShy ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_13 <That was easy. This mission for \FACTION %2% has been a complete success.>
+	CMsg%id%01_13 <ifNPCEasygoing ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_14 <You've done a great service for \FACTION %2% , \PC . Thank you.>
+	CMsg%id%01_14 <ifNPCPassionate ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_15 <Once again, \FACTION %2% wins the day. Good job out there \PC .>
+	CMsg%id%01_15 <ifNPCCheerful ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_16 <There are some in \FACTION %2% who don't believe in you, but you've managed to pull this off. Congratulations.>
+	CMsg%id%01_16 <ifNPCMelancholy ifFactionExists %2% if= ChatNPCFac %2% Accept>
+	Msg%id%01_20 <You have defeated \FACTION %3% . The mission was a success.>
+	CMsg%id%01_20 <ifFactionExists %3% Accept>
+	Msg%id%01_21 <You did very well against \FACTION %3% , \PC . People are going to talk about your victory.>
+	CMsg%id%01_21 <ifNPCSociable ifFactionExists %3% Accept>
+	Msg%id%01_22 <You defeated \FACTION %3% . Congratulations.>
+	CMsg%id%01_22 <ifNPCShy ifFactionExists %3% Accept>
+	Msg%id%01_23 <You did pretty good out there. Congratulations on completing the mission.>
+	CMsg%id%01_23 <ifNPCEasygoing ifFactionExists %3% Accept>
+	Msg%id%01_24 <You faced \FACTION %3% and won... That's no small accomplishment.>
+	CMsg%id%01_24 <ifNPCPassionate ifFactionExists %3% Accept>
+	Msg%id%01_25 <Congratulations on beating \FACTION %3% , \PC .>
+	CMsg%id%01_25 <ifNPCCheerful ifFactionExists %3% Accept>
+	Msg%id%01_26 <You have defeated \FACTION %3% . I wonder how many more battles remain before we can claim a final victory.>
+	CMsg%id%01_26 <ifNPCMelancholy ifFactionExists %3% Accept>
+

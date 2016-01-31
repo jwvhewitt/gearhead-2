@@ -1,0 +1,144 @@
+Battroid 6
+Name <Hariseng>
+Desig <MD7>
+SDL_Sprite <btr_hariseng.png>
+desc <>
+type <GROUND INSIDE>
+factions <HWANG>
+sub
+Head
+	Size 3
+	Armor 4
+	Mass -3
+	sub
+		Sensor 4
+
+		Computer 2
+		mass -1
+		sub
+			Software 1
+			name <Apollo TarSys>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 1
+			name <Apollo MoveSys>
+			S_MVBoost
+			S_BoostScale 2
+		end
+
+	end
+	inv
+		HeadArmor 3
+		Mass -3
+	end
+
+Torso
+	Armor 6
+	Mass -3
+	sub
+		CPit
+		Armor 2
+		mass -1
+
+		Gun 8
+		Name <Flame Cannon>
+		caliber <Chemical>
+		Type <LINE>
+		Range 5
+		Mass -2
+		Magazine 20
+		sub
+			Ammo 8
+			caliber <Chemical>
+			Type <BURN>
+		end
+
+		HeavyActuator 4
+		mass -1
+	end
+	inv
+		BodyArmor 6
+		Mass -6
+	end
+
+Arm
+	Name <Right Arm>
+	Size 4
+	Armor 5
+	Mass -3
+	sub
+		Hand
+		inv
+			Melee 16
+			Name <Monk's Spade>
+			mass -2
+			Type <EXTEND>
+		end
+
+		STC MAC-4
+	end
+	inv
+		ArmArmor 4
+		Mass -4
+		sub
+			MLauncher 2
+			sub
+				STC FRM-6
+				magazine 3
+			end
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	Size 4
+	Armor 5
+	Mass -3
+	sub
+		Hand
+
+		STC MAC-4
+	end
+	inv
+		EShield 5
+		Name <Fan>
+		DefBonus -1
+
+		ArmArmor 4
+		Mass -4
+		sub
+			MLauncher 2
+			sub
+				STC FRM-6
+				magazine 3
+			end
+		end
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 5
+	mass -3
+	sub
+		HeavyActuator 7
+		Mass -5
+	end
+	inv
+		LegArmor 4
+		mass -4
+	end
+
+Leg
+	Name <Left Leg>
+	Armor 5
+	mass -3
+	sub
+		HeavyActuator 7
+		Mass -5
+	end
+	inv
+		LegArmor 4
+		mass -4
+	end
+end

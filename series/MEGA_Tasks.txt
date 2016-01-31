@@ -1,0 +1,291 @@
+%%
+%% A task is a minor mission that the PC may need to complete, often just as
+%% the prerequisite for something else. There are many kinds of tasks, divided
+%% by category.
+%%
+%% When a task is completed, its plotid will be set to WIN. If it is lost,
+%% its plotid will be set to LOSS.
+
+%%
+%% *:TASK_Defeat[X]
+%%
+%%  The PC is sent to defeat some mecha. The mecha involved have no faction,
+%%  or at least no faction as set by the calling plot.
+%%
+%%  PARAM1: The outdoors scene where the mecha will be found.
+%%
+
+Content
+	name <TASK: Destroy Factory>
+	requires <*:TASK_DefeatFactory>
+	desc <Demolish the base.>
+
+	% E1 is the outdoors scene
+	% E2 is the building exterior encounter
+	Element2 <Prefab>
+	Place2 <1>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		MapWidth 35
+		MapHeight 35
+
+		nu1 <if= T1 0   Return>
+		nu2 <if= T2 0 if= T3 0   if= V1 0 V= 1 1   Alert 1  XPV 100   SALVAGE   trigger0 .%id%_%plotid%_GoWin   WinSubPlot  %plotid%>
+		nu3 <Goto nu2>
+
+		Msg1 <You have destroyed the factory.>
+
+		sub
+			team 1
+			SetEnemy 2 3
+			ParaX 5
+			ParaY 5
+
+			team 2
+			SetEnemy 1
+			SetAlly 3
+			Deploy <if= PlotStatus %plotid% %id%   WMecha 2 StoryDL 100>
+			home <The Base>
+
+			team 3
+			name <Inanimate Objects>
+			SetEnemy 1
+			SetAlly 2
+
+			rect
+			name <The Base>
+			desig <SE>
+			Height 5
+			Width 5
+			sub
+				SuperProp
+				requires <*Fortress>
+				SetTeam 3
+			end
+		end
+	end
+	inv
+		STC CORE-STATIONARY
+		name <Enemy Factory>
+	end
+
+Content
+	name <TASK: Defeat Looters>
+	requires <*:TASK_DefeatLooters>
+	desc <Go to X, Kill Y. The staple of role playing games since time began.>
+
+	% E1 is the target scene
+	% E2 is the encounter
+	Element2 <Prefab>
+	Place2 <1>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1    LoseRenown   LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   Alert 1   AddRenown 1  XPV 100   SALVAGE   WinSubPlot %plotid%>
+
+		Msg1 <You have defeated the looters.>
+
+		% Random scene content- there's a chance that an enemy or an ally will show up.
+		Content1 <Some 1 20 Sub *CRC_Nemesis   na>
+		Content2 <Some 1 10 Sub *CRC_Backup    na>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			SetEnemy 1
+			Deploy <if= PlotStatus %plotid% %id%   WMecha 2 %threat% 100>
+			ParaX 45
+			ParaY 45
+		end
+	end
+	inv
+		STC CORE-MECHAENCOUNTER
+		name <Looters>
+	end
+
+%%
+%% *:TASK_KillFungus
+%%
+%%  The PC is sent to clean out a fungal infestation from somewhere. As soon as
+%%  this subplot is activated the PC will be whisked away to the combat zone.
+%%
+%%  PARAM1: The anchor; metascene entrance placed in same location as this.
+%%
+
+Content
+	name <Kill Fungus>
+	requires <*:TASK_KillFungus (!Ne|!Lo)>
+
+	% E1 is the anchor.
+	% E2 is the combat metascene.
+	Element2 <Prefab>
+	Place2 <~1>
+
+	% P%id%01 = Initialization Counter
+
+	% Upon activation, move the PC to E2.
+	update <if= P%id%01 0 P= %id%01 1 SavePos Exit %2%>
+
+	sub
+		MetaScene 2
+		special <SHOWALL>
+		boxmap
+		MapWidth 17
+		MapHeight 12
+
+		IndustrialTiles
+
+		% L1 = Victory Counter
+
+		end <if= L1 0   LoseRenown                            LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   Alert 1   XPV 100   WinSubPlot %plotid%>
+		Msg1 <You have exterminated the last of the vermin.>
+
+		sub
+			Team 1
+			SetEnemy 2
+
+			Team 2
+			name <Fun Guys>
+			SetEnemy 1
+			Deploy <WMonster 2 %threat% 100>
+			type <Fungus>
+
+			room
+			special <STARTHERE SHAREDPALETTE>
+			minimap <............2............>
+			sub
+				StairsUp
+				Destination -1
+				MiniMapComponent 2
+				use <Print 1 Return>
+			end
+		end
+	end
+	inv
+		STC ENCOUNTER-TELEPORT-MISSION
+	end
+
+Content
+	name <Kill Fungus>
+	requires <*:TASK_KillFungus (!Lo|!Md)>
+
+	% E1 is the anchor.
+	% E2 is the combat metascene.
+	Element2 <Prefab>
+	Place2 <~1>
+
+	% P%id%01 = Initialization Counter
+
+	% Upon activation, move the PC to E2.
+	update <if= P%id%01 0 P= %id%01 1 SavePos Exit %2%>
+
+	sub
+		MetaScene 2
+		special <SHOWALL>
+		boxmap
+		MapWidth 17
+		MapHeight 17
+
+		IndustrialTiles
+
+		% L1 = Victory Counter
+
+		end <if= L1 0   LoseRenown   LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   Alert 1   XPV 100   WinSubPlot %plotid%>
+		Msg1 <You have exterminated the last of the vermin.>
+
+		sub
+			Team 1
+			SetEnemy 2
+
+			Team 2
+			name <Fun Guys>
+			SetEnemy 1
+			Deploy <WMonster 2 %threat% 100>
+			type <Fungus>
+
+			room
+			special <STARTHERE SHAREDPALETTE>
+			minimap <............2............>
+			sub
+				StairsUp
+				Destination -1
+				MiniMapComponent 2
+				use <Print 1 Return>
+			end
+		end
+	end
+	inv
+		STC ENCOUNTER-TELEPORT-MISSION
+	end
+
+Content
+	name <Kill Fungus>
+	requires <*:TASK_KillFungus (!Md|!Hi|!Ex)>
+
+	% E1 is the anchor.
+	% E2 is the combat metascene.
+	Element2 <Prefab>
+	Place2 <~1>
+
+	% P%id%01 = Initialization Counter
+
+	% Upon activation, move the PC to E2.
+	update <if= P%id%01 0 P= %id%01 1 SavePos Exit %2%>
+
+	sub
+		MetaScene 2
+		special <SHOWALL>
+		monkeymap
+		MapWidth 35
+		MapHeight 35
+
+		IndustrialTiles
+
+		% L1 = Victory Counter
+
+		end <if= L1 0   LoseRenown   LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   Alert 1   XPV 100   WinSubPlot %plotid%>
+		Msg1 <You have exterminated the last of the vermin.>
+
+		sub
+			Team 1
+			SetEnemy 2
+
+			Team 2
+			name <Fun Guys>
+			SetEnemy 1
+			Deploy <WMonster 2 %threat% 150>
+			type <Fungus>
+
+			room
+			special <STARTHERE SHAREDPALETTE>
+			minimap <............2............>
+			sub
+				StairsUp
+				Destination -1
+				MiniMapComponent 2
+				use <Print 1 Return>
+			end
+		end
+	end
+	inv
+		STC ENCOUNTER-TELEPORT-MISSION
+	end
+
+
+
+

@@ -1,0 +1,367 @@
+%%
+%% CORE STORY RANDOM CONTENT
+%%
+%% These fragments are used by the core story. Therefore, they can use all the story
+%% context descriptors in their REQUIRES blocks, and can access the XRan palette freely.
+%%
+%% In addition, some of these fragments are tied to specific components, and may not
+%% be readily reusable in other components.
+%%
+
+%%
+%% *CS_SHIP_DISASTER
+%%
+%%	The PC wanted to take this ship from the inside. Well, there's a pretty
+%%	good chance of encountering something dangerous on board.
+%%
+
+Content
+	requires <*CS_SHIP_DISASTER (!Ne|!Lo)>
+	Element1 <Prefab>
+	Team1 <Guards>
+	minimap <      ...  .1.  ...      >
+	inv
+		Monster Androbot
+	end
+
+Content
+	requires <*CS_SHIP_DISASTER -!Ne -!Lo>
+	Element1 <Prefab>
+	Team1 <Guards>
+	minimap <      ...  .1.  ...      >
+	inv
+		Monster Sentinel
+	end
+
+%%
+%% *CS_SHIP_SYSTEMS
+%%
+%%	Some control systems for a spaceship. You need two teams to go
+%%	along with these: GUARDS and SYSTEMS.
+%%
+%%	Three types: Weapons Control, Engine Control, and Main Computer.
+%%	Use Variety to get one of each.
+%%
+
+Content
+	requires <*CS_SHIP_SYSTEMS>
+	Element1 <Prefab>
+	Team1 <Systems>
+	minimap <      ...  .1.  ...      >
+	inv
+		STC MACHINE-1
+		name <Weapons Control>
+		% V1 = Have disabled device
+		use <ifSelfOK Print 1>
+		%% Science and CodeBreaking can disable the device easily;
+		%% Repair takes a bit more doing.
+		CLUE_REPAIR       <if= V1 0 else GoDone ifRepair HardSkillTar StoryDL else GoFail    Print 2  SkillXP NAS_Repair 100        Goto GoWin>
+		CLUE_CODEBREAKING <if= V1 0 else GoDone ifCodeBreaking SkillTar StoryDL else GoFail  Print 3  SkillXP NAS_CodeBreaking 100  Goto GoWin>
+		CLUE_SCIENCE      <if= V1 0 else GoDone ifScience SkillTar StoryDL else GoFail       Print 4  SkillXP NAS_Science 100       Goto GoWin>
+		GoFail <Print 5>
+		GoDone <Print 6>
+		GoWin <XPV 100  V= 1 1  Trigger nu SelfTeam  SetSelfTeam 0>
+		Msg1_1 <This is the weapons control system.>
+		CMsg1_1 <if= V1 0 Accept>
+		Msg1_2 <This is the weapons control system. It has been deactivated.>
+		CMsg1_2 <if# V1 0 Accept>
+		Msg2 <You glue the controls in place. The only way anyone will access this weapon system is with a sledgehammer.>
+		Msg3 <You hack the terminal and put the weapon system offline.>
+		Msg4 <You reroute the power supply to put the weapon system offline.>
+		Msg5 <You aren't skilled enough to do anything with this system.>
+		Msg6 <You have already disabled this system.>
+	end
+
+Content
+	requires <*CS_SHIP_SYSTEMS>
+	Element1 <Prefab>
+	Team1 <Systems>
+	minimap <      ...  .1.  ...      >
+	inv
+		STC MACHINE-1
+		name <Engines Control>
+		% V1 = Have disabled device
+		use <ifSelfOK Print 1>
+		%% Science and CodeBreaking can disable the device easily;
+		%% Repair takes a bit more doing.
+		CLUE_REPAIR       <if= V1 0 else GoDone ifRepair HardSkillTar StoryDL else GoFail    Print 2  SkillXP NAS_Repair 100        Goto GoWin>
+		CLUE_CODEBREAKING <if= V1 0 else GoDone ifCodeBreaking SkillTar StoryDL else GoFail  Print 3  SkillXP NAS_CodeBreaking 100  Goto GoWin>
+		CLUE_SCIENCE      <if= V1 0 else GoDone ifScience SkillTar StoryDL else GoFail       Print 4  SkillXP NAS_Science 100       Goto GoWin>
+		GoFail <Print 5>
+		GoDone <Print 6>
+		GoWin <XPV 100  V= 1 1  Trigger nu SelfTeam  SetSelfTeam 0>
+		Msg1_1 <This is the engine control system.>
+		CMsg1_1 <if= V1 0 Accept>
+		Msg1_2 <This is the engine control system. It has been deactivated.>
+		CMsg1_2 <if# V1 0 Accept>
+		Msg2 <You fiddle with the plasma throttle until the engine burns itself out.>
+		Msg3 <You hack the terminal and shut down the engine.>
+		Msg4 <You desynchronize the plasma capacitor until the power core burns itself out.>
+		Msg5 <You aren't skilled enough to do anything with this system.>
+		Msg6 <You have already disabled this system.>
+	end
+
+Content
+	requires <*CS_SHIP_SYSTEMS>
+	Element1 <Prefab>
+	Team1 <Systems>
+	minimap <      ...  .1.  ...      >
+	inv
+		STC MACHINE-1
+		name <Main Computer>
+		% V1 = Have disabled device
+		use <ifSelfOK Print 1>
+		%% Science and CodeBreaking can disable the device easily;
+		%% Repair takes a bit more doing.
+		CLUE_REPAIR       <if= V1 0 else GoDone ifRepair HardSkillTar StoryDL else GoFail    Print 2  SkillXP NAS_Repair 100        Goto GoWin>
+		CLUE_CODEBREAKING <if= V1 0 else GoDone ifCodeBreaking SkillTar StoryDL else GoFail  Print 3  SkillXP NAS_CodeBreaking 100  Goto GoWin>
+		CLUE_SCIENCE      <if= V1 0 else GoDone ifScience SkillTar StoryDL else GoFail       Print 4  SkillXP NAS_Science 100       Goto GoWin>
+		GoFail <Print 5>
+		GoDone <Print 6>
+		GoWin <XPV 100  V= 1 1  Trigger nu SelfTeam  SetSelfTeam 0>
+		Msg1_1 <This is the main computer system.>
+		CMsg1_1 <if= V1 0 Accept>
+		Msg1_2 <This is the main computer system. It has been deactivated.>
+		CMsg1_2 <if# V1 0 Accept>
+		Msg2 <You remove one essential chip, causing the entire computer system to fail.>
+		Msg3 <You release a virus into the system, bringing everything to a halt.>
+		Msg4 <You trap the main AI in a logical paradox, bringing the entire system to a halt.>
+		Msg5 <You aren't skilled enough to do anything with this system.>
+		Msg6 <You have already disabled this system.>
+	end
+
+
+%%
+%% *CS_END_Final_Allies Content
+%%
+%%  The final battle is starting. Load some allies to help the PC. All of these
+%%  NPCs should say something upon receiving the RollCall trigger.
+%%
+
+Content
+	name <Core Ally>
+	requires <*CS_END_Final_Allies P:++>
+
+	Element1 <Character !Comrade -3 HasMecha !Global>
+	Team1 <Allies>
+	TeamData1 <SD Ally>
+
+	RollCall <if= L%id%01 0 else %pop% L= %id%01 1 Monologue %1% %id%01 NPCLevel %1% StoryDL Goto %pop%>
+
+	Msg%id%01 <%name1% , reporting for \FACTION &AllyFac !>
+	Msg%id%01_1 <Don't worry, \PC - \FACTION &AllyFac is here to back you up!>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <%name1% reporting for duty.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <They say that you're the one who got \FACTION &AllyFac into this mess. Well, never mind... I'm here to back you up, anyhow.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <For the honor and power of \FACTION &AllyFac , let's win this one!>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Wow! I've never been in a battle this large before... I'll do my best, \PC !>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <The outcome of this battle could spell the end for \FACTION &AllyFac ... Stand firm, we can't afford to lose this one.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+Content
+	name <Faction Ally>
+	requires <*CS_END_Final_Allies ~P:PCFAC>
+
+	Element1 <Faction PCFac>
+	Element2 <Character !Comrade 1 !Okay -3 HasMecha !Global>
+	Team2 <Allies>
+	TeamData2 <SD Ally>
+
+	RollCall <if= L%id%01 0 else %pop% L= %id%01 1 Monologue %2% %id%01 NPCLevel %2% StoryDL Goto %pop%>
+
+	Msg%id%01 <This is %name1% reporting for duty, \RANK .>
+	Msg%id%01_1 <They say that you're the one in charge of this mess, \RANK . I await your orders.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <%name2% reporting for %name1%.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Hey, you didn't think that \FACTION %1% would let you take on this fight alone, did you? I've got your back, \RANK .>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <\RANK , \FACTION %1% sent me to help. Let's kick some ass!>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Hey \RANK ! Together there's no way we can lose, right?>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <What kind of mess have you gotten into, \RANK ? Well, live or die, \FACTION %1% is behind you...>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+Content
+	name <Personal Ally>
+	requires <*CS_END_Final_Allies Common>
+
+	Element1 <Character LANCEMATE HasMecha !Global>
+	Team1 <Allies>
+	TeamData1 <SD Ally>
+
+	RollCall <if= L%id%01 0 else %pop% L= %id%01 1 Monologue %1% %id%01 NPCLevel %1% StoryDL Goto %pop%>
+
+	Msg%id%01 <Hey \PC ! I'm ready to provide backup.>
+	Msg%id%01_1 <I heard that you had gotten into some kind of trouble, but they didn't mention just how much. Don't worry; I'm here to help.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Looks like a tough situation. Let's go.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <You were right when you said that hanging around with you would lead to adventure. After this is all over why don't we try something relaxing instead?>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <It looks like this is going to be a fierce battle. Fortunately, you've got me on your side.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Hey \PC , I'm here to help you out! With the two of us together this should be no problem.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <I should have known that signing on with you was going to be trouble... but I did sign on, \PC , and I'm here with you to the end.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+Content
+	name <Personal Friend>
+	requires <*CS_END_Final_Allies Common>
+
+	Element1 <Character FRIEND HasMecha !Global>
+	Team1 <Allies>
+	TeamData1 <SD Ally>
+
+	RollCall <if= L%id%01 0 else %pop% L= %id%01 1 Monologue %1% %id%01 NPCLevel %1% StoryDL Goto %pop%>
+
+	Msg%id%01 <How'd you like some backup? I'm here for you.>
+	Msg%id%01_1 <Looks like you could use a friend on your side, \PC ... or maybe a small army of them. Anyhow, here I am.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <I've never been very good with words, but... um... I thought you might need some help. Let's just defeat them, okay?>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Wow... did those guys put together that entire army just to fight you? It doesn't look like it's going to be enough.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <Don't those guys know that you're the famous \PC ? I'm on your side, because I want to win this battle!>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Aren't you happy to see me? I'm going to help you out!>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <I'm here to provide backup... but if you get me killed, \PC , I'm never going to forgive you.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+Content
+	name <I'd love to provide backup>
+	requires <*CS_END_Final_Allies Common>
+
+	Element1 <Character LOVER HasMecha !Global>
+	Team1 <Allies>
+	TeamData1 <SD Ally>
+
+	RollCall <if= L%id%01 0 else %pop% L= %id%01 1 Monologue %1% %id%01 NPCLevel %1% StoryDL Goto %pop%>
+
+	Msg%id%01 <Hey there. I was in the neighborhood and thought I should come round to provide backup.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+Content
+	name <Family Backup>
+	requires <*CS_END_Final_Allies>
+
+	Element1 <Character FAMILY HasMecha !Global>
+	Team1 <Allies>
+	TeamData1 <SD Ally>
+
+	RollCall <if= L%id%01 0 else %pop% L= %id%01 1 Monologue %1% %id%01 NPCLevel %1% StoryDL Goto %pop%>
+
+	Msg%id%01 <I'm ready to provide backup.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+
+%%
+%% *CS_END_Final_Enemies Content
+%%
+%%  The final battle is starting. Load some enemy NPCs to fight. All of these
+%%  NPCs should say something upon receiving the RollCall trigger.
+%%
+
+Content
+	name <Core Enemy>
+	requires <*CS_END_Final_Enemies F:++>
+
+	Element1 <Character !Comrade -2 HasMecha !Global>
+	Team1 <Enemies>
+	TeamData1 <SD Enemy>
+
+	RollCall <if= L%id%01 0 else %pop% L= %id%01 1 Monologue %1% %id%01 NPCLevel %1% StoryDL Goto %pop%>
+
+	Msg%id%01 <You cannot hope to win... \FACTION &EnemyFac will be victorious!>
+	Msg%id%01_1 <All of \FACTION &EnemyFac stands ready to destroy you. Give up now.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <%name1% reporting for \FACTION &EnemyFac .>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <They say you're a tough pilot. No way you're tougher than \FACTION &EnemyFac , though.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <For the glory and power of \FACTION &EnemyFac !!!>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Do you really think you can beat \FACTION &EnemyFac ? That's funny!>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <You've evaded \FACTION &EnemyFac so far, but nobody's luck lasts forever. Prepare to die.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+Content
+	name <Faction Enemy>
+	requires <*CS_END_Final_Enemies F:++>
+
+	Element1 <Character !Ally -2 ArchEnemy HasMecha !Global>
+	Team1 <Enemies>
+	TeamData1 <SD Enemy>
+
+	RollCall <if= L%id%01 0 else %pop% L= %id%01 1 Monologue %1% %id%01 NPCLevel %1% StoryDL Goto %pop%>
+
+	Msg%id%01 <You're going to learn the hard way that we will not be defeated!>
+	Msg%id%01_1 <The allies of \FACTION &EnemyFac will not allow you to succeed.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <You will be defeated.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <I'll bet you wish now that you were on our side, huh?>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <You shouldn't have come here. Now I'm gonna be forced to kick your ass.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <I'm going to enjoy watching \FACTION &EnemyFac crush you.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <You have no chance to win. Just die right now.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+Content
+	name <Personal Enemy>
+	requires <*CS_END_Final_Enemies>
+
+	Element1 <Character !Okay -2 NEMESIS HasMecha !Global>
+	Team1 <Enemies>
+	TeamData1 <SD Enemy>
+
+	RollCall <if= L%id%01 0 else %pop% L= %id%01 1 Monologue %1% %id%01 NPCLevel %1% StoryDL Goto %pop%>
+
+	Msg%id%01 <I've waited a long time for the chance to finish you off... You wouldn't expect me to turn it down, would you?>
+	Msg%id%01_1 <Hello again, \PC . This time I'm not going to let you survive!>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Die!!!>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Oh look, it's \PC . Good thing I was in the mood for a fight.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <Heh. Kicking your ass is going to be sweet.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Look at this, my favorite playmate! Come on and let's battle.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <I haven't forgotten what you did, \PC . We'll settle things today.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+
+

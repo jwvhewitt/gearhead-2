@@ -1,0 +1,148 @@
+Battroid 4
+Name <Crown>
+SDL_Sprite <btr_trailblazer.png>
+SDL_Portrait <item_trailblazer.png>
+Desig <CRN-1C>
+desc <A command mecha used by the Silver Knights. It is not suited for front line combat, but can perform a variety of support roles.>
+TYPE <GROUND SPACE INSIDE>
+FACTIONS <SILKN COMET>
+ROLE_SILKN <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+
+sub
+Head
+	Armor 3
+	mass -2
+	sub
+		Sensor 7
+		mass -1
+
+		STC LAS-3
+		mass -2
+		name <Intercept Laser>
+		type <INTERCEPT>
+	end
+
+Torso
+	Armor 4
+	mass -2
+	sub
+		CPit
+		Armor 2
+		mass -1
+
+		Mount
+		name <Right Body Mount>
+		inv
+			MLauncher 2
+			sub
+				STC HWM-4
+				Magazine 4
+			end
+		end
+
+		Mount
+		name <Left Body Mount>
+		inv
+			MLauncher 2
+			sub
+				STC HWM-4
+				Magazine 4
+			end
+		end
+
+		Sensor 3
+		ECM 3
+
+		Computer 5
+		mass -7
+		sub
+			Software 1
+			name <Oracle Target Aid>
+			S_SpeedComp
+			S_BoostScale 2
+
+			Software 2
+			name <Comet Target Control>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 2
+			name <Comet Maneuver Control>
+			S_MVBoost
+			S_BoostScale 2
+
+		end
+	end
+Storage
+	size 4
+	Armor 4
+	mass -2
+	sub
+		Mount
+		name <Backpack Mount>
+
+		Flight 3
+
+		ECM 6
+		mass -1
+
+		LongRangeScanner 4
+	end
+Arm
+	Name <Right Arm>
+	Size 3
+	Armor 4
+	mass -2
+	sub
+		Mount
+		name <Right Arm Mount>
+		inv
+			EMelee 5
+			Name <Pulse Lance>
+			type <EXTEND HAYWIRE>
+		end
+
+		Hand
+		inv
+			STC PAR-2
+		end
+
+		PowerSource 2
+		mass -2
+	end
+Arm
+	Name <Left Arm>
+	Size 3
+	Armor 4
+	mass -2
+	sub
+		mount
+		name <Left Arm Mount>
+
+		Hand
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		Shield 4
+		DefBonus 2
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 2
+	mass -1
+	sub
+		Flight 5
+	end
+
+Leg
+	Name <Left Leg>
+	Armor 2
+	mass -1
+	sub
+		Flight 5
+	end
+
+end

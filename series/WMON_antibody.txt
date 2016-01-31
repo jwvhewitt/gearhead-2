@@ -1,0 +1,168 @@
+ARCH Immunokiller
+SDL_SPRITE <monster_fungus3.png>
+SDL_COLORS <200 35 200 30 30 30 255 233 2>
+roguechar <I>
+type <antibody>
+habitat <>
+statline 13 13 13 13 1 1 1 1
+MonsterTV 90
+RangedCombat 9
+Dodge 10
+Awareness 30
+NoCorpse
+sealed
+biotech
+sub
+torso
+	sub
+		BeamGun 5
+		name <Bio-Disruptor>
+		type <BRUTAL DISINTEGRATION>
+		range 8
+
+		PowerSource 5
+		name <Energy Gland>
+
+		HoverJet 8
+	end
+end
+
+ARCH Immunosentry
+SDL_SPRITE <monster_fungus3.png>
+SDL_COLORS <75 135 218 30 30 30 255 233 2>
+roguechar <I>
+type <antibody>
+habitat <>
+statline 8 8 8 8 1 1 1 1
+MonsterTV 60
+RangedCombat 5
+Dodge 7
+Awareness 20
+NoCorpse
+sealed
+biotech
+sub
+torso
+	sub
+		BeamGun 4
+		name <Bio-Plasma>
+		type <BRUTAL>
+		range 6
+
+		PowerSource 5
+		name <Energy Gland>
+
+		HoverJet 8
+	end
+end
+
+ARCH Immunoseeker
+SDL_SPRITE <monster_fungus3.png>
+SDL_COLORS <11 218 81 30 30 30 255 233 2>
+roguechar <I>
+type <antibody>
+habitat <>
+statline 4 4 4 4 1 1 1 1
+MonsterTV 30
+RangedCombat 1
+Dodge 4
+Awareness 10
+NoCorpse
+sealed
+biotech
+sub
+torso
+	sub
+		BeamGun 1
+		name <Bio-Laser>
+		range 4
+
+		PowerSource 5
+		name <Energy Gland>
+
+		HoverJet 8
+	end
+end
+
+
+ARCH Teraphage
+SDL_SPRITE <monster_blob.png>
+SDL_COLORS <180 36 70 180 36 70 77 156 131>
+roguechar <P>
+type <antibody>
+habitat <>
+statline 11 11 11 11 1 1 1 1
+MonsterTV 75
+CloseCombat 9
+Dodge 8
+Toughness 30
+NoCorpse
+Sealed
+Biotech
+sub
+torso
+	armor 5
+	sub
+		Melee 8
+		name <Maw>
+		type <BRUTAL SICKNESS POISON>
+		Speed 3
+	end
+tail
+	name <Tendril>
+	armor 5
+end
+
+ARCH Gigaphage
+SDL_SPRITE <monster_blob.png>
+SDL_COLORS <255 107 83 255 107 83 77 156 131>
+roguechar <P>
+type <antibody>
+habitat <>
+statline 7 7 7 7 1 1 1 1
+MonsterTV 45
+CloseCombat 5
+Dodge 5
+Toughness 20
+NoCorpse
+Sealed
+Biotech
+sub
+torso
+	armor 2
+	sub
+		Melee 5
+		name <Maw>
+		type <BRUTAL SICKNESS>
+	end
+tail
+	name <Tendril>
+	armor 2
+end
+
+ARCH Megaphage
+SDL_SPRITE <monster_blob.png>
+SDL_COLORS <250 200 49 250 200 49 77 156 131>
+roguechar <P>
+type <antibody>
+habitat <>
+statline 3 3 3 3 1 1 1 1
+MonsterTV 15
+CloseCombat 1
+Toughness 10
+Dodge 2
+NoCorpse
+Sealed
+Biotech
+sub
+torso
+	sub
+		Melee 1
+		name <Maw>
+		type <BRUTAL>
+		Speed 1
+	end
+tail
+	name <Tendril>
+end
+

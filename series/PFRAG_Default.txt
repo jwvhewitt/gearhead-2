@@ -1,0 +1,2273 @@
+% Persona Fragment File
+
+% TYPE: *SmallFryChallenge
+%
+%	The PC has just challenged the NPC, but the NPC thinks that the PC
+%	isn't in the same league, so the PC can either pressure the NPC to
+%	accept them or just give up.
+%	Difficulty rating taken as ChatNPCRenown.
+%   PARAM1: Accept Challenge Exit Label
+%   PARAM2: PC Gives Up Exit Label
+%   PARAM3: PC Fails Exit Label
+
+	Persona
+	requires <*SmallFryChallenge>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+	result%id%01 <Goto %2%>
+	result%id%02 <ifIntimidation SocSkillTar ChatNPCRenown else %3% Goto %1%>
+	result%id%03 <ifTaunt SocSkillTar ChatNPCRenown else %3% Goto %1%>
+	Msg%id%01 <You're a bit inexperienced to be challenging me, aren't you? Come back when you're worthy of my attention.>
+	Msg%id%01_1 <Wait, you think that you're good enough to challenge me? Obviously there's been some kind of miscommunication... I mean, you're not even worthy to face my lancemates. It's nice to see that you have big dreams but keep them to yourself for now.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <No. I'm way more skilled than you are.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Now, I don't want to discourage you or anything, but I am so far out of your league that I can't even see you from here.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <You've got nerve, \PC , but as of right now you aren't even worthy of my attention.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Ha! Oh I'm sorry, that wasn't a joke, was it? I'm afraid that you're just not in the same league as me...>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <You've got to be kidding. I'd finish you off in a heartbeat... not even an exciting heartbeat, but one of those boring ones.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <Alright... I'll be back.>
+	Prompt%id%01_1 <I guess you're right...>
+	Prompt%id%02 <Don't doubt me... I can beat you easy.>
+	Prompt%id%02_1 <You disrespect me? Now you're in trouble...>
+	Prompt%id%03 <Say, is that chicken I smell? Cluck cluck!>
+	Prompt%id%03_1 <If your skills matched your ego you'd have a point.>
+
+% TYPE: *F2Dest_Greeting
+%
+%	The PC wants to go somewhere, but has to fight this NPC first. There's
+%	a chance that the PC will be able to find out where the destination is
+%	from this NPC.
+%   PARAM1: Difficulty Rating
+%   PARAM2: Location being sought
+%   PARAM3: Reveal location exit label (no message printed here)
+%   PARAM4: Fight exit label (no message printed here)
+
+	Persona
+	requires <*F2Dest_Greeting @:A.jr_>
+	%% Pretty easy to get the info if the NPC is your junior
+	START <EndChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <ifConversation SkillTar %1% else %4% EndChat Say %id%02 AddChat %id%03>
+	result%id%02 <ifIntimidation SkillTar %1% else %4% EndChat Say %id%02 AddChat %id%03>
+	result%id%03 <Goto %3%>
+	Msg%id%01 <Oh crap... I think I'm supposed to stop you, \PC . You better back off!>
+	Msg%id%01_1 <Oh no... I heard that you were looking for \SCENE %2% , \PC . I'm not afraid to fight you!>
+	Msg%id%02 <Um, okay, I'll back down this time... but just this once!>
+	Msg%id%02_1 <They say that discretion is the better part of valor... guess that means I'm feeling pretty brave today.>
+	Prompt%id%01 <Why don't you make this easy and just give up?>
+	Prompt%id%01_1 <Show me to \SCENE %2% and I'll let you go.>
+	Prompt%id%02 <You want to get wrecked again? Fine by me.>
+	Prompt%id%02_1 <Don't make me angry, \CHATNPC . You wouldn't like it.>
+	Prompt%id%03 <[Continue]>
+
+	Persona
+	requires <*F2Dest_Greeting ("Friend"|"Lover"|"@:A.tha") Common>
+	%% Instawin if the NPC is a friend, a lover, or just thankful to the PC.
+	START <EndCHat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %3%>
+	Msg%id%01 <Hey, \PC ! Are you looking for \SCENE %2% ? I can show you where that is, no problem.>
+	Prompt%id%01 <[Continue]>
+
+	Persona
+	requires <*F2Dest_Greeting>
+	START <EndChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+	result%id%01 <Goto %4%>
+	result%id%02 <ifIntimidation HardSkillTar %1% else %4% EndChat Say %id%02 AddChat %id%04>
+	result%id%03 <ifShopping SkillTar %1% else %4% ifNPCLawful else .%id%_GoR4Success EndChat Say %id%03 AddChat %id%05>
+	.%id%_GoR4Success <EndChat Say %id%04 AddChat %id%06>
+	result%id%04 <Goto %3%>
+	result%id%05 <Goto %4%>
+	result%id%06 <Cash+ -Price %1% 100 Goto %3%>
+	Msg%id%01 <It's my job to stop you from reaching \SCENE %2% .>
+	Msg%id%01_1 <I've been ordered to keep you away from \SCENE %2% .>
+	Msg%id%01_2 <As long as I'm here, you can forget about seeing \SCENE %2% .>
+	Msg%id%02 <So that's how it's going to be...>
+	Msg%id%02_1 <I see... You sound like you're pretty serious about this.>
+	Msg%id%03 <You think I can be bribed!? Oh, now you've made this personal...>
+	Msg%id%04 <You know, I really hate to take a bribe... oh who am I kidding? I love it!>
+	Msg%id%04_1 <You think I can be bribed!? Well, you're absolutely right!>
+	Prompt%id%01 <You can't stop me.>
+	Prompt%id%01_1 <Yeah, whatever...>
+	Prompt%id%02 <Out of my way before I destroy you.>
+	Prompt%id%02_1 <Let me pass or it's curtains for you.>
+	Prompt%id%03 <I'll give you $ \VAL Price %1% 100 to look the other way.>
+	CPrompt%id%03 <ifG PC$ Price %1% 100 Accept>
+	Prompt%id%03_1 <Would you let me through for $ \VAL Price %1% 100 ?>
+	Prompt%id%04 <[Continue]> Win
+	Prompt%id%05 <[Continue]> Fail
+	Prompt%id%06 <[Continue]> Bribe
+
+% TYPE: *ShowMeYourWorkplace
+%		&NothingToHide	The NPC has nothing to hide (or claims such, at least)
+%		&Investigation	This is part of a criminal investigation
+%	The PC wants to gain entry to the NPC's workplace.
+%   PARAM1: Success Exit Label
+%   PARAM2: Failure Exit Label
+%   PARAM3: Difficulty Rating
+
+	Persona
+	requires <*ShowMeYourWorkplace &NothingToHide>
+	START <EndChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <Alright. I have nothing to hide.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <[Continue]>
+
+
+
+% TYPE: *SuspectGreeting
+%	The NPC is suspected of a crime which the PC is investigating.
+%   PARAM1: Exit Label
+
+	Persona
+	requires <*SuspectGreeting>
+	START <if= v%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <Yes, what do you want?>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <I'd like to ask you a few questions.>
+	Prompt%id%01_1 <I'm here to ask you some questions.>
+	Prompt%id%01_2 <I was wondering if you could answer some questions.>
+
+
+% TYPE: *LM_JoinFaction
+%		&IsPolice    = It's a police faction
+%		&IsMilitary  = It's a military faction
+%		&IsCorporate = It's a corporation
+%		&IsPolitical = It's a government
+%	The Lancemate has just joined a faction.
+%  PARAM1: The faction in question
+
+	Persona
+	requires <*LM_JoinFaction>
+	START <NewChat Say %id%01>
+	Msg%id%01 <Alright, I'm now a full fledged member of \FACTION %1% ! When can we start getting some missions?>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Wow, it was easier to join \FACTION %1% than I heard. Either that or I'm just better than I think.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Hey \PC , how do you like this new uniform? That's not the main reason to join \FACTION %1% but it's a nice bonus.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%01_10 <Hey, I'm a member of \FACTION %1% now, too! We're not just lancemates, we're also co-workers.>
+	CMsg%id%01_10 <if= PCFac %1% Accept>
+	Msg%id%01_11 <As a fellow member of \FACTION %1% , we should be able to coordinate our actions much better than before.>
+	CMsg%id%01_11 <if= PCFac %1% ifNPCSociable Accept>
+	Msg%id%01_12 <>
+	CMsg%id%01_12 <if= PCFac %1% ifNPCShy Accept>
+	Msg%id%01_13 <Hey there \RANK \PC , I've been accepted into \FACTION %1% too! Of course I'm just a \FACRANK %1% 0 yet...>
+	CMsg%id%01_13 <if= PCFac %1% ifG PCFacLevel 0 ifNPCEasygoing Accept>
+	Msg%id%01_14 <>
+	CMsg%id%01_14 <if= PCFac %1% ifNPCPassionate Accept>
+	Msg%id%01_15 <Look, we've both got the same uniform now! People might think we're a couple... \RANK and \FACRANK %1% 0 !>
+	CMsg%id%01_15 <if= PCFac %1% ifNPCCheerful Accept>
+	Msg%id%01_16 <I'm a member of \FACTION %1% now too, \PC ... ashes, I guess this means you're going to be my supervisor.>
+	CMsg%id%01_16 <if= PCFac %1% ifNPCMelancholy Accept>
+
+% TYPE: *YourLossSucker
+%	The PC has rejected an offer, the NPC will respond thusly.
+%  PARAM1: Exit Label
+
+	Persona
+	requires <*YourLossSucker>
+	START <NewChat Say %id%01 Goto %1%>
+	Msg%id%01 <It's your loss, sucker.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%01_7 <>
+	CMsg%id%01_7 <ifNPCPragmatic Accept>
+	Msg%id%01_8 <>
+	CMsg%id%01_8 <ifNPCSpiritual Accept>
+
+
+% 
+% TYPE: *BasicMissionBriefing
+%
+%	The PC is being offered a basic mecha mission. Explain what's going
+%	on, and allow the PC to either accept or reject it.
+%
+%	Pay is "Reward %4% PayRate" plus salvage.
+%
+%   PARAM1: Scene where the mission will take place
+%   PARAM2: Accept mission exit label
+%   PARAM3: Refuse mission exit label
+%   PARAM4: The renown value, to calculate "Reward %4% PayRate"
+%
+
+	Persona
+	requires <*BasicMissionBriefing>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %2%>
+	result%id%02 <Goto %3%>
+	Msg%id%01 <Some mecha in \EXACT_SCENE %1% have been causing problems. I'd like for you to get rid of them. Do this, and you'll earn $ \VAL Reward %4% PayRate plus salvage.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <I accept your terms.>
+	Prompt%id%01_1 <Alright, I'll do it.>
+	Prompt%id%01_2 <I'll be back to pick up the reward.>
+	Prompt%id%02 <Sorry, but I'm not interested.>
+	CPrompt%id%02 <if# PCFac ChatNPCFac Accept>
+	Prompt%id%02_1 <You'll have to find a different pilot.>
+	Prompt%id%02_2 <This isn't my kind of job.>
+
+%
+% TYPE: *LM_WhyNotMission
+%
+%	The lancemate has referred the PC to a mission, but the PC refused.
+% 	Note that this pfrag might jump straight to the DENY exit, or the NPC
+%	might try arguing with the PC.
+%
+%   PARAM1: Accept Mission exit label
+%   PARAM2: Deny Mission exit label
+%   PARAM3: The mission-giving NPC
+%
+
+	Persona
+	requires <*LM_WhyNotMission (Easygoing|Cheerful|Shy)>
+	START <EndChat Say %id%01 Goto %2%>
+	Msg%id%01 <No problem.>
+	Msg%id%01_1 <Alright, whatever you want.>
+	Msg%id%01_2 <Okay.>
+
+	Persona
+	requires <*LM_WhyNotMission -Easygoing -Cheerful -Shy>
+	START <EndChat  Say %id%01  AddReact -d4  Goto %2%>
+	Msg%id%01 <It's your loss.>
+	Msg%id%01_1 <You don't like my suggestion? Fine.>
+	Msg%id%01_2 <Yeah, whatever. Just do what you want.>
+
+	Persona
+	requires <*LM_WhyNotMission @:M.pro>
+	START <EndChat Say %id%01 Goto %2%>
+	Msg%id%01 <As you command.>
+	Msg%id%01_1 <As you wish. I will respect your decision.>
+	Msg%id%01_2 <You're the boss, \PC .>
+
+	Persona
+	requires <*LM_WhyNotMission @:M.see>
+	START <NewChat Say %id%01 AddChat %id%01 AddCHat %id%02>
+	result%id%01 <EndChat Say %id%02 AddReact  d4  Goto %1%>
+	result%id%02 <EndChat Say %id%03 AddReact -d6  Goto %2%>
+	Msg%id%01 <I just thought this might be a good experience, you know? I'm trying to try new things...>
+	Msg%id%01_1 <Well, you know, I'm not entirely happy with the way my life's going right now, I thought it might be good to expand our employment horizons a bit.>
+	Msg%id%01_2 <I just wanted to try something different, y'know? It seems like every mission we do is for \FACTION PCFac ...>
+	CMsg%id%01_2 <ifFactionExists PCFac if# PCFac NPCFac %3% Accept>
+	Msg%id%02 <Thanks, \PC . We should go talk with \PERSONA %3% at \EXACT_SCENE NPCScene %3% .>
+	Msg%id%02_1 <Think of it as a bold new adventure. Let's get over to \EXACT_SCENE NPCScene %3% and speak with \PERSONA %3% .>
+	Msg%id%03 <How are you ever going to grow if you won't try anything new? It's your decision, but still...>
+	Msg%id%03_1 <Yeah, whatever. Let's just keep doing the same old stuff forever and ever.>
+	Prompt%id%01 <Okay. We can go do this mission.>
+	Prompt%id%01_1 <Well, I'd hate to stand in the way of personal growth...>
+	Prompt%id%01_2 <If it means that much to you, I'll do it.>
+	Prompt%id%02 <Expand your mind on your own time, \CHATNPC .>
+	Prompt%id%02_1 <We don't have time for this right now.>
+	Prompt%id%02_2 <No more talking, my decision is final.>
+
+	Persona
+	requires <*LM_WhyNotMission @:M.mer>
+	START <NewChat Say %id%01 AddChat %id%01 AddCHat %id%02 AddChat %id%03>
+	result%id%01 <ifG React d100 else .%id%_GoR1Fail ifG React 35 else .%id%_GoR1Fail EndChat Say %id%05 SetXXRMotivation ChatNPCID XXR_M_Seeker Goto %2%>
+	.%id%_GoR1Fail <AddReact -d3  EndChat Say %id%02 Goto %2%>
+	result%id%02 <EndChat Say %id%03 AddReact d10  Goto %1%>
+	result%id%03 <EndChat Say %id%04 Goto %2%>
+	Msg%id%01 <What's wrong with my idea? We could really use the money...>
+	Msg%id%01_1 <But this mission is worth a lot of money! You can't just reject it like that!>
+	Msg%id%02 <In a lot of ways, you and I are very different people, \PC ...>
+	Msg%id%02_1 <Things more important than money? Now you're just talking crazy, \PC .>
+	Msg%id%03 <That's the spirit! Now let's get out there and go to work!>
+	Msg%id%04 <I'm not worried about having enough money, I want to have giant truckloads of money!>
+	Msg%id%05 <You think I don't know that? I guess I have been a bit single-minded in pursuing my goal...>
+	Prompt%id%01 <There are things more important than money, \CHATNPC .>
+	Prompt%id%02 <You're right. Money is always nice.>
+	Prompt%id%03 <We've got enough money for right now.>
+	CPrompt%id%03 <ifG PC$ Threat PCRenown 10 Accept>
+
+%
+% TYPE: *LM_RefuseRequest
+%
+%	The PC has just refused a request from the lancemate. The lancemate will
+%	probably take it well.
+%
+%   PARAM1: Exit label
+%
+
+	Persona
+	requires <*LM_RefuseRequest @:M.pro>
+	% A professional won't take the refusal personally at all.
+	START <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <As you wish.>
+	Msg%id%01_1 <Understood.>
+
+	Persona
+	requires <*LM_RefuseRequest>
+	START <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <Alright, no big deal.>
+	Msg%id%01_1 <Meh. I'm disappointed, but I'll survive.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Okay.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Don't worry about it. Let's go do something else.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <What!? Well, I guess it's your decision, \PC ...>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <No prob.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <Hmm... You disappoint me.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+
+%
+% TYPE: *LM_LetsDoIt
+%		&SeekRumor	The PC should try to find a rumor
+%
+%	The PC has just agreed to some inane request from the lancemate.
+%	Vagueness is perfectly acceptable.
+%
+%   PARAM1: Exit label
+%
+
+	Persona
+	requires <*LM_LetsDoIt &SeekRumor>
+	START <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <The first thing we ough to do is ask around for some rumors.>
+	Msg%id%01_1 <Whenever you're doing something like this, the first step is always to ask around and see if you can turn up any rumors. I think that's what we should do right now.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Good. We're going to need some more information to move forward... see if you can dig up any rumors.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Okay, first off let's go see if we can dig up any rumors. It's pretty hard to do anything when you don't know what to do.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <I've done my part, now it's time for you to act. We need information; see if you can turn up any rumors.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Woohoo, let's do it! Um... I don't really know where to go from here. Maybe we can track down some rumors?>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <The next step is to confront our own ignorance. Let's ask around, see what kind of rumors we can turn up.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+	Persona
+	requires <*LM_LetsDoIt>
+	START <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <Let's get to work, then.>
+	Msg%id%01_1 <I'm glad you're willing to see things my way. Shall we get to work, then?>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Let's do it.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Okay, then, we should get started. Um...>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <This will be glorious! Let's get started right away.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Yeah, let's do it!>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <Hopefully we aren't going to regret this...>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+
+%
+% TYPE: *LetsGoToMission
+%
+%	The NPC has referred the PC to a mission; let's go there now!
+%
+%   PARAM1: Exit Label
+%   PARAM2: NPC offering mission
+%   PARAM3: Scene where mission is
+%
+
+	Persona
+	requires <*LetsGoToMission>
+	START <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <Let's go see \PERSONA %2% right away.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Great! Let's head over to \EXACT_SCENE %3% as quickly as possible!>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+%
+% TYPE: *BetterBeGoing
+%
+%	The NPC has to go do something.
+%
+%   PARAM1: Exit Label
+%
+
+	Persona
+	requires <*BetterBeGoing>
+	START <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <I'd better be going.>
+	Msg%id%01_1 <I'd better be going. Talk with you later.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <I should go now.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <I guess I should be heading off, now.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <It's time for me to go.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <It's been fun seeing you, but I better get going now.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <That's all the time I can spare for chitchat today... I really have to go.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+
+%
+% TYPE: *IWillDestroyYou
+%
+%	This NPC is swearing to destroy the PC. This is not a normal run of the mill death threat, either-
+%	no, this NPC will literally go to the ends of the universe in their quest for revenge.
+%
+
+	Persona
+	requires <*IWillDestroyYou>
+	START <EndChat Say %id%01>
+	Msg%id%01 <From this day forth it will be my sole purpose in life to give you pain, to repay you for what you have given me. I will hunt you down and destroy everything you love. By the end you will beg me for death.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+
+% TYPE: *YouWentThroughALotOfTrouble
+%			&IsEnemy	The NPC is an enemy of the PC.
+%	The PC has gone through a lot of trouble to meet this NPC.
+%
+%  PARAM1: Exit Label
+
+	Persona
+	requires <*YouWentThroughALotOfTrouble>
+	START <if= v%id%01 0 else %1% V= %id%01 1 EndChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <Well, you certainly went through a lot of trouble to find me. I hope it'll be worth it.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <[Continue]>
+
+
+% TYPE: *TheySayYoureTough
+%	The NPC has heard that the PC is tough. Maybe a challenge is going to take
+%	place, or some kind of toughness-deflating advice will be given.
+%
+%  PARAM1: Exit Label
+
+	Persona
+	requires <*TheySayYoureTough>
+	START <if= v%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <AddEasygoing  d8   Goto %1%>
+	result%id%02 <AddEasygoing -d8   Goto %1%>
+	Msg%id%01 <Hey, \PC . They say that you're a pretty tough pilot.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <Really? Thanks, I guess...>
+	Prompt%id%02 <That's right. Don't piss me off.>
+
+
+% TYPE: *HurryBackWithMoney
+%	The NPC is offering some kind of service. The PC can't afford it right now.
+
+	Persona
+	requires <*HurryBackWithMoney>
+	START <NewChat Say %id%01>
+	Msg%id%01 <Hurry back when you have the money.>
+	Msg%id%01_4 <Try to make it quick; I've got bills to pay.>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+
+
+% TYPE: *YouCouldUseHelp
+%	The NPC has heard that the PC can use some help; usually followed by
+%	either an offer of help or taunting.
+%
+%  Param1: Exit Label
+
+	Persona
+	requires <*YouCouldUseHelp>
+	% v%id%01 = One time use counter
+	START <if= v%id%01 0 else %1% v= %id%01 1 NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <Goto %1%>
+	Msg%id%01 <Hey \PC , I hear that you could use some help.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <You look like you need some help.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <Seems like you might be in over your head. You could use some help.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <I'm doing fine by myself.>
+	Prompt%id%01_1 <I'm doing alright.>
+	Prompt%id%01_2 <I can't complain.>
+	Prompt%id%02 <Yeah, that's right... why?>
+	Prompt%id%02_1 <What kind of help are you talking about?>
+	Prompt%id%02_2 <Maybe... what's it to you?>
+
+% TYPE: *ComeHereForIt
+%	The NPC can't give the PC something over the phone; the PC should visit in person.
+
+	Persona
+	requires <*ComeHereForIt>
+	START <EndChat Say %id%01>
+	Msg%id%01 <We can't do this over the phone. Why don't you come see me at \SCENE ChatNPCScene ?>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+
+% TYPE: *NotByPhone
+%		&TooDangerous	It's dangerous to speak over the phone.
+%	The NPC can't speak on the phone; the PC should visit in person.
+
+	Persona
+	requires <*NotByPhone>
+	START <EndChat Say %id%01>
+	Msg%id%01 <I can't talk on the phone right now. Why don't you come see me at \SCENE ChatNPCScene ?>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+% TYPE: *IHearYouAreLookingForItem
+%	The NPC has heard about the PC's search for an item.
+%   PARAM1: Item ID
+%   PARAM2: Exit label
+
+	Persona
+	requires <*IHearYouAreLookingForItem>
+	START <if= v%id%01 0 else %2% V= %id%01 1 NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %2%>
+	Msg%id%01 <I should have expected to see you sooner or later. Word is that you're searching for the \ITEM %1% .>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <What do you know about that?>
+
+
+% TYPE: *IHearYouAreFightingNPC
+%	The NPC has heard about the PC's fight with NPC.
+%   PARAM1: NPC identity
+%   PARAM2: Exit label
+
+	Persona
+	requires <*IHearYouAreFightingNPC>
+	START <if= v%id%01 0 else %2% V= %id%01 1 NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %2%>
+	Msg%id%01 <Hey, \PC . I hear that you've had some trouble with \PERSONA %1% lately.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <It's nothing I can't handle.>
+
+
+% TYPE: *WhatDoYouWantWithMe
+%		&Information	We want information... information...
+%		&YouHaveSomething	The NPC has something the PC needs/wants
+%	The PC has barged in on someone, who is feeling understandably defensive.
+%   PARAM1: Exit Label
+
+	Persona
+	requires <*WhatDoYouWantWithMe>
+	% V%id%01 = One time only counter
+	START <if= v%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <How did you get in here? What do you want with me?>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <Calm down and you'll find out.>
+	Prompt%id%01_1 <>
+	CPrompt%id%01_1 <ifPCSociable Accept>
+	Prompt%id%01_2 <>
+	CPrompt%id%01_2 <ifPCShy Accept>
+	Prompt%id%01_3 <>
+	CPrompt%id%01_3 <ifPCEasygoing Accept>
+	Prompt%id%01_4 <>
+	CPrompt%id%01_4 <ifPCPassionate Accept>
+	Prompt%id%01_5 <>
+	CPrompt%id%01_5 <ifPCCheerful Accept>
+	Prompt%id%01_6 <>
+	CPrompt%id%01_6 <ifPCMelancholy Accept>
+
+
+% TYPE: *PROMOTION_Minor_Reward
+%	The PC doesn't have enough renown (or some other reputation) for the good
+%	promotion reward, so instead he's going to get a relatively minor cash
+%	prize. How awful.
+
+	Persona
+	requires <*PROMOTION_Minor_Reward>
+	START <NewChat Say %id%01 CashPrize Reward * 10 PCFacLevel 250>
+	Msg%id%01 <You've done well, \Rank . Here is a cash reward in recognition of your service to \FACTION ChatNPCFac .>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+% TYPE: *RevealSecret
+%	The NPC will reveal a secret to the PC, usually after the PC has done something.
+%   PARAM1: Exit label
+
+	Persona
+	requires <*RevealSecret>
+	START <NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <Now I can tell you about that thing...>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <It's about time.>
+	Prompt%id%01_1 <Tell me.>
+	Prompt%id%01_2 <Do you mind if I write this down?>
+
+% TYPE: *TalkAgainWhenYouHaveTime
+%	The PC doesn't want to talk now, so the NPC will advise them to come
+%     	back later.
+%
+
+	Persona
+	requires <*TalkAgainWhenYouHaveTime>
+	START <EndChat Say %id%01>
+	Msg%id%01 <Alright. Talk with me again when you have the time.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+% TYPE: *LancemateWantsToTalk
+%	One of the PC's lancemates wants to talk about something. The PC will either be able to
+%	accept the conversation or delay it until later.
+%   PARAM1: Accept exit label
+%   PARAM2: Deny exit label
+
+
+
+	Persona
+	requires <*LancemateWantsToTalk>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <Goto %2%>
+	Msg%id%01 <\PC , there's something I have to tell you.>
+	Msg%id%01_1 <\PC , there's something that I really think we ought to discuss.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <I have something to tell you.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Hey, I don't know if this is a good time or not, but there's something I'd like to talk about.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <\PC , there's a matter which we urgently need to discuss.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <\PC , there's something I want to talk about. This seems like a pretty good time.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <Sorry to bring this up at what may be a bad time, but there's something we need to talk about.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <No problem. What is it?>
+	Prompt%id%01_1 <Go ahead.>
+	Prompt%id%01_2 <Sure. What's going on?>
+	Prompt%id%02 <This can wait until later.>
+	Prompt%id%02_1 <We don't have time for this right now.>
+	Prompt%id%02_2 <This isn't a good time for that.>
+
+% TYPE: *SomeoneSentPCToTalk
+%			&ForJob		The PC is here to do a job for the NPC
+%	The PC will tell the NPC that someone sent him here to talk.
+%   PARAM1: NPC who sent PC
+%   PARAM2: Exit script label
+
+	Persona
+	requires <*SomeoneSentPCToTalk>
+	START <NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %2%>
+
+	Msg%id%01 <Yes, may I help you?>
+
+	Prompt%id%01_10 <\PERSONA %1% sent me to talk.>
+	CPrompt%id%01_10 <ifNPCOK %1% Accept>
+	Prompt%id%01_20 <I was sent here to talk with you.>
+	CPrompt%id%01_20 <ifNPCDead %1% Accept>
+
+
+% TYPE: *INeedYourHelp
+%                     &SomethingPersonal	The NPC needs help of a sensitive nature
+%		      &PCSpecifically		The NPC wants the PC's help, not just anyone
+%		      &Spiritual		This is a spiritual matter of some kind
+%	The NPC wants the PC to help him.
+%   PARAM1: Will listen exit Label
+%   PARAM2: Won't listen exit label
+
+	Persona
+	requires <*INeedYourHelp &PCSpecifically>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+	result%id%01 <Goto %1%>
+	result%id%02 <NewChat Say %id%02 AddChat %id%04 AddChat %id%05>
+	result%id%03 <Goto %2%>
+	result%id%04 <Goto %1%>
+	result%id%05 <Goto %2%>
+	Msg%id%01 <\PC , at last I've found you. I need your help with something.>
+	Msg%id%01_1 <I've been searching all over for you, \PC . We have a problem that only you are capable of handling.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <\PC , I need your help.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <So there you are. I've been looking for you; I could really use your help with something.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <\PC , I have a terrible problem, and you're the only one in the universe who can help!>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Hey \PC ! Am I ever glad to see you... I need your help with something.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <\PC , I've come to seek your aid in an important matter. You are quite literally my last hope.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%02 <Well, no, but I've heard about you and I think you're the perfect one to help...>
+	Msg%id%02_1 <No, we haven't exactly met, but I need something done and you're the perfect person for the job...>
+	Msg%id%02_2 <No, you don't. I've heard all about you, though, so I know you're perfect for this upcoming mission.>
+	Prompt%id%01 <Alright, tell me what you need.>
+	Prompt%id%01_1 <Okay. Tell me what's going on.>
+	Prompt%id%01_2 <It's alright. I'm here now.>
+	Prompt%id%02 <Wait, do I know you?>
+	CPrompt%id%02 <ifChatNPCUnknown Accept>
+	Prompt%id%02_1 <Wait, do we know each other?>
+	Prompt%id%03 <Stop right there. I'm not interested.>
+	Prompt%id%03_1 <Sorry, \ChatNPC , I've got my own problems right now.>
+	Prompt%id%03_2 <Why don't you tell someone who cares?>
+	Prompt%id%04 <Perfect, huh? What kind of a job are we talking about?>
+	Prompt%id%04_1 <Perfect, you say? I'd like to hear more.>
+	Prompt%id%05 <You'll have to find someone else to help.>
+	Prompt%id%05_1 <Whatever it is, it's not my problem.>
+
+	Persona
+	requires <*INeedYourHelp>
+	START <NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <Excuse me, but you're a cavalier, right? I could really use your help with something.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <Tell me what's wrong.>
+	Prompt%id%01_1 <>
+	CPrompt%id%01_1 <ifPCSociable Accept>
+	Prompt%id%01_2 <>
+	CPrompt%id%01_2 <ifPCShy Accept>
+	Prompt%id%01_3 <>
+	CPrompt%id%01_3 <ifPCEasygoing Accept>
+	Prompt%id%01_4 <>
+	CPrompt%id%01_4 <ifPCPassionate Accept>
+	Prompt%id%01_5 <>
+	CPrompt%id%01_5 <ifPCCheerful Accept>
+	Prompt%id%01_6 <>
+	CPrompt%id%01_6 <ifPCMelancholy Accept>
+
+
+% TYPE: *IDisagreeYouDie
+%		&Arrest		The NPC will be taken to jail.
+%	The NPC won't do as the PC says, but will fight instead.
+%   PARAM1: Exit Label
+
+	Persona
+	requires <*IDisagreeYouDie &Arrest>
+	START <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <I'm not ready to go yet... I think I'll kill you instead!>
+
+	Persona
+	requires <*IDisagreeYouDie>
+	START <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <I don't think so. Instead, I think I'll kill you...>
+
+
+% TYPE: *ISurrender
+%		&Arrest		The NPC will be taken to jail.
+%	The NPC will surrender and go with the PC.
+%   PARAM1: Exit Label
+
+	Persona
+	requires <*ISurrender &Arrest>
+	START <NewChat Say %id%01 Goto %1%>
+	Msg%id%01 <Alright, I give up... You can take me to jail.>
+
+	Persona
+	requires <*ISurrender>
+	START <NewChat Say %id%01 Goto %1%>
+	Msg%id%01 <I give up! Just don't kill me...>
+
+% TYPE: *ComeBackWhenYouKnowSomething
+%	The NPC will remind the PC to go learn something... I dunno what.
+
+	Persona
+	requires <*ComeBackWhenYouKnowSomething>
+	START <NewChat Say %id%01>
+	Msg%id%01 <Come back when you learn something.>
+
+
+% TYPE: *GenericMissionReminder
+%	The NPC will remind the PC to go do something... I dunno what.
+
+	Persona
+	requires <*GenericMissionReminder>
+	START <NewChat Say %id%01>
+	Msg%id%01 <Come talk to me again after you've completed the mission.>
+
+
+% TYPE: *MechaMissionReminder
+%	The NPC will remind the PC to go fight/investigate some mecha
+%	in Scene %1%.
+%   PARAM1: The scene where the mecha are
+
+	Persona
+	requires <*MechaMissionReminder>
+	START <NewChat Say %id%01>
+	Msg%id%01 <Come talk to me again after you've checked out \EXACT_SCENE %1% .>
+
+% TYPE: *IWantToTalkAboutNPC
+%                           &YouBadNPC   ChatNPC has done something bad to P1 NPC, supposedly
+%	The PC wants to ask the NPC about a second NPC.
+%   PARAM1: NPC to be discussed
+%   PARAM2: Exit label
+
+	Persona
+	requires <*IWantToTalkAboutNPC>
+	START <NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %2%>
+	Msg%id%01 <Yes, may I help you?>
+	Prompt%id%01 <I want to talk about \PERSONA %1% .>
+
+
+% TYPE: *GodImBored
+%	The NPC will express a state of boredom or ennui.
+
+	Persona
+	requires <*GodImBored>
+	START <NewChat Say %id%01>
+	Msg%id%01 <I wish I had something to do right now.>
+	Msg%id%01_1 <This place wouldn't be nearly so boring if only there were some decent people to talk with...>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <The tedium would be bearable if only I had some solitude to go along with it.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%01_7 <>
+	CMsg%id%01_7 <ifNPCPragmatic Accept>
+	Msg%id%01_8 <God, I'm bored.>
+	CMsg%id%01_8 <ifNPCSpiritual Accept>
+
+
+% TYPE: *IAcceptYourChallenge
+%	The PC has challenged the NPC to a duel; the NPC has accepted.
+%   PARAM1: Duel Scene (referenced as \SCENE %1% here)
+
+	Persona
+	requires <*IAcceptYourChallenge>
+	START <NewChat Say %id%01>
+	Msg%id%01 <You think you're good enough to face me? Meet me in \Scene %1% and we'll find out.>
+	Msg%id%01_1 <I accept your challenge. We should arrange a place... how about I meet you in \SCENE %1% later on today? You should prepare your mecha first, of course. I'll see you there.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Alright. Meet me in \Scene %1% .>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <A duel? I can agree to that. Go get yourself prepared and meet me in \Scene %1% whenever you're ready.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <You're lucky that I'm bored. Normally I wouldn't waste time facing an amateur like you... meet me in \Scene %1% and I'll show you how a pro fights.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Well, this sounds like fun. I accept your challenge! Meet me in \Scene %1% .>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <A challenge? Meet me in \Scene %1% and don't be late.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+
+% TYPE: *WelcomeToLance
+%	The NPC has just joined the PC's team, and will give an opening
+%	speech of some type.
+
+	Persona
+	requires <*WelcomeToLance>
+	START <NewChat Say %id%01>
+	Msg%id%01 <Great! Let's go.>
+	Msg%id%01_1 <It's really good to be part of a team again. Let's go!>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <It should be interesting having to work on a team again. Let's go.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <I think I have enough free time for a bit of adventure. Let's go.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <Try not to get me killed. Let's go.>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <Just you wait, I'll show you what I can do. Let's go!>
+	CMsg%id%01_5 <ifNPCPassionate Accept>
+	Msg%id%01_6 <I'm looking forward to all the great adventures we're going to have. Let's go!>
+	CMsg%id%01_6 <ifNPCCheerful Accept>
+
+
+% TYPE: *YoureUnderArrest
+%                        &CanMakeDeal	Can make a deal whereby the NPC avoids arrest
+%	The PC is trying to arrest a criminal. The criminal might go peacefully,
+%	or may choose to resist... it mostly depends on how the PC plays
+%	things here.
+%   PARAM1: Difficulcy rating
+%   PARAM2: Go peacefully exit label (no message printed here)
+%   PARAM3: Resist arrest exit label (no message printed here)
+%   PARAM4: Make deal exit label (message printed here)
+
+	Persona
+	requires <*YoureUnderArrest>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <ifIntimidation HardSkillTar %1% else %3% Goto %2%>
+	result%id%02 <ifConversation HardSkillTar %1% else %3% Goto %2%>
+	Msg%id%01 <You can't arrest me now... there are so many things I have yet to do...>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <I can take you alive or dead.>
+	Prompt%id%01_1 <Arrest you or shoot you, I don't care.>
+	Prompt%id%01_2 <I can take you dead just as easily.>
+	Prompt%id%02 <Just come quietly.>
+	Prompt%id%02_1 <Give up. There's no way out.>
+	Prompt%id%02_2 <Coming with me is your only chance.>
+
+
+% TYPE: *IntruderGreeting
+%			 &Arrest	The PC is here to arrest the NPC
+%	The PC has intruded into the NPC's personal space. The NPC will therefore
+%	confront the PC.
+%   PARAM1: Exit label
+
+	Persona
+	requires <*IntruderGreeting &Arrest>
+	% V%id%01 = One time use counter
+	START <if= V%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <You, how did you get in here? What do you want?>
+	Prompt%id%01 <I'm here to arrest you.>
+
+	Persona
+	requires <*IntruderGreeting>
+	% V%id%01 = One time use counter
+	START <if= V%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <This is a private place. You shouldn't be here.>
+	Prompt%id%01 <I'm not too concerned about that.>
+
+% TYPE: *PCChallengeNPC
+% 	The PC has a chance to challenge the NPC to combat... if he doesn't wuss out.
+%   PARAM1: Issue challenge exit label
+%   PARAM2: Wuss out exit label
+
+	Persona
+	requires <*PCChallengeNPC>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <Goto %2%>
+	Msg%id%01 <Yes, may I help you? What do you want?>
+	Prompt%id%01 <I'm here to challenge you to combat!>
+	Prompt%id%02 <Uh, I'd just like to chat for a bit.>
+
+	Persona
+	requires <*PCChallengeNPC Shy>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <Goto %2%>
+	Msg%id%01 <Why are you looking at me?>
+	Prompt%id%01 <I want to challenge you to a duel.>
+	Prompt%id%02 <Sorry, I... er... nothing.>
+
+	Persona
+	requires <*PCChallengeNPC "PDASS">
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <Goto %2%>
+	Msg%id%01 <Ah, \PC . I suppose you're here to challenge me to a duel.>
+	Prompt%id%01 <That's right.>
+	Prompt%id%02 <No, nothing like that...>
+
+
+% TYPE: *IAmBusy
+%               &OnPhone     This conversation is definitely via telephone
+%	The NPC is too busy to talk.
+
+	Persona
+	requires <*IAmBusy &OnPhone>
+	START <EndChat Say %id%01>
+	Msg%id%01 <I'm too busy to use the phone right now.>
+
+	Persona
+	requires <*IAmBusy>
+	START <EndChat Say %id%01>
+	Msg%id%01 <I'm too busy to talk right now.>
+
+% TYPE: *IMustProveMyself
+%	The NPC feels that he/she must prove him/herself.
+%	This frament does not exit.
+
+	Persona
+	requires <*IMustProveMyself>
+	START <NewChat Say %id%01>
+	Msg%id%01 <I really need to prove myself. I can't stand the thought of being a loser for the rest of my life.>
+
+% TYPE: *IConcedeDefeat
+%                      &Battle	The victory was in battle
+%	The PC has defeated the NPC somehow, in battle or otherwise. The NPC
+%	will now concede.
+
+Persona
+requires <*IConcedeDefeat>
+START <NewChat Say %id%01>
+Msg%id%01 <You win. I concede defeat.>
+
+Persona
+requires <*IConcedeDefeat &Battle>
+START <NewChat Say %id%01>
+Msg%id%01 <You won that fight. I concede defeat.>
+
+
+
+% TYPE: *InsultContest
+%	The NPC will insult the PC. The PC then gets a chance to respond.
+%	If the insult is sufficiently virulent, the PC wins. This PFrag
+%	should include a check so that the PC can't attempt to do it
+%	twice without improving his TAUNT skill (42).
+%	Every insult should have a snappy comeback, a lame reply, and maybe
+%	an additional orthogonal reply that probably also counts as a win
+%	though sometimes a loss.
+%  PARAM1: Success Exit Label (no message printed here)
+%  PARAM2: Failure Exit Label (no message printed here)
+%  PARAM3: Difficulcy rating of skill roll, expressed as renown
+
+Persona
+requires <*InsultContest Melancholy>
+START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+result%id%01 <Goto %1%>
+result%id%02 <Goto %2%>
+result%id%03 <Goto %1%>
+Msg%id%01 <If you died tomorrow, no-one would miss you.>
+Prompt%id%01 <If you died tomorrow, there'd be a celebration.>
+CPrompt%id%01 <ifTaunt SkillTar %3% Accept>
+Prompt%id%02 <Ouch. That's mean.>
+Prompt%id%03 <Is that a melanoma on your neck?>
+CPrompt%id%03 <ifMedicine SkillTar %3% Accept>
+
+Persona
+requires <*InsultContest>
+START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+result%id%01 <Goto %1%>
+result%id%02 <Goto %2%>
+Msg%id%01 <If you were any dumber you'd have to be watered twice daily.>
+Prompt%id%01 <If you were any smarter, you'd be a rock.>
+CPrompt%id%01 <ifTaunt SkillTar %3% Accept>
+Prompt%id%02 <I don't get it.>
+
+Persona
+requires <*InsultContest>
+START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+result%id%01 <Goto %1%>
+result%id%02 <Goto %2%>
+result%id%03 <Goto %1%>
+Msg%id%01 <I don't know whether I'm looking at a person or a shaved ape.>
+Prompt%id%01 <Guess you shouldn't have dropped out in grade two.>
+CPrompt%id%01 <ifTaunt SkillTar %3% Accept>
+Prompt%id%02 <I am not an animal! I am a human being!>
+Prompt%id%03 <I'm pretty sure that I'm looking at an ape.>
+CPrompt%id%03 <ifScience SkillTar %3% Accept>
+
+Persona
+requires <*InsultContest>
+START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+result%id%01 <Goto %1%>
+result%id%02 <Goto %2%>
+result%id%03 <Goto %1%>
+Msg%id%01 <You're just about the ugliest thing I've ever seen.>
+Prompt%id%01 <Good thing that you don't own a mirror.>
+CPrompt%id%01 <ifTaunt SkillTar %3% Accept>
+Prompt%id%02 <Your mother!>
+Prompt%id%03 <So you're not just stupid, but blind as well?>
+CPrompt%id%03 <ifG PCCharm 10 ifConversation SkillTar %3% Accept>
+
+Persona
+requires <*InsultContest>
+START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+result%id%01 <Goto %1%>
+result%id%02 <Goto %2%>
+result%id%03 <Goto %1%>
+Msg%id%01 <You're uglier than a pregnant spike toad with a case of the dropsy.>
+Prompt%id%01 <You seem very familiar with their breeding habits...>
+CPrompt%id%01 <ifTaunt SkillTar %3% Accept>
+Prompt%id%02 <Yeah? Well, you too!>
+Prompt%id%03 <Spike toads are amphibians and don't get pregnant.>
+CPrompt%id%03 <ifScience SkillTar %3% Accept>
+
+
+% TYPE: *YouDanceTerribly
+%	The PC has just danced with the NPC, possibly breaking toes.
+%	Let it all out. Tell him how you really feel.
+
+Persona
+requires <*YouDanceTerribly>
+START <EndChat Say %id%01>
+Msg%id%01 <Well that was... mediocre. It seems that you need more practice.>
+Msg%id%01_1 <That was... not entirely unpleasant. All you need is a little practice. Or maybe a lot.>
+CMsg%id%01_1 <ifNPCCheerful Accept>
+Msg%id%01_2 <Stop, please... I cannot take any more of that, whatever it was you thought you were doing... I think I may become violently ill...>
+CMsg%id%01_2 <ifNPCMelancholy Accept>
+Msg%id%01_3 <Wow. Where did you learn to dance so badly? Such lack of grace cannot possibly be blamed upon simple ignorance, you must have worked hard at it.>
+CMsg%id%01_3 <ifNPCEasygoing Accept>
+Msg%id%01_4 <That was the worst dancing I've ever seen! You should have warned me beforehand... I could have been blinded!>
+CMsg%id%01_4 <ifNPCPassionate Accept>
+
+
+% TYPE: *YouDanceWell
+%	The PC has just danced with the NPC without breaking any toes. This complement will
+%	end the conversation.
+
+Persona
+requires <*YouDanceWell>
+START <EndChat Say %id%01>
+Msg%id%01 <You dance so well. You must have had professional training... Thank you for the honor.>
+
+% TYPE: *LetMeIn
+%	The PC has encountered a bouncer or some other security type. This is his
+%	chance to intimidate, flirt, or otherwise talk his way in.
+%	If the attempt fails, this pfrag can terminate the conversation.
+% PARAM1: Difficulcy Rating (expressed as renown)
+% PARAM2: Success exit label (no message printed here)
+% PARAM3: Enraged exit label (no message printed here)
+%         Typically this will happen if the PC challenges the guard to combat, or
+%         otherwise bugs him too much.
+
+Persona
+requires <*LetMeIn>
+% V%id%01 = Have tried bluff
+% V%id%02 = Have tried flirt
+start <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+result%id%01 <NewChat Say %id%02 AddChat %id%03 AddChat %id%04 AddChat %id%05>
+result%id%02 <if= v%id%01 0 else .%id%_GoR2Fail V= %id%01 1 ifConversation HardSkillTar %1% else .%id%_GoR2Fail NewChat Say %id%03 AddChat %id%04 AddChat %id%06>
+.%id%_GoR2Fail <NewChat Say %id%04 AddChat %id%04 AddChat %id%07>
+result%id%03 <AddReact -d5  ifIntimidation HardSkillTar %1% else %3% Goto %2%>
+result%id%04 <NewChat Say %id%05>
+result%id%05 <NewChat Say %id%06 AddChat %id%08 AddChat %id%09 AddChat %id%10>
+result%id%06 <Goto %2%>
+result%id%07 <AddReact -d5  AddEasygoing -d6  Goto %3%>
+result%id%08 <ifNPCLawful else .%id%_GoR8Win EndChat Say %id%07>
+.%id%_GoR8Win <NewChat Say %id%08 AddChat %id%11>
+result%id%09 <if= V%id%02 0 else .%id%_GoR9Fail V= %id%02 1 ifConversation SkillTar %1% else .%id%_GoR9Fail Goto %2%>
+.%id%_GoR9Fail <NewChat Say %id%09>
+result%id%10 <AddReact -d5  ifIntimidation HardSkillTar %1% else %3% Goto %2%>
+result%id%11 <Cash+ -Threat %1% 1 Goto %2%>
+Msg%id%01 <You aren't allowed to be here. Authorized visitors only.>
+Msg%id%02 <No exceptions. If you haven't been authorized, I can't let you in.>
+Msg%id%03 <I'm sorry, but I don't see you indicated anywhere on the list... There must be some kind of mistake.>
+Msg%id%04 <If your ID is not on the list then I can't let you in. You have to leave now.>
+Msg%id%05 <Please leave this area the same way you came.>
+Msg%id%06 <How do you plan on doing that?>
+Msg%id%07 <You can't buy me off... not so cheaply at least.>
+Msg%id%08 <That sounds like a fair deal.>
+Msg%id%09 <That doesn't sound like much of a deal to me.>
+Prompt%id%01 <It's very important that you let me in.>
+Prompt%id%02 <But, you see, I am authorized!>
+Prompt%id%03 <Let me in now or you'll be sorry.>
+Prompt%id%04 <I guess there's no point in debating it further...>
+Prompt%id%04_1 <Well, I guess I should just go, then...>
+Prompt%id%04_2 <In that case I should be going...>
+Prompt%id%05 <How about if I make it worth your while?>
+Prompt%id%05_1 <What about if I make it worth your while?>
+Prompt%id%06 <In other words, you've made a mistake.>
+Prompt%id%07 <How about I bash your skull in, instead?>
+Prompt%id%08 <I'll give you $ \VAL Threat %1% 1 .>
+CPrompt%id%08 <ifG PC$ Threat %1% 1 Accept>
+Prompt%id%09 <I could be your special friend, know what I mean...>
+CPrompt%id%09 <ifChatNPCSexy Accept>
+Prompt%id%10 <You let me in, and I let you live.>
+Prompt%id%11 <Here you go. [Give Money]>
+
+% TYPE: *YouLostItem
+%   The PC lost an item that he was supposed to deliver, protect, or recover. Oops.
+%   The NPC will now heap out some abuse, may become the PC's enemy, or other fun
+%   things.
+
+Persona
+requires <*YouLostItem>
+START <NewChat Say %id%01  AddReact -d10>
+Msg%id%01 <You lost it!? How is that even possible... Get out of here, I don't even want to look at you right now...>
+
+
+% TYPE: *PCWillKeepItem
+%   The PC will keep an item that the NPC sent him to get. This is the NPC's
+%   reaction to that. The reaction may include setting the PC as an enemy
+%   of other nastiness, depending on the NPC's whim.
+% PARAM1: Item ID
+
+Persona
+requires <*PCWillKeepItem>
+START <NewChat Say %id%01 AddReact -d20   PCEnemy ChatNPCID>
+Msg%id%01 <After all my work, and you're going to keep it for yourself!? Don't think I'll forgive this easily...>
+
+
+% TYPE: *BrushOff
+%		&Questioning
+%		&GetOutOfHere
+%    The NPC doesn't want to talk with the PC any more.
+
+Persona
+requires <*BrushOff>
+START <NewChat Say %id%01>
+Msg%id%01 <Please go away. I'm busy.>
+
+Persona
+requires <*BrushOff &GetOutOfHere>
+START <EndChat Say %id%01>
+Msg%id%01 <I've got nothing else to say to you... Now go away before you get into trouble.>
+
+Persona
+requires <*BrushOff &Questioning>
+START <NewChat Say %id%01>
+Msg%id%01 <I've told you as much as I'm going to. I have nothing else to say.>
+
+% TYPE: *ProtectCheckIn
+%	The PC is here to protect this NPC.
+%   PARAM1: Exit label (to mission briefing, usually)
+
+Persona
+requires <*ProtectCheckIn>
+START <NewChat Say %id%01 AddChat %id%01>
+result%id%01 <Goto %1%>
+Msg%id%01_1 <\PC ? What are you doing here?>
+CMsg%id%01_1 <ifChatNPCKnown Accept>
+Msg%id%01_2 <Who are you? What do you want?>
+CMsg%id%01_2 <ifChatNPCUnknown Accept>
+Prompt%id%01 <I came here to protect you.>
+Prompt%id%01_1 <I believe you may be in great danger.>
+
+
+% TYPE: *DefenseCheckIn
+%	The PC is checking in to defend a building.
+%   PARAM1: Exit label (to mission briefing, usually)
+
+Persona
+requires <*DefenseCheckIn>
+START <if= V%id%01 0 else %1% NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+result%id%01 <V= %id%01 1  Goto %1%>
+result%id%02 <NewChat Say %id%02>
+Msg%id%01 <Yes, may I help you?>
+Msg%id%02 <Stay out of trouble.>
+Prompt%id%01 <I'm here to provide defense for the building.>
+Prompt%id%02 <Sorry, no...>
+
+Persona
+requires <*DefenseCheckIn>
+START <if= V%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01>
+result%id%01 <Goto %1%>
+Msg%id%01 <Were you sent here to provide security?>
+Prompt%id%01 <Yes, I was.>
+
+
+% TYPE: *PCinviteNPC
+%	The PC is asking the NPC to meet somewhere.
+%   PARAM1: Ask exit label
+%   PARAM2: PC chickens out or otherwise doesn't manage to ask exit label
+
+Persona
+requires <*PCinviteNPC>
+START <NewChat say %id%01 AddChat %id%01 AddChat %id%02>
+result%id%01 <Goto %1%>
+result%id%02 <Goto %2%>
+Msg%id%01 <So, is there any reason why you came to see me today?>
+prompt%id%01 <I was thinking we could get together sometime.>
+prompt%id%02 <Um... no, no reason.>
+
+
+% TYPE: *DestructionGreeting
+%	The NPC is standing in a site of wanton destruction and is understandably
+%	upset about it. The PC will have a chance to console the NPC or request
+%	further information. The exit is to information/a job offer.
+%   PARAM1: Exit script label
+%   PARAM2: Faction responsible (optional)
+
+Persona
+requires <*DestructionGreeting (Passionate|HasMecha)>
+START <if= V%id%01 0 else %1% V= %id%01 1  NewChat Say %id%01 AddChat %id%01>
+result%id%01 <Goto %1%>
+Msg%id%01 <Would you look at all this? Someone is going to pay...>
+Prompt%id%01 <Calm down, and tell me what happened.>
+
+Persona
+requires <*DestructionGreeting ~Melancholy>
+START <if= V%id%01 0 else .%id%_GoSecond EndChat Say %id%01 V= %id%01 1>
+.%id%_GoSecond <if= V%id%01 1 else %1% NewChat Say %id%02 AddChat %id%01 V= %id%01 2>
+result%id%01 <Goto %1%>
+msg%id%01 <I'm sorry... I can't speak right now... This is all just too horrible...>
+msg%id%02 <Alright, I can speak with you now...>
+prompt%id%01 <Continue>
+
+Persona
+requires <*DestructionGreeting>
+START <if= V%id%01 0 else %1% V= %id%01 1  NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+result%id%01 <Goto %1%>
+result%id%02 <AddSociable d6   Goto %1%>
+Msg%id%01 <Everything is destroyed... This is almost too much to bear...>
+Prompt%id%01 <What happened here?>
+Prompt%id%02 <This must be hard for you.>
+
+
+% TYPE: *ThanksForRescue
+%	The NPC has been rescued by the PC and will now say thanks.
+%   PARAM1: Exit script label
+
+Persona
+requires <*ThanksForRescue>
+START <NewChat Say %id%01 AddChat %id%01>
+result%id%01 <Goto %1%>
+Msg%id%01 <Hey, I'd really like to thank you for rescuing me out there.>
+Msg%id%01_1 <Hello \PC . I was hoping I'd get a chance to speak with you again. I'd like to thank you for rescuing me.>
+CMsg%id%01_1 <ifNPCSociable Accept>
+Msg%id%01_2 <Hi. Thanks for the help a while back.>
+CMsg%id%01_2 <ifNPCShy Accept>
+Msg%id%01_3 <Hey, \PC , I wasn't sure I'd ever see you again. Thanks for the rescue.>
+CMsg%id%01_3 <ifNPCEasygoing Accept>
+Msg%id%01_4 <You really have some awesome skills. Thanks for rescuing me back there.>
+CMsg%id%01_4 <ifNPCPassionate Accept>
+Msg%id%01_5 <You were great! Thanks so much for rescuing me.>
+CMsg%id%01_5 <ifNPCCheerful Accept>
+Msg%id%01_6 <Thanks for helping me back there... I thought for sure I was going to die.>
+CMsg%id%01_6 <ifNPCMelancholy Accept>
+Prompt%id%01 <You're welcome.>
+Prompt%id%01_1 <It was the least I could do.>
+CPrompt%id%01_1 <ifPCSociable Accept>
+Prompt%id%01_2 <Sure.>
+CPrompt%id%01_2 <ifPCShy Accept>
+Prompt%id%01_3 <No problem.>
+CPrompt%id%01_3 <ifPCEasygoing Accept>
+Prompt%id%01_4 <That's just the kind of thing I do.>
+CPrompt%id%01_4 <ifPCPassionate Accept>
+Prompt%id%01_5 <I'm glad that I could help.>
+CPrompt%id%01_5 <ifPCCheerful Accept>
+Prompt%id%01_6 <Try to stay out of trouble from now on.>
+CPrompt%id%01_6 <ifPCMelancholy Accept>
+Prompt%id%01_7 <I hope there's gonna be some kind of reward...>
+CPrompt%id%01_7 <ifPCCriminal Accept>
+
+% TYPE: *Shimli_Chatter
+%	The NPC will chat meaninglessly with the PC, giving him the chance to
+%	alter his personality traits.
+%   PARAM1: Exit script label
+
+Persona
+requires <*SHIMLI_CHATTER Sociable Charm ~City>
+START <if= v%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+result%id%01 <AddCheerful  d6   NewChat Say %id%02 AddChat %id%03>
+result%id%02 <AddCheerful -d8   NewChat Say %id%03 AddChat %id%03>
+result%id%03 <Goto %1%>
+Msg%id%01 <Say, what do you think of this new outfit I'm wearing?>
+Msg%id%02 <Thanks. It's the absolute latest thing. I really like it too.>
+Msg%id%03 <Obviously you know nothing about fashion... I'll be sure to ask someone who does.>
+Prompt%id%01 <It's nice.>
+Prompt%id%01_1 <I like it a lot.>
+Prompt%id%01_2 <It looks good on you.>
+Prompt%id%02 <It's terrible.>
+Prompt%id%02_1 <I hope you didn't pay a lot for it.>
+Prompt%id%02_2 <It's absolutely horrible.>
+Prompt%id%03 <Continue>
+
+
+Persona
+requires <*SHIMLI_CHATTER ~Sociable>
+START <if= v%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+Result%id%01 <AddEasygoing  d8   Goto %1%>
+Result%id%02 <AddSociable -d10   Goto %1%>
+Result%id%03 <AddEasygoing -d8   Goto %1%>
+Msg%id%01 <What are you planning to do today?>
+Msg%id%01_1 <So, what do you have planned for today?>
+Prompt%id%01 <No idea yet.>
+Prompt%id%01_1 <I've got no plans.>
+Prompt%id%01_2 <I don't know, maybe play a computer game.>
+Prompt%id%02 <None of your business.>
+Prompt%id%02_1 <I'd rather not say.>
+Prompt%id%02_2 <That's none of your business.>
+Prompt%id%03 <I have some training to do.>
+Prompt%id%03_1 <I'm off to look for adventure.>
+Prompt%id%03_2 <Probably fight somebody. No idea who yet.>
+
+% TYPE: *GoodLuckPlusHint
+%	The NPC will wish the PC luck on the mission, and also provide a hint.
+%   PARAM1: Exit script label
+%   PARAM2: Hint PlotID
+
+	Persona
+	requires <*GoodLuckPlusHint>
+	Start <NewChat  Say %id%01  Goto %1%>
+	Msg%id%01 <\HINT_MEMO %2% Good luck on the mission.>
+	Msg%id%01_1 <\HINT_MEMO %2% Report back here once you've completed everything.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <\HINT_MEMO %2% Good luck.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <\HINT_MEMO %2% Have fun out there.>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <\HINT_MEMO %2% Try not to get yourself killed.>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <\HINT_MEMO %2% Hopefully this won't be too hard of a job...>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <\HINT_MEMO %2% Go kick some ass!>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+
+
+% TYPE: *GoodLuckOnMission
+%		          &Advance	PC will get an advance payment for this mission
+%			  &NoEnemyFac	There's no enemy faction to worry about
+%	The NPC has just given the PC a mission, the PC has accepted, so the NPC is
+%	seeing the PC off.
+%   PARAM1: Exit script label
+%   PARAM2: Allied Faction [optional]
+%   PARAM3: Enemy Faction  [optional]
+
+	Persona
+	requires <*GoodLuckOnMission =MIL_DEFAULT_DEFENSE>
+	% Because this is a MIL_DEFAULT_DEFENSE mission, we know that %2% and %3% exist.
+	Start <NewChat  Say %id%01  Goto %1%>
+	Msg%id%01 <Go defend our city, for \FACTION %2% .>
+	Msg%id%01_1 <Track down \FACTION %3% wherever they may be hiding and drive them from our city, in the name of \FACTION %2% .>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Good luck against \FACTION %3% .>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Have fun fighting \FACTION %3% .>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <You may be our only chance to defeat \FACTION %3% ... don't blow it.>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <I wish \FACTION %3% would just give up and stop sending mecha. Try to destroy as many as you can.>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <Good luck destroying \FACTION %3% !>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+	Msg%id%01_7 <We're all counting on you.>
+	Msg%id%01_8 <It's up to you to defend our city.>
+
+	Persona
+	requires <*GoodLuckOnMission &Advance>
+	Start <NewChat  Say %id%01  Goto %1%>
+	Msg%id%01 <Good luck out there. Here's your advance payment.>
+	Msg%id%01_1 <The reason I'm giving you this advance is that you're likely to need it. Make sure your gear is in top form before heading out.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Good luck.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <I look forward to hearing of your success. Here's your pay.>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <Use this advance payment to upgrade your gear. If you're not operating at top potential, you'll never make it back here alive.>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <Here's your cash. You might want to go shopping before starting the mission proper.>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <Don't make me regret giving you this advance, okay? Good luck on the mission.>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+
+
+	Persona
+	requires <*GoodLuckOnMission>
+	Start <NewChat  Say %id%01  Goto %1%>
+	Msg%id%01 <Good luck on the mission.>
+	Msg%id%01_1 <Report back here once you've completed everything. I'll be waiting to hear from you.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Good luck.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Have fun out there.>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <Make sure you come back alive, okay?>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <Good luck. Hopefully this won't be too hard of a job...>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <Now, get out there and kick some ass!>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+
+
+% TYPE: *DidYouGetEmail
+%	The NPC sent an email to the PC.
+%   PARAM1: Exit script label
+
+	Persona
+	requires <*DidYouGetEmail ~Shy>
+	Start <if= v%id%01 0 else %1% V= %id%01 1  NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <There you are. Shall we get down to business?>
+	Msg%id%01_1 <I was hoping to speak with you. I have some very important business that requires your attention. Shall we get straight to work?>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Let's get straight to business, shall we?>
+	Msg%id%01_3 <There's no time for chitchat. Let's get straight to the point, okay?>
+	Msg%id%01_4 <A crisis is brewing, and your help is needed. Shall we get down to business?>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <Ah, there you are. I sent you an email but it's always easier to do these things in person. Shall we get straight to business?>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <I don't have time for a lot of idle chatter... Let's get straight to the reason I called you here.>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+	Prompt%id%01 <Let's do that.>
+	Prompt%id%01_1 <What's going on?>
+	Prompt%id%01_2 <What did you want to talk about?>
+	Prompt%id%01_3 <Tell me what's going on.>
+	Prompt%id%01_4 <Yes, let's.>
+
+	Persona
+	requires <*DidYouGetEmail>
+	Start <if= v%id%01 0 else %1% V= %id%01 1  NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <AddRenown -1   Goto %1%>
+	Msg%id%01 <Did you get the email I sent you?>
+	Msg%id%01_1 <\PC , I've been waiting to speak with you. Did you get the email I sent?>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Did you get my email?>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Wow, that was quick. I just sent email to you recently... Did you get it?>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <Finally, you're here. I was worried that you weren't coming. Did you get my email?>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <Hey, there you are... Look, I was hoping to bump into you. I sent an email... did you get it?>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <You're here! I have something urgent to speak with you about... Did you get the email?>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+	Prompt%id%01 <That's why I'm here.>
+	Prompt%id%01_1 <Tell me what's up.>
+	Prompt%id%01_2 <I came as fast as I could.>
+	Prompt%id%02 <Email? What email?>
+	Prompt%id%02_1 <Sorry, my spam blocker must have eaten it.>
+	Prompt%id%02_2 <Um... no, I didn't.>
+
+
+% TYPE: *IHaveSomethingToTellYou
+%	The NPC has something delicate to tell the PC.
+%   PARAM1: Exit script label
+	Persona
+	requires <*IHaveSomethingToTellYou ~Sociable>
+	Start <if= V%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <AddSociable -d10  Goto %1%>
+	result%id%02 <Goto %1%>
+	Msg%id%01 <\PC , I have something difficult to tell you. I guess the easiest thing to do is come right out and say it.>
+	Prompt%id%01 <Don't waste time, what is it?>
+	Prompt%id%01_1 <This better be important.>
+	Prompt%id%02 <Alright. What do you have to say?>
+	Prompt%id%02_1 <No problem. What's bothering you?>
+
+	Persona
+	requires <*IHaveSomethingToTellYou Friend>
+	Start <if= V%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <\PC , you should know that I have a secret. I'm a bit nervous about telling anyone...>
+	Prompt%id%01 <It's alright. You can trust me.>
+
+
+% TYPE: *IHaveAJobForYou
+%	The NPC has a job for the PC,
+%   PARAM1: Exit script label
+
+	Persona
+	requires <*IHaveAJobForYou ~Shy>
+	START <NewChat Say %iD%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <Hello, \PC . I've got a job for you.>
+	Msg%id%01_1 <I'm glad you could make it, \PC . I have an urgent mission for you.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <I've been waiting. I have a job for you.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Good to see you made it, \PC . If you're not busy I have a job that needs your attention.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <You've come just in time! I have a job for you, \PC . It's best if we get started right away.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <It's good to see you, \PC , and you arrived at just the right time. I have a job that you can help me with.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <You're late. I have a mission here that needs urgent attention.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <Tell me about it.>
+	Prompt%id%01_1 <Tell me exactly what I'm supposed to do.>
+	CPrompt%id%01_1 <ifPCSociable Accept>
+	Prompt%id%01_2 <Okay.>
+	CPrompt%id%01_2 <ifPCShy Accept>
+	Prompt%id%01_3 <Alright. What's up?>
+	CPrompt%id%01_3 <ifPCEasygoing Accept>
+	Prompt%id%01_4 <I hope your job is worthy of my talents.>
+	CPrompt%id%01_4 <ifPCPassionate Accept>
+	Prompt%id%01_5 <Great! What kind of mission is it?>
+	CPrompt%id%01_5 <ifPCCheerful Accept>
+	Prompt%id%01_6 <Guess I don't have to ask if it'll be dangerous...>
+	CPrompt%id%01_6 <ifPCMelancholy Accept>
+
+% TYPE: *DoYouWantAJob
+%		&Mecha	it's a mecha mission
+%		&Chara	it's a personal scale combat mission
+%		&Investigation 	it's an investigative mission
+%		&NonCombat	It's a noncombat mission
+%	The NPC will offer the PC a job. No former knowledge on behaf of the PC is
+%	expected.
+%   PARAM1: Exit script label
+
+	Persona
+	requires <*DoYouWantAJob>
+	START <NewChat Say %id%01 AddChat %id%01>
+	Result%id%01 <Goto %1%>
+	Msg%id%01 <Hey there. Are you looking for work? If so, I have a mission you could be interested in...>
+	Msg%id%01_1 <I've heard tell that you're between jobs at the moment. If you're interested, I have a mission available and I need a cavalier to run it.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Do you want a job? I may have something available...>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Hey, \PC . Are you busy right now? If not, I've got a mission that might interest you.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <I need to find somebody right away for an urgent mission. You interested?>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <This is your lucky day. I need a cavalier to help with a special project. Are you interested in taking part?>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <Out of work? Maybe I can help... I need a cavalier for an upcoming mission.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <Give me the details.>
+	Prompt%id%01_1 <Tell me about it.>
+	Prompt%id%01_2 <I'd like to hear more.>
+
+	Persona
+	requires <*DoYouWantAJob THIEF>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	Result%id%01 <Goto %1%>
+	Result%id%02 <NewChat Say %id%02 AddChat %id%03>
+	Result%id%03 <Goto %1%>
+	Msg%id%01 <Why hello there. If you don't mind getting your hands a bit dirty, I have something you might be able to help me with.>
+	Msg%id%01_1 <Hello \PC . I hear that you're quite the adventurer... There's some difficult business that must be done, and I may have need of your services.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <You're a cavalier, right? I may have some work for you.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Well look at who just walked in... If you're looking for something to do I have a small task you might be able to help me with.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <I've got some ultra-secret business to take care of, but I could use someone to do the leg work. That someone could be you.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Don't look at me, I'm not doing nothing. Of course I could be doing something if I had a bit of help... How'd you like to run a mission for me?>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <Hey, are you looking for a job? My last assistant met a rather unfortunate end... I could use some help with an upcoming mission.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%02 <Come now, there's no harm in listening to what I have to say. If you don't like it then you're free to go about your business.>
+	Msg%id%02_1 <For shame, trying to silence me before you've even heard what I want. There's no harm in listening to my proposal.>
+	Msg%id%02_2 <For all you know I have a perfectly legitimate business in mind. If it's not too far beneath your dignity, you could at least listen to my plan before dismissing it.>
+	Prompt%id%01 <What is it that you need?>
+	Prompt%id%01_1 <Tell me what you need.>
+	Prompt%id%01_2 <Alright, I'm listening.>
+	Prompt%id%02 <I have no interest in working for you.>
+	Prompt%id%02_1 <Sorry, I don't make deals with thieves.>
+	Prompt%id%02_2 <I don't think this is my kind of job.>
+	Prompt%id%03 <I guess you're right.>
+	Prompt%id%03_1 <Fine. What is it you want?>
+
+% TYPE: *AreYouHereAboutJob
+%		&Mecha		it's a mecha mission
+%		&Chara		it's a personal scale combat mission
+%		&Investigation 	it's an investigative mission
+%		&Recruit 	it's some kind of recruitment drive
+%	The NPC has a job to be done, has supposedly announced it via news or email,
+%	and will now greet the PC.
+%   PARAM1: Exit script label
+
+	Persona
+	requires <*AreYouHereAboutJob &Recruit>
+	Start <NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <You must be here for the position we're offering, right?>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <I guess you're here about that position, right?>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <That's right.>
+	Prompt%id%01_1 <You're absolutely right.>
+	CPrompt%id%01_1 <ifPCSociable Accept>
+	Prompt%id%01_2 <Maybe.>
+	CPrompt%id%01_2 <ifPCShy Accept>
+	Prompt%id%01_3 <I guess so.>
+	CPrompt%id%01_3 <ifPCEasygoing Accept>
+	Prompt%id%01_4 <That depends on the details.>
+	CPrompt%id%01_4 <ifPCPassionate Accept>
+	Prompt%id%01_5 <It's your lucky day.>
+	CPrompt%id%01_5 <ifPCCheerful Accept>
+	Prompt%id%01_6 <I'll let you know after I hear the details.>
+	CPrompt%id%01_6 <ifPCMelancholy Accept>
+
+	Persona
+	requires <*AreYouHereAboutJob &Chara>
+	Start <NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <I have a job available for someone with good personal combat skills.>
+	Msg%id%01_1 <I guess you heard that I'm looking for a cavalier. I have a mission available, one that is going to require someone with good personal combat skills.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <I've got a mission for someone who's good at personal combat.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Are you here about the mission? I hope so... I need to hire someone who's halfway decent in personal combat.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <Hand to hand combat is the greatest test of a warrior... and also the most deadly. I'm looking for someone to run a mission for me.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <This is my lucky day. How would you like to run a mission for me? You'll need some personal combat skills, of course.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <Face to face combat is dirty, brutal, and deadly... If you're brave enough, I have a mission available.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <Tell me the details.>
+	Prompt%id%01_1 <I'd love to hear more about it.>
+	CPrompt%id%01_1 <ifPCSociable Accept>
+	Prompt%id%01_2 <Go on.>
+	CPrompt%id%01_2 <ifPCShy Accept>
+	Prompt%id%01_3 <Okay, tell me more.>
+	CPrompt%id%01_3 <ifPCEasygoing Accept>
+	Prompt%id%01_4 <I can do it!>
+	CPrompt%id%01_4 <ifPCPassionate Accept>
+	Prompt%id%01_5 <Great! What, exactly, does this job involve?>
+	CPrompt%id%01_5 <ifPCCheerful Accept>
+	Prompt%id%01_6 <Sounds dangerous.>
+	CPrompt%id%01_6 <ifPCMelancholy Accept>
+
+	Persona
+	requires <*AreYouHereAboutJob "POLIT">
+	Start <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	Result%id%01 <if= v%id%01 0 else %1%  V= %id%01 1  AddSociable   1     Goto %1%>
+	Result%id%02 <if= v%id%01 0 else %1%  V= %id%01 1  AddSociable -d6     Goto %1%>
+	Msg%id%01 <We have a problem in \SCENE RootSceneID ... But you might be able to help us.>
+	Msg%id%01_1 <You've come at just the right time. \SCENE RootSceneID is in need of a hero!>
+	CMsg%id%01_1 <ifNPCPassionate Accept>
+	Msg%id%01_2 <Finally, someone who might be able to help us. How would you like to run a mission for \SCENE RootSceneID ?>
+	CMsg%id%01_2 <ifNPCEasygoing Accept>
+	Msg%id%01_3 <You may have heard something about the problem we've been having in \SCENE RootSceneID . If you're willing to face a certain amount of danger, I may have a job for you.>
+	CMsg%id%01_3 <ifNPCSociable Accept>
+	Msg%id%01_4 <I'll get straight to the point. I need you to perform a mission for \SCENE RootSceneID .>
+	CMsg%id%01_4 <ifNPCShy Accept>
+	Msg%id%01_5 <This is fortunate... I was just about to put out a call for adventurers, and now here you are. \SCENE RootSceneID needs someone like you.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <There's a crisis brewing... \SCENE RootSceneID needs a hero in these dark times. Do you think you have what it takes?>
+	CMsg%id%01_7 <ifNPCMelancholy Accept>
+	Prompt%id%01 <Tell me what the problem is.>
+	Prompt%id%01_1 <I'm here if \SCENE RootSceneID needs me.>
+	Prompt%id%02 <If you can afford my rates, I'm all ears.>
+	Prompt%id%02_1 <I'll help \SCENE RootSceneID so long as I'm well paid.>
+
+	Persona
+	requires <*AreYouHereAboutJob>
+	Start <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <NewChat Say %id%02 AddChat %id%03>
+	result%id%03 <Goto %1%>
+	Msg%id%01 <Hello. You must be here about the job, is that correct?>
+	Msg%id%02 <So you're not here about that? Well, any port in a storm, I guess... I need a cavalier for a mission right away.>
+	Prompt%id%01 <Yes I am.>
+	Prompt%id%01_1 <That's right.>
+	Prompt%id%02 <Job? What job?>
+	Prompt%id%02_1 <What job? I don't know what you're talking about.>
+	Prompt%id%03 <Tell me the details.>
+
+	Persona
+	requires <*AreYouHereAboutJob Shy>
+	Start <NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <You're here about the mission, right? Let's get straight to business.>
+	Msg%id%01_1 <You're here about the job, right? Let's get straight to work.>
+	Msg%id%01_2 <I've got no time for idle chatter. Let's talk about the mission I need you to perform for me.>
+	CMsg%id%01_2 <ifNPCPassionate Accept>
+	Msg%id%01_3 <You must be here about the job. Even if you're not, you must be wondering about it now that I've mentioned it. Let's cut all the pointless chatter and get straight to business.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Prompt%id%01 <Um, okay...>
+	Prompt%id%01_1 <I suppose so, if that's what you want...>
+	CPrompt%id%01_1 <ifPCSociable Accept>
+	Prompt%id%01_2 <I like your attitude.>
+	CPrompt%id%01_2 <ifPCShy Accept>
+	Prompt%id%01_3 <Wait, I have some questions...>
+	CPrompt%id%01_3 <ifPCEasygoing Accept>
+	Prompt%id%01_4 <Yes, let's do that.>
+	CPrompt%id%01_4 <ifPCPassionate Accept>
+
+
+	Persona
+	requires <*AreYouHereAboutJob &Mecha -FRIEND>
+	Start <if= V%id%01 0 else %1% V= %id%01 1 NewChat ifG PCRep 6 35 else .%id%_GoNoRenown Say %id%01 AddChat %id%01 AddChat %id%02>
+	.%id%_GoNoRenown <ifG React 40 else .%id%_GoNoLike Say %id%02 AddChat %id%01 AddChat %id%02>
+	.%id%_GoNoLike <Say %id%04 AddChat %id%04  AddChat %id%05  AddChat %id%06>
+	result%id%01 <Goto %1%>
+	result%id%02 <NewChat Say %id%03 AddChat %id%03>
+	result%id%03 <Goto %1%>
+	result%id%04 <NewChat Say %id%05  AddChat %id%01 AddChat %id%02>
+	result%id%05 <AddEasygoing -d6  Goto result%id%04>
+	result%id%06 <AddEasygoing  d6  Goto result%id%04>
+	Msg%id%01 <\PC ! I could really use your help right about now. I have a job available for a mecha pilot, and it has to be done as soon as possible.>
+	Msg%id%01_1 <It's very good to see you, \PC , and you couldn't have come at a better time. I've got a job that has to be done right away. I think you'd be perfect for it.>
+	CMsg%id%01_1 <ifG React 35 Accept>
+	Msg%id%01_2 <What are you doing here? I guess someone must have told you about the job... Well, I'm in no position to be choosy. If you're willing I could tell you about it.>
+	CMsg%id%01_2 <ifG 5 React Accept>
+	Msg%id%02 <I'm very glad to see you, \PC . I've got a job that needs doing. If you don't mind, I'll tell you about it.>
+	Msg%id%03 <Wait! This is too important... Just listen to the details, then refuse if you absolutely must...>
+	Msg%id%04 <What do you want? I'm very busy right now. Say... You wouldn't happen to be a cavalier by any chance, would you?>
+	Msg%id%05 <I have a mission that needs to be done right away. If you don't mind, I can tell you all about it.>
+	Prompt%id%01 <Give me the details.>
+	Prompt%id%02 <Sorry, I'm not interested.>
+	Prompt%id%03 <Fine. Tell me about this mission.>
+	Prompt%id%04 <As a matter of fact, I am.>
+	Prompt%id%05 <I am. You wanna make something of it?>
+	Prompt%id%06 <Yeah, I'm sort of a cavalier.>
+
+
+% TYPE: *HowAreYou
+% 	Similar to the *NiceToMeetYou fragments, but here we're assuming that the
+%	PC and NPC may have met before.
+%   PARAM1: Exit script label
+
+	Persona
+	requires <*HowAreYou>
+	START <if= v%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <Hi \PC . It's nice to see you.>
+	Msg%id%01_1 <Hello \PC . It's been a while since the last time we spoke so I guess you'll have plenty of stories to tell.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Hi \PC .>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Hi \PC ! It's very nice to see you today.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <It's good to see you, \PC . I guess your luck hasn't given out yet.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <Hi \ChatNPC .>
+	Prompt%id%01_1 <Hello. I trust everything is fine with you?>
+	CPrompt%id%01_1 <ifPCSociable Accept>
+	Prompt%id%01_2 <Hey.>
+	CPrompt%id%01_2 <ifPCShy Accept>
+	Prompt%id%01_3 <Hi \ChatNPC . What's up?>
+	CPrompt%id%01_3 <ifPCEasygoing Accept>
+	Prompt%id%01_4 <>
+	CPrompt%id%01_4 <ifPCPassionate Accept>
+	Prompt%id%01_5 <It's good to see you, \ChatNPC .>
+	CPrompt%id%01_5 <ifPCCheerful Accept>
+	Prompt%id%01_6 <>
+	CPrompt%id%01_6 <ifPCMelancholy Accept>
+
+	Persona
+	requires <*HowAreYou>
+	START <if= v%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <AddCheerful  d8   Goto %1%>
+	result%id%02 <AddCheerful -d8   Goto %1%>
+	Msg%id%01 <Hello \PC . How are you doing?>
+	Prompt%id%01 <I'm doing fine.>
+	Prompt%id%01_1 <Things are going well.>
+	Prompt%id%02 <I've been better.>
+	Prompt%id%02_1 <Not so good, I'm afraid.>
+
+
+% TYPE: *FACTION_JOIN_ACCEPT
+%	The PC has agreed to join this faction. Give a mecha, maybe some goodies, and
+%	send him on his way.
+%  PARAM1: Faction ID
+	Persona
+	requires <*FACTION_JOIN_ACCEPT>
+	START <NewChat Say %id%01 RandomMecha .%id%_mecha 10 XPV 100 CashPrize 150000 SetPCFac %1% History %id%02>
+	.%id%_mecha <GENERAL \FACTION_DESIG %1%>
+	Msg%id%01 <Great! To start with, you'll recieve a basic mecha and an equipment allowance. Welcome to \FACTION %1% .>
+	Msg%id%02 <You joined \FACTION %1% .>
+
+	Persona
+	requires <*FACTION_JOIN_ACCEPT SILKN>
+	START <NewChat Say %id%01 randommecha .%id%_mecha 10 XPV 100 CashPrize 150000 SetPCFac %1% History %id%02>
+	.%id%_mecha <GENERAL SILKN>
+	Msg%id%01 <Welcome to the force. You'll need a mecha, of course... Most of our recruits learn how to fly in a Trailblazer. Now get out there and see if there are any missions waiting.>
+	Msg%id%02 <You joined \FACTION %1% .>
+
+
+% TYPE: *FACTION_JOIN_OFFER
+%	The faction will offer to hire PC as a permanent member.
+%  PARAM1: Faction to maybe join
+%  PARAM2: PC has decided to join exit
+	Persona
+	requires <*FACTION_JOIN_OFFER>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+
+	result%id%01 <Goto %2%>
+	result%id%02 <NewChat Say %id%02>
+
+	Msg%id%01 <You might have what it takes to join \FACTION %1% . What do you say?>
+	Msg%id%02 <That's too bad.>
+
+	Prompt%id%01 <Alright, sign me up!>
+	Prompt%id%02 <Sorry, I'm not interested.>
+
+
+% TYPE: *FACTION_ENTRANCE_EXAM
+%	Test the PC's applicability for entrance into this faction. The generic case
+%	is that the PC must have a renown score of 20 and a positive reaction score.
+%  PARAM1: Exit label on success
+%  PARAM2: Faction to maybe join
+	Persona
+	requires <*FACTION_ENTRANCE_EXAM>
+	START <ifG PCRenown 9  else .%id%_GoFail     ifG React 0 else .%id%_GoFail     Goto %1%>
+	.%id%_GoFail <NewChat Say %id%01>
+	Msg%id%01 <We're looking for some talented recruits. Unfortunately, there's nobody like that around here...>
+
+	Persona
+	requires <*FACTION_ENTRANCE_EXAM SILKN>
+	START <ifG PCRenown 10  else .%id%_GoFail     ifG PCRep 1 1  else .%id%_GoFail  ifG PCRep 2 -1  else .%id%_GoFail   Goto %1%>
+	.%id%_GoFail <NewChat Say %id%01>
+	Msg%id%01 <There are many who want to join the Silver Knights, but only those of both the highest ability and purest virtue are accepted.>
+
+	Persona
+	requires <*FACTION_ENTRANCE_EXAM POLIC>
+	START <ifG PCLaw 10  else .%id%_GoFail     ifG PCRenown 1  else .%id%_GoFail     Goto %1%>
+	.%id%_GoFail <NewChat Say %id%01>
+	Msg%id%01 <To serve the law is the highest calling a person can choose.>
+
+	Persona
+	requires <*FACTION_ENTRANCE_EXAM CORPO>
+	START <V= %id%01 PCRenown V+ %id%01 React     ifG V%id%01 25 else .%id%_GoFail     Goto %1%>
+	.%id%_GoFail <NewChat Say %id%01>
+	Msg%id%01 <I've been asked to find some new recruits for \FACTION %2% . Unfortunately, I can't find anyone I like.>
+
+
+% TYPE: *ENEMY_CHECK
+%	Check to see if the PC is an enemy of this NPC. If so, give a "buzz off" message.
+%	Otherwise exit to the provided script label.
+%  PARAM1: Exit script label if not enemy
+%  PARAM2: Faction to check enemity of
+%  PARAM3: Exit script label if faction enemy
+	Persona
+	requires <*ENEMY_CHECK (friend|family|lover)>
+	START <ifFactionEnemy %2% else %1% NewChat Say %id%01  Goto %3%>
+	Msg%id%01 <\PC , this isn't a good time for you to be seen here...>
+	Msg%id%01_1 <You shouldn't be here... I'm on a mission for \FACTION %2% .>
+	Msg%id%01_2 <This isn't a good time.>
+
+	Persona
+	requires <*ENEMY_CHECK -friend -family -lover>
+	START <ifFactionEnemy %2% else %1% EndChat Say %id%01  Goto %3%>
+	Msg%id%01 <You've got a lot of nerve showing up here at a time like this...>
+	Msg%id%01_1 <You shouldn't be here...>
+	Msg%id%01_2 <I have nothing to say to you...>
+
+
+	Persona
+	requires <*ENEMY_CHECK -friend -family -lover>
+	START <ifFactionEnemy %2% else %1% EndChat Say %id%01  Goto %3%>
+	Msg%id%01 <You aren't welcome here. You should get out before I call the guards.>
+
+	Persona
+	requires <*ENEMY_CHECK Sociable -friend -family -lover>
+	START <ifFactionEnemy %2% else %1% NewChat Say %id%01  Goto %3%>
+	Msg%id%01 <You aren't welcome here. I suggest that you leave.>
+
+
+
+
+% TYPE: *GOODBYE
+%  The NPC will say good-bye to the PC.
+%  No parameters. This fragment terminates the conversation.
+	Persona
+	requires <*GoodBye "SILKN">
+	Start <EndChat Say %id%01>
+	Msg%id%01 <For the colonies!>
+	Msg%id%01_1 <For great justice!>
+
+	Persona
+	requires <*GoodBye CORP>
+	Start <EndChat ifFaction ChatNPCFac else .%id%_gonofac Say %id%01>
+	.%id%_gonofac <Say %id%02>
+	Msg%id%01 <Remember, think quality- think \FACTION ChatNPCFac .>
+	Msg%id%02 <Hopefully someday I'll work for a big company...>
+
+	Persona
+	requires <*GOODBYE Melancholy>
+	START <EndChat ifG React 0 else .%id%_GoFail Say %id%01>
+	.%id%_GoFail <Say %id%02>
+	msg%id%01 <Hopefully we'll meet again...>
+	msg%id%02 <Don't hurry back.>
+
+	Persona
+	requires <*GOODBYE Easygoing>
+	START <EndChat Say %id%01>
+	msg%id%01 <It's time to go... I'm sure I'll be seeing you again.>
+
+	Persona
+	requires <*GOODBYE Shy>
+	START <EndChat Say %id%01>
+	msg%id%01 <Bye.>
+
+	Persona
+	requires <*GOODBYE Mechanic>
+	START <EndChat Say %id%01>
+	msg%id%01 <Keep the parts oiled and you won't have any trouble with it.>
+
+	Persona
+	requires <*GOODBYE Trucker>
+	START <EndChat Say %id%01>
+	msg%id%01 <Keep on trucking!>
+
+	Persona
+	requires <*GOODBYE Doctor>
+	START <EndChat Say %id%01>
+	msg%id%01 <Try to stay in good health.>
+
+	Persona
+	requires <*GOODBYE Shopkeeper>
+	START <EndChat Say %id%01>
+	msg%id%01 <If you need anything else, you know where to find me.>
+
+	Persona
+	requires <*GOODBYE ~Shopkeeper Maqui>
+	START <EndChat Say %id%01>
+	msg%id%01 <Fair winds.>
+
+	Persona
+	requires <*GOODBYE Passionate>
+	START <EndChat ifG React 50 else .%id%GoNoFriend Say %id%01>
+	.%id%GoNoFriend <ifG React 0 else .%id%GoNoLike Say %id%02>
+	.%id%GoNoLike <Say %id%03>
+	msg%id%01 <Come back and see me again anytime!>
+	msg%id%02 <Good-bye, \PC .>
+	msg%id%03 <Don't let the door hit your ass on the way out.>
+
+	Persona
+	requires <*GOODBYE Spiritual>
+	START <EndChat Say %id%01>
+	msg%id%01 <May the great spirit guide your path.>
+
+	Persona
+	requires <*GOODBYE>
+	START <EndChat Say %id%01>
+	msg%id%01 <Good-bye.>
+
+	Persona
+	requires <*GOODBYE Sociable>
+	START <EndChat Say %id%01>
+	msg%id%01 <See you again.>
+
+	Persona
+	requires <*GOODBYE Cheerful>
+	START <EndChat ifG React 0 else .%id%_GoFail Say %id%01>
+	.%id%_GoFail <Say %id%02>
+	msg%id%01 <It was a real pleasure seeing you!>
+	msg%id%02 <Good-bye.>
+
+	Persona
+	requires <*GOODBYE Sociable ~Pragmatic>
+	START <if= V%id%01 0 else .%id%_End ifG React 25 else .%id%_End V= %id%01 1 NewChat Say %id%02 AddChat %ID%01 AddChat %id%02 AddChat %id%03>
+	.%id%_End <EndChat Say %id%01>
+	result%id%01 <EndChat AddReact d3 Say %id%03>
+	result%id%02 <EndChat Reputation 5 -d3 Reputation 4 d3 Say %id%03>
+	result%id%03 <EndChat Reputation 3 -d8 Say %id%04>
+	msg%id%01 <Good-bye.>
+	Msg%id%02 <One more thing before you go... Could I get your email address?>
+	Msg%id%03 <Thanks! I'll be sure to write sometime.>
+	Msg%id%04 <I understand... Well, I'll see you around.>
+	Prompt%id%01 <Sure. Here it is.>
+	Prompt%id%02 <Just don't sign me up for any spam lists, okay?>
+	Prompt%id%03 <I don't give that out to just anyone, you know.>
+
+
+
+
+% TYPE: *GreetThenDiscuss
+%  The NPC will greet the PC before moving on to other business.
+%  PARAM1: Exit script label
+
+	Persona
+	requires <*GreetThenDiscuss ~Shy ~PCAlly>
+	% V%id%01 = Counter so you won't get the same chatter twice.
+	START <if= V%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <Good to see you, \PC . There's something we need to discuss.>
+	Prompt%id%01 <What is it?>
+
+	Persona
+	requires <*GreetThenDiscuss ~Sociable>
+	% V1 = Counter so you won't get the same chatter twice.
+	START <if= V%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <NewChat     Reputation 5  d6     Say %id%02     AddChat %id%03>
+	result%id%02 <NewChat     Reputation 5 -d6     Say %id%02     AddChat %id%03>
+	result%id%03 <Goto %1%>
+	Msg%id%01 <Hello \PC . How are things with you?>
+	Msg%id%02 <I'm glad to hear that. Anyhow, I was hoping to see you today... There's something I have to discuss with you.>
+	Msg%id%03 <That's too bad. In any case, I had some things to discuss with you. Shall we get down to business?>
+	Prompt%id%01 <Life is good, as usual.>
+	Prompt%id%02 <Don't ask, you don't want to know.>
+	Prompt%id%03 <What's up?>
+
+	Persona
+	requires <*GreetThenDiscuss ~+Fmi>
+	% V1 = Counter so you won't get the same chatter twice.
+	START <if= V%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <NewChat     Reputation 3  d6     Say %id%02     AddChat %id%03>
+	result%id%02 <NewChat     Reputation 3 -d6     Say %id%03     AddChat %id%03>
+	result%id%03 <Goto %1%>
+	Msg%id%01 <Hello \PC . I trust everything is well with you.>
+	Msg%id%02 <The same as usual, you know. In any case there is a reason why I wanted to speak with you.>
+	Msg%id%03 <I see. Well, there is a reason why I wanted to see you... Let's move straight along to that.>
+	Prompt%id%01 <Yes it is, and yourself?>
+	Prompt%id%02 <I have no time for small talk, let's get down to business.>
+	Prompt%id%03 <What's going on?>
+
+
+
+
+
+
+
+
+

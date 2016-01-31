@@ -1,0 +1,14 @@
+I am a bad bad developer- I haven't been keeping a credits file
+for GH2. Well, no time like the present to start... I need to merge
+this file with the GH1 credits file.
+
+Roc Sprite
+	DS French
+
+Portraits
+	Ladene Kosaka
+	Tung Nguyen
+
+Item Images
+	Francisco Munoz
+	Phil Munoz

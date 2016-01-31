@@ -1,0 +1,2563 @@
+%% *:CS_MechaEncounter Content
+%%
+%%	&Raiders	The enemies are raiders aligned with the enemy NPC/Faction
+%%	&Secondary	This is a secondary encounter
+%%
+%% This is the basic building block of any adventure- a mecha fight scene.
+%% This component will likely alter the context of the core story.
+%%
+%% The parent plot sets the plot status to this layer's ID when ready.
+%%
+%% When this subplot concludes, it sets one of the following triggers:
+%%  .%id%_%plotid%_GoWin
+%%  .%id%_%plotid%_GoLoss
+%% It will also hide the encounter with SetEncounterInactive.
+%%
+%% This is a MAIN COURSE subplot.
+%%
+%%  Param1: The outdoors scene where the encounter will be placed
+%%  Param2: The encounter to be used as the entrance
+%%
+
+Content
+	name <Warned About You>
+	desc <Discover your new enemy faction.>
+	requires <*:CS_MechaEncounter ~&Raiders E:++ P:++ ~P:PCFAC F:-- ~E:A.nme ~E:A.jr_ ~E:A.sr_ ~E:A.equ ~E:A.env>
+	changes <F:++>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+	% E3 is the new enemy faction
+	% E4 is the enemy fighter
+	% E5 is the Enemy NPC, for safe keeping
+	Element3 <Faction !Enemy -3 !Okay -1>
+	Element4 <Prefab>
+	Place4 <2 (Enemies) sd enemy>
+	Element5 <Grab 1>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have gained reinforcements
+	% P%id%03 = Have gained decimation
+	update <if= V%id%01 0 V= %id%01 1   SetPlotStatus %plotid1% %id1% NPCLevel %4% StoryDL  SetNPCFaction %4% %3%>
+
+	.%id1%_%plotid1%_GoReinforcements <P= %id%02 1>
+	.%id1%_%plotid1%_GoDecimation     <P= %id%03 1>
+
+	%% Debriefing Message - Win or Lose
+	Msg%id%11 <%name5% is working for %name3%... at least we now know what we're up against.>
+
+	% SubPlot1 = Gain Advantage vs Raiders
+	SubPlot1 <*:CS_GainAdvantageVsMecha&Reinforcements&Decimation>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 4 ForceChat %4%  History 1 &SetEnemyFac %3%  SetXXRAttitude %4% XXR_A_Antagonistic  CancelSubPlot %plotid1%  SetDebriefing %id%11  if# P%id%02 0 Alert 2>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1         Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Alert 3   Trigger0 .%id%_%plotid%_GoWin WinSubPlot %plotid%>
+		end <SetEncounterInactive %2%  ifNPCOK %4% FreezeNPC %4%>
+
+		Msg1 <You fought %name4%, who revealed \PERSONA &EnemyNPC works for %name3%.>
+		Msg2 <Your reinforcements are here, as promised.>
+		Msg3 <You have defeated %name4%'s lance.>
+		Msg4 <You face a strike team led by %name4% of %name3%.>
+
+		sub
+			team 1
+			setally 3
+			SetEnemy 2
+			ParaX 5
+			ParaY 10
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction %3%   if= p%id%03 0 else GoSmallDeploy WMecha 2 StoryDL 70>
+			GoSmallDeploy <WMecha 2 StoryDL 30>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			setally 1
+			setenemy 2
+			Deploy <if= PlotStatus %plotid% %id%  if# P%id%02 0   WMecha 3 StoryDL 65>
+			ParaX 10
+			ParaY 5
+		end
+
+		Persona 4
+		special <UNLISTED>
+		greeting <if= PlotStatus %plotid% %id% else %pop% Goto GoGreet>
+		GoGreet <EndChat Say %id%01 AddChat %id%01 AddChat %id%02>
+		*GoThemeExpo <*THEME_EXPO&Enemy na>
+		result%id%01 <Goto GoThemeExpo>
+		result%id%02 <Goto GoThemeExpo>
+		Msg%id%01 <You must be \PC . %name5% warned us that you've been a constant irritation... Let's see if I can succeed where \SPR %5% failed.>
+		Msg%id%01_1 <You must be \PC . I understand that %name5% is looking forward to defeating you... Let's see if I can rob \OPR %5% of that pleasure.>
+		CMsg%id%01_1 <ifNPCAttitude %5% XXR_A_NeverMet Accept>
+		Msg%id%01_2 <You must be \PC . %name5% claims that you're a major threat... Of course, \SPR %5% is kind of a loser. I guess I'm going to have to find out for myself.>
+		CMsg%id%01_2 <ifNPCAttitude %5% XXR_A_IsJunior Accept>
+		Msg%id%01_3 <You must be \PC . %name5% warned us that you've been a minor irritant... It should be no problem for me to defeat you.>
+		CMsg%id%01_3 <ifNPCAttitude %5% XXR_A_IsSenior Accept>
+		Msg%id%01_4 <You must be \PC . %name5% warned us that you are a formidible threat... Let's see if I can succeed where \SPR %5% failed.>
+		CMsg%id%01_4 <ifNPCAttitude %5% XXR_A_IsEqual Accept>
+		Msg%id%01_5 <You must be \PC . I don't know what you've done, but you really got under %name5%'s skin... Killing you should be worth an easy promotion.>
+		CMsg%id%01_5 <ifNPCAttitude %5% XXR_A_EnviesPC Accept>
+		Prompt%id%01 <You're welcome to try.>
+		Prompt%id%01_1 <Sure. I've got enough whoop-ass to go around.>
+		Prompt%id%02 <Underestimate me at your own risk.>
+		Prompt%id%02_1 <It's your funeral.>
+	end
+	inv
+		NPC Mecha Pilot
+	end
+
+Content
+	name <Plague of Bandits>
+	size 8
+	desc <Defend an allied cruiser from bandits; find out this has been happening quite often.>
+	requires <*:CS_MechaEncounter F:CRIME F:P.--- -C:THIEF>
+	changes <F:P>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+	% E3 is a local public scene
+	% E4 is a trucker to be used in the exposition
+	Element3 <Scene Public !Near -7>
+	Element4 <Character Trucker !Okay -3 !XClude -2 !Near 3 NeverFail>
+	NeverFail4 <Trucker>
+	Place4 </>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have gained reinforcements
+	% P%id%03 = Have gained decimation
+	update <if= V%id%01 0 V= %id%01 1   SetPlotStatus %plotid1% %id1%>
+
+	.%id1%_%plotid1%_GoReinforcements <P= %id%02 1>
+	.%id1%_%plotid1%_GoDecimation     <P= %id%03 1>
+
+	Msg%id%11 <I'm glad %name4% got away safely. Something needs to be done about these bandits...>
+	Msg%id%11_1 <Something needs to be done about \FACTION &EnemyFac ... They've been stepping up their attacks.>
+	CMsg%id%11_1 <ifFactionExists &EnemyFac Accept>
+
+	% SubPlot1 = Gain Advantage vs Raiders
+	SubPlot1 <*:CS_GainAdvantageVsMecha&Decimation&Reinforcements>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 1  History 2  Monologue %4% 7  SetXXRPlot &EnemyFac XXR_P_PublicAttack  CancelSubPlot %plotid1% if# P%id%02 0 Alert 6>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1 Alert 3 History 4 Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1 ifG T3 0 else GoLoseMission  Alert 5  SetDebriefing %id%11  XPV 100  Salvage  Return  Trigger0 .%id%_%plotid%_GoWin WinSubPlot %plotid%>
+		GoLoseMission <Alert 4 History 4 Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid%>
+		end <SetEncounterInactive %2%   MoveNPC %4% %3%>
+		Msg1 <You find a cargo ship under attack by bandits. Its captain, %name4%, contacts you.>
+		Msg2 <You found a cargo ship under attack by bandits.>
+		Msg3 <Without your protection, the cargo ship quickly falls to the bandits.>
+		Msg4 <You failed to protect the cargo ship.>
+		Msg5 <With the bandits gone, %name4% continues safely to \PPR %4% destination.>
+		Msg6 <Your reinforcements are here, as promised.>
+		Msg7 <I could use some help dealing with these raiders- it seems that lately we've been getting far more attacks than usual.>
+
+		sub
+			team 1
+			SetEnemy 2
+			SetAlly 3 4
+			ParaX 15
+			ParaY 25
+
+			team 2
+			SetEnemy 1 3 4
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   if= p%id%03 0 else GoSmallDeploy WMecha 2 StoryDL 180>
+			GoSmallDeploy <WMecha 2 StoryDL 100>
+			ParaX 45
+			ParaY 25
+
+			team 3
+			name <Cruiser Team>
+			setenemy 2
+			setally 1 4
+
+			team 4
+			name <Allies>
+			setenemy 2
+			setally 1 3
+			home <Cruiser Zone>
+			Deploy <if= PlotStatus %plotid% %id% if# p%id%02 0  WMecha 4 StoryDL 80>
+
+			rect
+			name <Cruiser Zone>
+			special <SubZone>
+			width 12
+			height 12
+			MFX 1
+			MFY 19
+			sub
+				SuperProp
+				requires <*Cruiser>
+				SetTeam 3
+			end
+		end
+	end
+
+Content
+	name <Capture Weapons Shipment>
+	size 7
+	desc <Capture an enemy cruiser, learn they're working on a weapons program.>
+	requires <*:CS_MechaEncounter &Raiders (F:P.---|F:P.pat) -!Ne -!Lo>
+	changes <F:P>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+
+	% P%id%01 = Initialization Counter
+	% P%id%03 = Have gained decimation
+	update <if= V%id%01 0 V= %id%01 1   SetPlotStatus %plotid1% %id1%>
+
+	.%id1%_%plotid1%_GoDecimation     <P= %id%03 1>
+
+	%%  Debriefing Msg - Found weapons shipment
+	Msg%id%11 <You say they had some prototype mecha? This can't possibly be good...>
+	Msg%id%11_1 <So \FACTION &EnemyFac has started an advanced weapons program? This is really not good news...>
+	CMsg%id%11_1 <ifFactionExists &EnemyFac Accept>
+
+	% SubPlot1 = Gain Advantage vs Raiders
+	SubPlot1 <*:CS_GainAdvantageVsMecha&Decimation>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 1  CancelSubPlot %plotid1%>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1 Alert 2 History 3 Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid%>
+		nu2 <if= T2 0   ifG T3 0 else GoCheckWin  Alert 4 WMecha 2 StoryDL 70>
+		GoCheckWin <if= V1 0 V= 1 1   ifG T4 0 else GoLoseEncounter XPV 100  AddRenown 1   Alert 5 History 6 CustomMecha .mek StoryDL SetDebriefing %id%11  SetXXRPlot &EnemyFac XXR_P_WeaponProgram   Trigger0 .%id%_%plotid%_GoWin WinSubPlot %plotid%>
+		.mek <GENERAL \FACTION_DESIG &EnemyFac>
+		GoLoseEncounter <Alert 2 History 3 Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid%>
+		end <SetEncounterInactive %2%>
+
+		Msg1 <You discover your enemies escorting a cruiser. If you capture the vessel by disabling its weapons and engines, you can find out what they're transporting.>
+		Msg2 <You failed to capture the enemy vessel.>
+		Msg3 <You encountered an enemy cruiser, but failed to capture it.>
+		Msg4 <Reinforcements arrive!>
+		Msg5 <You capture the enemy vessel. You find that they were transporting a prototype mecha.>
+		Msg6 <You captured an enemy vessel and their prototype mecha.>
+
+		sub
+			team 1
+			SetEnemy 2 3
+			ParaX 45
+			ParaY 25
+
+			team 2
+			SetEnemy 1
+			SetAlly 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   if= p%id%03 0 else GoSmallDeploy WMecha 2 StoryDL 150>
+			GoSmallDeploy <WMecha 2 StoryDL 70>
+			home <Enemy Zone>
+
+			team 3
+			setenemy 1
+			setally 2
+
+			team 4
+			name <Neutral Bitz>
+
+			rect
+			name <Enemy Zone>
+			special <SubZone>
+			width 12
+			height 12
+			MFX 1
+			MFY 19
+			sub
+				SuperProp
+				requires <*Cruiser>
+				Team1 4
+				Team2 3
+				Team3 3
+			end
+		end
+	end
+
+
+Content
+	name <Enemy Faction Revealed>
+	size 6
+	desc <Fight some mecha and find out who they work for.>
+	requires <*:CS_MechaEncounter &Raiders F:-- (!Ne|!Lo|&Secondary)>
+	changes <F:++>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+	% E3 is the new enemy faction
+	Element3 <Faction ArchEnemy !Okay -1 !XClude -3>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have gained reinforcements
+	% P%id%03 = Have gained decimation
+	update <if= V%id%01 0 V= %id%01 1   SetPlotStatus %plotid1% %id1%>
+
+	.%id1%_%plotid1%_GoReinforcements <P= %id%02 1>
+	.%id1%_%plotid1%_GoDecimation     <P= %id%03 1>
+
+	%%  Debriefing Msg
+	Msg%id%11 <So the raiders we've been fighting work for %name3%...>
+	Msg%id%11_1 <So \PERSONA &EnemyNPC 's raiders were actually sent by %name3%...>
+	CMsg%id%11_1 <ifNPCOK &EnemyNPC Accept>
+
+	% SubPlot1 = Gain Advantage vs Raiders
+	SubPlot1 <*:CS_GainAdvantageVsMecha&Reinforcements&Decimation>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 1  History 2 &SetEnemyFac %3%  SetDebriefing %id%11  CancelSubPlot %plotid1% if# P%id%02 0 Alert 3>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1 Alert 4 Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Alert 5   Trigger0 .%id%_%plotid%_GoWin WinSubPlot %plotid%>
+		end <SetEncounterInactive %2%>
+
+		Msg1 <You locate the raiders.>
+		Msg2 <You discovered that your enemy was working for %name3%.>
+		Msg3 <Your reinforcements are here, as promised.>
+		Msg4 <You were defeated by the raiders. There can be no doubt that they are working for %name3%.>
+		Msg5 <You have defeated the raiders. There can be no doubt that they are working for %name3%.>
+
+		sub
+			team 1
+			setally 3
+			SetEnemy 2
+			ParaX 5
+			ParaY 10
+
+			team 2
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction %3%   if= p%id%03 0 else GoSmallDeploy WMecha 2 StoryDL 150>
+			GoSmallDeploy <WMecha 2 StoryDL 90>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			setally 1
+			setenemy 2
+			Deploy <if= PlotStatus %plotid% %id%  if# P%id%02 0   WMecha 3 StoryDL 60>
+			ParaX 10
+			ParaY 5
+		end
+	end
+
+Content
+	name <Defend The Prototype>
+	size 10
+	desc <You find your enemies transporting a prototype weapon.>
+	requires <*:CS_MechaEncounter F:P.pat -!Ne>
+	changes <F:P>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have gained decimation
+	update <if= V%id%01 0 V= %id%01 1   SetPlotStatus %plotid1% %id1%>
+
+	.%id1%_%plotid1%_GoDecimation     <P= %id%02 1>
+
+	%%  Debriefing Msg
+	Msg%id%11 <You say that they were testing a weapons platform? Talk about bad news...>
+
+	% SubPlot1 = Gain Advantage vs Raiders
+	SubPlot1 <*:CS_GainAdvantageVsMecha&Decimation>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 1  TeamMonologue 2 2   SetXXRPlot &EnemyFac XXR_P_WeaponProgram  SetDebriefing %id%11   CancelSubPlot %plotid1%>
+		nu1 <if= T1 0   Return   if= L1 0  L= 1 1  ifG T3 0 else GoWinMission Goto GoLoseMission>
+		nu2 <if= T2 0   if= T3 0   if= L1 0   L= 1 1  Goto GoWinMission>
+		nu3 <if= T2 0   if= T3 0   if= L1 0   L= 1 1  Goto GoWinMission>
+		GoWinMission  <Alert 4 History 5   XPV 100  SALVAGE  AddRenown 1   Trigger0 .%id%_%plotid%_GoWin   WinSubPlot %plotid%>
+		GoLoseMission <Alert 6 History 7                                   Trigger0 .%id%_%plotid%_GoLoss  LoseSubPlot %plotid%>
+		end <SetEncounterInactive %2%>
+
+		Msg1 <You locate your enemies. They appear to be escorting a large vehicle of some type.>
+		Msg2_1 <Defend the prototype! It must be protected, at all costs!>
+		Msg2_2 <>
+		Msg2_3 <>
+		Msg3 <You discovered that your enemy was working for %name3%.>
+		Msg4 <The prototype weapon has been destroyed. You wonder how many more of these things they might be working on.>
+		Msg5 <You fought and destroyed an experimental weapon.>
+		Msg6 <You shudder to think what will happen if this prototype should enter general production.>
+		Msg7 <You failed to destroy an experimental weapon.>
+
+		sub
+			team 1
+			SetEnemy 2 3
+			ParaX 5
+			ParaY 10
+
+			team 2
+			name <Mecha Forces>
+			SetEnemy 1
+			SetAlly 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   if= p%id%02 0 else GoSmallDeploy WMecha 2 StoryDL 120>
+			GoSmallDeploy <WMecha 2 StoryDL 70>
+			ParaX 40
+			ParaY 40
+
+			Team 3
+			name <Prototype>
+			SetAlly 2
+			SetEnemy 1
+			ParaX 45
+			ParaY 45
+
+			rect
+			name <Enemy Zone>
+			special <SubZone>
+			width 5
+			height 5
+			MFX 40
+			MFY 40
+			sub
+				SuperProp
+				requires <*Superweapon>
+				SetTeam 3
+			end
+
+		end
+	end
+
+
+Content
+	name <Prototype Field Test>
+	size 10
+	desc <You find your enemies transporting a prototype weapon. Again.>
+	requires <*:CS_MechaEncounter F:P.wep &Secondary>
+	changes <F:P>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have gained decimation
+	% P%id%03 = Have gained reinforcements
+	update <if= V%id%01 0 V= %id%01 1   SetPlotStatus %plotid1% %id1%>
+
+	.%id1%_%plotid1%_GoDecimation     <P= %id%02 1>
+	.%id1%_%plotid1%_GoReinforcements <P= %id%03 1>
+
+	% SubPlot1 = Gain Advantage vs Raiders
+	SubPlot1 <*:CS_GainAdvantageVsMecha&Decimation&Reinforcements>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 1  TeamMonologue 2 2  History 3   CancelSubPlot %plotid1%>
+		nu1 <if= T1 0   Return   if= L1 0  L= 1 1  ifG T3 0 else GoWinMission Goto GoLoseMission>
+		nu2 <if= T2 0   if= T3 0   if= L1 0   L= 1 1  Goto GoWinMission>
+		nu3 <if= T2 0   if= T3 0   if= L1 0   L= 1 1  Goto GoWinMission>
+		GoWinMission  <Alert 4 History 5   XPV 100  SALVAGE  AddRenown 1   Trigger0 .%id%_%plotid%_GoWin   WinSubPlot %plotid%>
+		GoLoseMission <Alert 6 History 7                                   Trigger0 .%id%_%plotid%_GoLoss  LoseSubPlot %plotid%>
+		end <SetEncounterInactive %2%>
+
+		Msg1 <You locate the raiders. They appear to be escorting a large vehicle of some type.>
+		Msg2_1 <We're being attacked... This will make the perfect field test for our new weapon!>
+		Msg2_2 <>
+		Msg2_3 <>
+		Msg3 <You found your enemies field testing a prototype weapon.>
+		Msg4 <You destroyed the weapon.>
+		Msg5 <You destroyed the prototype.>
+		Msg6 <You shudder to think what will happen if this prototype should enter general production.>
+		Msg7 <You failed to destroy the prototype.>
+
+		sub
+			team 1
+			SetEnemy 2 3
+			SetAlly 4
+			ParaX 5
+			ParaY 10
+
+			team 2
+			name <Mecha Forces>
+			SetEnemy 1 4
+			SetAlly 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   if= p%id%02 0 else GoSmallDeploy WMecha 2 StoryDL 100>
+			GoSmallDeploy <WMecha 2 StoryDL 60>
+			ParaX 40
+			ParaY 40
+
+			Team 3
+			name <Prototype>
+			SetAlly 2
+			SetEnemy 1 4
+			ParaX 45
+			ParaY 45
+
+			Team 4
+			name <Allies>
+			SetAlly 1
+			SetEnemy 2 3
+			Deploy <if= PlotStatus %plotid% %id%  if# P%id%03 0   WMecha 4 StoryDL 60>
+			ParaX 10
+			ParaY 5
+
+			rect
+			name <Enemy Zone>
+			special <SubZone>
+			width 5
+			height 5
+			MFX 40
+			MFY 40
+			sub
+				SuperProp
+				requires <*Superweapon>
+				SetTeam 3
+			end
+
+		end
+	end
+
+
+%%  *******************************
+%%  ***   CHOOSE  YER  POISON   ***
+%%  *******************************
+%%
+%% A special sub-class of mecha encounters in which the PC is introduced to the
+%% hometown's primary antagonists. Generally, the player will then be able to
+%% decide which faction is going to become the core story enemy.
+
+Content
+	name <Choose Yer Poison FCOMS>
+	desc <Two pirate forces are fighting. Pick whichever one you think started it.>
+	requires <*:CS_MechaEncounter L:FCOMS F:-- (L:Ally|P:--) -L:Enemy ~*CORE_INTRO ~*CORE_OFF_>
+	changes <F:++>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+	% E3 is one pirate team
+	% E4 is the other one
+	% E5 is the Pirate with whom the PC will speak
+	Element3 <Faction (REDMA|CRIHN) -PCFAC>
+	Element4 <Faction (REDMA|CRIHN) !Enemy 3 -PCFAC>
+	Element5 <Prefab>
+	Place5 <2 (Enemies1) sd enemy>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have gained reinforcements
+	% P%id%03 = Have E3
+	update <if= V%id%01 0 V= %id%01 1   SetPlotStatus %plotid1% %id1% NPCLevel %5% StoryDL SetNPCFaction %5% %3%>
+
+	% You can get reinforcements, but no decimation.
+	.%id1%_%plotid1%_GoReinforcements <P= %id%02 1>
+
+	%%  Debriefing Msg - Fight E3
+	Msg%id%11 <>
+
+	%%  Debriefing Msg - Fight E4
+	Msg%id%12 <>
+
+	% SubPlot1 = Gain Advantage vs Raiders
+	SubPlot1 <*:CS_GainAdvantageVsMecha&Reinforcements>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 1 ForceChat %5%  CancelSubPlot %plotid1% if# P%id%02 0 Alert 2>
+		nu1 <if= T1 0   Return    if= V1 0 V= 1 1         Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid% History 4 if= P%id%03 1  SetXXRAttitude %5% XXR_A_IsSenior>
+		nu2 <if= T2 0  if= T4 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Alert 3   Trigger0 .%id%_%plotid%_GoWin WinSubPlot %plotid% if= P%id%03 1  SetXXRAttitude %5% XXR_A_IsJunior>
+		nu4 <Goto nu2>
+		end <SetEncounterInactive %2% ifNPCOK %5% FreezeNPC %5%>
+
+		Msg1 <You find two groups of pirates fighting. One team bears the colors of the Red Mask Raiders, the other the Blades of Crihna.>
+		Msg2 <Your reinforcements are here, as promised.>
+		Msg3 <You have defeated the mecha.>
+		Msg4 <You were defeated.>
+
+		sub
+			team 1
+			setally 3
+			SetEnemy 2 4
+			ParaX 5
+			ParaY 10
+
+			team 2
+			name <Enemies1>
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction %3%   WMecha 2 StoryDL 80>
+			ParaX 40
+			ParaY 45
+
+			team 3
+			setally 1
+			setenemy 2 4
+			Deploy <if= PlotStatus %plotid% %id%  if# P%id%02 0   WMecha 3 StoryDL 60>
+			ParaX 10
+			ParaY 5
+
+			team 4
+			name <Enemies2>
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction %4%   WMecha 4 StoryDL 150>
+			ParaX 45
+			ParaY 40
+		end
+
+		Persona 5
+		special <UNLISTED NOESCAPE>
+		greeting <if= PlotStatus %plotid% %id% else %pop%  EndChat Say %id%01 AddChat %id%01 AddChat %id%02 if= v%id%01 0 v= %id%01 1 History %id%02>
+		result%id%01 <EndChat Say %id%03 AddChat %id%03 AddChat %id%04>
+		result%id%02 <EndChat Say %id%04 AddChat %id%03 AddChat %id%04>
+		result%id%03 <EndChat Say %id%05 History %id%06 Retreat 2 &SetEnemyFac %4% PCFEnemy %4% SetDebriefing %id%12 AddReact d10 SetXXRAttitude %5% XXR_A_IsEqual>
+		result%id%04 <EndChat Say %id%07 History %id%08 Retreat 4 &SetEnemyFac %3% PCFEnemy %3% SetDebriefing %id%11 P= %id%03 1  if= 0 &EnemyNPC &SetEnemyNPC %5%>
+		result%id%05 <Goto result%id%03>
+		result%id%06 <Goto result%id%04>
+		Msg%id%01 <This is %name5% of %name3%. You're not a member of %name4%... get the blazes out of here before I'm forced to hurt you.>
+		Msg%id%02 <You found two groups of pirates fighting.>
+		Msg%id%03 <We weren't looking for any trouble, just passing through, when all of a sudden that lot jumped us like they owned the place. I mean, we had to fight back, right?>
+		Msg%id%04_1 <Look, I'm a small time crook and I admit it, but those Blades are up to something bigger than that... They've been hunting down our guys in \SCENE RootSceneID , taking full control of all the crime that goes on here.>
+		CMsg%id%04_1 <if= ChatNPCFac REDMA Accept>
+		Msg%id%04_2 <It's the Masks who started it! I'm a smuggler, not a fighter- these guys have already made it dangerous to work the dusty ring, and now they've expanded all the way to the spinners!>
+		CMsg%id%04_2 <if= ChatNPCFac CRIHN Accept>
+		Msg%id%05_1 <If word gets out that I ran from a fight, the Queen'll have my hide... Still, I'd rather risk that than die right now. Good luck, \PC !>
+		CMsg%id%05_1 <if= ChatNPCFac REDMA Accept>
+		Msg%id%05_2 <Y'know, we used to be the most feared pirate fleet in the solar system, and now we can't even protect our own... Good luck, \PC !>
+		CMsg%id%05_2 <if= ChatNPCFac CRIHN Accept>
+		Msg%id%06 <You sent %name5% away, and fought %name4%.>
+		Msg%id%07_1 <Hey, look what you did- while you were talking, those stinking Blades got away! I'm not going home until I kick someone's arse... Let me show you my \CHATNPCMECHA !!!>
+		CMsg%id%07_1 <if= ChatNPCFac REDMA Accept>
+		Msg%id%07_2 <You doubt my pirate honor!? The Red Masks can wait for another day... for right now, my quarry is you!!!>
+		CMsg%id%07_2 <if= ChatNPCFac CRIHN Accept>
+		Msg%id%08 <You fought %name5% of %name3%.>
+		Prompt%id%01 <What's going on here?>
+		Prompt%id%01_1 <Tell me what you're doing here.>
+		Prompt%id%02 <I'm responding to a disturbance. I guess that's you.>
+		Prompt%id%02_1 <And miss a good fight? Not likely.>
+		Prompt%id%03 <Get out of here. I'll deal with them.>
+		Prompt%id%03_1 <You get out of here, I'll deal with it.>
+		Prompt%id%04 <Your story sounds fishy. What are you really up to?>
+		Prompt%id%04_1 <I don't believe you.>
+	end
+	inv
+		NPC Pirate
+	end
+
+Content
+	name <Choose Yer Poison RISHI>
+	desc <A lance of Silver Knights stand between you and some pirates.>
+	requires <*:CS_MechaEncounter L:RISHI F:-- (L:Ally|P:--) -L:Enemy ~*CORE_INTRO ~*CORE_OFF_>
+	changes <F:++>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+	% E3 is the L5 Alliance
+	% E4 is the Blades of Crihna
+	% E5 is the Alliance pilot with whom the PC will speak
+	Element3 <Faction MAQUI>
+	Element4 <Faction CRIHN>
+	Element5 <Prefab>
+	Place5 <2 (Enemies1) sd enemy>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have gained reinforcements
+	% P%id%03 = Have challenged Aegis
+	update <if= V%id%01 0 V= %id%01 1   SetPlotStatus %plotid1% %id1% NPCLevel %5% StoryDL>
+
+	% You can get reinforcements, but no decimation.
+	.%id1%_%plotid1%_GoReinforcements <P= %id%02 1>
+
+	%% Debriefing Message: PC fought Blades (win or lose)
+	Msg%id%01 <You made the right decision, those Blades were up to no good. They're getting bolder and bolder in their provocations... I wouldn't be surprised if they're planning another terror attack.>
+
+	%% Debriefing Message: PC fought Knights (win or lose)
+	Msg%id%02 <What was %name5% doing close enough to Dominion space to respond to a distress call? So the Alliance has troops stationed on our border... They surely wouldn't be planning an attack, not with Kosaka Spinner watching.>
+
+	% SubPlot1 = Gain Advantage vs Raiders
+	SubPlot1 <*:CS_GainAdvantageVsMecha&Reinforcements>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 1 ForceChat %5%  CancelSubPlot %plotid1% if# P%id%02 0 Alert 2>
+		nu1 <if= T1 0   Return    if= V1 0 V= 1 1         Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid% History 4 if= P%id%03 1  SetXXRAttitude %5% XXR_A_IsSenior>
+		nu2 <if= T2 0  if= T4 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Alert 3   Trigger0 .%id%_%plotid%_GoWin WinSubPlot %plotid% if= P%id%03 1  SetXXRAttitude %5% XXR_A_IsJunior>
+		nu4 <Goto nu2>
+		end <SetEncounterInactive %2% ifNPCOK %5% FreezeNPC %5%>
+
+		Msg1 <You spot a group of pirates from the Blades of Crihna escorting an unmarked ship. Stationed between you and them, though, is a lance of Silver Knights.>
+		Msg2 <Your reinforcements are here, as promised.>
+		Msg3 <You have defeated the mecha.>
+		Msg4 <You were defeated.>
+
+		sub
+			team 1
+			setally 3
+			SetEnemy 2 4
+			ParaX 5
+			ParaY 10
+
+			team 2
+			name <Enemies1>
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction 3   WMecha 2 StoryDL 80>
+			ParaX 40
+			ParaY 45
+
+			team 3
+			setally 1
+			setenemy 2 4
+			Deploy <if= PlotStatus %plotid% %id%  if# P%id%02 0   WMecha 3 StoryDL 60>
+			ParaX 10
+			ParaY 5
+
+			team 4
+			name <Enemies2>
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction %4%   WMecha 4 StoryDL 150>
+			ParaX 45
+			ParaY 40
+		end
+
+		Persona 5
+		special <UNLISTED NOESCAPE>
+		greeting <if= PlotStatus %plotid% %id% else %pop%  EndChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%08 if= v%id%01 0 v= %id%01 1 History %id%02>
+		result%id%01 <EndChat Say %id%03 AddChat %id%03 AddChat %id%04 AddChat %id%07>
+		result%id%02 <EndChat Say %id%04 AddChat %id%05 AddChat %id%06 AddChat %id%07>
+		result%id%03 <EndChat Say %id%05 History %id%06 Retreat 2 &SetEnemyFac %4% PCFEnemy %4% SetDebriefing %id%01  AddReact -d10 SetXXRAttitude %5% XXR_A_Antagonistic>
+		result%id%04 <EndChat Say %id%07 History %id%08 Retreat 4 &SetEnemyFac %3% PCFEnemy %3% SetDebriefing %id%02 P= %id%03 1>
+		result%id%05 <Goto result%id%03>
+		result%id%06 <Goto result%id%04>
+		result%id%07 <EndChat Say %id%09 History %id%06 Retreat 2 &SetEnemyFac %4% PCFEnemy %4% SetDebriefing %id%01 AddLawful 1 AddReact d10 SetXXRAttitude %5% XXR_A_IsEqual>
+		result%id%08 <EndChat Say %id%10 AddChat %id%03 AddChat %id%06 AddChat %id%07>
+		Msg%id%01 <Hold your fire. These Blades are escorting a civilian vessel; they did not come here to cause trouble.>
+		Msg%id%02 <You were blocked from some pirated by the Silver Knights.>
+		Msg%id%03 <We are simply responding to a distress call, as per F.C.S. dictate 5247 dash 9. The captain of the Bohemian ship told us that they're just passing through... I ask you one last time to stand down.>
+		Msg%id%04 <I have no evidence that these pilots are guilty of anything. How can you expect me to leave their ship defenseless? I ask you one last time to step down.>
+		Msg%id%05 <It appears that you won't listen to reason. Unfortunately, we have no standing to challenge you in Dominion space. I only pray that justice be served.>
+		Msg%id%06 <You sent %name5% away, and fought the Blades.>
+		Msg%id%07 <Was that a challenge? I guess we're now legally entitled to fight! I'll show you what my \CHATNPCMECHA can do.>
+		Msg%id%08 <You fought %name5%'s Alliance patrol.>
+		Msg%id%09 <So you know the law... and here I thought you were just some hotshot rocket spoiling for a fight. We will escort the ship back home ourselves. You can deal with the Blades as you see fit; I trust justice will be served.>
+		Msg%id%10 <We are merely responding to a distress call. The captain of this ship assures us they have done nothing wrong. As a Knight it's my duty to protect anyone who requests aid... I ask you one last time to stand down.>
+		Prompt%id%01 <They've invaded Dominion territory, as have you.>
+		Prompt%id%01_1 <What are the Silver Knights doing in Rishiri space?>
+		Prompt%id%02 <So they say. My sources report otherwise.>
+		Prompt%id%02_1 <Maybe the ship didn't, but those pirates did.>
+		Prompt%id%03 <And you believe that? Look, those pirates are wanted!>
+		Prompt%id%04 <I don't care about your dictates. Get out of the way, or else!>
+		Prompt%id%05 <Go escort the ship yourself. I have pirates to deal with.>
+		Prompt%id%06 <You're in no place to be making ultimatums, jerk.>
+		Prompt%id%07 <And by regulation 1314-5R, I'm asking you to step down.>
+		CPrompt%id%07 <ifG PCLaw -1 ifInsightKn SkillTar StoryDL Accept>
+		Prompt%id%08 <Wait, I thought you knights hated pirates!?>
+	end
+	inv
+		NPC Knight
+	end
+
+Content
+	name <Choose Yer Poison MAQUI>
+	desc <An Aegis strike team has chased pirates into Alliance space.>
+	requires <*:CS_MechaEncounter L:MAQUI F:-- (L:Ally|P:--) -L:Enemy ~*CORE_INTRO ~*CORE_OFF_>
+	changes <F:++>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+	% E3 is the Aegis Space Force
+	% E4 is the Red Mask Raiders
+	% E5 is the Aegis pilot with whom the PC will speak
+	Element3 <Faction AEGSF>
+	Element4 <Faction REDMA>
+	Element5 <Prefab>
+	Place5 <2 (Enemies1) sd enemy>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have gained reinforcements
+	% P%id%03 = Have challenged Aegis
+	update <if= V%id%01 0 V= %id%01 1   SetPlotStatus %plotid1% %id1% NPCLevel %5% StoryDL SetNPCFaction %5% %3%>
+
+	% You can get reinforcements, but no decimation.
+	.%id1%_%plotid1%_GoReinforcements <P= %id%02 1>
+
+	%%  Debriefing Msg - Fight Red Mask Raiders
+	Msg%id%11 <Can't blame %name5% for intruding. The Red Masks have been getting bolder and more powerful with each passing day... it seems like our best efforts do little more than slow them down.>
+
+	%%  Debriefing Msg - Fight Aegis Space Force
+	Msg%id%12 <Chasing the pirates into our space was clearly just a ruse. Aegis Overlord thinks all the colonies should be ruled from Luna, though they wouldn't dare openly fight the Alliance... not yet, anyhow.>
+
+	% SubPlot1 = Gain Advantage vs Raiders
+	SubPlot1 <*:CS_GainAdvantageVsMecha&Reinforcements>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 1 ForceChat %5%  CancelSubPlot %plotid1% if# P%id%02 0 Alert 2>
+		nu1 <if= T1 0   Return    if= V1 0 V= 1 1         Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid% History 4 if= P%id%03 1  SetXXRAttitude %5% XXR_A_IsSenior>
+		nu2 <if= T2 0  if= T4 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Alert 3   Trigger0 .%id%_%plotid%_GoWin WinSubPlot %plotid% if= P%id%03 1  SetXXRAttitude %5% XXR_A_IsJunior>
+		nu4 <Goto nu2>
+		end <SetEncounterInactive %2% ifNPCOK %5% FreezeNPC %5%>
+
+		Msg1 <You spot a lance of pirates from the Red Mask Raiders being pursued by an Aegis strike team. Both groups of mecha are intruders in Alliance territory.>
+		Msg2 <Your reinforcements are here, as promised.>
+		Msg3 <You have defeated the mecha.>
+		Msg4 <You were defeated.>
+
+		sub
+			team 1
+			setally 3
+			SetEnemy 2 4
+			ParaX 5
+			ParaY 10
+
+			team 2
+			name <Enemies1>
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction %3%   WMecha 2 StoryDL 80>
+			ParaX 40
+			ParaY 45
+
+			team 3
+			setally 1
+			setenemy 2 4
+			Deploy <if= PlotStatus %plotid% %id%  if# P%id%02 0   WMecha 3 StoryDL 60>
+			ParaX 10
+			ParaY 5
+
+			team 4
+			name <Enemies2>
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction %4%   WMecha 4 StoryDL 150>
+			ParaX 45
+			ParaY 40
+		end
+
+		Persona 5
+		special <UNLISTED NOESCAPE>
+		greeting <if= PlotStatus %plotid% %id% else %pop%  EndChat Say %id%01 AddChat %id%01 AddChat %id%02 if= v%id%01 0 v= %id%01 1 History %id%02>
+		result%id%01 <EndChat Say %id%03 AddChat %id%03 AddChat %id%04>
+		result%id%02 <EndChat Say %id%04 AddChat %id%05 AddChat %id%06>
+		result%id%03 <EndChat Say %id%05 History %id%06 Retreat 2 &SetEnemyFac %4% PCFEnemy %4% SetDebriefing %id%11 AddReact d10 SetXXRAttitude %5% XXR_A_IsEqual>
+		result%id%04 <EndChat Say %id%07 History %id%08 Retreat 4 &SetEnemyFac %3% PCFEnemy %3% SetDebriefing %id%12 P= %id%03 1>
+		result%id%05 <Goto result%id%03>
+		result%id%06 <Goto result%id%04>
+		Msg%id%01 <This is %name5% of the Aegis Space Force. Those mecha attacked a Lunar trading vessel, and I will see them brought to justice.>
+		Msg%id%02 <You found some Red Mask Raiders being chased by the Aegis Space Force.>
+		Msg%id%03 <Aegis Overlord does not require your assistance. It is my sworn duty to protect our citizens and Lunar interests anywhere in the solar system.>
+		Msg%id%04 <I've sworn an oath to defend Luna from all enemies, both within and without. If you intend to stand between me and my prey then you are our enemy as well.>
+		Msg%id%05 <Very well. I'll trust you to deal with this.>
+		Msg%id%06 <You sent %name5% away, and fought the pirates yourself.>
+		Msg%id%07 <Do you think you can stop us? I'll give you a taste of my \CHATNPCMECHA !>
+		Msg%id%08 <You fought %name5%'s Aegis strike team.>
+		Prompt%id%01 <Why don't we fight them together, then you go back home?>
+		Prompt%id%01_1 <I understand. Why don't I help you out?>
+		Prompt%id%02 <Get out of Alliance space before I bring YOU to justice.>
+		Prompt%id%02_1 <You're an intruder here as well, you know.>
+		Prompt%id%03 <Not here, it isn't. Let me deal with the pirates.>
+		Prompt%id%04 <This isn't your space. Leave now, or else!>
+		Prompt%id%05 <This is my jurisdiction, I'll deal with the pirates!>
+		Prompt%id%06 <Oh yeah? Maybe I am your enemy, then!>
+	end
+	inv
+		NPC Mecha Pilot
+	end
+
+
+
+%%  *******************
+%%  ***   GENERAL   ***
+%%  *******************
+
+Content
+	name <Our New Enemy Will Be Played By...>
+	desc <An existing character gets drawn in to become the new core story enemy.>
+	requires <*:CS_MechaEncounter &Raiders E:-- F:++ -!Ne ~!Hi>
+	changes <E:++>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+	% E3 is the new enemy
+	Element3 <Character HasMecha !Comrade -2 -Friend -Ally -Family -Lover>
+	Place3 <2 (Enemies) sd enemy>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have gained reinforcements
+	% P%id%03 = Have gained decimation
+	update <if= V%id%01 0 V= %id%01 1   SetPlotStatus %plotid1% %id1%  NPCLevel %3% StoryDL>
+
+	.%id1%_%plotid1%_GoReinforcements <P= %id%02 1>
+	.%id1%_%plotid1%_GoDecimation <P= %id%03 1>
+
+	% SubPlot1 = Gain Advantage vs Raiders
+	SubPlot1 <*:CS_GainAdvantageVsMecha&Reinforcements&Decimation>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 1  ForceChat %3%   StoryNote 2 &SetENemyNPC %3%  CancelSubPlot %plotid1% if# P%id%02 0 Alert 3>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1   Alert 4 History 6   LoseSubPlot %plotid% Trigger0 .%id%_%plotid%_GoLoss>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Alert 7 WinSubPlot %plotid%  Trigger0 .%id%_%plotid%_GoWin>
+		end <SetEncounterInactive %2% ifNPCDead %3% else GoFreeze Print 9 Goto GoFreeze>
+		GoFreeze <FreezeNPC %3%>
+
+		Msg1 <You locate the group of raiders that you've been searching for. They are being led by %name3%.>
+		Msg2 <You fought %name3% of \FACTION &EnemyFac .>
+		Msg3 <Your reinforcements are here, as promised.>
+		Msg4 <You have been defeated by %name3%.>
+		Msg6 <%name1% defeated you.>
+		Msg7 <You defeated %name3%'s lance.>
+		Msg9 <%name3%'s cockpit is mysteriously empty. Could \SPR %3% have survived?>
+
+		sub
+			team 1
+			setally 3
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   if= P%id%03 0 else GoSmall WMecha 2 StoryDL 80>
+			GoSmall <WMecha 2 StoryDL 30>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			setally 1
+			setenemy 2
+			Deploy <if= PlotStatus %plotid% %id%  if# P%id%02 0   WMecha 3 StoryDL 60>
+			ParaX 10
+			ParaY 5
+		end
+
+		Persona 3
+		special <UNLISTED>
+		greeting <EndChat ifChatNPCKnown else .%id%_GoUnknownGreeting Say %id%01 AddChat %id%01 AddChat %id%02>
+		*.%id%_GoUnknownGreeting <*BattleChallenge result%id%01 na>
+		*result%id%01 <*THEME_EXPO&Enemy na>
+		result%id%02 <AddEasygoing d8 Goto result%id%01>
+		Msg%id%01 <Hello \PC ... You've been interfering with \FACTION &EnemyFac for long enough. I've been ordered to take you out of the picture.>
+		Msg%id%01_1 <>
+		CMsg%id%01_1 <ifNPCHeroic Accept>
+		Msg%id%01_2 <So \PC , we meet again... You've been quite the pain to \FACTION &EnemyFac so they've asked me to get rid of you permanently.>
+		CMsg%id%01_2 <ifNPCVillainous Accept>
+		Prompt%id%01 <Tell your boss that I'm not going to back down.>
+		Prompt%id%01_1 <Didn't they tell you that I don't back down?>
+		Prompt%id%02 <I dunno if I'm ready for this kind of commitment...>
+		Prompt%id%02_1 <Guess we'll be seeing each other more often, then.>
+	end
+
+Content
+	name <Let's See How You Measure Up>
+	desc <A sorting battle against a new enemy NPC.>
+	requires <*:CS_MechaEncounter &Raiders E:-- F:++ ~!Lo -!Md -!Hi -!Ex>
+	changes <E:++>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+	% E3 is the new enemy
+	Element3 <NewNPC -2 -7>
+	Place3 <2 (Enemies) sd enemy>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have gained reinforcements
+	% P%id%03 = Have gained decimation
+	update <if= V%id%01 0 V= %id%01 1   SetPlotStatus %plotid1% %id1%  NPCLevel %3% StoryDL>
+
+	.%id1%_%plotid1%_GoReinforcements <P= %id%02 1>
+	.%id1%_%plotid1%_GoDecimation <P= %id%03 1>
+
+	%%  Debriefing Message
+	Msg%id%11 <%name3%, you say? I don't know anything about \OPR %3% ... I expect you'll find out shortly.>
+	Msg%id%11_1 <I think I've heard of this %name3%. They say \SPR %3% works for \FACTION &EnemyFac .>
+	CMsg%id%11_1 <ifFactionExists &EnemyFac Accept>
+	Msg%id%11_2 <I know about %name3%... \SPR %3% 's clashed with \FACTION &AllyFac before. I believe \SPR %3% works for \FACTION &EnemyFac .>
+	CMsg%id%11_2 <ifFactionExists &EnemyFac ifFactionExists &AllyFac Accept>
+	Msg%id%11_3 <%name3% has fought with \FACTION &AllyFac before. I advise you to take care; you'll probably be crossing paths with \OPR %3% again.>
+	CMsg%id%11_3 <ifFactionExists &AllyFac Accept>
+
+	% SubPlot1 = Gain Advantage vs Raiders
+	SubPlot1 <*:CS_GainAdvantageVsMecha&Reinforcements&Decimation>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 1  ForceChat %3%   StoryNote 2 &SetENemyNPC %3%  SetDebriefing %id%11  CancelSubPlot %plotid1% if# P%id%02 0 Alert 3>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1   Alert 4 Monologue %3% 5 History 6   LoseSubPlot %plotid% Trigger0 .%id%_%plotid%_GoLoss  SetXXRAttitude %3% XXR_A_IsSenior>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Alert 7 Monologue %3% 8   WinSubPlot %plotid%  Trigger0 .%id%_%plotid%_GoWin  SetXXRAttitude %3% XXR_A_IsJunior>
+		end <SetEncounterInactive %2% ifNPCDead %3% else GoFreeze Print 9 Goto GoFreeze>
+		GoFreeze <FreezeNPC %3%>
+
+		Msg1 <You locate the group of raiders that you've been searching for.>
+		Msg2 <You fought %name3% of \FACTION &EnemyFac .>
+		Msg3 <Your reinforcements are here, as promised.>
+		Msg4 <You have been defeated by %name3%.>
+		Msg5 <Just as I expected, you're a mere amateur. Don't bother me again until you're worth my time.>
+		Msg5_1 <Sorry that I had to hurt you, but you left me no other choice. Stay out of my business from now on.>
+		CMsg5_1 <ifNPCHeroic Accept>
+		Msg5_2 <Do you understand now, worm? Challenge me again and you won't live to tell about it.>
+		CMsg5_2 <ifNPCVillainous Accept>
+		Msg6 <%name1% defeated you.>
+		Msg7 <You defeated %name3%'s lance.>
+		Msg8 <Aw, man, I didn't expect you to be so tough... Would you be willing to go best two out of three?>
+		Msg8_1 <Hmph, so you're tough... Being strong still doesn't make you right, you know.>
+		CMsg8_1 <ifNPCHeroic Accept>
+		Msg8_2 <What, how could I lose to a jerk like you!? That's it, next time I won't hold back at all!>
+		CMsg8_2 <ifNPCVillainous Accept>
+		Msg9 <%name3%'s cockpit is mysteriously empty. Could \SPR %3% have survived?>
+
+		sub
+			team 1
+			setally 3
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   if= P%id%03 0 else GoSmall WMecha 2 StoryDL 80>
+			GoSmall <WMecha 2 StoryDL 30>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			setally 1
+			setenemy 2
+			Deploy <if= PlotStatus %plotid% %id%  if# P%id%02 0   WMecha 3 StoryDL 60>
+			ParaX 10
+			ParaY 5
+		end
+
+		Persona 3
+		special <UNLISTED>
+		greeting <EndChat Say %id%01 AddChat %id%01 AddChat %id%02>
+		*result%id%01 <*THEME_EXPO&Enemy na>
+		result%id%02 <AddSociable -d6 Goto result%id%01>
+		Msg%id%01 <Turn back, or in the name of \FACTION &EnemyFac I will destroy you!>
+		Msg%id%01_1 <I'm only going to give you one warning. Turn back now, or the entire might of \FACTION &EnemyFac will defeat you!>
+		CMsg%id%01_1 <ifNPCHeroic Accept>
+		Msg%id%01_2 <Get lost, jerk. I'm here on serious business from \FACTION &EnemyFac , and intend to crush anyone who gets in the way.>
+		CMsg%id%01_2 <ifNPCVillainous Accept>
+		Prompt%id%01 <Let's see if you can back up those words.>
+		Prompt%id%01_1 <You're the one who's going to back down.>
+		Prompt%id%02 <Whatever.>
+
+	end
+
+
+
+
+Content
+	name <Edie Brickell Never Hurt Anyone>
+	size 5
+	desc <The Bohemian Collective distances itself from your enemy.>
+	requires <*:CS_MechaEncounter F:BOHEM E:++ -&Secondary -!Ne ~!Md ~!Hi>
+	% The Bohemian Collective, being largely an anarchic group of live-and-let-live leave-me-aloneist
+	% libertarians/libertines, doesn't make a very good enemy. Honestly, I can see pissing one or two
+	% of them off, or maybe even three or four, but the entire faction? You made them agree on something?
+	% Impossible. If a splinter group wants to kill you, they're probably just posers. Or pirates.
+	changes <F:++>
+
+	% E1 is the outdoors scene where this encounter will take place
+	% E2 is the encounter
+	% E3 is an envoy from the Dusty Ring
+	% E4 is a pirate faction to be the new enemy
+	% E5 is a pirate/mook of the Enemy NPC
+	Element3 <Prefab>
+	Place3 <2 (Envoy) sd ally>
+	Element4 <Faction (REDMA|CRIHN) -ArchAlly !XClude -3>
+	Element5 <Prefab>
+
+	% P%id%01 = Initialization Counter
+
+	update <if= P%id%01 0 P= %id%01 1 NPCLevel %3% StoryDL SetNPCFaction %5% %4%>
+
+	% This subplot must propgate the effects of its own subplot backwards to
+	% the parent plot.
+	.%id1%_%plotid1%_GoWin  <WinSubPlot %plotid%  Trigger0 .%id%_%plotid%_GoWin>
+	.%id1%_%plotid1%_GoLoss <LoseSubPlot %plotid% Trigger0 .%id%_%plotid%_GoLoss>
+
+	%% Debriefing Msg
+	Msg%id%11_1 <\PERSONA &EnemyNPC actually works for %name4%... I'm not surprised. The Bohemians generally just want to be left alone.>
+	CMsg%id%11_1 <ifNPCOK &EnemyNPC ifNPCCheerful Accept>
+	Msg%id%11_2 <So they say \PERSONA &EnemyNPC works for %name4%... They probably just kicked \OPR &EnemyNPC out after they started taking too much heat.>
+	CMsg%id%11_2 <ifNPCOK &EnemyNPC ifNPCMelancholy Accept>
+	Msg%id%11_3 <\PERSONA &EnemyNPC actually works for %name4%... Can't say I'm surprised. The Bohemians colonies are too disorganized to pull off the kind of attacks we've been seeing.>
+	CMsg%id%11_3 <ifNPCOK &EnemyNPC ifNPCPassionate Accept>
+
+	% SubPlot1 is the Stop E5 mission
+	SubPlot1 <*:CS_StopNPCMission&Secondary 5>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 1   History 2   &SetEnemyFac %4%   SetDebriefing %id%11  ForceChat %3%>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1         Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Monologue %3% 3 Retreat 3 History 4 SMemo 5  SetPlotStatus %plotid1% %id1%>
+		end <SetEncounterInactive %2% FreezeNPC %3%>
+
+		Msg1 <You find a lance of Bohemian mecha fighting some pirates.>
+		Msg2 <%name3% revealed that \PERSONA &EnemyNPC was a pirate, not a bohemian.>
+		Msg3_1 <\PERSONA &EnemyNPC 's number one fighter %name5% is here on a mission. Stop \OPR %5% , and many lives will be spared. We will meet again.>
+		CMsg3_1 <ifNPCOK %3% Accept>
+		Msg3_2 <\PERSONA &EnemyNPC ... \PPR &EnemyNPC henchman... you must stop %name5%... we... we will meet again...>
+		CMsg3_2 <ifNPCDead %3% Accept>
+		Msg4 <You learned that \PERSONA &EnemyNPC 's henchman %name5% was in town on a mission.>
+		Msg5 <%name3% told you that \PERSONA &EnemyNPC works for %name4%, and \PPR &EnemyNPC henchman %name5% is in town on a mission.>
+
+		sub
+			team 1
+			setally 3
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Pirates>
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction %4%   WMecha 2 StoryDL 150>
+			GoSmallDeploy <WMecha 2 StoryDL 90>
+			ParaX 25
+			ParaY 45
+
+			team 3
+			name <Envoy>
+			setally 1
+			setenemy 2
+			Deploy <if= PlotStatus %plotid% %id%  SetSelfFaction 12  WMecha 3 StoryDL 60>
+			ParaX 45
+			ParaY 5
+		end
+
+		Persona 3
+		special <UNLISTED NOESCAPE>
+		greeting <EndChat Say 1 AddChat 1 AddChat 2>
+		result1 <EndChat Say 2 AddChat 3>
+		result2 <EndChat Say 3 AddChat 3>
+		result3 <EndChat Say 4>
+		Msg1 <Hold your fire, I come to you bearing a message from the dusty ring! The Bohemian Collective is not your enemy. We seek only peace with the people of \SCENE &EpisodeScene .>
+		Msg2 <\PERSONA &EnemyNPC does not represent us; in fact, \SPR &EnemyNPC has long been a member of %name4%, and it is they who have directed \PPR &EnemyNPC actions against you.>
+		Msg3 <I see that \PERSONA &EnemyNPC has been busy spreading lies. You should know that \SPR &EnemyNPC is not a member of the collective, but instead a pirate with %name4%. It is them that you should be fighting.>
+		Msg4 <I have additional information which may help you decide, but first we should deal with \PERSONA &EnemyNPC 's henchmen.>
+		Prompt1 <Tell that to \PERSONA &EnemyNPC !>
+		Prompt2 <You really think I'm going to believe that?>
+		Prompt3 <How do I know I can trust you?>
+	end
+	inv
+		NPC Explorer
+		chardesc Old
+		SetFaction 12
+
+		NPC Pirate
+		chardesc Young
+		job_desig <MOOK_>
+	end
+
+Content
+	name <MUGL, You Useless Morons>
+	size 10
+	desc <Your enemy, frustrated with MUGL Enterprises's incompotence, leaves them for a different corp.>
+	requires <*:CS_MechaEncounter F:MUGLE (P:--|P:CORPO) (E:M.---|E:M.mer) -E:A.nme (!Ne|!Lo)>
+	%% MUGL Enterprises isn't a particularly good villain... or, should I say, not a particularly intimidating
+	%% villain. I mean, how would you feel if Sanrio were trying to kill you? Actually, that does sound pretty
+	%% terrifying... In any case this component will help to cement their reputation as the newest and to-date
+	%% least respected of the L5 mecha corporations.
+	changes <F:++ E:M>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the encounter
+	% E3 is the enemy NPC
+	% E4 is the faction which gave the NPC the better offer
+	% E5 is a local public scene
+	% E6 is another MUGL pilot who E3 is assisting, supposedly
+	Element3 <Grab 1>
+	Place3 <2 (Enemies) sd enemy>
+	% The new enemy faction should be an enemy to both the PC and to MUGL.
+	Element4 <Faction ArchEnemy !XClude -2 !XClude -3 Corporate>
+	Element5 <Scene Public !Near -7 !Okay -2>
+	Element6 <Character HasMecha Cheerful !Comrade -2 !Near 5 NeverFail>
+	NeverFail6 <Mecha Pilot>
+	Place6 <2 (Enemies) sd enemy>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have gained decimation
+	update <if= V%id%01 0 V= %id%01 1   SetPlotStatus %plotid1% %id1% NPCLevel %3% StoryDL NPCLevel %6% StoryDL>
+
+	% Gaining the decimation advantage means that E6 won't show up to the battle.
+	.%id1%_%plotid1%_GoDecimation     <P= %id%02 1  MoveAndPacifyNPC %6% 5>
+
+	% SubPlot1 = Gain Advantage vs Raiders
+	SubPlot1 <*:CS_GainAdvantageVsMecha&Decimation>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		% L3 = Enemy Died/Plot Immunity Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   CancelSubPlot %plotid1%  Alert 1 Monologue %3% 2 if= P%id%02 0 else GoDecimated Monologue %6% 3 Monologue %3% 4 History 5>
+		GoDecimated <Monologue %3% 6 History 7>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1         Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid% if# L3 0 Monologue %3% 8 Monologue %3% 9 Goto GoSetAttitude>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Trigger0 .%id%_%plotid%_GoWin WinSubPlot %plotid%  Alert 11  if= L3 0 else GoE3DiedEnd  if# P%id%02 0 else GoE3AliveEnd  ifNPCOK %6% else GoE3AliveEnd Monologue %6% 12 History 15  Goto GoE3AliveEnd>
+		GoE3AliveEnd <Monologue %3% 13 Monologue %3% 9 Goto GoSetAttitude>
+		GoE3DiedEnd <Alert 14 Goto GoSetAttitude>
+		Faint%3% <L= 3 1 FreezeNPC %3%>
+		end <SetEncounterInactive %2%>
+		GoSetAttitude <History 10   SetXXRMotivation %3% XXR_M_Mercenary>
+
+		Msg1 <You face a lance of mecha from MUGL Enterprises led by %name3%.>
+		Msg2_1 <Hello again, \PC . I thought you'd try to interfere with %name6%'s mission, so I came here to help out.>
+		Msg3 <Yeah! No-one messes with the Bunny and gets away with it!>
+		Msg4 <Just shut up and fight, %name6%.>
+		Msg5 <You fought a group of mecha led by %name3% and %name6%.>
+		Msg6 <Now, where the blazes is %name6%...?>
+		Msg7 <You fought %name3%, who was supposed to be helping %name6%.>
+		Msg8 <That crappy MUGL mecha nearly killed me! How is anyone supposed to work with substandard equipment like this!?>
+		Msg9_1 <I quit! MUGL Enterprises can kiss my arse, I'm gonna go accept that offer at %name4%!>
+		Msg10 <%name3% quit MUGL to go work for %name4%.>
+		Msg11 <You have defeated all of the MUGL mecha.>
+		Msg12 <Hey %name3%, I'm here to start our mission now! Sorry I'm a bit late... ashes, what happened!?>
+		Msg13_1 <That's it! I've had it with this two-bit cartoon rabbit company! How do they expect us to win in garbage mecha like this!?>
+		Msg14 <You are surprised to find the cockpit of %name3%'s mecha empty, except for a completed job application for %name4%.>
+		Msg15 <%name6% arrived too late to help %name3%.>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   WMecha 2 StoryDL 40>
+			ParaX 45
+			ParaY 45
+		end
+	end
+
+
+Content
+	name <I Have Become Death>
+	size 9
+	desc <Your enemy no longer cares, and so won't hold back any longer.>
+	requires <*:CS_MechaEncounter E:++ F:++ (E:M.---|E:M.rev) (E:A.hat|E:A.mut|E:A.obs|E:A.env|E:A.---|E:A.jr_|E:A.sr_|E:A.dis) !Hi -&Secondary>
+	changes <E:M>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the "kicker" encounter- the one which starts the main plot
+	% E3 is the enemy
+	% E4 is the urban scene for the encounters to follow
+	% E5 is the final battle scene
+	% E6 is the Enemy's lieutenant
+	% E7 is the third in command
+	% E8 is the fourth
+	% E9 is the *FactionRampage mood which accompanies this episode
+	% E10 is an enemy of the enemy faction needed for narrative purposes
+	Element3 <Grab 1>
+	Place3 </>
+	Element4 <Scene Urban !Near -7>
+	Element5 <Prefab>
+	Place5 <4>
+	Element6 <Character Villainous HasMecha !Comrade -2 !Global NeverFail>
+	NeverFail6 <Mecha Pilot>
+	Place6 <5 (Enemies) SD enemy>
+	Element7 <NewNPC -2 -7 Passionate>
+	Place7 </>
+	Element8 <Character Heroic HasMecha !Comrade -2 !Global NeverFail>
+	Place8 </>
+	Element9 <Prefab>
+	Element10 <Faction !Enemy -2>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have gained reinforcements
+	% P%id%03 = Have gained decimation
+	% P%id%04 = Completed first combat
+	% P%id%05 = E8 backed out of fight
+	% P%id%06 = E7 backed out of (final) fight
+
+	update <if= P%id%01 0 P= %id%01 1 SetNPCFaction %6% &EnemyFac SetNPCFaction %7% &EnemyFac SetNPCFaction %8% &EnemyFac>
+
+	% Set either reinforcements or decimation here
+	.%id3%_%plotid3%_GoReinforcements <P= %id%02 1>
+	.%id3%_%plotid3%_GoDecimation     <P= %id%03 1>
+
+	.%id1%_%plotid1%_GoWin <SetPlotStatus %plotid2% %id2%  SMemo %id%01     if= P%id%05 0 History %id%03     ifNPCOK %8% MoveNPC %8% %5% SetNPCTeam %8% 2>
+	.%id2%_%plotid2%_GoWin <SetPlotStatus %plotid3% %id3%  Alert %id%02 SMemo %id%02 History %id%04 SetEncounterActive %5%  ifNPCOK %7% if= P%id%06 0 MoveNPC %7% %5% SetNPCTeam %7% 2>
+
+	Msg%id%01 <You have defeated %name8%, but %name7% is still out there looking for you.>
+	Msg%id%02 <You have defeated both %name8% and %name7%. Now it's time to bring the fight to %name6%.>
+	Msg%id%03 <You defeated %name8% in mecha combat.>
+	Msg%id%04 <You defeated %name7% in mecha combat.>
+
+	% SubPlot1 is the first substage boss battle
+	% SubPlot2 is the second substage boss battle
+	% SubPlot3 is the ability to gain an advantage in the final battle
+	SubPlot1 <*:CS_SubBossRoadblock 4 8>
+	SubPlot2 <*:CS_SubBossRoadblock 4 7>
+	SubPlot3 <*:CS_GainAdvantageVsNPC&Decimation&Reinforcements 6>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 30
+		MapHeight 30
+
+		Start <if= L2 0 L= 2 1 Alert 1 Monologue %3% 2 Monologue %6% 3  History 4  SetXXRMotivation %3% XXR_M_Nihilism   SetNPCRep %3% 1 -100   SetMood %9% &EpisodeScene>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1                           Monologue %6% 7  Goto GoBeginRoadblock>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   AddRenown 1   SALVAGE   Monologue %6% 8 Monologue %7% 9 Monologue %8% 10  XPV 100 P= %id%04 1 Return  Goto GoBeginRoadblock>
+		end <SetEncounterInactive %2%>
+		GoBeginRoadblock <SMemo 5 History 6 SetPlotStatus %plotid1% %id1%>
+
+		Msg1 <You arrive at the end of a battle between %name3% and %name10%.>
+		Msg2 <You missed the action, \PC . My work here is finished. %name6%, I will leave you to mop up the rest. I don't care how many civilians you have to kill.>
+		Msg3 <It'll be my pleasure, captain. \SCENE &EpisodeScene will know that it belongs to \FACTION &EnemyFac !>
+		Msg4 <%name3% ordered \PPR %3% lieutenant %name6% to raze \SCENE &EpisodeScene .>
+		Msg5 <%name3% left \PPR %3% lieutenant to raze \SCENE &EpisodeScene . %name6% ordered %name7% and %name8% to hunt you down.>
+		Msg6 <%name6% assigned %name7% and %name8% to hunt you down.>
+		Msg7 <Don't think you can get away. I'll assign %name7% and %name8% to make sure you don't survive.>
+		Msg8 <You're stronger than you look, but don't think you're safe just yet. I'll send %name7% and %name8% to hunt you down.>
+		Msg9 <Finally, an opponent who might be worth my talents.>
+		Msg10 <I don't know... are we really doing the right thing here?>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			SetEnemy 1
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   WMecha 2 StoryDL 100>
+			ParaX 25
+			ParaY 25
+		end
+
+		MetaScene 5 2
+		%  This is the final battle against E6 and the surviving henchmen. It's likely to be
+		%  very tough, so hopefully the PC has gained the advantage or removed some of the
+		%  henchmen.
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1  ForceChat %6%>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1 LoseRenown History 1 SetMoodTimeLimit %9% 86400 LoseSubPlot %plotid%   Trigger0 .%id%_%plotid%_GoLoss>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   Alert 2 History 3   XPV 100  SALVAGE  KillMood %9%   AddRenown 1   Trigger0 .%id%_%plotid%_GoWin   WinSubPlot %plotid%>
+		end <SetEncounterInactive %5%>
+
+		Msg1 <You were defeated in combat by %name6%'s lance.>
+		Msg2 <With %name6% defeated, %name3%'s followers will be forced to leave \SCENE &EpisodeScene and peace will return.>
+		Msg3 <You defeated %name6%'s lance, driving them from \SCENE &EpisodeScene .>
+
+		sub
+			team 1
+			SetEnemy 2
+			SetAlly 3
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   if= P%id%03 0 else GoSmallDeploy WMecha 2 StoryDL 100>
+			GoSmallDeploy <WMecha 2 StoryDL 25>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			name <Reinforcements>
+			SetEnemy 2
+			SetAlly 1
+			Deploy <if# P%id%02 0   WMecha 2 StoryDL 100>
+			ParaX 10
+			ParaY 10
+		end
+
+		Persona 6
+		special <UNLISTED>
+		greeting <if= PlotStatus %plotid% %id% else %pop% EndChat Say %id%01 AddChat %id%01>
+		*result%id%01 <*THEME_EXPO&Enemy na>
+		Msg%id%01 <You managed to escape both %name7% and %name8%... that's quite impressive. Unfortunately it will be of no use to you now.>
+		Prompt%id%01 <I'll do the same to you.>
+
+		Persona 7
+		special <UNLISTED>
+		% V%id%01 = Have fought before
+		%  If the PC completed the first combat and heard E7 speak, it might be
+		%  possible to convince them to not fight now.
+		greeting <if= PlotStatus %plotid% %id% else %pop% if= v%id%01 0 else .%id%_GoSecondTime EndChat Say %id%01 AddChat %id%01 AddChat %id%02 V= %id%01 1>
+		*.%id%_GoSecondTime <*Back_For_More>
+		*result%id%01 <*THEME_EXPO&Enemy na>
+		result%id%02 <EndChat Say %id%02 P= %id%06 1 AddChat %id%03>
+		result%id%03 <Goto result%id%01>
+		Msg%id%01 <So there you are... I heard what you did to %name8%, but I assure you that I won't be nearly so easy to beat.>
+		Msg%id%02 <%name6% isn't the boss of me! I don't have to listen to \OPR %6%... it's just that right now I want to kick your ass of my own free will!>
+		Prompt%id%01 <We'll find out soon enough.>
+		Prompt%id%02 <If you're so tough, then why aren't you %name3%'s second?>
+		CPrompt%id%02 <if# P%id%04 0 ifInsight SkillTar StoryDL Accept>
+		Prompt%id%03 <[Continue]>
+
+		Persona 8
+		special <UNLISTED>
+		% V%id%01 = Have fought before
+		%  If the PC completed the first combat and heard E8 speak, it might be
+		%  possible to convince them to not fight now.
+		greeting <if= PlotStatus %plotid% %id% else %pop% if= P%id%05 0 else %pop% if= v%id%01 0 else .%id%_GoSecondTime EndChat Say %id%01 AddChat %id%01 AddChat %id%02 V= %id%01 1>
+		*.%id%_GoSecondTime <*Back_For_More>
+		*.%id%_GoArgumentFail <*IDisagreeYouDie>
+		.%id%_GoArgumentWin <Retreat 2 P= %id%05 1>
+		.%id%_GoArgumentMeh <EndChat Say %id%04 History %id%07 PCFriend %8% Goto .%id%_GoArgumentWin>
+		.%id%_GoJoinLance <EndChat Say %id%05 History %id%06 PCAlly %8% AddLancemate %8% SetXXRMotivation %8% XXR_M_GreaterGood Goto .%id%_GoArgumentWin>
+		*result%id%01 <*THEME_EXPO&Enemy na>
+		result%id%02 <EndChat Say %id%02 AddChat %id%03 AddChat %id%04 AddChat %id%05>
+		result%id%03 <ifPCHeroic else .%id%_GoArgumentFail ifConversation SkillTar StoryDL else .%id%_GoArgumentFail EndChat Say %id%03 AddChat %id%06 AddChat %id%07>
+		result%id%04 <Goto result%id%01>
+		result%id%05 <ifConversation SkillTar StoryDL else .%id%_GoArgumentFail EndChat Say %id%04 PCFriend %8% History %id%07 Goto .%id%_GoArgumentWin>
+		result%id%06 <ifG PCHeroism d50 else .%id%_GoArgumentMeh Goto .%id%_GoJoinLance>
+		result%id%07 <ifG ChatNPCHeroism d50 else .%id%_GoArgumentMeh Goto .%id%_GoJoinLance>
+		Msg%id%01 <I've caught you! %name6% ordered me to defeat you, so I can't allow you to escape!>
+		Msg%id%02 <What else can I do? I may not like what %name3%'s doing to \SCENE &EpisodeScene , but I must remain loyal to \FACTION &EnemyFac .>
+		Msg%id%03 <But... but what about my friends? Is this really the right thing to do?>
+		Msg%id%04 <You're right... I won't fight you, but I can't betray my friends either. Goodbye \PC .>
+		Msg%id%05 <I think... I think you're right. I'll help you to defeat %name3%.>
+		Msg%id%06 <You convinced %name8% to join your side.>
+		Msg%id%07 <You convinced %name8% to abandon the fight.>
+		Prompt%id%01 <Let's get this over with.>
+		Prompt%id%02 <You don't have to do this, you know.>
+		CPrompt%id%02 <if# P%id%04 0 Accept>
+		Prompt%id%03 <Forget about them, and join my team instead!>
+		Prompt%id%04 <Die by my hand, then.>
+		Prompt%id%05 <You know what you're doing is wrong.>
+		Prompt%id%06 <%name3% must be stopped, for everyone's sake.>
+		Prompt%id%07 <Do whatever you think is right.>
+	end
+	inv
+		stc CORE-ACTIVATABLE
+		name <%name6%'s Lance>
+
+		Mood 3
+		name <"I Have Become Death" Mood>
+		plot_type <*FactionRampage>
+		Element1 <Grab -2>
+		Update <if= v1 0 V= 1 1   News 1>
+		Msg1_1 <%city% under siege as %name3%'s personal forces take control.>
+		Msg1_2 <Mecha from \FACTION &EnemyFac take control of %city% under the orders of %name3%.>
+		Msg1_3 <%name3% has begun a purge of \PPR %3% enemies from %city%; authorities powerless to stop the destruction.>
+		% Meme Messages
+		Msg_1 <When will the trouble with %me_name1% end?>
+		CMsg_1 <if# ChatNPCFac %me_1% Accept>
+		Msg_2 <Someone really ought to do something about %me_name1%... They must be stopped!>
+		CMsg_2 <if# ChatNPCFac %me_1% Accept>
+		Msg_3 <What did %city% do to deserve this? Those jerks from %me_name1% are acting like they own the place.>
+		CMsg_3 <if# ChatNPCFac %me_1% Accept>
+	end
+
+
+
+Content
+	name <Revenge Road>
+	size 12
+	desc <The Enemy has mobilized all forces to destroy the PC.>
+	requires <*:CS_MechaEncounter E:++ E:A.hat (E:M.---|E:M.com|E:M.see) -&Secondary>
+	changes <E:M>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+	% E3 is the enemy
+	% E4 is an environs scene
+	% E5 is an urban scene
+	% E6 is Seeker #1
+	% E7 is Seeker #2
+	Element3 <Grab 1>
+	Place3 </>
+	Element4 <Scene Environs !Near -7>
+	Element5 <Scene Urban !Near -7>
+	Element6 <Prefab>
+	Place6 <4>
+	Element7 <Prefab>
+	Place7 <5>
+
+	% P%id%01 = Have activated henchmen
+
+	% This subplot must propgate the effects of its own subplot backwards to
+	% the parent plot. Yahoo.
+	.%id1%_%plotid1%_GoWin  <WinSubPlot %plotid%  Trigger0 .%id%_%plotid%_GoWin>
+	.%id1%_%plotid1%_GoLoss <LoseSubPlot %plotid% Trigger0 .%id%_%plotid%_GoLoss>
+
+	% SubPlot1 = The enemy mission you have to stop
+	SubPlot1 <*:CS_StopNPCMission&IsEnemyNPC&Secondary 3>
+
+	sub
+		Persona 3
+		special <Unlisted>
+		greeting <if= PlotStatus %plotid% %id% else GoChat EndChat Say %id%01 AddCHat %id%01>
+		GoChat <NewChat SayAnything>
+		result%id%01 <EndCHat Say %id%02>
+		Msg%id%01 <Well done, \PC . I suppose you'll be disappointed to learn that your actions here won't prevent me from completing my mission.>
+		Msg%id%02 <Hardly. This is just the beginning! I've mobilized all of my lancemates and ordered them to destroy you. You will probably find yourself far too busy to stop me... that, or dead. Preferably dead.>
+		Prompt%id%01 <Maybe not, but I've decimated your forces!>
+		Prompt%id%01_1 <Maybe not, but I've made it harder on you!>
+
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1 History 1>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1   LoseSubPlot %plotid%   Trigger0 .%id1%_%plotid1%_GoLoss>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Alert 2  SMemo 3  History 4   ForceChat %3%  SetPlotStatus %plotid1% %id1%  SetXXRMotivation %3% XXR_M_Revenge  P= %id%01 1>
+		end <SetEncounterInactive %2%>
+
+		Msg1 <You fought a group of %name3%'s henchmen.>
+		Msg2 <You have defeated all of %name3%'s henchmen.>
+		Msg3 <You haven't yet stopped %name3%'s mission, and \SPR %3% has mobilized all of \PPR %3% forces to prevent you from doing so.>
+		Msg4 <%name3% mobilized all of \PPR %3% forces to destroy you.>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			SetEnemy 1
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   WMecha 2 StoryDL 150>
+			ParaX 45
+			ParaY 45
+		end
+
+		MetaScene 6 2
+		special <UNCHARTABLE>
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1>
+		nu1 <if= T1 0   Return if= L2 1 L= 2 2 AddRenown -1>
+		nu2 <if= T2 0 if= T3 0   if= L2 1 L= 2 2 Alert 2 Return>
+		nu3 <if= T2 0 if= T3 0   if= L2 1 L= 2 2 Alert 2 Return>
+		end <L= 2 0>
+
+		Msg2 <You have defeated this group of %name3%'s henchmen, but there will be more coming soon.>
+
+		sub
+			team 1
+			SetEnemy 2 3
+			ParaX 25
+			ParaY 25
+
+			team 2
+			name <From the Top>
+			SetEnemy 1
+			SetAlly 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   WMecha 2 StoryDL 50>
+			ParaX 20
+			ParaY 5
+
+			team 3
+			name <From the Bottom>
+			SetEnemy 1
+			SetAlly 2
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   WMecha 3 StoryDL 50>
+			ParaX 30
+			ParaY 45
+		end
+
+		MetaScene 7 2
+		special <UNCHARTABLE>
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1>
+		nu1 <if= T1 0   Return if= L2 1 L= 2 2 AddRenown -1>
+		nu2 <if= T2 0 if= T3 0   if= L2 1 L= 2 2 Alert 2 Return>
+		nu3 <if= T2 0 if= T3 0   if= L2 1 L= 2 2 Alert 2 Return>
+		end <L= 2 0>
+
+		Msg2 <You have defeated this group of %name3%'s henchmen, but there will be more coming soon.>
+
+		sub
+			team 1
+			SetEnemy 2 3
+			ParaX 25
+			ParaY 25
+
+			team 2
+			name <Left Flank>
+			SetEnemy 1
+			SetAlly 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   WMecha 2 StoryDL 50>
+			ParaX 5
+			ParaY 20
+
+			team 3
+			name <Right Flank>
+			SetEnemy 1
+			SetAlly 2
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   WMecha 3 StoryDL 50>
+			ParaX 45
+			ParaY 30
+		end
+
+	end
+	inv
+		Encounter
+		name <Henchmen>
+		% V1 = Recharge counter
+		update <if= PlotStatus %plotid% %id% else GoHide if# p%id%01 0 else GoHide ifG ComTime V1 else GoHide SetStat STAT_MetaVisibility 0   Goto GoSetOrders>
+		EncounterMove 20
+		use <ifG StatVal STAT_MetaVisibility -1  Print -1   V= 1 ComTime   V+ 1 10800   Exit Destination>
+		ATTACK <ifG StatVal STAT_MetaVisibility -1   ifG PCScale 0    V= 1 ComTime   V+ 1 10800   ifUStealth SkillTar StoryDL else GoAutoAttack   ifYesNo -3 -4 -5 else GoAvoidAttack Goto GoAutoAttack>
+		Msg-2 <You are suddenly attacked by %name3%'s henchmen!>
+
+		Encounter
+		name <Henchmen>
+		% V1 = Recharge counter
+		update <if= PlotStatus %plotid% %id% else GoHide if# p%id%01 0 else GoHide ifG ComTime V1 else GoHide SetStat STAT_MetaVisibility 0   Goto GoSetOrders>
+		EncounterMove 20
+		use <ifG StatVal STAT_MetaVisibility -1  Print -1   V= 1 ComTime   V+ 1 10800   Exit Destination>
+		ATTACK <ifG StatVal STAT_MetaVisibility -1   ifG PCScale 0    V= 1 ComTime   V+ 1 10800   ifUStealth SkillTar StoryDL else GoAutoAttack   ifYesNo -3 -4 -5 else GoAvoidAttack Goto GoAutoAttack>
+		Msg-2 <You are suddenly attacked by %name3%'s henchmen!>
+	end
+
+
+Content
+	name <Enemy Upgrade>
+	desc <Your enemy is given one last chance to defeat you or be replaced.>
+	requires <*:CS_MechaEncounter E:A.jr_ F:++ ~!Md ~!Hi>
+	changes <E:A E:++>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+	% E3 is the enemy fighter
+	% E4 is the replacement enemy
+	Element3 <Grab 1>
+	Place3 <2 (Enemies) sd enemy>
+	Element4 <Prefab>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have gained reinforcements
+	% P%id%03 = Have gained decimation
+	update <if= V%id%01 0 V= %id%01 1   SetPlotStatus %plotid1% %id1% NPCLevel %3% StoryDL SetNPCFaction %4% &EnemyFac>
+
+	.%id1%_%plotid1%_GoReinforcements <P= %id%02 1>
+	.%id1%_%plotid1%_GoDecimation     <P= %id%03 1>
+
+	%% Debriefing Msg - PC throws fight
+	Msg%id%11 <It appears that you didn't put up much of a fight. The enemy forces escaped unharmed.>
+
+	% SubPlot1 = Gain Advantage vs Raiders
+	SubPlot1 <*:CS_GainAdvantageVsMecha&Reinforcements&Decimation>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 4 ForceChat %3%  History 1 CancelSubPlot %plotid1% if# P%id%02 0 Alert 2>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1         Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid%  ifNPCOK %3% else GoE3Died  Monologue %4% 5  Monologue %3% 6  SetXXRAttitude %3% XXR_A_IsEqual  History 7>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Alert 3   Trigger0 .%id%_%plotid%_GoWin WinSubPlot %plotid%  ifNPCOK %3% else GoE3Died Goto GoE3Defeated>
+
+		end <SetEncounterInactive %2%>
+
+		GoE3Defeated <Monologue %4% 8 FreezeNPC %3% FreezeNPC %4% &SetEnemyNPC %4% SetXXRAttitude %4% XXR_A_IsSenior History 9>
+		GoE3Died <Monologue %4% 10 FreezeNPC %4% &SetEnemyNPC %4% SetXXRAttitude %4% XXR_A_IsSenior History 11>
+
+		Msg1 <%name3% was ordered to defeat you or be fired.>
+		Msg2 <Your reinforcements are here, as promised.>
+		Msg3 <You have defeated %name3%'s lance.>
+		Msg4 <You face a mecha force led by %name3% of \FACTION &EnemyFac .>
+		Msg5 <Congratulations, %name3%, it seems that you will keep your job.>
+		Msg6 <I'm just as surprised as anyone!>
+		Msg7 <You lost the battle, much to %name3%'s surprise.>
+		Msg8 <%name3%, you have failed \FACTION &EnemyFac for the last time. From this point on I will deal with \PC myself.>
+		Msg9 <You defeated %name3%, who was fired by %name4%.>
+		Msg10 <It's a shame that %name3% never lived up to \PPR %3% potential. I promise you this, \PC : \FACTION &EnemyFac will not allow you to escape.>
+		Msg11 <You killed %name3%. %name4% promised revenge.>
+
+		sub
+			team 1
+			setally 3
+			SetEnemy 2
+			ParaX 5
+			ParaY 10
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   if= p%id%03 0 else GoSmallDeploy WMecha 2 StoryDL 80>
+			GoSmallDeploy <WMecha 2 StoryDL 40>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			setally 1
+			setenemy 2
+			Deploy <if= PlotStatus %plotid% %id%  if# P%id%02 0   WMecha 3 StoryDL 60>
+			ParaX 10
+			ParaY 5
+		end
+
+		Persona 3
+		special <UNLISTED>
+		% V%id%01 = reaction bonus
+		greeting <if= PlotStatus %plotid% %id% else %pop% EndChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+		*result%id%01 <*THEME_EXPO&Enemy na>
+		result%id%02 <EndChat Say %id%02 AddChat %id%04 AddChat %id%05 AddChat %id%06>
+		result%id%03 <ifNPCVillainous else .%id%_GoR3Win EndChat Say %id%04 AddChat %id%04>
+		.%id%_GoR3Win <EndChat Say %id%03 AddChat %id%04 AddChat %id%05 AddChat %id%06 if= v%id%01 0 V= %id%01 1 AddReact d10>
+		result%id%04 <Goto result%id%01>
+		result%id%05 <ifNPCVillainous else .%id%_GoR5Win EndChat Say %id%05>
+		.%id%_GoR5Win <EndChat Say %id%06 AddReact d30 ifG React 45 PCFriend %3% SetXXRAttitude %3% XXR_A_Thankful>
+		result%id%06 <EndChat Say %id%07 AddChat %id%07 AddChat %id%08>
+		result%id%07 <EndChat Say %id%08 History %id%09 SetXXRAttitude %3% XXR_A_IsEqual PCFriend %3% SetDebriefing %id%11  L= 1 1 Retreat 2 XPV 200 Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid%>
+		result%id%08 <Goto result%id%01>
+		Msg%id%01 <This is it, \PC ... My boss %name4% told me that I have to defeat you, or else I'm going to get fired from \FACTION &EnemyFac .>
+		Msg%id%02 <Oh, \SPR %4% 's one of the hot pilots at \FACTION &EnemyFac . I don't think \SPR %4% likes me very much... keeps using words like "incompetent" and "execrable".>
+		Msg%id%03 <It's been a great pleasure fighting against you, too, \PC ... It's hard to believe that it could all be ending...>
+		Msg%id%04 <What, are you nuts? You do realize that I've been trying to kill you, don't you?>
+		Msg%id%05 <And maybe you're gonna die right now! My \ChatNPCMecha can't lose this time!>
+		Msg%id%06 <That's so kind of you to say... My... My... My \ChatNPCMecha will... Oh, I can't even say it. Let's just get this done with.>
+		Msg%id%07 <You want to keep me around that badly? I don't know... Are you really willing to do that?>
+		Msg%id%08 <Victory! Come on, lance, let's get out of here.>
+		Msg%id%09 <You threw the fight so %name3% could keep \PPR %3% job.>
+		Prompt%id%01_1 <Don't worry, I'll miss you.>
+		CPrompt%id%01_1 <ifG React 10 Accept>
+		Prompt%id%01_2 <Good. Maybe then you'll stop bugging me.>
+		CPrompt%id%01_2 <ifG 11 React Accept>
+		Prompt%id%02 <Who is this %name4%?>
+		Prompt%id%03 <No way! Where am I going to get an enemy as good as you?>
+		CPrompt%id%03 <ifG React 25 Accept>
+		Prompt%id%04 <Well, let's get it over with, then.>
+		Prompt%id%05 <Maybe after you're fired you can come work for me.>
+		CPrompt%id%05 <ifG React 15 Accept>
+		Prompt%id%06 <You know, I could throw the fight...>
+		CPrompt%id%06 <ifG React 35 ifInsight HardSkilltar StoryDL Accept>
+		Prompt%id%07 <Yes, I'll throw the fight for you.>
+		Prompt%id%08 <No, I'm just yanking your chain.>
+	end
+	inv
+		NPC Mecha Pilot
+		Initiative
+		ElectronicWarfare
+		SpotWeakness
+		Talent 5
+		Talent 8
+		Talent 16
+		MOTIVATION:Professional
+	end
+
+
+Content
+	name <E-Member Battle>
+	desc <Fight a member of the enemy faction.>
+	requires <*:CS_MechaEncounter ~&Raiders F:++ &Secondary -!Ne -!Lo>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+	% E3 is the enemy fighter
+	Element3 <Character HasMecha !Global !Comrade -2>
+	Place3 <2 (Enemies) sd enemy>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have gained reinforcements
+	% P%id%03 = Have gained decimation
+	update <if= V%id%01 0 V= %id%01 1   SetPlotStatus %plotid1% %id1% NPCLevel %3% StoryDL>
+
+	.%id1%_%plotid1%_GoReinforcements <P= %id%02 1>
+	.%id1%_%plotid1%_GoDecimation     <P= %id%03 1>
+
+	% SubPlot1 = Gain Advantage vs Raiders
+	SubPlot1 <*:CS_GainAdvantageVsMecha&Reinforcements&Decimation>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 4 ForceChat %3%  History 1 CancelSubPlot %plotid1% if# P%id%02 0 Alert 2>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1         Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Alert 3   Trigger0 .%id%_%plotid%_GoWin WinSubPlot %plotid%>
+		end <SetEncounterInactive %2%>
+
+		Msg1 <You fought %name3% of \FACTION &EnemyFac .>
+		Msg2 <Your reinforcements are here, as promised.>
+		Msg3 <You have defeated %name3%'s lance.>
+		Msg4 <You face a mecha force led by %name3% of \FACTION &EnemyFac .>
+
+		sub
+			team 1
+			setally 3
+			SetEnemy 2
+			ParaX 5
+			ParaY 10
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   if= p%id%03 0 else GoSmallDeploy WMecha 2 StoryDL 80>
+			GoSmallDeploy <WMecha 2 StoryDL 40>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			setally 1
+			setenemy 2
+			Deploy <if= PlotStatus %plotid% %id%  if# P%id%02 0   WMecha 3 StoryDL 60>
+			ParaX 10
+			ParaY 5
+		end
+
+		Persona 3
+		special <UNLISTED>
+		greeting <if= PlotStatus %plotid% %id% else %pop% Goto GoGreet>
+		*GoGreet <*BattleChallenge GoThemeExpo na>
+		*GoThemeExpo <*THEME_EXPO&Enemy na>
+	end
+
+Content
+	name <They Are A Pirate>
+	desc <Your enemy has been hired by a pirate captain.>
+	requires <*:CS_MechaEncounter E:++ F:-- -!Ne (L:FCOMS|L:MAQUI|L:RISHI) ~E:THIEF ~E:M.mer ~C:POLIC ~P:POLIC ~P:SILKN ~P:ROCKE>
+	changes <F:++>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+	% E3 is the pirate faction
+	% E4 is the enemy fighter
+	% E5 is the enemy NPC
+	Element3 <Faction (CRIHN|REDMA) !XClude -3 -ArchAlly>
+	Element4 <Prefab>
+	Place4 <2 (Enemies) sd enemy>
+	Element5 <Grab 1>
+	Place5 </>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have gained reinforcements
+	% P%id%03 = Have gained decimation
+	update <if= V%id%01 0 V= %id%01 1   SetPlotStatus %plotid1% %id1% NPCLevel %4% StoryDL SetNPCFaction %4% %3%>
+
+	.%id1%_%plotid1%_GoReinforcements <P= %id%02 1>
+	.%id1%_%plotid1%_GoDecimation     <P= %id%03 1>
+
+	%% Debriefing Message
+	Msg%id%11_1 <%name5% has taken up the black flag. I guess that means we're going to be taking on all of %name3%, now.>
+	CMsg%id%11_1 <ifChatNPCAlly Accept>
+
+	% SubPlot1 = Gain Advantage vs Raiders
+	SubPlot1 <*:CS_GainAdvantageVsMecha&Reinforcements&Decimation>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		rumor%id% <%name5% has a meeting planned with some unsavory types.>
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 4 Alert 5 ForceChat %4% &SetEnemyFac %3%  PCFEnemy %3%  Debriefing %id%11  History 1 CancelSubPlot %plotid1% if# P%id%02 0 Alert 2>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1         Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Alert 3   Trigger0 .%id%_%plotid%_GoWin WinSubPlot %plotid%>
+		end <SetEncounterInactive %2%>
+
+		Msg1 <You learned that %name3% hired %name5%.>
+		Msg2 <Your reinforcements are here, as promised.>
+		Msg3 <You have defeated %name4%'s lance.>
+		Msg4 <You catch a glimpse of %name5%'s mecha speeding off in the distance, and immediately give chase.>
+		Msg5 <Suddenly, you are attacked by a group of pirates who were apparently traveling with \OPR %5% .>
+
+		sub
+			team 1
+			setally 3
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction %3%   if= p%id%03 0 else GoSmallDeploy WMecha 2 StoryDL 100>
+			GoSmallDeploy <WMecha 2 StoryDL 60>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			setally 1
+			setenemy 2
+			Deploy <if= PlotStatus %plotid% %id%  if# P%id%02 0   WMecha 3 StoryDL 60>
+			ParaX 10
+			ParaY 5
+		end
+
+		Persona 4
+		special <UNLISTED>
+		greeting <if= PlotStatus %plotid% %id% else %pop% Goto GoGreet>
+		GoGreet <NewChat Say 1 AddChat 1 AddChat 2>
+		*result1 <*THEME_EXPO&Enemy na>
+		result2 <AddEasygoing d10   Goto result1>
+		Msg1 <You must be \PC ... %name5% said \SPR %5% had a fan club when \SPR %5% signed up. You better know, you pick a fight with one of us and you pick a fight with all %name3%.>
+		prompt1 <I'm willing to take those odds.>
+		prompt2 <My fight is just with %name5%, not with you.>
+	end
+	inv
+		NPC Pirate
+	end
+
+Content
+	name <You Haven't Won Yet>
+	desc <PC waels on Enemy's henchmen, Enemy shows up immediately to wael on PC.>
+	requires <*:CS_MechaEncounter (E:M.pro|E:M.see) (E:A.---|E:A.sr_) -!Ne -&Secondary>
+	changes <E:A>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+	% E3 is the encounter for the second fight. Brutal!
+	% E4 is the enemy
+	% E5 is a secret- that there's an ambush waiting!
+	Element3 <Prefab>
+	Place3 <1>
+	Element4 <Grab 1>
+	Place4 <3 (Enemies)>
+	Element5 <Prefab>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Decimation Counter
+	% P%id%03 = Reinforcements Counter
+	% P%id%04 = Learn Secret Counter
+
+	update <if= P%id%01 0 P= %id%01 1   SetPlotStatus %plotid1% %id1%  SetPlotStatus %plotid2% %id2%  NPCLevel %4% StoryDL>
+
+	.%id1%_%plotid1%_GoDecimation <P= %id%02 1>
+	.%id1%_%plotid1%_GoReinforcements <P= %id%03 1>
+	.%id2%_%plotid2%_GoLearnSecret <P= %id%04 1>
+
+
+	% SubPlot1 is the Gain Advantage task
+	% SubPlot2 is the Learn Secret task
+	SubPlot1 <*:CS_GainAdvantageVsNPC&Decimation&Reinforcements 4>
+	SubPlot2 <*:CS_LearnSecretAboutNPC 5 4>
+
+
+	sub
+		MetaScene 2 2
+		% This first scene is a pretty easy fight. If the PC doesn't know that there
+		% is going to be an ambush, all advantages will be spent here. Otherwise the
+		% advantages will be spent in the second, tougher encounter.
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 1  CancelSubPlot %plotid1%  CancelSubPlot %plotid2%  if= p%id%04 0 if# P%id%03 0 Alert 2>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1   Alert 4 History 4   Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100   SALVAGE   Alert 3   SetEncounterActive %3% Return>
+		end <SetEncounterInactive %2%  if= p%id%04 0 if# P%id%03 0   Alert 5>
+
+		Msg1 <You locate the raiders. This looks like it's going to be a pretty easy fight.>
+		Msg2 <Your reinforcements are here, as promised.>
+		Msg3 <You have defeated the henchmen... but where is %name4%?>
+		Msg4 <You were defeated by %name4%'s henchmen.>
+		Msg5 <Your reinforcements head off for repairs.>
+
+		sub
+			team 1
+			setally 3
+			SetEnemy 2
+			ParaX 5
+			ParaY 10
+
+			team 2
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   if= p%id%04 0 else GoBigDeploy if# P%id%02 0 else GoBigDeploy   WMecha 2 StoryDL 60>
+			GoBigDeploy <WMecha 2 StoryDL 90>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			setally 1
+			setenemy 2
+			Deploy <if= PlotStatus %plotid% %id%  if= p%id%04 0 if# P%id%03 0   WMecha 3 StoryDL 60>
+			ParaX 10
+			ParaY 5
+		end
+
+		MetaScene 3 2
+		% This second scene is much harder. The Enemy is here, along with a full
+		% complement of guards... unless the PC managed to get both the advantage and
+		% the secret, that is.
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		special <ARENA>
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 1 Monologue %4% 2  History 4  if# p%id%04 0  PCMonologue 3>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1   Monologue %4% 5  History 6   Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100   SALVAGE   Alert 7 Monologue %4% 8  History 9  SetXXRAttitude %4% XXR_A_IsEqual  Trigger0 .%id%_%plotid%_GoWin  WinSubPlot %plotid%>
+		end <SetEncounterInactive %3% ifNPCDead %4% Print 10>
+
+		Msg1 <Without warning, you are attacked by %name4%!>
+		Msg2 <My associates have failed one too many times, \PC . Now I'll finish you myself.>
+		Msg3 <Fortunately I saw this coming.>
+		Msg4 <After defeating \PPR %4% lance, %name4% appeared to fight you personally.>
+		Msg5 <It appears that you aren't so great after all.>
+		Msg6 <You were defeated by %name4%.>
+		Msg7 <You have defeated %name4% and all of \PPR %4% lancemates.>
+		Msg8 <It appears that I was wrong about you, \PC ... You are a worthy adversary. I look forward to our next battle.>
+		Msg9 <You defeated %name4%, earning \PPR %4% respect.>
+		Msg10 <After the battle, you notice that %name4%'s cockpit is mysteriously empty.>
+
+		sub
+			team 1
+			setally 3
+			SetEnemy 2
+			ParaX 5
+			ParaY 10
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   if= p%id%04 1 else GoBigDeploy if# P%id%02 0 else GoBigDeploy   WMecha 2 StoryDL 40>
+			GoBigDeploy <WMecha 2 StoryDL 100>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			setally 1
+			setenemy 2
+			Deploy <if= PlotStatus %plotid% %id%  if= p%id%04 1 if# P%id%03 0   WMecha 3 StoryDL 60>
+			ParaX 10
+			ParaY 5
+		end
+
+	end
+	inv
+		STC CORE-MECHAAMBUSH-ACTIVATABLE
+		name <Surprise Ambush>
+
+		Secret
+		Msg <%name4% has been watching you; \SPR %4% 's not going to let you get away this time.>
+	end
+
+Content
+	name <Not Part of the Job>
+	desc <PC finds enemy, but fighting PC isn't part of the job.>
+	requires <*:CS_MechaEncounter E:++ (E:A.equ|E:A.env|E:A.adm|E:A.---) E:M.--- ~E:MILIT ~E:POLIT ~E:GOOD_ -&Secondary>
+	changes <E:M>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+	% E3 is the enemy
+	% E4 is the secondary enemy
+	Element3 <Grab 1>
+	Place3 </>
+	Element4 <Prefab>
+	Place4 </>
+
+	% P%id%01 = Initialization Counter
+
+	% At initialization, prepare E4 for combat
+	update <if= P%id%01 0 P= %id%01 1  NPCLevel %4% StoryDL  MoveNPC %4% %2%  SetNPCTeam %4% 2  SetNPCFaction %4% &EnemyFac>
+
+	% This subplot must propgate the effects of its own subplot backwards to
+	% the parent plot. Yahoo.
+	.%id1%_%plotid1%_GoWin  <Trigger0 .%id%_%plotid%_GoWin>
+	.%id1%_%plotid1%_GoLoss <Trigger0 .%id%_%plotid%_GoLoss>
+
+	% SubPlot1 = The enemy mission you have to stop
+	SubPlot1 <*:CS_StopNPCMission&IsEnemyNPC&Secondary 3>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 30
+		MapHeight 30
+
+		% At startup, E3 and E4 argue over the situation.
+		% You must win this fight, or E4's forces will complete E3's mission.
+		Start <if= L2 0 L= 2 1  Alert 4 Monologue %4% 1 Monologue %3% 2 Monologue %4% 3 Alert 5 History 6   SetXXRMotivation %3% XXR_M_Professional>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1   LoseRenown  CancelSubPlot %plotid%  Trigger0 .%id%_%plotid%_GoLoss  SetXXRAttitude %4% XXR_A_IsSenior>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Alert 7 SMemo 7   SetPlotStatus %plotid1% %id1%  SetXXRAttitude %4% XXR_A_IsJunior>
+		end <SetEncounterInactive %2% CancelSubPlot %plotid%>
+		Msg1 <Look, it's that pilot you told us about! Let's go fight \OPR 0 ...>
+		Msg1_1 <Look, it's \PC ! This is our big chance to finish \OPR 0 off once and for all...>
+		Msg1_2 <Say, isn't that the pilot who's always causing you problems? Let's go fight \OPR 0 !>
+		Msg2 <Fighting \PC isn't part of the plan, %name4% . You're jeopardizing our mission.>
+		Msg2_1 <We aren't here to pick fights, %name4% . We've got a mission to complete and you're jeopardizing it right now.>
+		CMsg2_1 <ifNPCHeroic Accept>
+		Msg2_2 <As much as I'd love \PC 's head on a stick, that's not why we came to \SCENE RootSceneID . We have a mission to complete and I'm not gonna let you muck it up.>
+		CMsg2_2 <ifNPCVillainous Accept>
+		Msg3 <Bah, you go do your precious mission. I'll catch up with you when I'm finished here.>
+		Msg3_1 <Got to do everything by the book, don't you %name3%? You go on ahead. I'll catch up when I'm finished here.>
+		Msg3_2 <You must think \PC 's really something, don't you? I'll beat \OPR 0 easy, then go finish your stupid mission.>
+		Msg4 <You face a large force of mecha led by %name3%.>
+		Msg5 <If you want to stop %name3%'s plan, it looks like you'll need to defeat %name4% first.>
+		Msg6 <You fought %name4%, while %name3% left to complete a mission.>
+		Msg7 <You defeated %name4%. Now, it's time to find %name3%.>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			SetEnemy 1
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   WMecha 2 StoryDL 70>
+			ParaX 25
+			ParaY 25
+		end
+	end
+	inv
+		NPC Mercenary
+		job_desig <MOOK_>
+		chardesc passionate melancholy
+	end
+
+
+Content
+	name <You Can't Stop Me>
+	desc <Enemy NPC taunts PC, then leaves to complete some mission.>
+	requires <*:CS_MechaEncounter E:++ E:A.nme -&Secondary>
+	changes <E:A>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+	% E3 is the enemy
+	Element3 <Grab 1>
+	Place3 </>
+
+	% This subplot must propgate the effects of its own subplot backwards to
+	% the parent plot. Yahoo.
+	.%id1%_%plotid1%_GoWin  <Trigger0 .%id%_%plotid%_GoWin>
+	.%id1%_%plotid1%_GoLoss <Trigger0 .%id%_%plotid%_GoLoss>
+
+	% SubPlot1 = The enemy mission you have to stop
+	SubPlot1 <*:CS_StopNPCMission&IsEnemyNPC&Secondary 3>
+
+	sub
+		Persona 3
+		special <Unlisted>
+		greeting <if= PlotStatus %plotid% %id% else GoChat EndChat Say %id%01 AddCHat %id%01>
+		GoChat <NewChat SayAnything>
+		result%id%01 <EndCHat Say %id%02 Print %id%03>
+		Msg%id%01 <\PC , so we finally meet. I am %name3%. I understand that you gave my men some trouble back there.>
+		Msg%id%02 <I'd advise you to not meddle in my affairs again. I've got a mission to complete and no insignificant worm like yourself is going to stand in my way. Here's a small taste of what you can expect should we happen to meet again.>
+		Msg%id%03 <%name3% leaves the area.>
+		Prompt%id%01 <No, I gave them a lot of trouble.>
+
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 30
+		MapHeight 30
+
+		% Whether you win or lose this fight isn't important. Of course, there are some benefits
+		% to winning... The timer starts from the conclusion of the fight, because I can be just
+		% as cruel to my NPCs as I am to the PC.
+		Start <if= L2 0 L= 2 1   ForceChat %3%  StoryNote 1   SetXXRAttitude %3% XXR_A_IsSenior>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1   AddRenown -1  SetPlotStatus %plotid1% %id1%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Alert 2   SetPlotStatus %plotid1% %id1%>
+		end <SetEncounterInactive %2% CancelSubPlot %plotid%>
+
+		Msg1 <You fought %name3%'s lancemates, while \SPR %3% left to complete a mission.>
+		Msg2 <You defeated %name3%'s lancemates, but where did \SPR %3% go?>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			SetEnemy 1
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   WMecha 2 StoryDL 100>
+			ParaX 25
+			ParaY 25
+		end
+	end
+
+Content
+	name <Learn of Enemy Leader>
+	desc <Fight some raiders; learn the identity of their leader, who isn't present.>
+	requires <*:CS_MechaEncounter &Raiders E:-->
+	changes <E:++>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+	% E3 is the new enemy
+	Element3 <NewNPC -2 -7>
+	Place3 </>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have gained reinforcements
+	update <if= V%id%01 0 V= %id%01 1   SetPlotStatus %plotid1% %id1%>
+
+	.%id1%_%plotid1%_GoReinforcements <P= %id%02 1>
+
+	%%  Debriefing Message
+	Msg%id%11 <%name3%, you say? I don't know anything about \OPR %3% ... I expect you'll find out shortly.>
+	Msg%id%11_1 <I think I've heard of this %name3%. They say \SPR %3% works for \FACTION &EnemyFac .>
+	CMsg%id%11_1 <ifFactionExists &EnemyFac Accept>
+	Msg%id%11_2 <I know about %name3%... \SPR %3% 's clashed with \FACTION &AllyFac before. I believe \SPR %3% works for \FACTION &EnemyFac .>
+	CMsg%id%11_2 <ifFactionExists &EnemyFac ifFactionExists &AllyFac Accept>
+	Msg%id%11_3 <%name3% has fought with \FACTION &AllyFac before. I advise you to take care; you'll probably be crossing paths with \OPR %3% again.>
+	CMsg%id%11_3 <ifFactionExists &AllyFac Accept>
+
+	% SubPlot1 = Gain Advantage vs Raiders
+	SubPlot1 <*:CS_GainAdvantageVsMecha&Reinforcements>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 1  TeamMonologue 2 2   SetXXRAttitude %3% XXR_A_NeverMet  StoryNote 3   &SetEnemyNPC %3%  SetDebriefing %id%11  CancelSubPlot %plotid1% if# P%id%02 0 Alert 6>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1   Alert 4   Trigger0 .%id%_%plotid%_GoLoss>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Alert 5   Trigger0 .%id%_%plotid%_GoWin>
+		end <SetEncounterInactive %2%>
+
+		Msg1 <You locate the group of raiders that you've been searching for.>
+		Msg2_1 <Huh, who's this? Another challenger for %name3%, I guess... \SPR %3% 's not here right now, but the rest of us should be able to handle you just fine.>
+		Msg2_2 <Look over there, I guess that's what passes for the town guard in \SCENE RootSceneID . %name3%'s gonna reward us if we defeat \OPR 0 ourselves!>
+		Msg2_3 <Hey look, it's a cavalier! I know %name3% hates for us to attack without talking first, but \SPR %3% 's not here so let's get to it!>
+		CMsg2_3 <ifG NPCHeroism %3% 0 Accept>
+		Msg2_4 <Look at that, an innocent little junior cavalier. %name3%'s gonna be sorry \SPR %3% missed this carnage, but \SPR %3% won't forgive us if we let that creep live!>
+		CMsg2_4 <ifG 0 NPCHeroism %3% Accept>
+		Msg2_5 <Crap, we're under attack, and %name3% isn't here! What would \SPR %3% say to do? Quick you lunks, defend the honor of \FACTION &EnemyFac !>
+		CMsg2_5 <ifFactionExists &EnemyFac Accept>
+		Msg3 <You fought the raiders, but their leader %name3% wasn't present.>
+		Msg4 <If the raiders were capable of this by themselves, you're probably lucky that %name3% wasn't with them.>
+		Msg5 <You have defeated the raiders, but their leader %name3% is nowhere to be found.>
+		Msg6 <Your reinforcements are here, as promised.>
+
+		sub
+			team 1
+			setally 3
+			SetEnemy 2
+			ParaX 5
+			ParaY 10
+
+			team 2
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   WMecha 2 StoryDL 150>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			setally 1
+			setenemy 2
+			Deploy <if= PlotStatus %plotid% %id%  if# P%id%02 0   WMecha 3 StoryDL 60>
+			ParaX 10
+			ParaY 5
+		end
+	end
+
+Content
+	name <Henchmen Battle>
+	desc <Fight some henchmen of the enemy NPC.>
+	requires <*:CS_MechaEncounter ~&Raiders E:++ -E:A.--- &Secondary -!Md -!Hi -!Ex>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have gained reinforcements
+	% P%id%03 = Have gained decimation
+	update <if= V%id%01 0 V= %id%01 1   SetPlotStatus %plotid1% %id1%>
+
+	.%id1%_%plotid1%_GoReinforcements <P= %id%02 1>
+	.%id1%_%plotid1%_GoDecimation     <P= %id%03 1>
+
+	% SubPlot1 = Gain Advantage vs Raiders
+	SubPlot1 <*:CS_GainAdvantageVsMecha&Reinforcements&Decimation>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   TeamMonologue 2 1  History 2 CancelSubPlot %plotid1% if# P%id%02 0 Alert 3>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1         Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Alert 4   Trigger0 .%id%_%plotid%_GoWin WinSubPlot %plotid%>
+		end <SetEncounterInactive %2%>
+
+		Msg1_1 <Look, it's \PC ! Whoever defeats \OPR 0 is going to be rewarded by \PERSONA &EnemyNPC !>
+		Msg1_2 <>
+		Msg1_3 <>
+		Msg1_4 <>
+		Msg1_5 <>
+		Msg2 <You fought a group of \PERSONA &EnemyNPC 's henchmen.>
+		Msg3 <Your reinforcements are here, as promised.>
+		Msg4 <You have defeated the raiders.>
+
+		sub
+			team 1
+			setally 3
+			SetEnemy 2
+			ParaX 5
+			ParaY 10
+
+			team 2
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   if= p%id%03 0 else GoSmallDeploy WMecha 2 StoryDL 150>
+			GoSmallDeploy <WMecha 2 StoryDL 90>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			setally 1
+			setenemy 2
+			Deploy <if= PlotStatus %plotid% %id%  if# P%id%02 0   WMecha 3 StoryDL 60>
+			ParaX 10
+			ParaY 5
+		end
+	end
+
+Content
+	name <MIX Master>
+	desc <Instead of containing an encounter itself, this one just pawns things off on the MIX.>
+	requires <*:CS_MechaEncounter ~&Raiders E:++ ~F:++ ~P:++ -&Beancounter>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+	% E3 is the Enemy NPC
+	Element3 <Grab 1>
+
+	% P%id%01 = Initialization Counter
+	update <if= V%id%01 0 V= %id%01 1   SetPlotStatus %plotid1% %id1%>
+
+	.%id1%_%plotid1%_GoWin  <Trigger0 .%id%_%plotid%_GoWin>
+	.%id1%_%plotid1%_GoLoss <Trigger0 .%id%_%plotid%_GoLoss>
+
+	% SubPlot1 = MIX Encounter
+	SubPlot1 <*:CS_MIX_Encounter 1 2 3>
+
+
+%  ***************************
+%  ***   OMEGA  MISSIONS   ***
+%  ***************************
+%
+% In certain cases, the core story development will outpace the PC's
+% advancement. This can happen if the PC loses some episodes after triggering
+% their context changes. In this case, the following episodes will be
+% omega missions until the PC reaches the next difficulty band.
+
+Content
+	name <Rookie Omega>
+	desc <Can't face a professional, senior enemy until !Lo at least>
+	requires <*:CS_MechaEncounter (E:A.sr_|E:A.ant|E:A.sec|E:A.equ|E:A.env|E:A.pch|E:A.hat|E:A.mut|E:A.obs) (E:M.pro|E:M.com|E:M.ggd|E:M.see|E:M.rev|E:M.cha|E:M.nih) ~!Lo -!Md -!Hi -!Ex -&Beancounter>
+	% Certain advanced motivations/attitudes will also trigger this omega
+	% state, even though they may not be part of the beanpole or even strictly
+	% possible at this time.
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+	% E3 is the enemy NPC
+	Element3 <Grab 1>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have gained reinforcements
+	% P%id%03 = Have gained decimation
+	update <if= V%id%01 0 V= %id%01 1   SetPlotStatus %plotid1% %id1%>
+
+	.%id1%_%plotid1%_GoReinforcements <P= %id%02 1>
+	.%id1%_%plotid1%_GoDecimation     <P= %id%03 1>
+
+	% SubPlot1 = Gain Advantage vs Raiders
+	SubPlot1 <*:CS_GainAdvantageVsMecha&Reinforcements&Decimation>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 1  Monologue %3% 2  History 3 CancelSubPlot %plotid1% if# P%id%02 0 Alert 4>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1         Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Alert 5   Trigger0 .%id%_%plotid%_GoWin WinSubPlot %plotid%>
+		end <SetEncounterInactive %2%>
+
+		Msg1 <You arrive just in time to see %name3%'s lance finishing off a rival cavalier.>
+		Msg1_1 <You arrive just in time to see %name3%'s men finishing off a lance from \FACTION &AllyFac .>
+		CMsg1_1 <ifFactionExists &AllyFac Accept>
+		Msg1_2 <You arrive just in time to see %name3%'s lance finishing off a ship belonging to \FACTION &AllyFac .>
+		CMsg1_2 <ifFactionExists &AllyFac Accept>
+		Msg2_1 <You're too late, \PC . My work here is finished... but you may provide some entertainment for my lance.>
+		Msg2_2 <My work here is finished. I don't want to fight you, \PC , but you need to learn to keep out of our plans.>
+		CMsg2_2 <ifNPCHeroic Accept>
+		Msg2_3 <How does it feel to watch your comrades die and be unable to save them? My work here is finished... Men, whoever brings me \PC 's severed head wins an instant promotion.>
+		CMsg2_3 <ifNPCVillainous Accept>
+		Msg2_4 <You're too late, \PC . I hope you can understand how important the work of \FACTION &EnemyFac is... but I'm afraid that I can't allow you to interfere. Lance, please stop \OPR 0 .>
+		CMsg2_4 <ifNPCHeroic ifFactionExists &EnemyFac Accept>
+		Msg2_5 <You're too late to save them, \PC ; I've killed them all. The same will happen to you if you continue to oppose \FACTION &EnemyFac ... Men, defeat this worm.>
+		CMsg2_5 <ifNPCVillainous ifFactionExists &EnemyFac Accept>
+		Msg3 <You were attacked by %name3%'s henchmen.>
+		Msg4 <Your reinforcements are here, as promised.>
+		Msg5 <You have defeated %name3%'s henchmen.>
+
+		sub
+			team 1
+			setally 3
+			SetEnemy 2
+			ParaX 5
+			ParaY 10
+
+			team 2
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   if= p%id%03 0 else GoSmallDeploy WMecha 2 StoryDL 160>
+			GoSmallDeploy <WMecha 2 StoryDL 100>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			setally 1
+			setenemy 2
+			Deploy <if= PlotStatus %plotid% %id%  if# P%id%02 0   WMecha 3 StoryDL 60>
+			ParaX 10
+			ParaY 5
+		end
+	end
+
+
+Content
+	name <Omega State>
+	desc <Fight a member of the enemy faction. This subplot only occurs when the beanpole is ended.>
+	% If the enemy NPC is both nihilistic and obsessed with the PC, no
+	% further character development is possible.
+	requires <*:CS_MechaEncounter E:A.obs E:M.nih F:++ -&Beancounter>
+
+	% E1 is the outdoors scene where this encounter will be placed
+	% E2 is the metascene to be used for this encounter
+	% E3 is the enemy fighter
+	Element3 <Character HasMecha !Global !Comrade -2 NeverFail>
+	NeverFail3 <Mecha Pilot>
+	Place3 <2 (Enemies) sd enemy>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have gained reinforcements
+	% P%id%03 = Have gained decimation
+	update <if= V%id%01 0 V= %id%01 1   SetPlotStatus %plotid1% %id1% NPCLevel %3% StoryDL>
+
+	.%id1%_%plotid1%_GoReinforcements <P= %id%02 1>
+	.%id1%_%plotid1%_GoDecimation     <P= %id%03 1>
+
+	% SubPlot1 = Gain Advantage vs Raiders
+	SubPlot1 <*:CS_GainAdvantageVsMecha&Reinforcements&Decimation>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 4 ForceChat %3%  History 1 CancelSubPlot %plotid1% if# P%id%02 0 Alert 2>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1         Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Alert 3   Trigger0 .%id%_%plotid%_GoWin WinSubPlot %plotid%>
+		end <SetEncounterInactive %2%>
+
+		Msg1 <You fought %name3% of \FACTION &EnemyFac .>
+		Msg2 <Your reinforcements are here, as promised.>
+		Msg3 <You have defeated %name3%'s lance.>
+		Msg4 <You face a mecha force led by %name3% of \FACTION &EnemyFac .>
+
+		sub
+			team 1
+			setally 3
+			SetEnemy 2
+			ParaX 5
+			ParaY 10
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   if= p%id%03 0 else GoSmallDeploy WMecha 2 StoryDL 100>
+			GoSmallDeploy <WMecha 2 StoryDL 60>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			setally 1
+			setenemy 2
+			Deploy <if= PlotStatus %plotid% %id%  if# P%id%02 0   WMecha 3 StoryDL 60>
+			ParaX 10
+			ParaY 5
+		end
+
+		Persona 3
+		special <UNLISTED>
+		greeting <if= PlotStatus %plotid% %id% else %pop% Goto GoGreet>
+		*GoGreet <*BattleChallenge GoThemeExpo na>
+		*GoThemeExpo <*THEME_EXPO&Enemy na>
+	end
+
+
+
+
+
+

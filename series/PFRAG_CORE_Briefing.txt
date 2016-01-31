@@ -1,0 +1,612 @@
+% TYPE: *CS_BasicStopEnemyMission
+%	The PC is being given a basic stop enemy mission. In this mission, the PC will be
+%	told to go stop the enemy NPC from doing whatever the enemy NPC is doing.
+%	If the PC is a member of the mission-giver's faction, refusal is impossible.
+%   NOTE: This component is responsible for setting the StoryNote
+%	Generally, a note will be stored for accepting the mission, but not for rejecting
+%	the mission.
+%   PARAM1: Accept Mission Exit Label
+%   PARAM2: Reject Mission Exit Label (Note: Not all missions may be rejected!)
+%	(Also note: If this component features another ending, neither exit may
+%	 be called)
+%   PARAM3: Reward Hint (the layerid of the reward subplot)
+
+	Persona
+	requires <*CS_BasicStopEnemyMission "MEDIC" ~E:EVIL_ ~"NOFAC" ~*CORE_DEF_ ~*CORE_OFF_>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <StoryNote %id%02 Goto %1%>
+	result%id%02 <Goto %2%>
+	Msg%id%01_1 <A pilot was brought here in critical condition. He was incoherent, but kept muttering something about having to stop \PERSONA &EnemyNPC ... It sounded important. If possible, I'd like for you to investigate this. \HINT %3%>
+	Msg%id%01_2 <A pilot was brought here in critical condition. She was incoherent, but kept muttering something about having to stop \PERSONA &EnemyNPC ... It sounded important. If possible, I'd like for you to investigate this. \HINT %3%>
+	Msg%id%01_10 <>
+	CMsg%id%01_10 <ifNPCSociable Accept>
+	Msg%id%01_20 <>
+	CMsg%id%01_20 <ifNPCShy Accept>
+	Msg%id%01_30 <>
+	CMsg%id%01_30 <ifNPCEasygoing Accept>
+	Msg%id%01_40 <>
+	CMsg%id%01_40 <ifNPCPassionate Accept>
+	Msg%id%01_50 <>
+	CMsg%id%01_50 <ifNPCCheerful Accept>
+	Msg%id%01_60 <>
+	CMsg%id%01_60 <ifNPCMelancholy Accept>
+	Msg%id%02 <\CHATNPC hired you to stop \PERSONA &EnemyNPC from completing \PPR &EnemyNPC mission.>
+	Prompt%id%01 <Alright, I'll see what I can do.>
+	Prompt%id%01_1 <If \PERSONA &EnemyNPC 's involved, it must be bad.>
+	Prompt%id%02 <That isn't my problem.>
+	CPrompt%id%02 <if# PCFac ChatNPCFac Accept>
+	Prompt%id%02_1 <Look, I don't want to get involved.>
+
+
+	Persona
+	requires <*CS_BasicStopEnemyMission P:++ P:PCFAC -"PCFAC">
+	%% The PC is here on behaf of their faction.
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+	result%id%01 <StoryNote %id%02 Goto %1%>
+	result%id%02 <StoryNote %id%02 AddSociable -d10 Goto %1%>
+	result%id%03 <StoryNote %id%02 AddSociable  d10 Goto %1%>
+	Msg%id%01 <According to \FACTION &AllyFac , you can help us with our \PERSONA &EnemyNPC problem. It seems \SPR &EnemyNPC 's in town on some kind of a mission, and we need you to stop \OPR &EnemyNPC . \HINT %3%>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%02 <\CHATNPC hired you to stop \PERSONA &EnemyNPC from completing \PPR &EnemyNPC mission.>
+	Prompt%id%01 <I've beaten \OPR &EnemyNPC before, and will again.>
+	Prompt%id%01_1 <>
+	Prompt%id%01_2 <>
+	Prompt%id%02 <Just to be clear, I work for \FACTION &AllyFac , not you.>
+	Prompt%id%03 <It'll be a pleasure to aid \FACTION ChatNPCFac .>
+	CPrompt%id%03 <if# 0 ChatNPCFac Accept>
+
+	Persona
+	requires <*CS_BasicStopEnemyMission ~"POLIC" (E:THIEF|F:CRIME)>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <StoryNote %id%02 Goto %1%>
+	result%id%02 <SMemo 0 Goto %2%>
+	Msg%id%01 <\PERSONA &EnemyNPC is planning some kind of heist in \SCENE RootSceneID . I need you to stop \PPR &EnemyNPC plans before \SPR &EnemyNPC gets a chance to succeed. \HINT %3%>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%02 <\CHATNPC hired you to prevent \PERSONA &EnemyNPC 's latest heist.>
+	Prompt%id%01 <No problem. I'll be back when I'm done.>
+	Prompt%id%01_1 <Alright, I'll do it.>
+	Prompt%id%01_2 <I'll be back when \PERSONA &EnemyNPC has been stopped.>
+	Prompt%id%02 <Sorry, but I don't want to.>
+	CPrompt%id%02 <if# PCFac ChatNPCFac Accept>
+	Prompt%id%02_1 <Sorry, but I don't want this job.>
+	Prompt%id%02_2 <You can find someone else for that.>
+
+	Persona
+	requires <*CS_BasicStopEnemyMission>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <StoryNote %id%02 Goto %1%>
+	result%id%02 <SMemo 0 Goto %2%>
+	Msg%id%01 <We've determined that \PERSONA &EnemyNPC is in town on a mission. I want you to find out what this mission is and put a stop to it. \HINT %3%>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%02 <\CHATNPC hired you to locate and stop \PERSONA &EnemyNPC .>
+	Prompt%id%01 <I'll get to work right away.>
+	Prompt%id%01_1 <Alright. I'll do it.>
+	Prompt%id%01_2 <I'll be back when \PERSONA &EnemyNPC has been stopped.>
+	Prompt%id%02 <I'm not interested.>
+	CPrompt%id%02 <if# PCFac ChatNPCFac Accept>
+	Prompt%id%02_1 <Sorry, but I don't want this job.>
+	Prompt%id%02_2 <Find someone else for this mission.>
+
+
+% TYPE: *CS_BasicFightingMission
+%	The PC is being given a basic fighting mission. In this mission, the PC will be
+%	told to go fight some raiders- mecha aligned with the enemy PC/faction.
+%	If the PC is a member of the mission-giver's faction, refusal is impossible.
+%   NOTE: This component is responsible for setting the StoryNote
+%	Generally, a note will be stored for accepting the mission, but not for rejecting
+%	the mission.
+%   PARAM1: Accept Mission Exit Label
+%   PARAM2: Reject Mission Exit Label (Note: Not all missions may be rejected!)
+%	(Also note: If this component features another ending, neither exit may
+%	 be called)
+%   PARAM3: Reward Hint (the plotid of the reward subplot)
+
+	Persona
+	requires <*CS_BasicFightingMission  ("POLIT"|"MILIT") -"ARchENEMY" -L:ENEMY (F:P.sub|F:P.cat)>
+	START <NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <NewChat Say %id%02 AddChat %id%02 AddChat %id%03>
+	result%id%02 <StoryNote %id%03   Goto %1%>
+	result%id%03 <SMemo 0 Goto %2%>
+	Msg%id%01 <You've probably heard about the unknown mecha who have attacked \NARRATIVE 7 .>
+	Msg%id%01_1 <Our city is under attack by unknown mecha. Nobody knows where they came from, nor what they want. All kind of rumors have been circulating. You've heard this already, I assume.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <I suppose you've heard about the unauthorized mecha seen within city limits.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <It looks like our city could possible be under attack. I suppose you've already heard about the mysterious mecha which have been spotted nearby?>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <\NARRATIVE 7 must be defended! You've heard about the unauthorized mecha spotted in town, haven't you?>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Some mysterious mecha have been spotted near town. So far they haven't caused much damage, and I don't intend to let them. Have you heard anything about them?>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <\NARRATIVE 7 is under attack. A team of commando mecha has been striking at targets within the city and then disappearing. You've heard of them, I suppose.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%02 <Recently unauthorized mecha have been spotted near the city limits. I need a cavalier to locate these mecha and deal with them. \HINT %3%>
+	Msg%id%02_1 <I'd like for you to locate these mecha and deal with them. The safety of our city may depend on it. \HINT %3%>
+	Msg%id%02_2 <I need you to track down these mecha and see what they're up to. This could be very important for the security of \NARRATIVE 7 . \HINT %3%>
+	Msg%id%03 <\CHATNPC hired you to defend \SCENE %3% against unknown mecha.>
+	Prompt%id%01 <I have heard of them, yes.>
+	Prompt%id%01_1 <I have some personal experience with them.>
+	CPrompt%id%01_1 <ifPCSociable Accept>
+	Prompt%id%01_2 <Yes.>
+	CPrompt%id%01_2 <ifPCShy Accept>
+	Prompt%id%01_3 <I think I heard something about that.>
+	CPrompt%id%01_3 <ifPCEasygoing Accept>
+	Prompt%id%01_4 <Of course I have.>
+	CPrompt%id%01_4 <ifPCPassionate Accept>
+	Prompt%id%01_5 <Yes, I've heard that!>
+	CPrompt%id%01_5 <ifPCCheerful Accept>
+	Prompt%id%01_6 <I know they've killed already and will again.>
+	CPrompt%id%01_6 <ifPCMelancholy Accept>
+	Prompt%id%02 <I'll do it.>
+	Prompt%id%03 <I'm not interested.>
+	CPrompt%id%03 <if# PCFac ChatNPCFac Accept>
+
+	Persona
+	requires <*CS_BasicFightingMission ("CORPO"|"TRADE"|"LABOR") ~"PCFAC" (F:--|F:P.cat|F:P.sub) Common>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	Result%id%01 <SMemo %id%02 StoryNote %id%03 Goto %1%>
+	result%id%02 <SMemo 0 Goto %2%>
+	msg%id%01 <Recently some of our investments have been attacked by mecha. We've been tracking one of the groups responsible but don't have an exact position . I need you to find them, and if possible find out who they're working for. \HINT %3%>
+	msg%id%01_1 <You may have heard that one of our factories was recently attacked by mecha. The criminals responsible are most likely hiding somewhere in \SCENE %3% ; what I need you to do is go there, locate them, and if possible find out who they're working for. \HINT %3%>
+	Cmsg%id%01_1 <ifNPCSociable Accept>
+	msg%id%01_2 <A group of raiders recently attacked one of our buildings. Your task is to locate these raiders and eliminate them. \HINT %3%>
+	Cmsg%id%01_2 <ifNPCShy Accept>
+	msg%id%01_3 <It's been a rough time for our company. Many of our interests have been attacked by mecha... I'd like for you to intercept these mecha and see if you can learn anything. \HINT %3%>
+	Cmsg%id%01_3 <ifNPCEasygoing Accept>
+	msg%id%01_4 <Our company is under attack; this cannot be tolerated. A single lance of the mecha responsible is believed to be in town. I need you to intercept and destroy them. \HINT %3%>
+	Cmsg%id%01_4 <ifNPCPassionate Accept>
+	msg%id%01_5 <Recently some of our holdings have been attacked by mecha. The group responsible is somewhere in town. Your job is to intercept these mecha and find out who sent them. \HINT %3%>
+	Cmsg%id%01_5 <ifNPCCheerful Accept>
+	msg%id%01_6 <The recent string of mecha attacks has cost our company far too much... Your job is to find those responsible and eliminate them. \HINT %3%>
+	Cmsg%id%01_6 <ifNPCMelancholy Accept>
+	msg%id%02 <\CHATNPC asked you to find the mecha which have been attacking company investments.>
+	msg%id%03 <You were sent to find the mecha which had been attacking company investments.>
+	Prompt%id%01 <I'll get right on it.>
+	Prompt%id%01_1 <Just leave it to me.>
+	Prompt%id%01_2 <Don't worry, I'll find them.>
+	Prompt%id%02 <I'm not interested.>
+	CPrompt%id%02 <if# PCFac ChatNPCFac Accept>
+	Prompt%id%02_1 <Sorry, I don't want this job.>
+
+	Persona
+	requires <*CS_BasicFightingMission -"NOFAC">
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <StoryNote %id%02 Goto %1%>
+	result%id%02 <SMemo 0 Goto %2%>
+	Msg%id%01 <We've been tracking a group of mecha in town. I need you to locate them and determine whether or not they're hostile. \HINT %3%>
+	Msg%id%01_1 <There's been a group of unknown mecha operating just outside the city. I want you to identify them, and if they prove hostile engage in combat. \HINT %3%>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <A group of possibly hostile mecha has been detected. I need you to intercept them.  \HINT %3%>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <There have been some odd sensor readings from nearby, possibly indicating a group of unauthorized mecha. I need you to explore the area and see if you can find what's going on. \HINT %3%>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <A team of unauthorized mecha has been getting too close to our holdings. What I need you to do is locate them and put a stop to it. \HINT %3%>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <There are some mecha in town that I need investigated. All you have to do is find and intercept them. \HINT %3%>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <A group of unauthorized mecha has been spotted nearby ... these may be the same pilots responsible for those attacks earlier. I need for you to run an intercept mission. \HINT %3%>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%02 <\CHATNPC hired you to investigate mecha in \SCENE RootSceneID .>
+	Prompt%id%01 <I'll get to work right away.>
+	Prompt%id%01_1 <Alright. I'm on the case.>
+	Prompt%id%01_2 <I'll be back when I have something to report.>
+	Prompt%id%02 <I'm not interested.>
+	CPrompt%id%02 <if# PCFac ChatNPCFac Accept>
+	Prompt%id%02_1 <Sorry, but I don't want this job.>
+	Prompt%id%02_2 <Find someone else for this mission.>
+
+	Persona
+	requires <*CS_BasicFightingMission ("CORPO"|"TRADE") (F:--|F:P.sub|F:P.cat) ~"PCFAC">
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	Result%id%01 <StoryNote %id%02 Goto %1%>
+	result%id%02 <SMemo 0 Goto %2%>
+	msg%id%01 <Our company has been under attack by mecha raiders, but we don't know who's been sending them. I need you to locate their main force and hopefully find out who they're working for. \HINT %3%>
+	msg%id%02 <\CHATNPC sent you to fight raiders, and maybe learn who they work for.>
+	Prompt%id%01 <I'll get right on it.>
+	Prompt%id%02 <Sounds dangerous. I don't want to.>
+	CPrompt%id%02 <if# PCFac ChatNPCFac Accept>
+
+	Persona
+	requires <*CS_BasicFightingMission F:++ E:++ "MILIT">
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	Result%id%01 <StoryNote %id%02 Goto %1%>
+	result%id%02 <SMemo 0 Goto %2%>
+	Msg%id%01 <Our intelligence reports indicate that \FACTION &EnemyFac have sent \PERSONA &EnemyNPC here on a mission. I need you to locate \OPR &EnemyNPC and make sure this mission doesn't succeed. \HINT %3%>
+	Msg%id%02 <\CHATNPC sent you to fight \PERSONA &EnemyNPC in \SCENE RootSceneID .>
+	Prompt%id%01 <Don't worry; \SPR &EnemyNPC won't get away.>
+	Prompt%id%02 <I'm actually avoiding \PERSONA &EnemyNPC right now.>
+	CPrompt%id%02 <if# PCFac ChatNPCFac Accept>
+
+	Persona
+	requires <*CS_BasicFightingMission (F:P.sub|F:P.cat)>
+	% V%id%01 = Have done introduction already
+	START <if= v%id%01 0 else result%id%01 NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03 V= %id%01 1>
+	result%id%01 <NewChat Say %id%04 AddChat %id%04 AddChat %id%05>
+	result%id%02 <NewChat Say %id%05 AddChat %id%04 AddChat %id%05 AddEasygoing d10>
+	result%id%03 <NewChat Say %id%06 AddChat %id%04 AddChat %id%05>
+	Result%id%04 <StoryNote %id%02 Goto %1%>
+	result%id%05 <SMemo 0 Goto %2%>
+	Msg%id%01 <As you're probably aware, recently we've been under attack but we still don't have any good idea who's behind it.>
+	Msg%id%02 <\CHATNPC sent you to intercept some mysterious attackers.>
+	Msg%id%04 <There's a lance of mecha nearby which may be affiliated with the attackers. I want you to intercept them, and try to learn who they work for. \HINT %3%>
+	Msg%id%05 <Just a minute; if you leave now you won't be able to do this mission. There's a lance of mecha nearby which may be affiliated with the attackers. I want you to intercept them, and try to learn what they're after. \HINT %3%>
+	Msg%id%06 <That may well be. There's a lance of mecha nearby which may have been sent by the attackers. I want you to intercept them, and see if you can verify the connection with \PERSONA &EnemyNPC . \HINT %3%>
+	Prompt%id%01 <I know.>
+	Prompt%id%02 <Yeah, that's why I plan to get out of here!>
+	Prompt%id%03 <I'll bet \PERSONA &EnemyNPC has something to do with it.>
+	CPrompt%id%03 <ifNPCOK &EnemyNPC Accept>
+	Prompt%id%04 <I'll get right on it.>
+	Prompt%id%05 <Sorry, but I want nothing to do with this.>
+	CPrompt%id%05 <if# PCFac ChatNPCFac Accept>
+
+	Persona
+	requires <*CS_BasicFightingMission F:P.wep ("PCFAC"|"MILIT"|"POLIT"|"CORPO"|"POLIC")>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <SMemo %id%02 History %id%03 Goto %1%>
+	result%id%02 <SMemo 0 Goto %2%>
+	Msg%id%01 <It seems that \FACTION &EnemyFac is testing some new weapon systems in this area. Your job is to locate the research team and destroy their prototype. \HINT %3%>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%02 <\CHATNPC told you that \FACTION &EnemyFac are testing weapons nearby. You must locate and destroy their prototype.>
+	Msg%id%03 <\CHATNPC told you that \FACTION &EnemyFac were testing weapons nearby.>
+	Prompt%id%01 <I'll be back when I'm done.>
+	Prompt%id%01_1 <>
+	Prompt%id%01_2 <>
+	Prompt%id%02 <Sounds dangerous. I don't want to.>
+	CPrompt%id%02 <if# PCFac ChatNPCFac Accept>
+	Prompt%id%02_1 <>
+	Prompt%id%02_2 <>
+
+
+	Persona
+	requires <*CS_BasicFightingMission ("TRADE"|"CORPO"|"CRAFT") "NOFAC" ~Friend ~Family ~!Ne ~!Lo>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <StoryNote %id%02 Goto %1%>
+	result%id%02 <Goto %2%>
+	Msg%id%01 <How would you like to do a misison for me? I'm trying out a new side business as a cavalier agent... There are some raiders that need to be dealt with, or something. \HINT %3%>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <I always wanted to be a pilot, and now I'm the next best thing! I've started a new business as a cav-manager. In fact, I'm looking for a pilot to intercept some raiders. \HINT %3% How about it?>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Guess what? I've decided to become a cavalier agent! Well, I will if my commission comes through... How'd you like to run an intercept against some raiders?  \HINT %3%>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <After losing my last job, I realized that the big money is in mecha wrangling. I'm looking for a pilot to intercept some raiders. \HINT %3% What do you say?>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%02 <\CHATNPC hired you for a mecha combat mission; this is a new business that \SPR ChatNPCID 's trying.>
+	Prompt%id%01 <That sounds like a good deal. I'll do it.>
+	Prompt%id%01_1 <Okay, I can do that.>
+	Prompt%id%01_2 <Alright, I can do that.>
+	Prompt%id%02 <Wait, no, I'd really rather not.>
+	Prompt%id%02_1 <Sorry, but I don't want to.>
+	Prompt%id%02_2 <This isn't my kind of job.>
+
+	Persona
+	requires <*CS_BasicFightingMission "MEDIC" ~"Doctor" ~C:MEDIC ~"NOFAC" ~*CORE_DEF_ ~*CORE_R_MON ~E:EVIL_>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <StoryNote %id%02 Goto %1%>
+	result%id%02 <NewChat Say %id%03 AddChat %id%03 AddChat %id%04>
+	result%id%03 <StoryNote %id%02 Goto %1%>
+	result%id%04 <SMemo 0 Goto %2%>
+	Msg%id%01 <There's a lance of raiders in town who have been sending our local cavaliers to the hospital. I'm offering a reward for anyone who can take them out... you know, as a public health measure. \HINT %3%>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%02 <\CHATNPC hired you drive off some raiders as a public health measure.>
+	Msg%id%03 <It doesn't make any difference who puts up the reward, it's something that has to be done. Those raiders need to be removed.>
+	Msg%id%03_4 <Why? I'm doing the best I possibly can for my patients! If that means I have to resort to unconventional practices, then so be it!>
+	CMsg%id%03_4 <ifNPCPassionate Accept>
+	Msg%id%03_5 <I'm not happy about it either, but this situation needs to be dealt with. The raiders must be stopped before someone gets killed.>
+	CMsg%id%03_5 <ifNPCHeroic Accept>
+	Msg%id%03_6 <Why? If the plan succeeds I've aided the public health, and if it fails I've gotten loads more patients. Either way the hospital wins.>
+	CMsg%id%03_6 <ifNPCVillainous Accept>
+	Prompt%id%01 <A gram of prevention is worth a kilo of cure.>
+	Prompt%id%01_1 <Preventative medicine. I like it.>
+	Prompt%id%01_2 <I'd be happy to help.>
+	Prompt%id%02 <Doesn't this go against your medical oath?>
+	Prompt%id%02_1 <It feels strange, taking this mission from a doctor...>
+	Prompt%id%02_2 <>
+	Prompt%id%03 <Alright. I'll help you.>
+	Prompt%id%04 <Sorry, I want no part in this.>
+	CPrompt%id%04 <if# PCFac ChatNPCFac Accept>
+
+	Persona
+	requires <*CS_BasicFightingMission (*CORE_OFF_2|*CORE_OFF_3|*CORE_OFF_4|*CORE_OFF_5) F:++ ~"PCFAC">
+	% No way to refuse the mission, since this is exactly what the PC
+	% asked for.
+	START <NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <StoryNote %id%02 Goto %1%>
+	result%id%02 <SMemo 0 Goto %2%>
+	Msg%id%01 <So far we've been reacting to \FACTION &EnemyFac , but now it's time to take the fight to them. A team of their mecha has been spotted near town. I want you to find this lance and destroy it. \HINT %3%>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%02 <\CHATNPC hired you to fight some mecha from \FACTION &EnemyFac .>
+	Prompt%id%01 <Sounds like fun.>
+	Prompt%id%01_1 <Now you're talking my language.>
+	Prompt%id%01_2 <You know, that's just what I was hoping you'd say.>
+
+	Persona
+	requires <*CS_BasicFightingMission ("CORPO"|"CRAFT"|"LABOR"|"TRADE")>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <StoryNote %id%02 Goto %1%>
+	result%id%02 <SMemo 0 Goto %2%>
+	Msg%id%01 <Several of our convoys have been attacked recently. I want you to locate the mecha responsible and eliminate them. \HINT %3%>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%02 <\CHATNPC hired you to locate and defeat some convoy raiders.>
+	Prompt%id%01 <Consider it done.>
+	Prompt%id%01_1 <No problem. I'll be back when I'm done.>
+	Prompt%id%01_2 <Alright, I can do that.>
+	Prompt%id%02 <Um... I don't wanna.>
+	CPrompt%id%02 <if# PCFac ChatNPCFac Accept>
+	Prompt%id%02_1 <No thanks, I'd rather not get involved.>
+	Prompt%id%02_2 <This isn't my kind of mission.>
+
+	Persona
+	requires <*CS_BasicFightingMission "ACADE">
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <StoryNote %id%02 Goto %1%>
+	result%id%02 <SMemo 0 Goto %2%>
+	Msg%id%01 <The sensors at my lab picked up something strange near town. It's probably nothing, but it could be a unit of enemy mecha or something even worse. I'd like for you to figure out what it was. \HINT %3%>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%02 <\CHATNPC hired you to investigate a sensor reading.>
+	Prompt%id%01 <Sounds interesting. I'll see what I can find.>
+	Prompt%id%01_1 <Alright. I'm on the case.>
+	Prompt%id%01_2 <I'll be back when I've identified the source.>
+	Prompt%id%02 <Sorry, this mission sounds too boring for me.>
+	CPrompt%id%02 <if# PCFac ChatNPCFac Accept>
+	Prompt%id%02_1 <No way, this mission sounds dangerous.>
+	Prompt%id%02_2 <You'll have to find a different pilot for this.>
+
+	Persona
+	requires <*CS_BasicFightingMission "POLIC" (E:THIEF|E:EVIL_|F:CRIME) ~*CORE_OFF_ ~*CORE_DEF_>
+	START <NewChat Say %id%01 AddCHat %id%01 AddChat %id%02>
+	result%id%01 <goto result%id%02>
+	result%id%02 <History %id%03 SMemo %id%04 Goto %1%>
+	Msg%id%01_1 <Your old nemesis \PERSONA &EnemyNPC is in town, and \SPR &EnemyNPC 's causing trouble. If you could locate and defeat \OPR &EnemyNPC there'd be a reward in it for you. \HINT %3%>
+	CMsg%id%01_1 <ifNPCOK &EnemyNPC Accept>
+	Msg%id%01_2 <I know that you've tangled with \FACTION &EnemyFac before; they've got some raiders in town, and there's a reward for anyone who can locate and stop them. \HINT %3%>
+	CMsg%id%01_2 <if# 0 &EnemyFac ifNPCDead &EnemyNPC Accept>
+	Msg%id%01_3 <Some of your old enemies are in town, and they're causing trouble. There's a reward for anyone who can locate them and bring them to justice. \HINT %3%>
+	Msg%id%03_1 <\ChatNPC asked you to find and defeat \PERSONA &EnemyNPC .>
+	CMsg%id%03_1 <ifNPCOK &EnemyNPC Accept>
+	Msg%id%03_2 <\ChatNPC asked you to find and defeat raiders from \FACTION &EnemyFac .>
+	CMsg%id%03_2 <if# 0 &EnemyFac ifNPCDead &EnemyNPC Accept>
+	Msg%id%03_3 <\ChatNPC asked you to find and defeat some criminals.>
+	CMsg%id%03_3 <if= 0 &EnemyFac ifNPCDead &EnemyNPC Accept>
+	Msg%id%04_1 <\ChatNPC mentioned that \PERSONA &EnemyNPC is in town. There's a reward if you can locate and defeat \OPR &EnemyNPC .>
+	CMsg%id%04_1 <ifNPCOK &EnemyNPC Accept>
+	Msg%id%04_2 <\ChatNPC mentioned that mecha from \FACTION &EnemyFac are in town. There's a reward if you can locate and defeat them.>
+	CMsg%id%04_2 <if# 0 &EnemyFac Accept>
+	Msg%id%04_3 <\ChatNPC mentioned that your enemies are in town. There's a reward if you can locate and defeat them.>
+	CMsg%id%04_3 <if= 0 &EnemyFac ifNPCDead &EnemyNPC Accept>
+	Prompt%id%01 <I've been waiting for a chance to fight them again.>
+	Prompt%id%02 <Hey, as long as there's a reward, I'm there.>
+
+	Persona
+	requires <*CS_BasicFightingMission F:++ (F:P.---|F:P.cat|F:P.sub)>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	Result%id%01 <StoryNote %id%02 Goto %1%>
+	result%id%02 <SMemo 0 Goto %2%>
+	Msg%id%01 <There's a team of mecha from \FACTION &EnemyFac operating in \SCENE RootSceneID . Since we don't know what they're after, I need you to locate them and see what you can find out. \HINT %3%>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%02 <\CHATNPC sent you to intercept a group of mecha from \FACTION &EnemyFac .>
+	Prompt%id%01 <I'll be back when I find something.>
+	Prompt%id%02 <Sorry, but I can't do this job.>
+	CPrompt%id%02 <if# PCFac ChatNPCFac Accept>
+
+	Persona
+	requires <*CS_BasicFightingMission E:++ -E:A.nme -E:Friend>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <StoryNote %id%02 Goto %1%>
+	result%id%02 <AddRenown -10 SMemo 0 Goto %2%>
+	Msg%id%01_1 <Some unidentified mecha have been spotted nearby. I can't be certain, but it seems like \PERSONA &EnemyNPC is involved. I want you to investigate. \HINT %3%>
+	CMsg%id%01_1 <ifNPCOK &EnemyNPC Accept>
+	Msg%id%01_2 <Some unidentified mecha have been spotted nearby. I can't be certain, but it seems like your old enemies are involved. I want you to locate and neutralize them. \HINT %3%>
+	CMsg%id%01_2 <ifNPCDead &EnemyNPC Accept>
+	Msg%id%01_11 <>
+	CMsg%id%01_11 <ifNPCSociable ifNPCOK &EnemyNPC Accept>
+	Msg%id%01_12 <>
+	CMsg%id%01_12 <ifNPCShy ifNPCOK &EnemyNPC Accept>
+	Msg%id%01_13 <>
+	CMsg%id%01_13 <ifNPCEasygoing ifNPCOK &EnemyNPC Accept>
+	Msg%id%01_14 <>
+	CMsg%id%01_14 <ifNPCPassionate ifNPCOK &EnemyNPC Accept>
+	Msg%id%01_15 <>
+	CMsg%id%01_15 <ifNPCCheerful ifNPCOK &EnemyNPC Accept>
+	Msg%id%01_16 <>
+	CMsg%id%01_16 <ifNPCMelancholy ifNPCOK &EnemyNPC Accept>
+	Msg%id%02_1 <\CHATNPC sent you to intercept mecha affiliated with \PERSONA &EnemyNPC .>
+	CMsg%id%02_1 <ifNPCOK &EnemyNPC Accept>
+	Msg%id%02_2 <\CHATNPC sent you to intercept some mecha.>
+	CMsg%id%02_2 <ifNPCDead &EnemyNPC Accept>
+	Prompt%id%01 <It would be my pleasure.>
+	Prompt%id%01_1 <If \PERSONA &EnemyNPC 's here, I'll defeat \OPR &EnemyNPC .>
+	CPrompt%id%01_1 <ifNPCOK &EnemyNPC Accept>
+	Prompt%id%01_2 <>
+	CPrompt%id%01_2 <ifNPCOK &EnemyNPC Accept>
+	Prompt%id%02 <Really, this mission sounds too dangerous for me.>
+	CPrompt%id%02 <if# PCFac ChatNPCFac Accept>
+	Prompt%id%02_1 <Sorry. I've been hiding from \PERSONA &EnemyNPC .>
+	CPrompt%id%02_1 <ifNPCOK &EnemyNPC Accept>
+	Prompt%id%02_2 <>
+	CPrompt%id%02_2 <ifNPCOK &EnemyNPC Accept>
+
+	Persona
+	requires <*CS_BasicFightingMission (F:--|F:P.cat|F:P.sub)>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <StoryNote %id%02 Goto %1%>
+	result%id%02 <AddEasygoing -d6 SMemo 0 Goto %2%>
+	Msg%id%01 <Our sensors picked up a funny reading nearby. It was probably nothing, but just in case I'd like for you to try and find out what it was. \HINT %3%>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%02 <\CHATNPC sent you to investigate an odd sensor reading.>
+	Prompt%id%01 <Sounds like an easy job. I'll do it.>
+	Prompt%id%01_1 <>
+	Prompt%id%01_2 <>
+	Prompt%id%02 <That's it? I'm not interested.>
+	CPrompt%id%02 <if# PCFac ChatNPCFac Accept>
+	Prompt%id%02_1 <You can find someone else for that.>
+	Prompt%id%02_2 <Thanks, but I'll go find a real mission instead.>
+
+	Persona
+	requires <*CS_BasicFightingMission F:++ F:CRIME>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	Result%id%01 <StoryNote %id%02 Goto %1%>
+	result%id%02 <SMemo 0 Goto %2%>
+	Msg%id%01 <We've detected some mecha from \FACTION &EnemyFac in town. They must be planning some kind of heist; I want you to find them and stop them before that can happen. \HINT %3%>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%02 <\CHATNPC sent you to locate and intercept a group of mecha from \FACTION &EnemyFac .>
+	Prompt%id%01 <I'll do it.>
+	Prompt%id%01_1 <Alright. I'll be back when I'm done.>
+	Prompt%id%01_2 <I'll get to work right away.>
+	Prompt%id%02 <You'll need to find someone else for this job.>
+	CPrompt%id%02 <if# PCFac ChatNPCFac Accept>
+	Prompt%id%02_1 <Sorry, but I don't want this job.>
+	Prompt%id%02_2 <Find someone else for this mission.>
+
+	Persona
+	requires <*CS_BasicFightingMission>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <StoryNote %id%02 Goto %1%>
+	result%id%02 <SMemo 0 Goto %2%>
+	Msg%id%01 <We've been tracking a group of mecha near town. I need you to locate them and determine whether or not they're hostile. \HINT %3%>
+	Msg%id%01_1 <There's been a group of unknown mecha operating just outside the city. I want you to locate them, and if they prove hostile engage in combat. \HINT %3%>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <A group of possibly hostile mecha has been detected in town. I need you to intercept them. \HINT %3%>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <There have been some odd sensor readings from nearby, possibly indicating a group of unauthorized mecha. I need you to explore the area and see if you can find what's going on. \HINT %3%>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <A team of raiders has been getting too close to our territory. What I need you to do is locate them and put a stop to it. \HINT %3%>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <There are some mecha in town that I need intercepted. \HINT %3%>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <A group of unauthorized mecha has been spotted in town... these may be the same pilots responsible for those attacks earlier. I need for you to run an intercept mission. \HINT %3%>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%02 <\CHATNPC hired you to locate and engage a group of raiders.>
+	Prompt%id%01 <I'll get to work right away.>
+	Prompt%id%01_1 <Alright. I'm on the case.>
+	Prompt%id%01_2 <I'll be back when I have something to report.>
+	Prompt%id%02 <I'm not interested.>
+	CPrompt%id%02 <if# PCFac ChatNPCFac Accept>
+	Prompt%id%02_1 <Sorry, but I don't want this job.>
+	Prompt%id%02_2 <Find someone else for this mission.>
+

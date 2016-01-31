@@ -1,0 +1,92 @@
+.: CURRENT SCENE
+	The current scene will be inserted as this element.
+	In the case of a quest, this selects the root scene.
+
+A: ARTIFACT
+	Select one of the artifacts from the adventure list.
+
+C: CHARACTER
+
+F: FACTION
+
+G: Grab
+	The element will be grabbed from the story into which this plot or scene content
+	is being inserted. Using G will result in an error if the plot/content isn't being
+	inserted into a story.
+
+KEY: Key Element
+	From an arena mission it selects the core campaign enemy faction.
+
+M: METASCENE
+
+N: NEW NPC
+	A new, completely random NPC will be generated. The format for a NPC request is
+	as follows:
+
+		NPC  [Faction Element] [Hometown Element] [CharDesc commands]
+
+	Note that [Faction Element] and [Hometown Element] may be 0. The faction element
+	may either point to the faction itself, or to any gear that is a member of that
+	faction.
+
+P: PREFAB
+
+Q: QUEST SCENE
+	A brand new permanent scene to add to the adventure. This scene must have a
+	metascene described in the subcoms of the quest fragment. Requesting this type
+	of element from anything other than a quest could have disasterous results.
+
+S: SCENE
+
+
+********************
+***   CRITERIA   ***
+********************
+
+ArchAlly, ArchEnemy
+LOVER, FAMILY, FRIEND, LANCEMATE, NEMESIS
+INUSE, NOTUSED
+YOUNG, OLD
+HASMECHA
+SEX:MALE, SEX:FEMALE
+PCFAC, NOFAC
+RECHARGED
+@A.???, @M.???	Attitude, Motivation for NPCs
+@P.???		Plan for Factions
+MISSION		This NPC is a mission-giver
+
+**************************************
+***   RELATIVE  SEARCH  CRITERIA   ***
+**************************************
+
+!L		Lancemate
+!G		Global Gear
+!N [E1]		Near. E1 and E2 must be in same root scene.
+!F [E1]		Far. E1 and E2 must have different root scenes.
+!M [FacID]	Member. E2 must be member of listed faction.
+!C [E1]		Comrade. E1 and E2 must belong to exactly the same faction.
+!X [E1]		Excluding. E1 and E2 must not be allies.
+!O [E1]		Okay. E1 and E2 must not be enemies.
+!E [E1]		Enemies. E1 and E2 must be enemies.
+!A [E1]		Allies. E1 and E2 must be allies.
+
+Positive element indicies refer to elements of the plot/content.
+Negative element indicies refer to the elements of the story into which the
+	plot/content is being inserted.
+
+**************************
+***   PLACE  STRINGS   ***
+**************************
+
+The elements of plots, subplots, quests, and random scene content can be
+positioned in the adventure by using place strings.
+
+PLACE(n) <[~](Destination Slot) [(team name)] [team data]>
+
+If the destination slot is preceded by a ~. the element will be placed in the same
+scene as the destination rather than in the destination itself.
+
+A subplot can assign a place string to an element it inherits.
+
+If (Destination Slot) is "/", the element will be frozen in a special
+holding zone and will need to be moved by the script.

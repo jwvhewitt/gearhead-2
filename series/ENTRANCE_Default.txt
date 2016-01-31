@@ -1,0 +1,122 @@
+%% DEFAULT ENTRANCES
+
+
+MetaTerrain 0
+requires <*COLONY-1>
+roguechar <*>
+SDL_SPRITE <prop_colony.png>
+Frame 1
+use <if= StatVal STAT_MetaVisibility 0 ifNoObjections EWM StatVal 4 ifFactionEnemy SceneFac StatVal 4 else GoEnter Goto GoFight>
+GoFight <ifG Awareness 15 else GoNoSee ifYesNo 2 3 4 else GoStartCombat Reputation 3 -d3 ifG Stealth 15 else GoStealthFail Print 5 Exit StatVal 4>
+GoNoSee <Alert 1 Goto GoStartCombat>
+GoStealthFail <Print 6 Goto GoStartCombat>
+GoStartCombat <SavePos Dynamic 2 PCRenown 200 .nu1 .nu2 DynaVar= 1 StatVal 4 DynaVar= 2 SceneID  DynaFaction SceneFac StatVal 4>
+.nu1 <if= T1 0 Return>
+.nu2 <if= T2 0 if# V1 0 Exit V1 SeekGate V2 V= 1 0>
+GoEnter <Exit StatVal 4>
+Msg1 <While entering \SCENE StatVal 4 , you are attacked by the city's defenders!>
+Msg2 <While entering \SCENE StatVal 4 , you are confronted by the city's defenders.>
+Msg3 <Try to sneak around them.>
+Msg4 <Attack!>
+Msg5 <You evade the guards and slip into the city.>
+Msg6 <You fail to evade the guards, and will now have to defend yourself...>
+
+STC QUEST-MAPMARKER-STATIONARY
+requires <*QUEST-INACTIVE>
+
+STC QUEST-MAPMARKER-ACTIVE-STATIONARY
+requires <*QUEST-ACTIVE>
+
+StairsUp
+requires <*GoUp>
+
+StairsDown
+requires <*GoDown>
+
+Building
+name <Building>
+requires <*SPACEPORT>
+Altitude 3
+BM_SpacePort
+roguechar <P>
+
+Building
+name <Hospital>
+requires <*HOSPITAL>
+Altitude 2
+BM_Hospital
+roguechar <H>
+
+Building
+name <Garage>
+requires <*GARAGE>
+Altitude 2
+BM_Garage
+roguechar <G>
+
+Building
+name <Department Store>
+requires <*DEPARTMENTSTORE>
+Altitude 3
+BM_DepartmentStore
+roguechar <S>
+
+Building
+name <Cavalier's Club>
+requires <*CAVCLUB>
+Altitude 1
+BM_CAVCLUB
+roguechar <C>
+
+Building
+name <Silver Fortress>
+requires <*SILVERFORTRESS>
+Altitude 4
+BM_SilverFortress
+roguechar <F>
+
+Building
+name <Arena>
+requires <*ARENA>
+Altitude 2
+BM_Arena
+roguechar <A>
+
+Building
+name <Park>
+requires <*PARK>
+Altitude 1
+BM_Park
+roguechar <%>
+
+Building
+name <City Hall>
+requires <*CITYHALL>
+Altitude 3
+BM_Government
+roguechar <C>
+
+Building
+name <Building>
+requires <*BUILDING Short>
+Altitude 1
+
+Building
+name <Center>
+requires <*BUILDING>
+Altitude 2
+
+Building
+name <Plaza>
+requires <*BUILDING>
+Altitude 3
+
+Building
+name <Tower>
+requires <*BUILDING Tall>
+Altitude 4
+
+
+
+
+

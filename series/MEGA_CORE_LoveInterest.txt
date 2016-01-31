@@ -1,0 +1,82 @@
+%%
+%%  Love Interest Content
+%% 
+%% All of these component types have something to do with the love interest.
+%%
+
+%%
+%% *CS_LoversGift Content
+%%
+%%  The PC's love interest is going to provide some kind of help.
+%%  This isn't a proper subplot, but just a utility extension for
+%%  an existing subplot. To activate, the love interest's persona
+%%  should goto the script line ".%id%_GoLoversGift", where %id%
+%%  is the ID of this subplot.
+%%
+%%  Once the script is activated, this subplot should terminate
+%%  with "WinSubPlot %plotid%".
+%%
+%%  Important: Make sure E1 is in play!
+%%
+%% PARAM1: The love interest
+%%
+
+Content
+	name <First Kiss>
+	desc <Basically, the start of the thread.>
+	requires <*CS_LoversGift -1:LOVER>
+
+	% E1 is the love interest
+
+	sub
+		Persona 1
+		.%id%_GoLoversGift <ifChatNPCInPlay else .%id%_GoFail Alert %id%01 XPV 500 NewChat Say %id%02 History %id%03 PCLover %1% WinSubPlot %plotid%>
+		*.%id%_GoFail <*ComeHereForIt>
+		Msg%id%01 <%name1% leans in close and kisses you.>
+		Msg%id%02 <Here, this was the first, but I hope it won't be the last. Be careful out there.>
+		Msg%id%02_1 <>
+		CMsg%id%02_1 <ifNPCSociable Accept>
+		Msg%id%02_3 <>
+		CMsg%id%02_3 <ifNPCShy Accept>
+		Msg%id%02_2 <>
+		CMsg%id%02_2 <ifNPCEasygoing Accept>
+		Msg%id%02_4 <>
+		CMsg%id%02_4 <ifNPCPassionate Accept>
+		Msg%id%02_5 <>
+		CMsg%id%02_5 <ifNPCCheerful Accept>
+		Msg%id%02_6 <>
+		CMsg%id%02_6 <ifNPCMelancholy Accept>
+		Msg%id%03 <%name1% kissed you.>
+	end
+
+
+Content
+	name <Giant Robot of Love>
+	desc <You'll get a new mecha.>
+	requires <*CS_LoversGift 1:LOVER>
+
+	% E1 is the item-giver
+
+	sub
+		Persona 1
+		% V%id%01 = Threat Counter
+		.%id%_GoLoversGift <ifChatNPCInPlay else .%id%_GoFail NewChat Say %id%01 V= %id%01 StoryDL V+ %id%01 10  CustomMecha .%id%_Factions V%id%01 WinSubPlot %plotid%>
+		*.%id%_GoFail <*ComeHereForIt>
+		Msg%id%01 <Here, I got something to keep you safe while we're apart. Use it well.>
+		Msg%id%01_1 <>
+		CMsg%id%01_1 <ifNPCSociable Accept>
+		Msg%id%01_3 <>
+		CMsg%id%01_3 <ifNPCShy Accept>
+		Msg%id%01_2 <>
+		CMsg%id%01_2 <ifNPCEasygoing Accept>
+		Msg%id%01_4 <>
+		CMsg%id%01_4 <ifNPCPassionate Accept>
+		Msg%id%01_5 <>
+		CMsg%id%01_5 <ifNPCCheerful Accept>
+		Msg%id%01_6 <>
+		CMsg%id%01_6 <ifNPCMelancholy Accept>
+		.%id%_Factions <GENERAL \FACTION_DESIG RootSceneFac \FACTION_DESIG ChatNPCFac>
+	end
+
+
+

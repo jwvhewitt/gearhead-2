@@ -1,0 +1,59 @@
+HoverFighter 3
+name <BlueBird>
+desig <BLB-01c>
+type <SPACE>
+SDL_SPRITE <aer_bluebird.png>
+SDL_PORTRAIT <item_bluebird.png>
+desc <The BlueBird is Aegis Overlord's new space fighter. It is designed for overwhelming firepower rather than mobility.>
+
+factions <AEGSF>
+ROLE_AEGSF <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+
+sub
+Torso
+	Armor 3
+	sub
+		CPit
+		Sensor 4
+
+		SpaceFlight 2
+	end
+
+Turret
+	Size 1
+	Armor 1
+	sub
+		Mount
+		name <Turret Mount>
+		inv
+			STC LAS-10
+		end
+	end
+
+Storage
+	name <Right Pod>
+	size 2
+	Armor 2
+	sub
+		MLauncher 4
+		sub
+			STC LR-1
+			Magazine 40
+		end
+		SpaceFlight 2
+	end
+
+Storage
+	name <Left Pod>
+	size 2
+	Armor 2
+	sub
+		MLauncher 4
+		sub
+			STC LR-1
+			Magazine 40
+		end
+		SpaceFlight 2
+	end
+end
+

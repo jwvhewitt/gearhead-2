@@ -1,0 +1,215 @@
+Battroid 8
+Name <Dao Deoji>
+Desig <MWC-30>
+SDL_Sprite <>
+SDL_Portrait <>
+Desc <A patchwork design based around the core of a mining battroid, the Dao Deoji is quite powerful but thankfully rare.>
+TYPE <GROUND SPACE INSIDE>
+FACTIONS <CRIHN BOHEM>
+ROLE_CRIHN <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_BOHEM <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+
+Sub
+Head
+	Armor 4
+	Size 4
+	Mass -4
+	sub
+		Sensor 5
+
+		STC LAS-3
+		type <INTERCEPT>
+		Integral
+
+		STC MAC-4
+	end
+	inv
+		HeadArmor 5
+		Mass -6
+	end
+
+Torso
+	Armor 7
+	Mass -7
+	sub
+		Sensor 1
+
+		CPit
+		Armor 1
+
+		Computer 4
+		mass -4
+		sub
+			Software 2
+			name <Next Wave Firecom>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 2
+			name <X-Rank Maneuver Control>
+			S_MVBoost
+			S_BoostScale 2
+		end
+
+		Gyro
+		Armor 1
+
+		Engine 8
+		Armor 1
+		HighPerformance
+
+		HeavyActuator 12
+		mass -6
+		Integral
+
+		ECM 5
+	end
+	inv
+		BodyArmor 7
+		Mass -7
+		sub
+			Flight 4
+		end
+	end
+
+Arm
+	Name <Right Arm>
+	Size 9
+	Armor 7
+	Mass -6
+	sub
+		Hand
+		Name <Right Hand>
+		inv
+			STC RG-8
+		end
+
+		Mount
+		Name <Right Arm Mount>
+		inv
+			BeamGun 10
+			name <Plasma Forge>
+			Range 5
+			Type <BRUTAL>
+			mass -2
+		end
+
+		HeavyActuator 6
+		mass -3
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		ArmArmor 7
+		Mass -7
+		sub
+			Melee 12
+			name <Triple Claw>
+			type <ARMORPIERCING>
+			mass -7
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	Size 9
+	Armor 7
+	Mass -6
+	sub
+		Hand
+		Name <Left Hand>
+
+		Mount
+		Name <Left Arm Mount>
+		inv
+			Gun 16
+			name <Rock Borer>
+			caliber <80cm self-propelled>
+			range 6
+			mass -10
+			Magazine 20
+			sub
+				Ammo 16
+				mass -3
+				caliber <80cm self-propelled>
+				type <BLAST 2 BRUTAL>
+			end
+		end
+
+		HeavyActuator 6
+		mass -3
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		ArmArmor 7
+		Mass -7
+		sub
+			Melee 12
+			name <Triple Claw>
+			type <ARMORPIERCING>
+			mass -7
+		end
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 7
+	Mass -7
+	sub
+		Mount
+		Name <Right Leg Mount>
+		inv
+			MLauncher 12
+			sub
+				Rockets 8
+				name <Mole Missiles>
+				type <ARMORPIERCING>
+				Scale 2
+				Range 8
+				Magazine 15
+			end
+		end
+
+		Flight 8
+	end
+	inv
+		LegArmor 7
+		Mass -7
+		sub
+			Flight 4
+		end
+	end
+
+Leg
+	Name <Left Leg>
+	Armor 7
+	Mass -7
+	sub
+		Mount
+		Name <Left Leg Mount>
+		inv
+			MLauncher 12
+			sub
+				Rockets 8
+				name <Mole Missiles>
+				type <ARMORPIERCING>
+				Scale 2
+				Range 8
+				Magazine 15
+			end
+		end
+
+		Flight 8
+	end
+	inv
+		LegArmor 7
+		Mass -7
+		sub
+			Flight 4
+		end
+	end
+end
+

@@ -1,0 +1,52 @@
+%%
+%% *FindEncounter Plots
+%%
+%%  An encounter needs to be found and activated with SetEncounterActive.
+%%  Upon activation, the plot involved should KillPlotMood to prevent another
+%%  redundant plot from loading.
+%%
+%% Mood Spec:
+%%  E1 = The outdoors scene
+%%  E2 = The encounter being sought
+%%
+
+Plot
+	name <Trivial Case>
+	desc <Someone knows where %name2% is, and will tell you without any fuss.>
+	requires <*FindEncounter>
+
+	% E1 is the outdoor scene where the encounter is
+	% E2 is the MetaScene being sought
+	% E3 is a character who can tell where it is
+	Element1 <Grab 1>
+	Element2 <Grab 2>
+	Element3 <Character -ArchEnemy>
+
+	%% FAIL CONDITIONS:
+	%%  - E3 dies before revealing the secret
+	start <ifNPCDead %3% EndPlot>
+
+	sub
+		Persona 3
+		rumor <%name3% knows where to find %name2%.>
+		*greeting <*IHaveInformation&AboutScene GoSpiel %2%>
+		GoSpiel <NewChat Say 1 SetEncounterActive %2% KillPlotMood EndPlot>
+		Msg1 <You can find %name2% in \EXACT_SCENE %1% . Here, let me give you the coordinates.>
+		Msg1_1 <Let me tell you... You should be able to find %name2% in \EXACT_SCENE %1% , at these coordinates. I would draw you a map but it doesn't look like you need one.>
+		CMsg1_1 <ifNPCSociable Accept>
+		Msg1_2 <%name2% is in \EXACT_SCENE %1% , at these coordinates.>
+		CMsg1_2 <ifNPCShy Accept>
+		Msg1_3 <%name2% can be found in \EXACT_SCENE %1%  at these coordinates. Getting there should be a piece of cake.>
+		CMsg1_3 <ifNPCCheerful Accept>
+		Msg1_4 <To find %name2%, just go to these coordinates in \EXACT_SCENE %1% . Getting in may be another story.>
+		CMsg1_4 <ifNPCMelancholy Accept>
+		Msg1_5 <Yeah, %name2% is at this location in \EXACT_SCENE %1% . Now that you know exactly where it is you'll have no trouble finding it.>
+		CMsg1_5 <ifNPCEasygoing Accept>
+		Msg1_6 <Only a few people know this... %name2% is in \EXACT_SCENE %1% . I'll give you the exact coordinates.>
+		CMsg1_6 <ifNPCPassionate Accept>
+	end
+
+
+
+
+

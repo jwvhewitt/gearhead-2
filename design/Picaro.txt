@@ -1,0 +1,109 @@
+Battroid 3
+Name <Picaro>
+Desig <H-15>
+type <GROUND SPACE INSIDE>
+factions <MAQUI PRIVA BOHEM>
+
+desc <A high mobility striker favored by Privateers.>
+
+
+sub
+Head
+	Armor 3
+	mass -3
+	sub
+		Sensor 6
+
+		STC LAS-3
+		name <Light Intercept Laser>
+		type <INTERCEPT>
+	end
+
+torso
+	Armor 4
+	mass -4
+	sub
+		CPit
+
+		ArcJet 6
+
+		ECM 4
+	end
+
+Arm
+	Name <Right Arm>
+	Size 2
+	Armor 3
+	mass -2
+	sub
+		Hand
+		inv
+			Melee 7
+			name <Razor Wing>
+			desc <A razor edge boomerang powered by ion thrusters.>
+			type <THROWN RETURN ARMORPIERCING>
+			Speed 3
+			mass -5
+		end
+
+		Mount
+		Name <Right Weapon Mount>
+		inv
+			STC SML-5
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	Size 2
+	Armor 3
+	mass -2
+	sub
+		Hand
+
+		Mount
+		Name <Left Weapon Mount>
+		inv
+			BeamGun 5
+			name <Assault Laser>
+			Range 6
+			Acc 1
+		end
+	end
+
+Leg
+	Name <Right Leg>
+	Size 4
+	Armor 3
+	mass -3
+	sub
+		Mount
+		name <Right Leg Mount>
+		inv
+			MLauncher 5
+			sub
+				STC GM-10
+				Magazine 5
+			end
+		end
+		ArcJet 4
+	end
+
+Leg
+	Name <Left Leg>
+	Size 4
+	Armor 3
+	mass -3
+	sub
+		Mount
+		name <Left Leg Mount>
+		inv
+			MLauncher 5
+			sub
+				STC GM-10
+				Magazine 5
+			end
+		end
+		ArcJet 4
+	end
+end

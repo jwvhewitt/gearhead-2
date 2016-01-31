@@ -1,0 +1,283 @@
+%%
+%%  *:Q_MinorMission Content
+%%
+%% The PC will be assigned a minor task by an NPC.
+%%
+%% Param1 is the NPC providing the mission
+%%   note: Persona 1 must have a .%id%_GoInit script
+%%	The parent quest must handle E1's reaction to
+%%	successfully completing/losing this subquest,
+%%	though this SQ should have a reminder message
+%%	in Persona 1.
+%%
+%% Set REQUIRES to *:Q_DMinorMission to load into the debugging stub.
+%%
+%% The parent quest should set a QMemo when this subquest either succeeds
+%% or fails.
+%%
+
+Content
+	name <Go Beat Rivals>
+	desc <A rival gang has moved into the city. See what you can do.>
+	requires <*:Q_MinorMission 1:THIEF>
+	special <REUSABLE>
+
+	% E1 is the NPC offering the mission
+	% E2 is the encounter that is the mission
+	% E3 is an outdoors scene for it
+	Element2 <Prefab>
+	Place2 <3>
+	Element3 <Scene Environs>
+
+	%% FAIL CONDITIONS:
+	%% - E1 dies
+	end <ifNPCDead %1% LoseSubPlot %plotid%>
+
+	sub
+		Persona 1
+		Greeting <if= PlotStatus %plotid% %id% else %pop% NewChat Say %id%01>
+		.%id%_GoInit <SetPlotStatus %plotid% %id% NewChat Say %id%02 QMemo %plotid% %id%03>
+		Msg%id%01 <I'm still waiting for you to deal with my rivals.>
+		Msg%id%02 <A rival gang has moved into %name3% . Obviously, they need to be moved back out. I want you to go there and give them a message from me... make sure none of those bastards escape.>
+		Msg%id%03 <%name1% asked you to locate and eliminate a rival gang in %name3%.>
+	end
+	inv
+		Encounter
+		name <%name1%'s Rivals>
+		Special <NoMSID>
+		% V1 = Visibility Clock.
+		%      If ComTime > V1 and PlotStatus %plotid% = %id%, encounter is active
+		&EnemyFac <0>
+		update <if= PlotStatus %plotid% %id% else GoHide ifG ComTime V1 else GoHide  SetStat STAT_MetaVisibility 0  ShowEncounter  Goto GoSetOrders>
+		GoSetOrders <GrabSource GSetNAtt NAG_EpisodeData NAS_Orders 3>
+		use <ifG StatVal STAT_MetaVisibility -1  Print -1  Goto GoStartCombat>
+		ATTACK <ifG StatVal STAT_MetaVisibility -1    ifUStealth 15 else GoAutoAttack ifYesNo -3 -4 -5 else GoAvoidAttack Goto GoAutoAttack>
+		GoAutoAttack <Alert -2 Goto GoStartCombat>
+		GoAvoidAttack <Print -6 AddSociable -1>
+		GoStartCombat <V= 1 ComTime V+ 1 86400  SavePos Dynamic 2 %threat% 100 .nu1 .nu2 ComposeD Msg1 .Msg1  DynaFaction &EnemyFac>
+		.nu1 <if= T1 0  Return   if= L2 0  L= 2 1  LoseRenown  ItemVar= %2% 1 ComTime ItemVar+ %2% 1 d86400 ItemVar+ %2% 1 43200>
+		.nu2 <if= T2 0           if= L2 0  L= 2 1  XPV 100     Alert 1  WinSubPlot %plotid% DeleteItem %2%>
+		.msg1 <You have defeated the rival gang.>
+		EncounterMove 50
+	end
+
+
+Content
+	name <Go Beat Invaders>
+	desc <Some unauthorized mecha have shown up in the city. See what you can do.>
+	requires <*:Q_MinorMission (1:MILIT|1:POLIT|1:ADVEN)>
+	special <REUSABLE>
+
+	% E1 is the NPC offering the mission
+	% E2 is the encounter that is the mission
+	% E3 is an outdoors scene for it
+	Element2 <Prefab>
+	Place2 <3>
+	Element3 <Scene Outdoors>
+
+	%% FAIL CONDITIONS:
+	%% - E1 dies
+	end <ifNPCDead %1% LoseSubPlot %plotid%>
+
+	sub
+		Persona 1
+		Greeting <if= PlotStatus %plotid% %id% else %pop% NewChat Say %id%01>
+		.%id%_GoInit <SetPlotStatus %plotid% %id% NewChat Say %id%02 QMemo %plotid% %id%03>
+		Msg%id%01 <The infiltrators in \SCENE %s2% have not yet been dealt with.>
+		Msg%id%02 <A team of unknown mecha has been detected in %name3% . We don't yet know their intentions, but they must be stopped before they have a chance to do any damage.>
+		Msg%id%03 <%name1% asked you to locate and eliminate some mecha infiltrators in %name3%.>
+	end
+	inv
+		Encounter
+		name <Invaders>
+		Special <NoMSID>
+		% V1 = Visibility Clock.
+		%      If ComTime > V1 and PlotStatus %plotid% = %id%, encounter is active
+		&EnemyFac <0>
+		update <if= PlotStatus %plotid% %id% else GoHide ifG ComTime V1 else GoHide  SetStat STAT_MetaVisibility 0  ShowEncounter  Goto GoSetOrders>
+		GoSetOrders <GrabSource GSetNAtt NAG_EpisodeData NAS_Orders 3>
+		use <ifG StatVal STAT_MetaVisibility -1  Print -1  Goto GoStartCombat>
+		ATTACK <ifG StatVal STAT_MetaVisibility -1    ifUStealth 15 else GoAutoAttack ifYesNo -3 -4 -5 else GoAvoidAttack Goto GoAutoAttack>
+		GoAutoAttack <Alert -2 Goto GoStartCombat>
+		GoAvoidAttack <Print -6 AddSociable -1>
+		GoStartCombat <V= 1 ComTime V+ 1 86400  SavePos Dynamic 2 %threat% 100 .nu1 .nu2 ComposeD Msg1 .Msg1  DynaFaction &EnemyFac>
+		.nu1 <if= T1 0  Return   if= L2 0  L= 2 1  LoseRenown  ItemVar= %2% 1 ComTime ItemVar+ %2% 1 d86400 ItemVar+ %2% 1 43200>
+		.nu2 <if= T2 0           if= L2 0  L= 2 1  XPV 100     Alert 1  WinSubPlot %plotid% DeleteItem %2%>
+		.msg1 <You have defeated the invaders.>
+		EncounterMove 50
+	end
+
+Content
+	name <Go Beat Thieves>
+	desc <Some mecha have been stolen, and are galavanting around. See what you can do.>
+	requires <*:Q_MinorMission (1:POLIC|1:CRAFT)>
+	special <REUSABLE>
+
+	% E1 is the NPC offering the mission
+	% E2 is the encounter that is the mission
+	% E3 is an outdoors scene for it
+	Element2 <Prefab>
+	Place2 <3>
+	Element3 <Scene Outdoors>
+
+	%% FAIL CONDITIONS:
+	%% - E1 dies
+	end <ifNPCDead %1% LoseSubPlot %plotid%>
+
+	sub
+		Persona 1
+		Greeting <if= PlotStatus %plotid% %id% else %pop% NewChat Say %id%01>
+		.%id%_GoInit <SetPlotStatus %plotid% %id% NewChat Say %id%02 QMemo %plotid% %id%03>
+		Msg%id%01 <Those mecha thieves have not yet been brought to justice.>
+		Msg%id%02 <Recently, a number of mecha have been stolen. The thieves are thought to be somewhere in the %name3% area. If you could catch them, I'd have a reward for you.>
+		Msg%id%03 <%name1% asked you to catch a gang of mecha thieves in %name3% .>
+	end
+	inv
+		Encounter
+		name <Stolen Mecha>
+		Special <NoMSID>
+		% V1 = Visibility Clock.
+		%      If ComTime > V1 and PlotStatus %plotid% = %id%, encounter is active
+		&EnemyFac <0>
+		update <if= PlotStatus %plotid% %id% else GoHide ifG ComTime V1 else GoHide  SetStat STAT_MetaVisibility 0  ShowEncounter  Goto GoSetOrders>
+		GoSetOrders <GrabSource GSetNAtt NAG_EpisodeData NAS_Orders 3>
+		use <ifG StatVal STAT_MetaVisibility -1  Print -1  Goto GoStartCombat>
+		ATTACK <ifG StatVal STAT_MetaVisibility -1    ifUStealth 15 else GoAutoAttack ifYesNo -3 -4 -5 else GoAvoidAttack Goto GoAutoAttack>
+		GoAutoAttack <Alert -2 Goto GoStartCombat>
+		GoAvoidAttack <Print -6 AddSociable -1>
+		GoStartCombat <V= 1 ComTime V+ 1 86400  SavePos Dynamic 2 %threat% 100 .nu1 .nu2 ComposeD Msg1 .Msg1  DynaFaction &EnemyFac>
+		.nu1 <if= T1 0  Return   if= L2 0  L= 2 1  LoseRenown  ItemVar= %2% 1 ComTime ItemVar+ %2% 1 d86400 ItemVar+ %2% 1 43200>
+		.nu2 <if= T2 0           if= L2 0  L= 2 1  XPV 100     Alert 1  WinSubPlot %plotid% DeleteItem %2%>
+		.msg1 <You have defeated the mecha thieves.>
+		EncounterMove 50
+	end
+
+Content
+	name <Go Beat Rishiri>
+	desc <What could be better than blowing up some Rishiri mecha?>
+	requires <*:Q_MinorMission 1:CRIHN ("RISHI"|"ROCKE")>
+
+	% E1 is the NPC offering the mission
+	% E2 is the encounter that is the mission
+	% E3 is an outdoors scene for it
+	Element2 <Prefab>
+	Place2 <3>
+	Element3 <Scene Outdoors>
+
+	%% FAIL CONDITIONS:
+	%% - E1 dies
+	end <ifNPCDead %1% LoseSubPlot %plotid%>
+
+	sub
+		Persona 1
+		Greeting <if= PlotStatus %plotid% %id% else %pop% NewChat Say %id%01>
+		.%id%_GoInit <SetPlotStatus %plotid% %id% NewChat Say %id%02 QMemo %plotid% %id%03>
+		Msg%id%01 <The mecha force in %name3% hasn't been destroyed yet. What are you waiting for?>
+		Msg%id%02 <A Rishiri Spinner mecha force has been training in %name3% ; seems like they're gearing up to sweep the dusty ring. I want you to find this mecha force and destroy it. Leave no survivors.>
+		Msg%id%03 <%name1% asked you to locate and eliminate the Rishiri mecha force currrently training in %name3% .>
+	end
+	inv
+		Encounter
+		name <Rishiri Mecha Force>
+		Special <NoMSID>
+		% V1 = Visibility Clock.
+		%      If ComTime > V1 and PlotStatus %plotid% = %id%, encounter is active
+		&EnemyFac <11>
+		update <if= PlotStatus %plotid% %id% else GoHide ifG ComTime V1 else GoHide  SetStat STAT_MetaVisibility 0  ShowEncounter  Goto GoSetOrders>
+		GoSetOrders <GrabSource GSetNAtt NAG_EpisodeData NAS_Orders 3>
+		use <ifG StatVal STAT_MetaVisibility -1  Print -1  Goto GoStartCombat>
+		ATTACK <ifG StatVal STAT_MetaVisibility -1    ifUStealth 15 else GoAutoAttack ifYesNo -3 -4 -5 else GoAvoidAttack Goto GoAutoAttack>
+		GoAutoAttack <Alert -2 Goto GoStartCombat>
+		GoAvoidAttack <Print -6 AddSociable -1>
+		GoStartCombat <V= 1 ComTime V+ 1 86400  SavePos Dynamic 2 %threat% 100 .nu1 .nu2 ComposeD Msg1 .Msg1  DynaFaction &EnemyFac>
+		.nu1 <if= T1 0  Return   if= L2 0  L= 2 1  LoseRenown  ItemVar= %2% 1 ComTime ItemVar+ %2% 1 d86400 ItemVar+ %2% 1 43200>
+		.nu2 <if= T2 0           if= L2 0  L= 2 1  XPV 100     Alert 1  Salvage  WinSubPlot %plotid% DeleteItem %2%>
+		.msg1 <You have defeated the mecha.>
+		EncounterMove 50
+	end
+
+
+Content
+	name <Go Beat Bandits>
+	desc <Some bandits have been attacking truckers. See what you can do.>
+	requires <*:Q_MinorMission (1:CORPO|1:TRADE|1:LABOR)>
+	special <REUSABLE>
+
+	% E1 is the NPC offering the mission
+	% E2 is the encounter that is the mission
+	% E3 is an outdoors scene for it
+	Element2 <Prefab>
+	Place2 <3>
+	Element3 <Scene Environs>
+
+	%% FAIL CONDITIONS:
+	%% - E1 dies
+	end <ifNPCDead %1% LoseSubPlot %plotid%>
+
+	sub
+		Persona 1
+		Greeting <if= PlotStatus %plotid% %id% else %pop% NewChat Say %id%01>
+		.%id%_GoInit <SetPlotStatus %plotid% %id% NewChat Say %id%02 QMemo %plotid% %id%03>
+		Msg%id%01 <The bandits who have been attacking our truckers are still on the loose.>
+		Msg%id%02 <Several of our truckers have been attacked by bandits in %name3% . If you could locate these bandits and eliminate them, I'd have a reward for you.>
+		Msg%id%03 <%name1% asked you to locate some bandits in %name3% that have been attacking truckers.>
+	end
+	inv
+		Encounter
+		name <Bandits>
+		Special <NoMSID>
+		% V1 = Visibility Clock.
+		%      If ComTime > V1 and PlotStatus %plotid% = %id%, encounter is active
+		update <if= PlotStatus %plotid% %id% else GoHide ifG ComTime V1 else GoHide  SetStat STAT_MetaVisibility 0  ShowEncounter  Goto GoSetOrders>
+		GoSetOrders <GrabSource GSetNAtt NAG_EpisodeData NAS_Orders 3>
+		use <ifG StatVal STAT_MetaVisibility -1  Print -1  Goto GoStartCombat>
+		ATTACK <ifG StatVal STAT_MetaVisibility -1    ifUStealth 15 else GoAutoAttack ifYesNo -3 -4 -5 else GoAvoidAttack Goto GoAutoAttack>
+		GoAutoAttack <Alert -2 Goto GoStartCombat>
+		GoAvoidAttack <Print -6 AddSociable -1>
+		GoStartCombat <V= 1 ComTime V+ 1 86400  SavePos Dynamic 2 %threat% 100 .nu1 .nu2 ComposeD Msg1 .Msg1  DynaFaction 0>
+		.nu1 <if= T1 0  Return   if= L2 0  L= 2 1  LoseRenown  ItemVar= %2% 1 ComTime ItemVar+ %2% 1 d86400 ItemVar+ %2% 1 43200>
+		.nu2 <if= T2 0           if= L2 0  L= 2 1  XPV 100     Alert 1  Salvage  WinSubPlot %plotid% DeleteItem %2%>
+		.msg1 <You have defeated the bandits.>
+		EncounterMove 50
+	end
+
+
+%%
+%% *:DebugGiveMission Content
+%%
+%% Loads a mission into the Cavalier's Club for easy debugging.
+%%
+
+Content
+	requires <*:Q_DebugGiveMission>
+	desc <The NPC will give the PC a mission, to be handled by a "GiveMission" subquest.>
+
+	% E1 is the person who will be giving the mission.
+	% E2 is the CavClub
+	Element1 <NewNPC 0 0>
+	Place1 <2 (Citizens) ally pass>
+	Element2 <Scene CavClub>
+
+	% SubQuest1 is the mission.
+	SubPlot1 <*:Q_DMinorMission 1>
+
+	sub
+		Persona 1
+		rumor0 <%name1% needs a cavalier for a mission of some kind.>
+		greeting <if= PlotStatus %plotid% %id% else GoCheckFirst if= PlotStatus %plotid1% -1 else GoCheckLoss NewChat Say 1 SetPlotStatus %plotid% -1>
+		GoCheckLoss <if= PlotStatus %plotid1% -2 else GoCheckFirst SetPlotStatus %plotid% -2 Goto GoEndInLoss>
+		*GoEndInLoss <*MissionWasFailure na na na>
+		GoCheckFirst <if= PlotStatus %plotid% 0 else GoChat Goto GoOfferQuest>
+		*GoOfferQuest <*DoYouWantAJob GoStartQuest>
+		GoStartQuest <SetPlotStatus %plotid% %id% Goto .%id1%_GoInit>
+		GoChat <NewChat SayAnything>
+		Msg1 <I hear that you succeeded. The debugging of the mission is now over.>
+
+		MetaScene 1
+		sub
+			room
+			desig <HOME>
+			minimap <#&&&#&...&&.1.&&...&&&-&&>
+		end
+	end
+

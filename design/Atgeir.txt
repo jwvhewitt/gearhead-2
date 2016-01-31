@@ -1,0 +1,171 @@
+Battroid 4
+Name <Atgeir>
+SDL_Sprite <>
+SDL_Portrait <>
+Desig <HY-2>
+desc <A high speed close assault battroid from Hoeller Industries.>
+TYPE <GROUND SPACE INSIDE>
+FACTIONS <HOELL MAQUI FCOMS RISHI PRIVA>
+ROLE_HOELL <GENERAL:TROOPER  ASSAULT:TROOPER>
+ROLE_FCOMS <GENERAL:COMMAND  ASSAULT:COMMAND>
+ROLE_PRIVA <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:COMMAND>
+
+
+sub
+Head
+	size 3
+	Armor 4
+	Mass -3
+	sub
+		Sensor 5
+
+		ECM 4
+
+		STC LAS-3
+		name <Intercept Laser>
+		type <INTERCEPT>
+	end
+	inv
+		HeadArmor 2
+		mass -2
+	end
+
+Torso
+	Armor 4
+	Mass -3
+	sub
+		CPit
+		Armor 1
+
+		HoverJet 6
+
+		Engine 4
+		Armor 1
+		HighPerformance
+
+		Gyro
+		Armor 1
+
+		Mount
+		name <Right Collar Mount>
+
+		Mount
+		name <Left Collar Mount>
+
+		Sensor 2
+	end
+	inv
+		BodyArmor 3
+		Mass -3
+	end
+
+Arm
+	name <Right Arm>
+	Armor 3
+	Mass -2
+	sub
+		Hand
+		name <Right Hand>
+		inv
+			Melee 8
+			name <Magna Spear>
+			Acc 1
+			Speed 3
+			type <EXTEND THROWN RETURN>
+		end
+
+		Mount
+		name <Right Arm Mount>
+		inv
+			Gun 6
+			name <Long Cannon>
+			caliber <65mm caseless>
+			Acc 1
+			Speed 3
+			Range 7
+			Magazine 50
+			sub
+				Ammo 6
+				caliber <65mm caseless>
+				mass -4
+			end
+		end
+
+		HeavyActuator 2
+		mass -1
+	end
+	inv
+		ArmArmor 2
+		mass -2
+	end
+
+Arm
+	name <Left Arm>
+	Armor 3
+	Mass -2
+	sub
+		Hand
+		name <Left Hand>
+		inv
+
+		end
+
+		Mount
+		name <Left Arm Mount>
+		inv
+
+		end
+
+		HeavyActuator 2
+		mass -1
+	end
+	inv
+		ArmArmor 2
+		mass -2
+
+		Shield 5
+		DefBonus 2
+		mass -4
+		sub
+			MLauncher 3
+			sub
+				STC PLM-9
+				magazine 3
+			end
+		end
+	end
+
+Leg
+	name <Right Leg>
+	Armor 4
+	Mass -2
+	sub
+		HoverJet 3
+		OverCharger 2
+	end
+	inv
+		LegArmor 2
+		mass -2
+		sub
+			HoverJet 1
+		end
+	end
+
+Leg
+	name <Left Leg>
+	Armor 4
+	Mass -2
+	sub
+		HoverJet 3
+		OverCharger 2
+	end
+	inv
+		LegArmor 2
+		mass -2
+		sub
+			HoverJet 1
+		end
+	end
+
+end
+

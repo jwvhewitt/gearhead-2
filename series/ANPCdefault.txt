@@ -1,0 +1,331 @@
+% DEFAULT ARCHETYPES FILE
+%    This file defines the character archetypes that can be used to
+%    populate a campaign world.
+%  Most NPCs should get ~80 skill points. PCs start with 88.
+%  STATS  REF BOD SPD PER CFT EGO KNO CHA
+
+Arch Assassin
+statline 14 11 12 10 9 10 9 5
+Combatant
+job_desig <THIEF>
+Chardesc Shy Villainous Villainous Criminal Criminal
+SpotWeakness
+Stealth
+Intimidation
+Talent 16
+
+Arch Spy
+statline 11 9 11 11 11 11 11 13
+Combatant
+job_desig <THIEF>
+Chardesc Shy Shy Shy
+Awareness
+Stealth
+Conversation
+CodeBreaking
+
+Arch Athlete
+statline 11 14 13 8 7 10 7 11
+job_desig <MEDIA>
+Athletics
+Vitality
+Toughness
+
+Arch Miner
+statline 10 13 9 9 11 10 9 9
+job_desig <LABOR>
+Sealed
+Dodge
+CloseCombat
+Toughness
+
+Arch Explorer
+statline 10 10 10 12 10 10 10 10
+Combatant
+job_desig <ADVEN>
+CharDesc Shy
+Awareness
+Survival
+Repair 5
+
+Arch Martial Artist
+statline 12 15 14 11 12 11 12 8
+chardesc Spiritual Passionate
+Combatant
+job_desig <ADVEN>
+Talent 1
+Talent 2
+Awareness
+Initiative
+
+Arch Ticket Agent
+statline 8 8 10 10 11 10 11 12
+job_desig <TRADE>
+Shopping
+
+Arch THIEF
+statline 12 7 13 12 13 10 8 10
+chardesc criminal Shy
+job_desig <THIEF>
+Stealth
+CodeBreaking
+
+Arch Cook
+statline 9 9 9 10 12 9 9 10
+job_desig <CRAFT>
+CloseCombat
+Shopping
+
+Arch Journalist
+statline 8 7 9 13 10 12 11 13
+chardesc Sociable Renowned
+job_desig <MEDIA>
+Awareness
+Conversation
+Insight
+
+Arch Bartender
+statline 9 12 8 10 10 9 12 13
+chardesc Sociable
+job_desig <TRADE>
+Conversation
+
+Arch Priest
+statline 8 10 9 13 9 12 12 10
+chardesc Spiritual Spiritual Spiritual Spiritual Spiritual Sociable
+job_desig <FAITH>
+Conversation
+Mysticism
+
+Arch Warrior Monk
+statline 12 15 14 11 12 11 12 8
+chardesc Spiritual Spiritual Spiritual Passionate
+Combatant
+job_desig <FAITH>
+Talent 1
+Talent 2
+Awareness
+Initiative
+Mysticism
+
+Arch Monk
+statline 10 12 12 10 10 11 13 10
+chardesc Spiritual Spiritual Spiritual Shy Heroic
+job_desig <FAITH>
+Talent 2
+CloseCombat 6
+Dodge 8
+Conversation
+Mysticism
+
+Arch Construction Worker
+statline 9 14 9 8 14 8 9 9
+job_desig <LABOR>
+Repair
+Toughness
+
+Arch Trucker
+statline 10 12 10 8 13 9 8 10
+Combatant
+job_desig <LABOR>
+Repair
+Conversation
+
+Arch Bounty Hunter
+statline 11 11 11 11 11 11 11 11
+chardesc Melancholy Pragmatic Shy
+Combatant
+job_desig <ADVEN>
+Awareness
+Intimidation
+
+ARCH Corporate Executive
+statline 8 9 10 8 13 11 11 10
+job_desig <CORPO>
+Conversation
+Shopping
+
+ARCH Corporate Pilot
+statline 11 11 11 11 10 10 10 13
+Combatant
+job_desig <ADVEN>
+Shopping
+
+
+ARCH Celebrity
+statline 9 10 10 9 9 15 9 16
+chardesc Renowned
+job_desig <MEDIA>
+Conversation
+Taunt
+
+ARCH Singer
+statline 9 9 8 9 9 17 9 18
+chardesc Renowned
+job_desig <MEDIA>
+Conversation
+Performance
+
+Arch Politician
+statline 9 9 10 10 9 13 14 14
+chardesc Renowned
+job_desig <POLIT>
+Conversation
+
+Arch Bureaucrat
+statline 9 9 9 9 10 10 10 10
+chardesc Renowned
+job_desig <POLIT>
+Conversation
+
+Arch Mechanic
+statline 9 10 8 9 14 12 9 9
+job_desig <CRAFT>
+Shopping 5
+Repair 10
+
+Arch Engineer
+statline 9 10 8 9 14 12 9 9
+job_desig <CRAFT>
+Shopping 5
+Repair 10
+MechaEngineering 10
+
+Arch Professor
+statline 8 7 9 10 10 10 18 8
+job_desig <ACADE>
+Awareness 10
+Science 5
+
+Arch Scientist
+statline 7 8 9 10 12 9 17 8
+job_desig <ACADE>
+Awareness 5
+Science 10
+
+Arch Nurse
+statline 8 9 8 9 14 8 11 13
+chardesc Heroic Cheerful
+job_desig <MEDIC>
+Medicine 5
+
+Arch Cyberdoc
+statline 10 7 8 10 15 10 18 10
+chardesc Pragmatic
+job_desig <MEDIC>
+Medicine 15
+Science 10
+
+Arch Doctor
+statline 10 8 9 10 13 11 17 12
+chardesc Heroic
+job_desig <MEDIC>
+Medicine 10
+
+Arch Citizen
+statline 9 9 9 9 9 9 9 9
+
+Arch Student
+statline 9 9 9 9 9 9 9 9
+
+Arch Shopkeeper
+statline 7 9 8 10 13 11 12 10
+% Shopkeepers generally have a great distrust of thieves...
+chardesc Lawful Lawful Lawful Lawful Lawful Lawful Lawful Lawful
+job_desig <TRADE>
+Shopping 10
+Repair 5
+
+Arch Mercenary
+statline 11 11 11 11 9 9 9 9
+Combatant
+job_desig <ADVEN>
+Toughness
+
+Arch Soldier
+statline 12 12 12 12 8 8 8 8
+Combatant
+job_desig <MILIT>
+Toughness
+
+Arch Captain
+statline 11 11 11 11 10 15 13 14
+Combatant
+job_desig <MILIT>
+ElectronicWarfare
+Repair
+Conversation
+
+Arch Pirate
+statline 11 10 12 10 9 10 9 9
+chardesc Criminal
+Combatant
+job_desig <THIEF>
+Taunt
+
+Arch Rocket Star
+statline 13 10 12 12 10 10 10 11
+Combatant
+job_desig <MILIT>
+chardesc Passionate Heroic
+SetFaction 14
+ElectronicWarfare
+Initiative
+
+Arch Privateer
+statline 11 10 12 10 9 10 9 9
+chardesc Criminal
+Combatant
+job_desig <MILIT>
+Taunt
+ElectronicWarfare
+
+Arch Knight
+%% One of the defenders of the L5 Alliance
+statline 12 12 12 12 10 10 10 10
+chardesc lawful heroic
+SetFaction 3
+Combatant
+job_desig <MILIT>
+SpotWeakness
+ElectronicWarfare
+
+Arch Arena Pilot
+statline 11 11 11 11 11 11 11 11
+Combatant
+job_desig <ADVEN>
+SetFaction 5
+Intimidation
+
+Arch Mecha Pilot
+statline 13 10 10 10 9 9 9 10
+Combatant
+job_desig <MILIT>
+Initiative
+
+Arch Forensic Investigator
+statline 9 8 9 13 11 8 14 8
+chardesc Lawful Heroic Pragmatic
+Combatant
+job_desig <POLIC>
+Awareness
+Insight
+Science
+
+Arch Police Officer
+% This is the city defense NPC. Really really tough.
+statline 13 13 12 13 10 13 10 10
+chardesc Lawful Heroic
+Combatant
+job_desig <POLIC>
+Awareness
+SpotWeakness
+Insight
+
+Arch Bandit
+statline 10 10 10 10 9 9 9 9
+chardesc Villainous criminal
+Combatant
+job_desig <THIEF>
+Toughness
+

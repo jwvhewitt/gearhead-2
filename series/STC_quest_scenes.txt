@@ -1,0 +1,470 @@
+MetaScene
+	name <#'s Workshop>
+	desig <QS_Workshop>
+	type <building basement workshop>
+	mapwidth 12
+	mapheight 12
+	BoxMap
+	IndustrialTiles
+	Ceiling
+	special <NOEXIT>
+
+	start <Print 1>
+	msg1 <You enter \SCENE SceneID .>
+
+	NeededCells 2
+	content <Fill Sub *STORAGE_X na>
+
+	sub
+		team 1
+
+		team 2
+		name <Citizens>
+		SetAlly 1
+		Passive
+
+		team 3
+		name <Guards>
+		SetAlly 2
+
+		room
+		minimap <.......##...1#...##......>
+		inv
+			Elevator
+			name <Exit>
+			MiniMapComponent 1
+			Destination -1
+		end
+	end
+
+MetaScene
+	name <#'s Workyard>
+	desig <QS_ConstructionSite>
+	type <building workshop>
+	mapwidth 17
+	mapheight 12
+	BoxMap
+	IndustrialTiles
+	Ceiling
+	special <NOEXIT>
+
+	NeededCells 2
+	content <Fill Sub *CONSTRUCTION_X na>
+
+	sub
+		team 1
+
+		team 2
+		name <Citizens>
+		SetAlly 1
+		Passive
+
+		team 3
+		name <Guards>
+		SetAlly 2
+
+		room
+		minimap <.......##...1#...##......>
+		inv
+			Elevator
+			name <Exit>
+			MiniMapComponent 1
+			Destination -1
+		end
+	end
+
+MetaScene
+	name <# Basement>
+	desig <QS_ExterminationBasement>
+	type <Private Basement>
+	special <NOEXIT>
+	BoxMap
+	RockyTiles
+	Ceiling
+	% L1 = Victory Indicator
+	% L2 = Initialization Counter
+	MapWidth 22
+	MapHeight 32
+	NeededCells 2
+	content <Fill Sub *STORAGE_X na>
+	Start <Print 1 if= L2 0 if= PlotStatus %plotid% %id% L= 2 1 WMonster 2 %threat% 100>
+	nu2 <if= t2 0 if= L1 0 Print 2 XPV 100 L= 1 1 Trigger0 Update>
+	Msg1 <You enter the basement.>
+	Msg2 <That seems to be the last of the vermin.>
+	sub
+		Team 1
+		SetEnemy 2
+
+		Team 2
+		name <Monsters>
+		type <Vermin>
+		SetEnemy 1
+
+		Room
+		sub
+			StairsUp
+			Destination -1
+		end
+	end
+
+
+MetaScene
+	name <#'s Black Market>
+	desig <QS_BlackMarket>
+	type <building Sleazy Dangerous BlackMarket>
+	mapwidth 15
+	mapheight 15
+	MallMap
+	Ceiling
+	special <ADDEXIT UNREGULATED>
+	Tolerance 15
+	NeededCells 3
+	Content1 <Some 1 100 Sub *BLACKMARKET_SHOP na>
+	Content2 <Some 1 100 Sub *WEAPON_SHOP na>
+	Content3 <Fill Sub *BLACKMARKET_X na>
+	Start <Print 1>
+	Msg1 <You enter \SCENE SceneID .>
+	sub
+		team 1
+
+		team 2
+		name <Citizens>
+		SetAlly 1
+		Passive
+
+		team 3
+		name <Guards>
+		SetAlly 2
+
+		room
+		name <Foyer>
+		desig <EntranceGrid>
+		Content <Some 3 50 Here *URBAN_X>
+		Content2 <Some 1 100 Here *ANTI_ATTACK_SECURITY 2>
+	end
+
+MetaScene
+	name <the # Pit>
+	desig <QS_CharaArena>
+	BoxMap
+	Ceiling
+	MapWidth 32
+	MapHeight 32
+	terrain <GROUND>
+	special <SHOWALL SOLO ARENA NOPILLAGE UNCHARTABLE>
+	start <if= SelfArenaState NAV_AS_Ready else GoCheckBattle          Alert 1   SetSelfArenaState NAV_AS_Battle SetSelfArenaRecharge if# SelfChallengerID 0 ForceChat SelfChallengerID>
+	GoCheckBattle <if= SelfArenaState NAV_AS_Battle else GoBoringStart Print 2>
+	GoBoringStart <Print 3 Return>
+	nu1 <if= T1 0 Return   if= SelfArenaState NAV_AS_Battle SetSelfArenaState NAV_AS_Loss  Alert 5  LoseRenown Goto GoEndBattle>
+	nu2 <if= T2 0 Return   if= SelfArenaState NAV_AS_Battle SetSelfArenaState NAV_AS_Win   Alert 6 Print 6  AddSelfArenaWin  AddSelfArenaThreat 8  XPV 100 FacXP+ 5 1 AddRenown 1 ifNPCOK SelfChallengerID else GoEndBattle ForceChat SelfChallengerID Goto GoEndBattle>
+	GoEndBattle <ifNPCOK SelfChallengerID MoveAndPacifyNPC SelfChallengerID SelfChallengerHome ClearSelfChallengerID>
+	Msg1 <You enter \SCENE SceneID . Prepare to battle.>
+	Msg2 <The arena battle rages on.>
+	Msg3 <You enter \SCENE SceneID . There's no battle happening now.>
+	Msg5 <You have lost the battle.>
+	Msg6 <You have won the battle.>
+	Content3 <Fill Sub *RANDOM_SHAPES na>
+	sub
+		Team 1
+		name <Player Team>
+		SetEnemy 2
+		ParaX 5
+		ParaY 5
+
+		Team 2
+		name <Enemies>
+		type <CRIMINAL ROBOT CITY>
+		SetFaction 5
+		SetEnemy 1
+		Deploy <if= SelfArenaState NAV_AS_Ready ifG SelfArenaForces 0 WMonster 2 SelfArenaThreat SelfArenaForces>
+		ParaX 25
+		ParaY 25
+	end
+
+MetaScene 0 2
+	name <the # Arena>
+	desig <QS_MechaArena>
+	entrance <*QUEST-INACTIVE>
+	ArenaMap
+	MapWidth 50
+	MapHeight 50
+	type <Arena>
+	special <SHOWALL SOLO ARENA NOPILLAGE UNCHARTABLE>
+	terrain <GROUND>
+	start <if= SelfArenaState NAV_AS_Ready else GoCheckBattle          Alert 1   SetSelfArenaState NAV_AS_Battle SetSelfArenaRecharge if# SelfChallengerID 0 ForceChat SelfChallengerID>
+	GoCheckBattle <if= SelfArenaState NAV_AS_Battle else GoBoringStart Print 2>
+	GoBoringStart <Print 3 Return>
+	nu1 <if= T1 0 Return   if= SelfArenaState NAV_AS_Battle SetSelfArenaState NAV_AS_Loss  Alert 5 Print 5  LoseRenown Goto GoEndBattle>
+	nu2 <if= T2 0 Return   if= SelfArenaState NAV_AS_Battle SetSelfArenaState NAV_AS_Win   Alert 6 Print 6  AddSelfArenaWin  AddSelfArenaThreat d10  XPV 100 FacXP+ 5 1 AddRenown 1 ifNPCOK SelfChallengerID else GoEndBattle ForceChat SelfChallengerID Goto GoEndBattle>
+	GoEndBattle <ifNPCOK SelfChallengerID MoveAndPacifyNPC SelfChallengerID SelfChallengerHome ClearSelfChallengerID>
+	Msg1 <You enter the arena. Prepare to battle.>
+	Msg2 <The arena battle rages on.>
+	Msg3 <You enter the arena. There's no fight going on here now.>
+	Msg5 <You have lost the battle.>
+	Msg6 <You have won the battle.>
+	sub
+		Team 1
+		name <Player Team>
+		SetEnemy 2
+		ParaX 5
+		ParaY 25
+
+		Team 2
+		name <Enemies>
+		SetFaction 5
+		SetEnemy 1
+		Deploy <if= SelfArenaState NAV_AS_Ready ifG SelfArenaForces 0 WMecha 2 SelfArenaThreat SelfArenaForces>
+		ParaX 45
+		ParaY 25
+	end
+
+
+
+%%  ********************
+%%  ***   DUNGEONS   ***
+%%  ********************
+
+MetaScene
+	name <# Tower>
+	desig <QS_Dungeon_UrbanHellHole>
+	special <NOEXIT>
+	type <DUNGEON building condemned>
+	dentrance <*GoUp>
+	content1 <Some 1 40 Sub *DUNGEON_THREAT>
+	content2 <Some 1 45 Sub *DUNGEON_DECOR>
+	content3 <Some 1 30 Sub *DUNGEON_REWARD>
+	mapwidth 25
+	mapheight 25
+	ComplexMap
+	Ceiling
+	LockedDoorChance 15
+	SecretDoorChance 5
+	NeededCells 3
+	start <Print 1>
+	msg1 <You enter \SCENE SceneID .>
+	sub
+		Team 1
+		SetEnemy 2
+
+		Team 2
+		name <Monster>
+		type <City Vermin Criminal>
+		SetEnemy 1
+		Stat 2 1
+
+		room
+		width 3
+		height 3
+		sub
+			StairsDown
+			Destination -1
+		end
+	end
+
+MetaScene
+	name <# Sewer>
+	desig <QS_Dungeon_Sewer>
+	special <NOEXIT>
+	type <DUNGEON sewer>
+	dentrance <*GoDown>
+	content1 <Some 1 50 Sub *DUNGEON_THREAT>
+	content2 <Some 1 45 Sub *DUNGEON_DECOR>
+	content3 <Some 1 20 Sub *DUNGEON_REWARD>
+	mapwidth 30
+	mapheight 30
+	MonkeyMap
+	Ceiling
+	LockedDoorChance 12
+	SecretDoorChance 20
+	MarbleType 7
+	NeededCells 3
+	start <Print 1>
+	msg1 <You enter \SCENE SceneID .>
+	sub
+		Team 1
+		SetEnemy 2
+
+		Team 2
+		name <Monster>
+		type <City Water Reptile Fungus Sewer>
+		SetEnemy 1
+		Stat 2 1
+
+		room
+		width 3
+		height 3
+		sub
+			StairsUp
+			Destination -1
+		end
+	end
+
+
+MetaScene
+	name <the S.S. #>
+	desig <QS_Dungeon_Derelict>
+	special <NOEXIT>
+	type <DUNGEON ruin derelict>
+	terrain <SPACE>
+	dentrance <*GoDown>
+	content1 <Some 1 40 Sub *DUNGEON_THREAT>
+	content2 <Some 1 45 Sub *DUNGEON_DECOR>
+	content3 <Some 1 30 Sub *DUNGEON_REWARD>
+	% Suffocation effect...
+	Vacuum
+	mapwidth 35
+	mapheight 35
+	MonkeyMap
+	Ceiling
+	LockedDoorChance 12
+	SecretDoorChance 10
+	IndustrialTiles
+	NeededCells 3
+	start <Print 1>
+	msg1 <You enter \SCENE SceneID .>
+	sub
+		Team 1
+		SetEnemy 2
+
+		Team 2
+		name <Monster>
+		type <Fungus Exorg Ruin PreZero>
+		SetEnemy 1
+		Stat 2 1
+
+		room
+		width 3
+		height 3
+		sub
+			Elevator
+			Destination -1
+		end
+	end
+
+
+MetaScene
+	name <the # Wreck>
+	desig <QS_Dungeon_TreasureWreck>
+	special <NOEXIT>
+	type <DUNGEON ruin derelict>
+	terrain <SPACE>
+	dentrance <*GoDown>
+	content1 <Some 2 60 Sub *DUNGEON_THREAT>
+	content2 <Some 1 45 Sub *DUNGEON_DECOR>
+	content3 <Some 1  5 Sub *DUNGEON_REWARD>
+	content4 <Some 1 40 Sub *TREASUREROOM_WRECK>
+	% Suffocation effect...
+	Vacuum
+	mapwidth 49
+	mapheight 49
+	MonkeyMap
+	Ceiling
+	LockedDoorChance 17
+	SecretDoorChance 20
+	IndustrialTiles
+	NeededCells 5
+	start <Print 1>
+	msg1 <You enter \SCENE SceneID .>
+	sub
+		Team 1
+		SetEnemy 2
+
+		Team 2
+		name <Monster>
+		type <Fungus Exorg Ruin PreZero>
+		SetEnemy 1
+		Stat 2 1
+
+		room
+		width 3
+		height 3
+		sub
+			Elevator
+			Destination -1
+		end
+	end
+
+MetaScene
+	name <# Asteroid>
+	desig <QS_Dungeon_AsteroidCave>
+	special <NOEXIT>
+	type <DUNGEON asteroid cave>
+	terrain <SPACE>
+	habitat <SPACE.ASTER>
+	dentrance <*GoDown>
+	content1 <Some 1 45 Sub *DUNGEON_THREAT>
+	content2 <Some 1 40 Sub *DUNGEON_DECOR>
+	content3 <Some 1 30 Sub *DUNGEON_REWARD>
+	% Suffocation effect...
+	Vacuum
+	Ceiling
+	mapwidth 30
+	mapheight 30
+	CaveMap
+	RockyTiles
+	NeededCells 3
+	start <Print 1>
+	msg1 <You enter \SCENE SceneID .>
+	sub
+		Team 1
+		SetEnemy 2
+
+		Team 2
+		name <Monster>
+		type <Cave Exorg Fungus Asteroid>
+		SetEnemy 1
+		Stat 2 1
+
+		room
+		width 3
+		height 3
+		sub
+			StairsUp
+			Destination -1
+		end
+	end
+
+MetaScene
+	name <# Mine>
+	desig <QS_Dungeon_AsteroidMine>
+
+	special <NOEXIT>
+	type <DUNGEON asteroid mine>
+	terrain <SPACE>
+	habitat <SPACE.ASTER>
+	dentrance <*GoDown>
+	content1 <Some 1 40 Sub *DUNGEON_THREAT>
+	content2 <Some 1 45 Sub *DUNGEON_DECOR>
+	content3 <Some 1 30 Sub *DUNGEON_REWARD>
+	% Suffocation effect...
+	Vacuum
+	mapwidth 30
+	mapheight 30
+	CaveMap
+	Ceiling
+	RockyTiles
+
+	NeededCells 3
+
+	start <Print 1>
+	msg1 <You enter \SCENE SceneID .>
+
+	sub
+		Team 1
+		SetEnemy 2
+
+		Team 2
+		name <Monster>
+		type <Mine Fungus Asteroid>
+		SetEnemy 1
+		Stat 2 1
+
+		room
+		width 3
+		height 3
+		sub
+			StairsUp
+			Destination -1
+		end
+	end
+

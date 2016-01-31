@@ -1,0 +1,339 @@
+%  ************************
+%  ***  MELEE  WEAPONS  ***
+%  ************************
+
+Melee 6
+Name <Hand Axe>
+desc <A small axe, light enough to be wielded with one hand.>
+Type <THROWN>
+category <WEAPON MELEE TOOL>
+factions <FEDER>
+SDL_PORTRAIT <item_woodaxe.png>
+legality -10
+Speed 3
+
+Melee 12
+Name <Battle Axe>
+desc <A large axe, balanced for combat.>
+category <WEAPON MELEE>
+factions <FEDER>
+SDL_PORTRAIT <item_battleaxe.png>
+legality 5
+% Battle-axes aren't illegal, but you'll be more likely to find one in a rowdy area...
+Mass -2
+
+
+Melee 8
+Name <Javelin>
+Type <THROWN>
+Mass -3
+speed 3
+desc <A primitive melee weapon, composed of a long shaft tipped with a metal piercing blade.>
+category <SPORTS THROWN>
+factions <FEDER>
+SDL_PORTRAIT <item_javelin.png>
+
+Melee 10
+Name <Spear>
+Type <EXTEND THROWN>
+Mass -3
+desc <A primitive melee weapon, composed of a long shaft tipped with a metal piercing blade.>
+category <WEAPON MELEE THROWN>
+factions <FEDER>
+SDL_PORTRAIT <item_spear.png>
+legality 5
+
+Melee 15
+Name <Pole-Axe>
+Type <EXTEND>
+Mass -7
+desc <A primitive melee weapon. It features a wide cutting blade at the end.>
+category <WEAPON MELEE>
+factions <FEDER>
+SDL_PORTRAIT <item_poleaxe.png>
+legality 5
+
+
+%  ****************************
+%  ***   MISSILE  WEAPONS   ***
+%  ****************************
+
+Gun 8
+Name <Assault Rifle>
+desig <7-Z>
+desc <>
+sdl_portrait <>
+caliber <5mm auto>
+category <WEAPON MISSILE ESSENTIAL>
+factions <EARTH>
+type <ARMORPIERCING>
+legality 5
+Mass -7
+Range 6
+Speed 3
+BV 5
+magazine 120
+sub
+	Ammo 8
+	name <5mm Auto Clip>
+	caliber <5mm auto>
+	SDL_PORTRAIT <item_ammoclip.png>
+end
+
+
+%  ***************
+%  ***  ARMOR  ***
+%  ***************
+
+Set
+name <Flak Suit [set]>
+desc <Light armor designed to protect against shrapnel.>
+Category <ARMOR>
+Factions <FEDER>
+legality -10
+inv
+	BodyArmor 3
+	Name <Flak Jacket>
+	desc <This jacket is designed to protect against shrapnel.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	legality -10
+
+	ArmArmor 3
+	Name <Flak Sleeve>
+	desc <Arm armor made from a combination of tough cloths and armor plates.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -3
+	legality -5
+
+	LegArmor 3
+	Name <Flak Legging>
+	desc <Leg armor made from a combination of tough cloths and armor plates.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -3
+	legality -5
+
+	ArmArmor 3
+	Name <Flak Sleeve>
+	desc <Arm armor made from a combination of tough cloths and armor plates.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -3
+	legality -5
+
+	LegArmor 3
+	Name <Flak Legging>
+	desc <Leg armor made from a combination of tough cloths and armor plates.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -3
+	legality -5
+end
+
+Set
+name <Mesh Suit [set]>
+desc <Armor crafted from alternating layers of ceramic and polymer.>
+Category <ARMOR>
+Factions <FEDER>
+legality -5
+inv
+	BodyArmor 5
+	Name <Mesh Jacket>
+	desc <Armor crafted from alternating layers of ceramic and polymer.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	legality -5
+
+	ArmArmor 5
+	Name <Mesh Sleeve>
+	desc <Armor crafted from alternating layers of ceramic and polymer.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	mass -2
+	legality -5
+
+	ArmArmor 5
+	Name <Mesh Sleeve>
+	desc <Armor crafted from alternating layers of ceramic and polymer.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	mass -2
+	legality -5
+
+	LegArmor 5
+	Name <Mesh Legging>
+	desc <Armor crafted from alternating layers of ceramic and polymer.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	mass -2
+	legality -5
+
+	LegArmor 5
+	Name <Mesh Legging>
+	desc <Armor crafted from alternating layers of ceramic and polymer.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	mass -2
+	legality -5
+end
+
+Set
+name <Plate Armor [set]>
+desc <Armor composed of ceramic plates.>
+Category <ARMOR>
+Factions <FEDER>
+inv
+	BodyArmor 4
+	Name <Breastplate>
+	desc <A solid plate of body armor.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -6
+	legality -5
+
+	ArmArmor 3
+	Name <Plate Sleeve>
+	desc <Arm armor composed of a solid plate.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -4
+	legality -5
+
+	LegArmor 3
+	Name <Plate Legging>
+	desc <Legging composed of a solid plate.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -4
+	legality -5
+
+	ArmArmor 3
+	Name <Plate Sleeve>
+	desc <Arm armor composed of a solid plate.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -4
+	legality -5
+
+	LegArmor 3
+	Name <Plate Legging>
+	desc <Legging composed of a solid plate.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -4
+	legality -5
+end
+
+Set
+name <Blast Suit [set]>
+desc <This suit is designed to resist explosions.>
+Category <ARMOR>
+Factions <FEDER>
+legality -10
+inv
+	HeadArmor 4
+	Name <Blast Helmet>
+	SDL_PORTRAIT <item_blasthelmet.png>
+	desc <Helmet used to resist blasts and explosions.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -5
+	legality -10
+
+	BodyArmor 6
+	Name <Blast Suit>
+	desc <This suit is designed to resist explosions.>
+	SDL_PORTRAIT <item_blastarmor.png>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass 1
+	legality -10
+
+	ArmArmor 4
+	Name <Blast Sleeve>
+	desc <Sleeve used to resist blasts and explosions.>
+	SDL_PORTRAIT <item_blastsleeve.png>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -5
+	legality -10
+
+	LegArmor 4
+	Name <Blast Legging>
+	desc <Leg armor used to resist blasts and explosions.>
+	SDL_PORTRAIT <item_blastlegging.png>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -5
+	legality -10
+
+	ArmArmor 4
+	Name <Blast Sleeve>
+	desc <Sleeve used to resist blasts and explosions.>
+	SDL_PORTRAIT <item_blastsleeve.png>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -5
+	legality -10
+
+	LegArmor 4
+	Name <Blast Legging>
+	desc <Leg armor used to resist blasts and explosions.>
+	SDL_PORTRAIT <item_blastlegging.png>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -5
+	legality -10
+end
+
+HeadArmor 1
+Name <Field Cap>
+desc <A lightweight cap.>
+Category <CLOTHING>
+Factions <FEDER>
+SDL_PORTRAIT <item_fieldcap.png>
+Mass -1
+legality -20
+
+HeadArmor 3
+Name <Recce Helmet>
+desc <Helmet used in reconnaissance missions, capable of transmitting and receiving data.>
+Category <ARMOR>
+Factions <FEDER>
+SDL_PORTRAIT <item_lighthelmet.png>
+Mass -5
+Memo
+Phone
+legality -5
+
+HeadArmor 5
+Name <Heavy Combat Helmet>
+desc <A helmet typically used in heavy combat situations. It contains an integrated objective-storage system.>
+Category <ARMOR>
+Factions <FEDER>
+SDL_PORTRAIT <item_lighthelmet.png>
+Mass -7
+Memo
+legality -5
+
+
+%  ************************
+%  ***  WEAPON ADD-ONS  ***
+%  ************************
+
+MeleeAddOn 0
+Name <Sonic Token>
+desc <Releases a sonic burst when used in conjunction with a melee weapon.>
+Category <ACCESSORY>
+Factions <FEDER>
+sub
+	BeamGun 8
+	Name <Sonic Wave>
+	desc <A sonic burst that damages multiple targets.>
+	Range 5
+	Acc -1
+	Type <SCATTER>
+end
+

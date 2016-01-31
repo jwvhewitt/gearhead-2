@@ -1,0 +1,735 @@
+%%
+%% *CS_END_Intro
+%%
+%%  This is the beginning of the end. The intro serves as the introduction to the
+%%  conclusion, and also the first big fight scene. Following the battle it invokes
+%%  the following subplots:
+%%    *CS_END_Buildup
+%%    *:CS_END_Partner_Arc
+%%    *:CS_END_LoveInterest_Arc
+%%
+%%  Note that this subplot passes the Enemy NPC on to the final battle, so if redemption
+%%  is going to happen it's going to happen right here. If the PC entered the conclusion
+%%  without an enemy NPC, a new enemy must be created for the final battle and introduced
+%%  right here.
+%%
+%%  PARAM1: The conclusion mood
+%%
+
+Content
+	name <Raid the Command Bunker>
+	desc <The PC will raid the enemy's command bunker, only to find the enemy missing.>
+	requires <*CS_END_Intro E:++>
+
+	% E1 is the mood
+	% E2 is the enemy NPC
+	% E3 is an outdoors scene for the base
+	% E4 is the base itself
+	Element2 <Grab 1>
+	Element3 <Scene Outdoors !Near -7>
+	Element4 <Prefab>
+	Place4 <3>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Peaceful Entry Counter
+
+	% At startup, activate the RevealEncounter task.
+	update <if= p%id%01 0 p= %id%01 1 SetPlotStatus %plotid2% %id2% SetPlotStatus %plotid3% %id3%>
+
+	.%id3%_%plotid3%_GoPeacefulEntry <P= %id%02 1>
+
+	% SubPlot1 is the final battle buildup
+	%     This serves the purpose of a RevealEncounter task for the last fight
+	% SubPlot2 is the RevealEncounter for the Enemy's base
+	% SubPlot3 is the peaceful entry for the Enemy's base
+	SubPlot1 <*CS_END_Buildup 1 2>
+	SubPlot2 <*:CS_RevealEncounter_NPCBase&EnemyNPC 3 4 2>
+	SubPlot3 <*:CS_PeacefulEntry_NPCBase 4 2>
+
+	sub
+		MetaScene 4
+		rumor%id% <%name2% is preparing to launch a big operation.>
+		special <NOEXIT>
+		mapwidth 35
+		mapheight 35
+		MonkeyMap
+		LockedDoorChance 10
+		SecretDoorChance 5
+		NeededCells 2
+
+		% L1 = Have completed task
+		% L2 = Have spotted computer
+		% L3 = Computer UID
+		% L4 = History Message
+
+		start <Print 1 if= L4 0 L= 4 1 History 3 CancelSubPlot %plotid5% if# P%id%02 0 TeamNeutral 2 TeamNeutral 3>
+		end <if# L1 0 SetEncounterInactive %4%>
+		tmove1 <if= L2 0 ifPCCanSeeLocal L3 L= 2 1 Alert 2>
+
+		PCAttack <ifTeamNotHostile 2 TeamAttack 2 TeamAttack 3 TeamAttack 4 Alert 4>
+
+		Msg1 <You enter %name2%'s command bunker.>
+		Msg2 <You spot an important-looking computer terminal.>
+		Msg3 <You raided %name2%'s command bunker.>
+		Msg4 <Suddenly, an alarm goes off!>
+
+		Content1 <Some 2 80 Sub *Armory>
+
+		sub
+			Team 1
+			SetEnemy 2 3 4
+
+			Team 2
+			name <Guards>
+			type <SYNTH ROBOT GUARD>
+			Deploy <if= V1 0 V= 1 1 MonsterUp 2 StoryDL>
+			SetEnemy 1
+			SetAlly 3 4
+
+			Team 3
+			name <First Encounter>
+			home <Entrance>
+			type <SYNTH ROBOT GUARD>
+			Deploy <if= V1 0 V= 1 1 WMonster 3 StoryDL 50>
+			SetEnemy 1
+			SetAlly 2 4
+
+			Team 4
+			name <Last Encounter>
+			home <Goal>
+			type <SYNTH ROBOT GUARD>
+			Deploy <if= V1 0 V= 1 1 if= P%id%02 0 WMonster 4 StoryDL 50>
+			SetEnemy 1
+			SetAlly 2 3
+
+			room
+			name <Entrance>
+			special <STARTHERE>
+			sub
+				TrapDoor
+				Destination -1
+				use <Print 1 Return>
+			end
+
+			room
+			name <Goal>
+			sub
+				STC COMPUTER-INDESTRUCTIBLE
+				use <Alert 1 XPV 200 Retreat 2 Retreat 3 Retreat 4 MonsterOff 2 ForceChat %2% L= 1 1>
+				update <L= 3 SelfUID>
+				Msg1 <You receive a holographic message from %name2%.>
+			end
+		end
+
+		Persona 2
+		special <UNLISTED NOESCAPE>
+		greeting <if= PlotStatus %plotid% %id% else GoChat SetPlotStatus %plotid1% %id1% Return Goto GoGreet>
+		GoChat <EndChat SayAnything>
+		*GoGreet <*CS_END_Intro_Greeting GoExplain>
+		*GoExplain <*CS_END_Intro_Explanation>
+	end
+	inv
+		STC CORE-ACTIVATABLE-STATIONARY-DEFENDED
+		name <Command Base>
+	end
+
+%%
+%% *CS_END_Buildup
+%%
+%%  The fights leading up to (and revealing) the final battle.
+%%
+%%  PARAM1: The mood
+%%  PARAM2: The enemy NPC
+%%
+
+Content
+	name <Parade of Mini-Bosses>
+	desc <Fight a series of mini-bosses >
+	requires <*CS_END_Buildup>
+
+	% E1 is the mood
+	% E2 is the enemy NPC
+	% E3 is an outdoors scene for the final battle
+	% E4 is the final battle encounter-
+	%     to be revealed once all the mini-bosses are done.
+	Element3 <Scene Outdoors !Near -7>
+	Element4 <Prefab>
+	Place4 <3>
+
+	% P%id%01 = Initialization Counter
+
+	update <if= P%id%01 0 P= %id%01 1 SetPlotStatus %plotid1% %id1%>
+
+	.%id1%_%plotid1%_GoWin <SetPlotStatus %plotid2% %id2%>
+	.%id2%_%plotid2%_GoWin <SetPlotStatus %plotid3% %id3%>
+	.%id3%_%plotid3%_GoWin <Alert %id%01 SetEncounterActive %4% SetPlotStatus %plotid4% %id4%>
+
+	Msg%id%01 <Having defeated all of the underlings, there's no-one left to fight but %name2%.>
+
+	% SubPlot1 is MiniBoss #1
+	% SubPlot2 is MiniBoss #2
+	% SubPlot3 is MiniBoss #3
+	% SubPlot4 is the final battle
+	SubPlot1 <*:CS_END_MiniBoss 4>
+	SubPlot2 <*:CS_END_MiniBoss 4>
+	SubPlot3 <*:CS_END_MiniBoss 4>
+	SubPlot4 <*CS_END_FinalBattle 1 2 3 4>
+
+	inv
+		STC CORE-ACTIVATABLE
+		name <Final Battle>
+	end
+
+
+%%
+%% *CS_END_FinalBattle
+%%
+%%  The final battle. Exactly as advertised.
+%%
+%%  The enemy mecha forces must be Team 2, since any minibosses previously defeated
+%%  will be added to this team.
+%%
+%%  NOTE: This component must kill the mood or at least give it a time limit.
+%%
+%%  PARAM1: The mood
+%%  PARAM2: The enemy NPC
+%%  PARAM3: The outdoor scene where the battle will take place
+%%  PARAM4: The encounter for the final battle
+%%
+
+Content
+	name <Battleship Battle>
+	desc <Fight a battleship, then your enemy.>
+	requires <*CS_END_FinalBattle *CORE_FINAL>
+
+	% E1 is the mood
+	% E2 is the enemy NPC
+	% E3 is an outdoors scene for the final battle
+	% E4 is the final battle encounter
+
+	% P%id%01 = Initialization Counter
+	update <if= p%id%01 0 P= %id%01 1 NPCLevel %2% 90>
+
+	% SubPlot1 is the ending stub; activate this subplot to start the ending.
+	subplot1 <*:CS_END_TheEnd 2>
+
+	sub
+		MetaScene 4 2
+		rumor%id% <%name2%'s ship is in %name3%. This could mean the end of everything.>
+		special <NORESCUE>
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter; resets each time
+		% L3 = Second deployment happened
+		% L4 = Enemy NPC died
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1 L= 1 0   if= L3 0 else GoFightEnemy Alert 1   Trigger0 RollCall>
+		GoFightEnemy <ForceChat %2%>
+		nu1 <if= T1 0   Return if= L1 0 L= 1 1 if= L4 0 else GoPartial LoseRenown LoseRenown>
+		nu2 <if= T2 0   if= L3 0 else nu5   ifG T3 0  Alert 2 WMecha 2 StoryDL 100>
+		nu3 <if= T3 0   if= L3 0   L= 3 1   Alert 3  DeployNPC %2% 5  WMecha 5 StoryDL 100 ForceChat %2%>
+		nu5 <if= T5 0   if= L3 1  if= T2 0  if= L1 0  L= 1 1  Goto GoVictory>
+		Faint%2% <L= 4 1>
+		end <L= 2 0>
+
+		GoPartial <Alert 4  History 4   &EndPartialVictory      SetMoodTimeLimit %1% 86400   SetEncounterInactive %4%>
+		GoVictory <Alert 5  History 5   &EndCompleteVictory     KillMood %1%                 SetEncounterInactive %4%>
+
+		Msg1 <You face %name2%'s battleship.>
+		Msg2 <Reinforcements arrive!>
+		Msg3 <As the battleship explodes, %name2% launches.>
+		Msg4 <With %name2% dead, \PPR %2% forces slowly begin to disperse.>
+		Msg5_1 <You have completely defeated %name2%'s forces.>
+		CMsg5_1 <if= &EnemyFac 0 Accept>
+		Msg5_2 <You have completely destroyed %name2%'s forces, and with them \FACTION &EnemyFac 's plans for domination.>
+		CMsg5_2 <if# &EnemyFac 0 Accept>
+
+		sub
+			team 1
+			SetAlly 4
+			SetEnemy 2 3 5
+			ParaX 45
+			ParaY 25
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 4
+			SetAlly 3 5
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   ifDCCompleted OFF_5 else GoCheckOFF4 WMecha 2 80 275>
+			GoCheckOFF4 <ifDCCompleted OFF_4 else GoBigBattle WMecha 2 90 300>
+			GoBigBattle <WMecha 2 100 300>
+			home <Enemy Zone>
+
+			team 3
+			name <Battleship>
+			setenemy 1 4
+			setally 2 5
+
+			team 4
+			name <Allies>
+			setenemy 2 3 5
+			setally 1
+			Deploy <if= PlotStatus %plotid% %id% &ifDefensesRallied   SetSelfFaction &AllyFac   ifDCCompleted DEF_5 else GoCheckDef4 WMecha 4 100 150>
+			GoCheckDef4 <ifDCCompleted DEF_4 else GoSmallAllies WMecha 4 70 150>
+			GoSmallAllies <WMecha 4 40 100>
+			home <Ally Zone>
+
+			team 5
+			name <Big Boss>
+			home <Ship Zone>
+			Deploy <SetSelfFaction &EnemyFac if= L3 1   ifDCCompleted OFF_5 else GoCheckOFF4 WMecha 5 StoryDL 100>
+			GoCheckOFF4 <ifDCCompleted OFF_4 else GoBigBattle WMecha 5 StoryDL 150>
+			GoBigBattle <WMecha 5 StoryDL 200>
+			setenemy 1 4
+			setally 2 3
+
+			rect
+			name <Enemy Zone>
+			special <SubZone>
+			width 5
+			Height 48
+			MFX 1
+			MFY 2
+			Content1 <Some 2 100 Here *CS_END_Final_Enemies na>
+
+			rect
+			name <Ally Zone>
+			special <SubZone>
+			width 5
+			Height 48
+			MFX 45
+			MFY 2
+			Content1 <Some 3 100 Here *CS_END_Final_Allies na>
+
+			rect
+			name <Ship Zone>
+			special <SubZone>
+			width 12
+			height 12
+			MFX 6
+			MFY 19
+			sub
+				SuperProp
+				requires <*BattleShip>
+				SetTeam 3
+			end
+		end
+
+		Persona 2
+		special <UNLISTED>
+		greeting <if= PlotStatus %plotid% %id% else %pop% if= v%id%01 0 else .%id%_GoSecondTime V= %id%01 1 Goto .%id%_GoGreet>
+		*.%id%_GoSecondTime <*Back_For_More>
+		*.%id%_GoGreet <*CS_END_FinalBattle_Greeting .%id%_GoThemeExpo>
+		*.%id%_GoThemeExpo <*THEME_EXPO&Enemy na>
+	end
+
+
+Content
+	name <SPECIAL: Peace and Love>
+	desc <Try one last time to get a peace agreement. If it doesn't work, thwack 'em.>
+	requires <*CS_END_FinalBattle *CORE_F_PAL>
+	%% Before the final battle starts, you get a conversation in which to
+	%% argue for peace. Succeed and you activate the special ending. Fail and
+	%% you need to fight everybody as normal, plus you can only get the
+	%% partial victory ending.
+
+	% E1 is the mood
+	% E2 is the enemy NPC
+	% E3 is an outdoors scene for the final battle
+	% E4 is the final battle encounter
+
+	% P%id%01 = Initialization Counter
+	update <if= p%id%01 0 P= %id%01 1 NPCLevel %2% 90>
+
+	% SubPlot1 is the ending stub; activate this subplot to start the ending.
+	% SubPlot2 is the special ending
+	subplot1 <*:CS_END_TheEnd 2>
+	subplot2 <*:CS_END_Special_PAL 2>
+
+	sub
+		MetaScene 4 2
+		rumor%id% <%name2%'s ship is in %name3%. This could mean the end of everything.>
+		special <NORESCUE>
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter; resets each time
+		% L3 = Second deployment happened
+		% L4 = Enemy NPC died
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1 L= 1 0   if= L3 0 else GoFightEnemy Alert 1   Trigger0 RollCall  ForceChat %2%>
+		GoFightEnemy <ForceChat %2%>
+		nu1 <if= T1 0   Return if= L1 0 L= 1 1 if= L4 0 else GoPartial LoseRenown LoseRenown>
+		nu2 <if= T2 0   if= L3 0 else nu5   ifG T3 0  Alert 2 WMecha 2 StoryDL 100>
+		nu3 <if= T3 0   if= L3 0   L= 3 1   Alert 3  DeployNPC %2% 5  WMecha 5 StoryDL 100 ForceChat %2%>
+		nu5 <if= T5 0   if= L3 1  if= T2 0  if= L1 0  L= 1 1  Goto GoPyrrhic>
+		Faint%2% <L= 4 1>
+		end <L= 2 0>
+
+		GoPartial <Alert 4  History 4   &EndPartialVictory      SetMoodTimeLimit %1% 86400   SetEncounterInactive %4%>
+		GoPyrrhic <Alert 5  History 5   &EndPartialVictory      KillMood %1%                 SetEncounterInactive %4%>
+
+		Msg1 <You face %name2%'s battleship.>
+		Msg2 <Reinforcements arrive!>
+		Msg3 <As the battleship explodes, %name2% launches.>
+		Msg4 <With %name2% dead, \PPR %2% forces slowly begin to disperse.>
+		Msg5 <You failed to secure peace, but at least defeated %name2%.>
+
+		sub
+			team 1
+			SetAlly 4
+			SetEnemy 2 3 5
+			ParaX 45
+			ParaY 25
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 4
+			SetAlly 3 5
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   ifDCCompleted OFF_5 else GoCheckOFF4 WMecha 2 80 275>
+			GoCheckOFF4 <ifDCCompleted OFF_4 else GoBigBattle WMecha 2 90 300>
+			GoBigBattle <WMecha 2 100 300>
+			home <Enemy Zone>
+
+			team 3
+			name <Battleship>
+			setenemy 1 4
+			setally 2 5
+
+			team 4
+			name <Allies>
+			setenemy 2 3 5
+			setally 1
+			Deploy <if= PlotStatus %plotid% %id% &ifDefensesRallied   SetSelfFaction &AllyFac   WMecha 4 120 150>
+			home <Ally Zone>
+
+			team 5
+			name <Big Boss>
+			home <Ship Zone>
+			Deploy <SetSelfFaction &EnemyFac if= L3 1   ifDCCompleted OFF_5 else GoCheckOFF4 WMecha 5 StoryDL 100>
+			GoCheckOFF4 <ifDCCompleted OFF_4 else GoBigBattle WMecha 5 StoryDL 150>
+			GoBigBattle <WMecha 5 StoryDL 200>
+			setenemy 1 4
+			setally 2 3
+
+			rect
+			name <Enemy Zone>
+			special <SubZone>
+			width 5
+			Height 48
+			MFX 1
+			MFY 2
+			Content1 <Some 2 100 Here *CS_END_Final_Enemies na>
+
+			rect
+			name <Ally Zone>
+			special <SubZone>
+			width 5
+			Height 48
+			MFX 45
+			MFY 2
+			Content1 <Some 3 100 Here *CS_END_Final_Allies na>
+
+			rect
+			name <Ship Zone>
+			special <SubZone>
+			width 12
+			height 12
+			MFX 6
+			MFY 19
+			sub
+				SuperProp
+				requires <*BattleShip>
+				SetTeam 3
+			end
+		end
+
+		Persona 2
+		special <UNLISTED>
+		% V%id%01 = First time counter
+		% V%id%02 = Final skill roll difficulty counter
+		greeting <if= PlotStatus %plotid% %id% else %pop% if= v%id%01 0 else .%id%_GoSecondTime V= %id%01 1 V= %id%02 20  Goto .%id%_GoGreet>
+		*.%id%_GoSecondTime <*Back_For_More>
+		%% You get one chance to secure the peace. Let's see how it goes.
+		%% The three bonuses:
+		%% - Have a high Heroism score
+		%% - Have a friend/ally/lover/family on the other side
+		%% - Have the authority to speak now
+		*.%id%_GoGreet <*CS_END_FPAL_Greeting .%id%_GoQuest1 .%id%_GoThemeExpo>
+		*.%id%_GoQuest1 <*CS_END_FPAL_Quest1 .%id%_GoQuest2 .%id%_GoQ1Okay .%id%_GoQ1Fail>
+		.%id%_GoQ1Okay <V+ %id%02 25 Goto .%id%_GoQuest2>
+		.%id%_GoQ1Fail <V+ %id%02 50 Goto .%id%_GoQuest2>
+		*.%id%_GoQuest2 <*CS_END_FPAL_Quest2 .%id%_GoQuest3 .%id%_GoQ2Okay .%id%_GoQ2Fail>
+		.%id%_GoQ2Okay <V+ %id%02 25 ifG 100 v%id%02 else .%id%_GoRejectPeace Goto .%id%_GoQuest3>
+		.%id%_GoQ2Fail <V+ %id%02 50 ifG 100 v%id%02 else .%id%_GoRejectPeace Goto .%id%_GoQuest3>
+		*.%id%_GoQuest3 <*CS_END_FPAL_Quest3 .%id%_GoQ3Good .%id%_GoQ3Okay .%id%_GoQ3Fail>
+		.%id%_GoQ3Good <ifG 21 v%id%02 else .%id%_GoQuest4 Goto .%id%_GoMakePeace>
+		.%id%_GoQ3Okay <V+ %id%02 25 ifG 125 v%id%02 else .%id%_GoRejectPeace Goto .%id%_GoQuest4>
+		.%id%_GoQ3Fail <V+ %id%02 50 ifG 125 v%id%02 else .%id%_GoRejectPeace Goto .%id%_GoQuest4>
+		%% Question #4 is optional- if the player scored perfect on all tests so far, the
+		%% peace deal is guaranteed. Otherwise the PC needs to make a skill roll to seal the deal.
+		*.%id%_GoQuest4 <*CS_END_FPAL_Quest4 v%id%02 .%id%_GoMakePeace .%id%_GoRejectPeace>
+		*.%id%_GoMakePeace <*CS_END_FPAL_Accept .%id%_GoWinGame>
+		.%id%_GoWinGame <L= 1 1  SetEncounterInactive %4%  KillMood %1%    SetPlotStatus %plotid2% %id2%>
+		*.%id%_GoRejectPeace <*CS_END_FPAL_Reject .%id%_GoThemeExpo>
+		*.%id%_GoThemeExpo <*THEME_EXPO&Enemy na>
+	end
+
+%%
+%% *:CS_END_MiniBoss
+%%
+%% The PC has to fight some minibosses before getting to the main boss. Hooray!
+%% If a miniboss is defeated but not killed, it will be moved to the final battle
+%% scene and assigned to team 2 there.
+%%
+%% If the PC loses the battle, no problem: the fight will repeat every 3-5 hours
+%% until the PC wins. If the boss NPC dies, this counts as a win even if the PC
+%% doesn't finish off the lancemates.
+%%
+%% The minibosses will be leveled to renown 82, as opposed to the main boss who
+%% will be leveled to 90.
+%%
+%% When this subplot concludes, it sets the following trigger:
+%%  .%id%_%plotid%_GoWin
+%%
+%% PARAM1: The final battle scene
+%%
+
+Content
+	name <Faction MiniBoss>
+	desc <Fight someone aligned with the enemy faction.>
+	requires <*:CS_END_MiniBoss F:++>
+	Size 6
+
+	% E1 is the final battle scene
+	% E2 is an outdoors scene for the encounter
+	% E3 is the encounter itself
+	% E4 is the NPC to fight
+	Element2 <Scene Outdoors !Near -7>
+	Element3 <Prefab>
+	Place3 <2>
+	Element4 <Character !Comrade -2 !Global HasMecha NeverFail>
+	Place4 <3 (Enemies) SD enemy>
+	NeverFail4 <Mecha Pilot>
+
+	% P%id%01 = Initialization Counter
+	update <if= P%id%01 0 P= %id%01 1 NPCLevel %4% 82>
+
+	sub
+		MetaScene 3 2
+		rumor%id% <%name4% has been looking for you in %name2%.>
+		special <UNCHARTABLE>
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter; resets each time
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   L= 1 0   ForceChat %4%>
+		nu1 <if= T1 0   Return  if= L1 0   L= 1 1   AddRenown -3>
+		nu2 <if= T2 0   if= L1 0   L= 1 1   Goto GoVictory>
+		Faint%4% <if= L1 0 L= 1 1 Goto GoVictory>
+		GoVictory <StoryNote 1 XPV 200 Salvage Trigger0 .%id%_%plotid%_GoWin WinSubPlot %plotid% ifNPCOK %4% MoveNPC %4% %1% SetNPCTeam %4% 2>
+		end <L= 2 0>
+
+		Msg1 <You defeated %name4%'s lance.>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction NPCFac %4%   WMecha 2 StoryDL 100>
+			ParaX 45
+			ParaY 45
+		end
+
+		Persona 4
+		special <UNLISTED>
+		greeting <if= PlotStatus %plotid% %id% else %pop% if= v%id%01 0 else .%id%_GoSecondTime V= %id%01 1 Goto .%id%_GoGreet>
+		*.%id%_GoSecondTime <*Back_For_More>
+		*.%id%_GoGreet <*BattleChallenge .%id%_GoThemeExpo na>
+		*.%id%_GoThemeExpo <*THEME_EXPO&Enemy na>
+	end
+	inv
+		Encounter
+		name <%name4%'s Lance>
+		% V1 = Recharge Counter
+		% This encounter will appear once every 3-5 hours, as long as this is the active subplot.
+		update <if= PlotStatus %plotid% %id% else GoHide if# V1 0 else GoSetTimer ifG ComTime V1 else GoHide SetStat STAT_MetaVisibility 0  Goto GoSetOrders>
+		GoSetTimer <V= 1 ComTime V+ 1 1800 Goto GoHide>
+		GoSetOrders <GrabSource GSetNAtt NAG_EpisodeData NAS_Orders 0>
+		use <ifG StatVal STAT_MetaVisibility -1  V= 1 ComTime V+ 1 10800 V+ 1 d7200  Print -1 Exit Destination>
+		GoAutoAttack <V= 1 ComTime V+ 1 10800 V+ 1 d7200  Alert -2 Exit Destination>
+		GoAvoidAttack <V= 1 ComTime V+ 1 7200 V+ 1 d3600  Print -6 AddSociable -1 UpdateProps>
+	end
+
+Content
+	name <Enemy MiniBoss>
+	desc <Fight a previously made enemy.>
+	requires <*:CS_END_MiniBoss>
+	Size 6
+
+	% E1 is the final battle scene
+	% E2 is an outdoors scene for the encounter
+	% E3 is the encounter itself
+	% E4 is the NPC to fight
+	Element2 <Scene Outdoors !Near -7>
+	Element3 <Prefab>
+	Place3 <2>
+	Element4 <Character ArchEnemy !Okay -2 !Global HasMecha>
+	Place4 <3 (Enemies) SD enemy>
+
+	% P%id%01 = Initialization Counter
+	update <if= P%id%01 0 P= %id%01 1 NPCLevel %4% 82>
+
+	sub
+		MetaScene 3 2
+		rumor%id% <%name4% is hunting for you in %name2%.>
+		special <UNCHARTABLE>
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter; resets each time
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   L= 1 0   ForceChat %4%>
+		nu1 <if= T1 0   Return  if= L1 0   L= 1 1   AddRenown -3>
+		nu2 <if= T2 0   if= L1 0   L= 1 1   Goto GoVictory>
+		Faint%4% <if= L1 0 L= 1 1 Goto GoVictory>
+		GoVictory <StoryNote 1 XPV 200 Salvage Trigger0 .%id%_%plotid%_GoWin WinSubPlot %plotid% ifNPCOK %4% MoveNPC %4% %1% SetNPCTeam %4% 2>
+		end <L= 2 0>
+
+		Msg1 <You defeated %name4%'s lance.>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction NPCFac %4%   WMecha 2 StoryDL 100>
+			ParaX 45
+			ParaY 45
+		end
+
+		Persona 4
+		special <UNLISTED>
+		greeting <if= PlotStatus %plotid% %id% else %pop% if= v%id%01 0 else .%id%_GoSecondTime V= %id%01 1 Goto .%id%_GoGreet>
+		*.%id%_GoSecondTime <*Back_For_More>
+		*.%id%_GoGreet <*BattleChallenge .%id%_GoThemeExpo na>
+		*.%id%_GoThemeExpo <*THEME_EXPO&Enemy na>
+	end
+	inv
+		Encounter
+		name <%name4%'s Lance>
+		% V1 = Recharge Counter
+		% This encounter will appear once every 3-5 hours, as long as this is the active subplot.
+		update <if= PlotStatus %plotid% %id% else GoHide if# V1 0 else GoSetTimer ifG ComTime V1 else GoHide SetStat STAT_MetaVisibility 0  Goto GoSetOrders>
+		GoSetTimer <V= 1 ComTime V+ 1 1800 Goto GoHide>
+		GoSetOrders <GrabSource GSetNAtt NAG_EpisodeData NAS_Orders 0>
+		use <ifG StatVal STAT_MetaVisibility -1  V= 1 ComTime V+ 1 10800 V+ 1 d7200  Print -1 Exit Destination>
+		GoAutoAttack <V= 1 ComTime V+ 1 10800 V+ 1 d7200  Alert -2 Exit Destination>
+		GoAvoidAttack <V= 1 ComTime V+ 1 7200 V+ 1 d3600  Print -6 AddSociable -1 UpdateProps>
+	end
+
+
+%%
+%% *:CS_END_RallyDefenses
+%%
+%%  The PC will be able to get some help for the final battle here.
+%%
+%%  Upon rallying the defenses, this plot will set the following trigger:
+%%    .%id%_%plotid%_GoRallyDefenses
+%%
+
+Content
+	name <New Task: Liberate the Armory>
+	requires <*:CS_END_RallyDefenses>
+	desc <The PC needs help, but the armory was captured by the enemy.>
+
+	%% E1 is a public scene for the meeting
+	%% E2 is the person to be met
+	%% E3 is an urban scene for the armory
+	Element1 <Scene Building Public !Near -7>
+	Element2 <Character HasMecha !Near -7 !Ally -7 !XClude -2>
+	Place2 <1 (Guards) pass>
+	Element3 <Scene Urban !Near -7>
+
+	% if E2 died, that cancels this subplot, but if the armory liberation has already
+	%  been started that can still succeed.
+	start <ifNPCDead %2% LoseSubPlot %plotid%>
+
+	% Winning the armor liberation will give the RallyDefenses advantage,
+	% regardless of whether E1 is alive or dead.
+	.%id1%_%plotid1%_GoWin  <WinSubPlot %plotid%   Alert %id%01 History %id%02 PMemo %plotid% %id%03   &RallyDefenses>
+	.%id1%_%plotid1%_GoLoss <LoseSubPlot %plotid%  Alert %id%04 PMemo %plotid% 0>
+
+	Msg%id%01 <You have liberated the \SCENE &EpisodeScene armory. Now at least you'll have some backup in the fight to come.>
+	Msg%id%02_1 <You liberated the armory from \FACTION &EnemyFac .>
+	CMsg%id%02_1 <if# &EnemyFac 0 Accept>
+	Msg%id%02_2 <You liberated the armory from \PERSONA &EnemyNPC 's henchmen.>
+	CMsg%id%02_2 <ifNPCOK &EnemyNPC Accept>
+	Msg%id%02_3 <You liberated the armory from your enemies.>
+	CMsg%id%02_3 <ifNPCDead &EnemyNPC if= &EnemyFac 0 Accept>
+	Msg%id%03_1 <You liberated the armory from \FACTION &EnemyFac . Now you should have some backup in the final battle.>
+	CMsg%id%03_1 <if# &EnemyFac 0 Accept>
+	Msg%id%03_2 <You liberated the armory from \PERSONA &EnemyNPC 's henchmen. Now you should have some backup in the final battle.>
+	CMsg%id%03_2 <ifNPCOK &EnemyNPC Accept>
+	Msg%id%03_3 <You liberated the armory from your enemies. Now you should have some backup in the final battle.>
+	CMsg%id%03_3 <ifNPCDead &EnemyNPC if= &EnemyFac 0 Accept>
+	Msg%id%04 <You destroyed the \SCENE &EpisodeScene armory.>
+
+	% SubPlot1 is the armory liberation
+	SubPlot1 <*:CS_CaptureBuilding 3>
+
+	sub
+		Persona 2
+		rumor%id% <%name2% has been leading the resistance movement.>
+		greeting <ifSubPlotWon %plotid% else GoCheckLoss NewChat Say 1>
+		GoCheckLoss <ifSubPlotLost %plotid% else GoCheckMission NewChat Say 2>
+		GoCheckMission <if# PlotStatus %plotid1% 0 else GoCheckFirst NewChat Say 3>
+		GoCheckFirst <if= PlotStatus %plotid% %id% else GoChat NewChat Say 4 AddChat 1 AddChat 2>
+		GoChat <NewChat SayAnything>
+		*result1 <*CS_END_StatusReport result2>
+		result2 <NewChat Say 5 History 6 PMemo %plotid% 7 SetPlotStatus %plotid1% %id1%>
+		Msg1 <You did it! Now we can start fighting back properly!>
+		Msg1_1 <The armory has been liberated. Now, we'll be able to strike back at \PERSONA &EnemyNPC !>
+		CMsg1_1 <ifNPCOK &EnemyNPC Accept>
+		Msg1_3 <You liberated the armory from \FACTION &EnemyFac ! We'll be there to support you when the time comes to strike.>
+		CMsg1_3 <if# &EnemyFac 0 Accept>
+		Msg2 <The armory has been destroyed...>
+		Msg2_1 <The armory has been destroyed... At least \PERSONA &EnemyNPC won't be able to use it either.>
+		CMsg2_1 <ifNPCOK &EnemyNPC Accept>
+		Msg2_3 <The armory has been destroyed... At least it can't be used by \FACTION &EnemyFac anymore.>
+		CMsg2_3 <if# &EnemyFac 0 Accept>
+		Msg3 <You need to liberate the armory in %name3%; otherwise we won't be able to put up a fight!>
+		Msg3_1 <The armory is still under the control of \PERSONA &EnemyNPC . We need to get it back if we're going to reist \OPR &EnemyNPC .>
+		CMsg3_1 <ifNPCOK &EnemyNPC Accept>
+		Msg3_3 <The armory is still under the control of \FACTION &EnemyFac . We need to get it back if we're going to reist them.>
+		CMsg3_3 <if# &EnemyFac 0 Accept>
+		Msg4 <Hey there \PC . \SCENE &EpisodeScene could use the help of someone like you in these dark times.>
+		Msg4_1 <\PC , it's a good thing you're here. \PERSONA &EnemyNPC has taken control and we need your help to defeat \OPR &EnemyNPC .>
+		CMsg4_1 <ifNPCOK &EnemyNPC Accept>
+		Msg4_2 <These are dark times for \SCENE &EpisodeScene ... We are at the mercy of \FACTION &EnemyFac , and could use the help of someone like you to defeat them.>
+		CMsg4_2 <if# &EnemyFac 0 Accept>
+		Msg5 <There's no way we can put up a proper fight because the armory in %name3% has been captured. Nobody can do anything without those weapons.>
+		Msg5_1 <We can't even fight back because \PERSONA &EnemyNPC has captured the armory in %name3%. If we could get those weapons back, then maybe that'd even the odds a bit.>
+		CMsg5_1 <ifNPCOK &EnemyNPC Accept>
+		Msg5_2 <The armory in %name3% has been occupied by \FACTION &EnemyFac . We can't put up a fight if we don't have any weapons, now can we?>
+		CMsg5_2 <if# &EnemyFac 0 Accept>
+		Msg6 <%name2% revealed that the armory had been captured.>
+		Msg7 <The armory in %name3% has been captured. You will need to liberate it if you hope to get any backup in this fight.>
+		Prompt1 <First tell me exactly what's going on.>
+		Prompt1_1 <I'm glad to help, but what exactly is happening?>
+		Prompt2 <Yeah, good job you've done defending the place.>
+		Prompt2_1 <Wait, wasn't that supposed to be your job?>
+	end
+
+

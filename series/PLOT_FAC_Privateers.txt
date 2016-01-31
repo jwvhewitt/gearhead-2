@@ -1,0 +1,78 @@
+%%
+%%  Plots specifically dealing with the Privateer's Guild of L5.
+%%
+
+Plot
+	name <PRIVA: Letter Of Marque>
+	% The PC is off to capture an enemy vessel.
+	% This job will result in the PC making an enemy.
+	requires <*GENERAL -!Ne -!Lo (FCOMS|MAQUI)>
+	PayRate 250
+
+	% E1 is the town itself
+	% E2 is a character who will offer the mission
+	% E3 is a scene where the encounter will take place
+	% E4 is the enemy faction
+	Element1 <Scene Town>
+	Element2 <Character PRIVA !Ally 1 RECHARGED>
+	Element3 <Scene Environs>
+	Element4 <Faction !Enemy 2 !Xclude 1>
+
+	% SubPlot1 is the combat encounter
+	SubPlot1 <*MECHAMISSION_Capture 2 3 4>
+
+	% P1 = Time Limit
+	% P2 = Email Indicator
+	start <if= PlotStatus %plotid% 0 ifNPCOK %2% else GoDelete ifG ComTime P1 EndPlot>
+	GoDelete <EndPlot>
+	update <if= PlotStatus %plotid% 0 if= P1 0 P= 1 ComTime P+ 1 86400>
+
+	% Insert email here
+	5min <if= PlotStatus %plotid% 0 if= P2 0  if= PCFac NPCFac %2%  if= RootSceneID %1% if= d4 1  ifG PCCharm d40  Email 1 P= 2 1>
+	Msg1   <%name2%@ \SCENE NPCSCene %2% :// Hey \RANK , there's a ship in \EXACT_SCENE %3% that needs to get blown up real good.>
+	Msg1_1 <%name2%@ \SCENE NPCSCene %2% :// \RANK \PC , your services are requested by the Guild. Give me a call.>
+	Msg1_2 <%name2%@ \SCENE NPCSCene %2% :// There's been trouble with %name4%. It's time to teach them a lesson.>
+	Msg1_3 <%name2%@ \SCENE NPCSCene %2% :// I've got a mission for you. Come to \EXACT_SCENE NPCSCene %2% for the briefing.>
+
+	sub
+		Persona 2
+		rumor0 <%name2% needs a pilot to catch a ship belonging to %name4%.>
+		greeting <if= PlotStatus %plotid% %id1% else GoCheckOffer Goto GoRemind>
+		*GoRemind <*MechaMissionReminder %3%>
+		GoCheckOffer <if# PlotStatus %plotid% 0 else GoCheckEnemy NewChat SayAnything>
+		*GoCheckEnemy <*ENEMY_CHECK GoCheckEmail ChatNPCFac GoEnd>
+		GoCheckEmail <if= P2 1 else GoCheckMember Goto GoGotEmail>
+		*GoGotEmail <*DidYouGetEmail GoMissionBriefing>
+		GoCheckMember <if= PCFac ChatNPCFac else GoCheckAuto  Goto GoIsMember>
+		*GoIsMember <*IHaveAJobForYou GoMissionBriefing>
+		*GoCheckAuto <*AutoMissionTest&Mecha GoMissionBriefing GoRejectMission GoCheckSkill ChatNPCFac %4%>
+		*GoCheckSkill <*GenericMissionTest&Mecha  GoMissionBriefing GoEnd GoRejectMission ChatNPCFac %4% %threat%>
+		*GoRejectMission <*RejectMission GoEnd>
+		GoEnd <EndPlot>
+		GoMissionBriefing <NewChat Say 1  AddChat 1 AddChat 2>
+		*result1 <*GoodLuckOnMission GoR1Final ChatNPCFac %4%>
+		GoR1Final <PMemo %plotid% 2 SetPlotStatus %plotid% %id1%>
+		result2 <Goto GoRejectMission>
+		Msg1 <There's a ship belonging to %name4% moving through \EXACT_SCENE %3%  . Your mission is to capture it; bring them in intact, and you'll earn $ \VAL Reward %threat% PayRate plus salvage.>
+		Msg1_1 <>
+		CMsg1_1 <ifNPCSociable Accept>
+		Msg1_2 <>
+		CMsg1_2 <ifNPCShy Accept>
+		Msg1_3 <>
+		CMsg1_3 <ifNPCEasygoing Accept>
+		Msg1_4 <>
+		CMsg1_4 <ifNPCPassionate Accept>
+		Msg1_5 <>
+		CMsg1_5 <ifNPCCheerful Accept>
+		Msg1_6 <>
+		CMsg1_6 <ifNPCMelancholy Accept>
+		Msg2 <%name2% in \SCENE NPCSCene %2% hired you to capture a vessel belonging to %name4% in \EXACT_SCENE %3% .>
+		Prompt1 <I'll be back when I'm finished.>
+		Prompt1_1 <Alright, I'll do it.>
+		Prompt1_2 <No worries, that vessel will be mine!>
+		Prompt2 <No thanks. I don't want to get involved.>
+		CPrompt2 <if# PCFac ChatNPCFac Accept>
+		Prompt2_1 <You better find someone else for this mission.>
+		Prompt2_2 <Sorry, but I'd rather not.>
+	end
+

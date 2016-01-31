@@ -1,0 +1,1528 @@
+%% L5 Pattern Equipment File
+%%
+%%   Contains equipment normally found in the L5 region, including gear
+%%   used by the L5 Alliance, Comet Metalworks, and the other factions
+%%   operating in the region.
+
+%  ************************
+%  ***  MELEE  WEAPONS  ***
+%  ************************
+
+Melee 12
+name <War Axe>
+Speed 3
+Mass -7
+desc <A battle axe constructed from high tech composite materials.>
+category <WEAPON MELEE>
+factions <MAQUI FCOMS RISHI BOHEM  PRIVA CRIHN REDMA  HOELL COMET MUGLE  SILKN ROCKE AEGSF>
+Legality 5
+
+Melee 20
+Name <MonoWhip>
+Speed 6
+UsesSpeed
+Acc -2
+Type <ARMORPIERCING EXTEND FLAIL>
+Mass -18
+desc <An extremely thin cord of incredibly strong polymer, the monomolecular whip can cut through anything it comes in contact with.>
+category <WEAPON MELEE>
+factions <FCOMS RISHI MAQUI REDMA>
+SDL_PORTRAIT <item_whip.png>
+legality 15
+
+Melee 9
+Name <Electro-Whip>
+Acc -2
+mass -7
+Speed 5
+UsesSpeed
+Type <EXTEND FLAIL HAYWIRE>
+desc <This whip transmits a powerful electric charge.>
+category <WEAPON MELEE>
+factions <MAQUI FCOMS RISHI CRIHN REDMA>
+SDL_PORTRAIT <item_whip.png>
+legality 5
+
+Melee 10
+Name <WireSword>
+Type <ARMORPIERCING>
+Acc 1
+legality 5
+Speed 6
+Mass -9
+desc <The blade is formed from a lattice of monomolecular wire.>
+sdl_portrait <item_filamentsword.png>
+category <MAQUI FCOMS RISHI ROCKE>
+factions <GENERAL>
+
+Melee 8
+Name <Nerve Whip>
+Acc -2
+mass -6
+Speed 5
+UsesSpeed
+Type <EXTEND FLAIL STONE>
+desc <This whip transmits an electric pulse which can temporarily disrupt the nervous system of its target.>
+category <WEAPON MELEE>
+factions <MAQUI FCOMS RISHI CRIHN REDMA>
+SDL_PORTRAIT <item_whip.png>
+legality 10
+
+Melee 14
+Name <Double Lance>
+Type <ARMORPIERCING>
+UsesReflexes
+Acc 1
+Speed 8
+Mass -10
+desc <A pole arm with a large ornate blade at each end.>
+sdl_portrait <item_doublelance.png>
+category <WEAPON MELEE>
+factions <MAQUI FCOMS RISHI HOELL PRIVA>
+Legality 5
+
+Melee 10
+Name <Silver Longsword>
+Type <ARMORPIERCING>
+Acc 1
+Speed 5
+Mass -8
+desc <A ceremonial weapon of the Silver Knights.>
+sdl_portrait <item_silversword.png>
+category <WEAPON MELEE>
+factions <SILKN>
+
+Melee 16
+Name <Silver Greatsword>
+Type <ARMORPIERCING>
+UsesReflexes
+Acc 1
+Speed 5
+Mass -8
+desc <A ceremonial weapon of the Silver Knights.>
+sdl_portrait <item_silversword.png>
+category <WEAPON MELEE>
+factions <SILKN>
+
+
+%  ****************************
+%  ***  BALLISTIC  WEAPONS  ***
+%  ****************************
+
+Gun 6
+Name <Assault Rifle>
+desig <Tyb 2-4>
+desc <A low caliber bullpup assault rifle manufactured in Theles Spinner.>
+sdl_portrait <item_compactrifle.png>
+caliber <5mm auto>
+category <WEAPON MISSILE ESSENTIAL>
+factions <FCOMS RISHI BOHEM MAQUI>
+legality 5
+Mass -3
+Range 6
+Speed 4
+BV 3
+magazine 80
+sub
+	Ammo 6
+	name <5mm Auto Clip>
+	caliber <5mm auto>
+	category <AMMO>
+	factions <GENERAL>
+	SDL_PORTRAIT <item_ammoclip.png>
+end
+
+Gun 7
+Name <Assault Rifle>
+desig <Yars MG>
+desc <An advanced sensor-assisted smart rifle used by elite military forces in the L5 region.>
+sdl_portrait <item_compactrifle.png>
+caliber <5mm auto>
+type <ARMORPIERCING>
+category <WEAPON MISSILE>
+factions <FCOMS RISHI BOHEM MAQUI ROCKE SILKN PRIVA>
+legality 5
+Mass -5
+Range 7
+Acc 2
+Speed 3
+BV 4
+magazine 100
+sub
+	Ammo 7
+	name <5mm Auto Clip>
+	caliber <5mm auto>
+	SDL_PORTRAIT <item_ammoclip.png>
+end
+
+Gun 9
+Name <Rocket Rifle>
+desig <SMRT-1>
+desc <Also known as the smartgun, this weapon fires miniature computer-guided missiles.>
+sdl_portrait <>
+caliber <8mm self-propelled>
+category <WEAPON MISSILE>
+factions <MAQUI FCOMS RISHI BOHEM  PRIVA CRIHN REDMA  HOELL COMET MUGLE  L5LAW AEGSF>
+legality 5
+Mass -6
+Range 7
+Acc 4
+Speed 5
+magazine 50
+sub
+	Ammo 9
+	name <Rocket Rifle Clip>
+	caliber <8mm self-propelled>
+	SDL_PORTRAIT <item_ammoclip.png>
+	type <ARMORPIERCING>
+end
+
+Gun 9
+Name <Rocket Pistol>
+desig <Junior SMRT>
+desc <A compact version of the SMRT-1 rocket rifle.>
+sdl_portrait <>
+caliber <8mm self-propelled>
+category <WEAPON MISSILE>
+factions <MAQUI FCOMS RISHI BOHEM  PRIVA CRIHN REDMA  HOELL COMET MUGLE  L5LAW>
+legality 0
+Mass -8
+Range 4
+Acc 4
+Speed 5
+magazine 20
+sub
+	Ammo 9
+	name <Rocket Pistol Clip>
+	caliber <8mm self-propelled>
+	SDL_PORTRAIT <item_ammoclip.png>
+	type <ARMORPIERCING>
+end
+
+Gun 9
+Name <Heavy Rocket Rifle>
+desig <SMRT-2>
+desc <Also known as the smartgun, this weapon fires miniature computer-guided missiles.>
+sdl_portrait <>
+caliber <8mm self-propelled>
+category <WEAPON MISSILE>
+factions <MAQUI FCOMS RISHI  HOELL COMET MUGLE PRIVA CRIHN REDMA  L5LAW AEGSF>
+legality 15
+Mass -4
+Range 8
+Acc 4
+Speed 5
+BV 4
+type <SWARM>
+magazine 150
+sub
+	Ammo 9
+	name <Rocket Rifle Clip>
+	caliber <8mm self-propelled>
+	SDL_PORTRAIT <item_ammoclip.png>
+	type <ARMORPIERCING>
+end
+
+Gun 6
+name <Glitter Pistol>
+desig <Jonass 53>
+category <WEAPON MISSILE>
+factions <MAQUI FCOMS RISHI BOHEM  PRIVA CRIHN REDMA  HOELL COMET MUGLE  ROCKE>
+desc <This pistol fires crystalline shard ammunition.>
+caliber <Crystalline Shard>
+SDL_PORTRAIT <item_glitterpistol.png>
+Acc 1
+Range 4
+Speed 3
+Legality -5
+Mass -4
+magazine 40
+sub
+	Ammo 6
+	name <Glitter Pistol Clip>
+	caliber <Crystalline Shard>
+	type <SCATTER BRUTAL>
+	mass -1
+	SDL_PORTRAIT <item_ammoclip.png>
+end
+
+Gun 4
+name <Pin Magnum>
+desig <VT2-X>
+category <WEAPON MISSILE>
+Factions <MAQUI FCOMS RISHI L5LAW AEGSF>
+desc <A light magnetic rifle often used by security forces.>
+sdl_portrait <item_autogun.png>
+caliber <2mm ferrous>
+Acc 1
+Range 5
+BV 2
+Speed 4
+Legality 5
+Mass -2
+magazine 90
+sub
+	Ammo 4
+	name <2mm Ferrous Clip>
+	caliber <2mm ferrous>
+	mass -1
+	SDL_PORTRAIT <item_ammoclip.png>
+end
+
+Gun 4
+Name <Pin Rifle>
+desig <VT4>
+Type <SWARM>
+category <WEAPON MISSILE>
+factions <MAQUI FCOMS RISHI>
+desc <A magnetic cannon that fires tiny slivers of metal at extreme velocity.>
+sdl_portrait <item_combatrifle.png>
+caliber <2mm ferrous>
+UsesPerception
+Mass -8
+Acc 1
+Range 8
+BV 8
+Speed 3
+legality 5
+magazine 450
+sub
+	Ammo 4
+	name <2mm Ferrous Clip>
+	caliber <2mm ferrous>
+	mass -4
+	SDL_PORTRAIT <item_ammoclip.png>
+end
+
+Gun 4
+Name <Heavy Pin Rifle>
+desig <VT5>
+Type <SWARM ARMORPIERCING>
+category <WEAPON MISSILE>
+factions <MAQUI FCOMS RISHI>
+desc <A magnetic cannon that fires tiny slivers of metal at extreme velocity.>
+sdl_portrait <item_combatrifle.png>
+caliber <2mm ferrous>
+UsesPerception
+Mass -8
+Acc 1
+Range 9
+BV 8
+Speed 4
+legality 10
+magazine 450
+sub
+	Ammo 4
+	name <2mm Ferrous Clip>
+	caliber <2mm ferrous>
+	mass -4
+	SDL_PORTRAIT <item_ammoclip.png>
+end
+
+
+Gun 5
+Name <Slug Pistol>
+desig <Hounder>
+desc <A low velocity single firing pistol. Fires solid metal slugs.>
+category <WEAPON MISSILE>
+factions <MAQUI FCOMS RISHI>
+caliber <6mm pistol>
+sdl_portrait <item_miscpistol2.png>
+Mass -2
+Range 3
+Acc 2
+Speed 4
+legality -5
+magazine 12
+sub
+	Ammo 5
+	name <6mm Pistol Clip>
+	caliber <6mm pistol>
+	SDL_PORTRAIT <item_ammoclip.png>
+end
+
+Gun 3
+name <Autopistol>
+desc <A small caliber low velocity automatic pistol.>
+desig <AK14>
+caliber <5mm auto>
+category <WEAPON MISSILE>
+factions <FCOMS RISHI BOHEM MAQUI COMET>
+SDL_PORTRAIT <item_autopistol.png>
+Mass -3
+Range 3
+Acc 1
+Speed 5
+BV 3
+magazine 40
+sub
+	Ammo 3
+	name <5mm Automatic Clip>
+	caliber <5mm auto>
+	SDL_PORTRAIT <item_ammoclip.png>
+end
+
+Gun 3
+name <Autogun>
+desc <A small caliber low velocity automatic rifle.>
+desig <AK19>
+caliber <5mm auto>
+category <WEAPON MISSILE>
+factions <FCOMS RISHI BOHEM MAQUI COMET>
+SDL_PORTRAIT <item_autogun.png>
+Mass -3
+Range 5
+Acc 1
+Speed 5
+BV 5
+Legality 0
+magazine 90
+sub
+	Ammo 3
+	name <5mm Automatic Clip>
+	caliber <5mm auto>
+	SDL_PORTRAIT <item_ammoclip.png>
+end
+
+Gun 15
+name <Cone Rifle>
+desc <A high caliber gyrojet rifle.>
+desig <IG-28>
+caliber <22mm cone>
+category <WEAPON MISSILE CONTRABAND>
+factions <MAQUI FCOMS RISHI CRIHN REDMA BOHEM COMET MUGLE HOELL ROCKE SILKN>
+sdl_sprite <item_bigrifle.png>
+Range 8
+Speed 3
+Legality 5
+Magazine 20
+sub
+	Ammo 15
+	name <Cone Rifle Clip>
+	caliber <22mm cone>
+	type <ARMORPIERCING>
+end
+
+Gun 24
+name <Bazooka>
+desc <A shoulder-mounted rocket launcher>
+desig <Raketen Mk6>
+caliber <60mm rocket>
+category <WEAPON MISSILE CONTRABAND>
+factions <MAQUI FCOMS RISHI CRIHN BOHEM REDMA PRIVA>
+sdl_sprite <>
+Range 9
+acc -1
+Speed 2
+Legality 10
+mass -14
+Magazine 12
+sub
+	Ammo 24
+	name <Raketen Clip>
+	caliber <60mm rocket>
+	type <BLAST 3 BRUTAL>
+end
+
+
+
+%  ********************
+%  ***  BEAM  GUNS  ***
+%  ********************
+
+BeamGun 3
+name <Light Laser Pistol>
+Desig <Brash G1>
+desc <A small, low power laser weapon.>
+sdl_portrait <item_miscpistol3.png>
+category <WEAPON MISSILE ESSENTIAL>
+factions <MAQUI FCOMS RISHI BOHEM>
+Mass -2
+Range 3
+Speed 3
+legality -5
+inv
+	PowerSource 1
+	name <Super Cell 25>
+	mass -1
+end
+
+BeamGun 5
+Name <Laser Pistol>
+desig <VK-16>
+desc <A pistol housing a small but powerful laser generator.>
+sdl_portrait <item_laserpistol.png>
+category <WEAPON MISSILE>
+factions <MAQUI FCOMS RISHI BOHEM HOELL>
+Mass -4
+Range 3
+Acc 1
+Speed 5
+legality 0
+inv
+	PowerSource 2
+	name <Power Cell 50>
+end
+
+BeamGun 7
+Name <Heavy Laser Pistol>
+desig <COR-9>
+desc <A pistol housing a small but powerful laser generator.>
+sdl_portrait <item_laserpistol.png>
+category <WEAPON MISSILE>
+factions <MAQUI FCOMS RISHI BOHEM HOELL>
+type <ARMORPIERCING>
+Mass -6
+Range 3
+Acc 1
+Speed 5
+legality 5
+inv
+	PowerSource 2
+	name <Power Cell 50>
+end
+
+BeamGun 10
+Name <Laser Rifle>
+desig <A-109>
+desc <A high powered laser rifle used primarily in the L5 region.>
+sdl_portrait <item_laserrifle.png>
+category <WEAPON MISSILE>
+factions <MAQUI FCOMS RISHI BOHEM  PRIVA CRIHN REDMA  HOELL COMET MUGLE  SILKN ROCKE AEGSF>
+Range 5
+Mass -7
+Acc 2
+Speed 3
+Legality 5
+inv
+	PowerSource 4
+	name <Power Cell 100>
+	mass -2
+end
+
+BeamGun 9
+Name <Plasma Rifle>
+desig <Hawke>
+desc <A portable plasma rifle.>
+sdl_portrait <item_laserrifle.png>
+category <WEAPON MISSILE>
+factions <MAQUI FCOMS RISHI BOHEM>
+type <BRUTAL>
+Range 5
+Mass -6
+Acc 1
+Speed 3
+Legality 10
+inv
+	PowerSource 4
+	name <Power Cell 100>
+	mass -2
+end
+
+
+BeamGun 4
+Name <Stun Pistol>
+Desig <L12>
+desc <An electric beamgun. Its shots are intensely painful but rarely lethal.>
+category <WEAPON MISSILE>
+factions <MAQUI FCOMS L5LAW>
+type <NONLETHAL>
+sdl_portrait <item_stungun.png>
+Mass -3
+Range 3
+Acc 1
+Speed 4
+legality -15
+inv
+	PowerSource 1
+	name <Power Cell 25>
+end
+
+BeamGun 9
+Name <Stun Rifle>
+Desig <L50>
+desc <An electric beamgun. Its shots are intensely painful but rarely lethal.>
+category <WEAPON MISSILE>
+factions <MAQUI FCOMS L5LAW>
+type <NONLETHAL>
+sdl_portrait <item_stunrifle.png>
+Mass -5
+Acc 1
+Speed 3
+Range 6
+legality -10
+inv
+	PowerSource 3
+	name <Power Cell 75>
+	mass -2
+end
+
+BeamGun 16
+Name <Laser Cannon>
+desig <T51>
+desc <A rapid firing light laser cannon.>
+sdl_portrait <>
+category <WEAPON MISSILE>
+factions <MAQUI FCOMS RISHI BOHEM  PRIVA CRIHN REDMA  HOELL COMET MUGLE  SILKN ROCKE AEGSF>
+Range 7
+Mass -8
+Acc 1
+Speed 4
+Legality 10
+inv
+	PowerSource 4
+	name <Power Cell 100>
+	mass -2
+end
+
+
+%  ***************************
+%  ***  MISSILE LAUNCHERS  ***
+%  ***************************
+
+
+
+%  ************************
+%  ***  WEAPON ADD-ONS  ***
+%  ************************
+
+MeleeAddOn 0
+Name <Bladed Haft>
+desc <Extends the reach of a weapon and adds a secondary blade.>
+Category <ACCESSORY>
+Factions <MAQUI FCOMS BOHEM PRIVA CRIHN RISHI HOELL REDMA>
+Type <EXTEND>
+Acc 1
+Mass 1
+sub
+	Melee 8
+	mass -6
+	name <Haft Blade>
+	Acc 1
+end
+
+MeleeAddOn 2
+Name <Inferno Token>
+desc <Creates an intense plasma field around a weapon. This plasma may also be used to attack at a distance.>
+Category <ACCESSORY>
+Factions <MAQUI FCOMS RISHI CRIHN REDMA BOHEM COMET MUGLE HOELL ROCKE SILKN>
+sub
+	BeamGun 6
+	Name <Fireball>
+	desc <>
+	Integral
+	Range 4
+	Acc -1
+	Type <BRUTAL>
+	mass -5
+end
+
+
+%  ******************
+%  ***  GRENADES  ***
+%  ******************
+
+
+%  ***************
+%  ***  ARMOR  ***
+%  ***************
+
+HeadArmor 2
+name <Light Space Helm>
+desc <A light spacesuit helm with integrated rebreather.>
+Category <CLOTHING SPACE>
+Factions <MAQUI FCOMS RISHI CRIHN BOHEM>
+SDL_PORTRAIT <item_lightspacehelm.png>
+Mass -2
+Legality -25
+Sealed
+Hardened
+
+HeadArmor 4
+name <Heavy Space Helm>
+desc <An armored spacesuit helm with integrated rebreather.>
+Category <CLOTHING ARMOR SPACE>
+Factions <MAQUI FCOMS RISHI CRIHN BOHEM>
+SDL_PORTRAIT <item_spacehelm.png>
+Mass -6
+Legality -15
+Sealed
+Hardened
+
+HeadArmor 5
+name <Combat Space Helm>
+desc <An armored spacesuit helm with integrated rebreather and objective-storage system.>
+Category <CLOTHING ARMOR SPACE>
+Factions <MAQUI FCOMS RISHI CRIHN BOHEM>
+SDL_PORTRAIT <item_spacehelm.png>
+Mass -8
+Legality -5
+Sealed
+Hardened
+memo
+
+
+Set
+name <SkinSuit [set]>
+desc <A skintight spacesuit.>
+Category <CLOTHING SPACE>
+Factions <MAQUI FCOMS RISHI CRIHN COMET HOELL MUGLE>
+Legality -25
+inv
+	HeadArmor 2
+	name <Light Space Helm>
+	desc <A light spacesuit helm with integrated rebreather.>
+	Category <CLOTHING SPACE>
+	Factions <MAQUI COMET HOELL>
+	SDL_PORTRAIT <item_lightspacehelm.png>
+	Mass -2
+	Legality -25
+	Sealed
+	Hardened
+
+	BodyArmor 2
+	name <SkinSuit Suit>
+	desc <A skintight spacesuit.>
+	Category <CLOTHING SPACE>
+	Factions <MAQUI COMET HOELL>
+	Mass -3
+	Legality -25
+	Sealed
+	Hardened
+	sub
+		SpaceFlight 3
+	end
+
+	ArmArmor 2
+	name <SkinSuit Sleeve>
+	desc <A skintight spacesuit.>
+	Category <CLOTHING SPACE>
+	Factions <MAQUI COMET HOELL>
+	Mass -3
+	Legality -25
+	Sealed
+	Hardened
+
+	LegArmor 2
+	name <SkinSuit Legging>
+	desc <A skintight spacesuit.>
+	Category <CLOTHING SPACE>
+	Factions <MAQUI COMET HOELL>
+	Mass -3
+	Legality -25
+	Sealed
+	Hardened
+
+	ArmArmor 2
+	name <SkinSuit Sleeve>
+	desc <A skintight spacesuit.>
+	Category <CLOTHING SPACE>
+	Factions <MAQUI COMET HOELL>
+	Mass -3
+	Legality -25
+	Sealed
+	Hardened
+
+	LegArmor 2
+	name <SkinSuit Legging>
+	desc <A skintight spacesuit.>
+	Category <CLOTHING SPACE>
+	Factions <MAQUI COMET HOELL>
+	Mass -3
+	Legality -25
+	Sealed
+	Hardened
+end
+
+Set
+name <Armored Casuals [set]>
+desc <A set of lightly armored street clothes.>
+Category <Clothing>
+Factions <MUGLE>
+legality -25
+inv
+	BodyArmor 1
+	Name <Armorweave Shirt>
+	desc <Comfortable armor for everyday use.>
+	Category <CLOTHING>
+	legality -25
+
+	ArmArmor 1
+	Name <Armorweave Sleeve>
+	desc <Comfortable armor for everyday use.>
+	Category <CLOTHING>
+	Mass -1
+	legality -25
+
+	ArmArmor 1
+	Name <Armorweave Sleeve>
+	desc <Comfortable armor for everyday use.>
+	Category <CLOTHING>
+	Mass -1
+	legality -25
+
+	LegArmor 1
+	Name <Armorweave Legging>
+	desc <Comfortable armor for everyday use.>
+	Category <CLOTHING SPORTS>
+	Mass -1
+	legality -25
+
+	LegArmor 1
+	Name <Armorweave Legging>
+	desc <Comfortable armor for everyday use.>
+	Category <CLOTHING SPORTS>
+	Mass -1
+	legality -25
+end
+
+HeadArmor 1
+name <Bunny Hat>
+desc <A character hat fashioned from nigh-indestructable fabric.>
+Category <CLOTHING ENTERTAINMENT>
+Factions <MUGLE>
+SDL_PORTRAIT <item_bunnyhat.png>
+Mass -1
+Hardened
+
+Set
+name <Allure SkinSuit [set]>
+desc <A skintight figure-enhancing spacesuit.>
+Category <CLOTHING SPACE>
+Factions <MUGLE>
+Legality -25
+inv
+	HeadArmor 2
+	name <Allure Helm>
+	desc <A light spacesuit helm with integrated rebreather.>
+	Category <CLOTHING SPACE>
+	SDL_PORTRAIT <item_lightspacehelm.png>
+	Mass -2
+	Legality -25
+	Sealed
+	Hardened
+	Phone
+	Charm 5
+
+	BodyArmor 2
+	name <Allure SkinSuit Suit>
+	desc <A skintight figure-enhancing spacesuit.>
+	Category <CLOTHING SPACE>
+	Mass -3
+	Legality -25
+	Sealed
+	Hardened
+	Charm 5
+	sub
+		SpaceFlight 3
+	end
+
+	ArmArmor 2
+	name <Allure SkinSuit Sleeve>
+	desc <A skintight figure-enhancing spacesuit.>
+	Category <CLOTHING SPACE>
+	Mass -3
+	Legality -25
+	Sealed
+	Hardened
+	Charm 5
+
+	LegArmor 2
+	name <Allure SkinSuit Legging>
+	desc <A skintight figure-enhancing spacesuit.>
+	Category <CLOTHING SPACE>
+	Mass -3
+	Legality -25
+	Sealed
+	Hardened
+	Charm 5
+
+	ArmArmor 2
+	name <Allure SkinSuit Sleeve>
+	desc <A skintight figure-enhancing spacesuit.>
+	Category <CLOTHING SPACE>
+	Mass -3
+	Legality -25
+	Sealed
+	Hardened
+	Charm 5
+
+	LegArmor 2
+	name <Allure SkinSuit Legging>
+	desc <A skintight figure-enhancing spacesuit.>
+	Category <CLOTHING SPACE>
+	Mass -3
+	Legality -25
+	Sealed
+	Hardened
+	Charm 5
+end
+
+Set
+name <Bunny Armor [set]>
+desc <A sophisticated active armor from MUGL Enterprises. It is decorated with the MUGL bunny mascot.>
+Category <ARMOR SPACE>
+Factions <MUGLE>
+inv
+	HeadArmor 4
+	name <Bunny Helm>
+	desc <A light spacesuit helm with "rabbit ear" sensory enhancers.>
+	SDL_PORTRAIT <>
+	Mass -6
+	Sealed
+	Hardened
+	Perception 5
+
+	BodyArmor 5
+	name <Bunny Armor>
+	desc <A sophisticated active armor decorated with the MUGL bunny mascot.>
+	Mass -7
+	Sealed
+	Hardened
+	Speed 2
+	Perception 5
+	sub
+		Flight 3
+	end
+
+	ArmArmor 4
+	name <Bunny Sleeve>
+	desc <A sophisticated active armor decorated with the MUGL bunny mascot.>
+	Mass -6
+	Speed 2
+	Hardened
+	Sealed
+
+	ArmArmor 4
+	name <Bunny Sleeve>
+	desc <A sophisticated active armor decorated with the MUGL bunny mascot.>
+	Mass -6
+	Speed 2
+	Hardened
+	Sealed
+
+	LegArmor 4
+	name <Bunny Legging>
+	desc <A sophisticated active armor decorated with the MUGL bunny mascot.>
+	Mass -6
+	Sealed
+	Hardened
+	Speed 2
+	sub
+		Flight 2
+	end
+
+	LegArmor 4
+	name <Bunny Legging>
+	desc <A sophisticated active armor decorated with the MUGL bunny mascot.>
+	Mass -6
+	Sealed
+	Hardened
+	Speed 2
+	sub
+		Flight 2
+	end
+end
+
+Set
+name <Squire Armor [set]>
+desc <An armored spacesuit used by the Silver Knights.>
+Category <ARMOR SPACE>
+Factions <SILKN>
+inv
+	HeadArmor 4
+	name <Squire Helm>
+	desc <A light spacesuit helm with integrated rebreather.>
+	SDL_PORTRAIT <item_lightspacehelm.png>
+	Mass -6
+	Legality 10
+	Sealed
+	Hardened
+
+	BodyArmor 4
+	name <Squire Armor>
+	desc <An armored spacesuit used by the Silver Knights.>
+	Mass -6
+	Legality 10
+	Sealed
+	sub
+		SpaceFlight 3
+	end
+
+	ArmArmor 4
+	name <Squire Sleeve>
+	desc <An armored spacesuit used by the Silver Knights.>
+	Mass -6
+	Legality 10
+	Sealed
+
+	LegArmor 4
+	name <Squire Legging>
+	desc <An armored spacesuit used by the Silver Knights.>
+	Mass -6
+	Legality 10
+	Sealed
+	sub
+		SpaceFlight 3
+	end
+
+	ArmArmor 4
+	name <Squire Sleeve>
+	desc <An armored spacesuit used by the Silver Knights.>
+	Mass -6
+	Legality 10
+	Sealed
+
+	LegArmor 4
+	name <Squire Legging>
+	desc <An armored spacesuit used by the Silver Knights.>
+	Mass -6
+	Legality 10
+	Sealed
+	sub
+		SpaceFlight 3
+	end
+end
+
+Set
+name <Paladin Suit [set]>
+desc <A light powered armor used by the Silver Knights.>
+Category <ARMOR>
+Factions <SILKN>
+Legality 10
+inv
+	HeadArmor 6
+	name <Paladin Helm>
+	desc <A light powered armor used by the Silver Knights.>
+	SDL_PORTRAIT <>
+	Mass -8
+	Legality 10
+	Sealed
+	Hardened
+	Perception 5
+	Memo
+	Phone
+	Email
+	News
+
+	BodyArmor 6
+	name <Paladin Suit>
+	desc <A light powered armor used by the Silver Knights.>
+	Mass -7
+	Legality 10
+	Sealed
+	Hardened
+	Body 10
+	Perception 5
+	sub
+		HoverJet 3
+	end
+
+	ArmArmor 6
+	name <Paladin Sleeve>
+	desc <A light powered armor used by the Silver Knights.>
+	Mass -7
+	Legality 10
+	Sealed
+	Hardened
+	Body 5
+	Reflexes 5
+
+	ArmArmor 6
+	name <Paladin Sleeve>
+	desc <A light powered armor used by the Silver Knights.>
+	Mass -7
+	Legality 10
+	Sealed
+	Hardened
+	Body 5
+	Reflexes 5
+
+	LegArmor 6
+	name <Paladin Legging>
+	desc <A light powered armor used by the Silver Knights.>
+	Mass -7
+	Legality 10
+	Sealed
+	Hardened
+	Body 5
+	Speed 5
+	sub
+		HoverJet 3
+	end
+
+	LegArmor 6
+	name <Paladin Legging>
+	desc <A light powered armor used by the Silver Knights.>
+	Mass -7
+	Legality 10
+	Sealed
+	Hardened
+	Body 5
+	Speed 5
+	sub
+		HoverJet 3
+	end
+end
+
+Set
+name <Combat Spacesuit [set]>
+desc <An armored spacesuit.>
+Category <ARMOR SPACE ESSENTIAL>
+Factions <MAQUI FCOMS RISHI ROCKE>
+Legality 10
+inv
+	HeadArmor 5
+	name <Combat Space Helm>
+	desc <A light spacesuit helm with integrated rebreather.>
+	SDL_PORTRAIT <item_lightspacehelm.png>
+	Mass -6
+	Legality 10
+	Sealed
+	Hardened
+
+	BodyArmor 5
+	name <Combat Spacesuit>
+	desc <An armored spacesuit.>
+	Mass -7
+	Legality 10
+	Sealed
+	Hardened
+	sub
+		SpaceFlight 3
+	end
+
+	ArmArmor 5
+	name <Combat Spacesuit Sleeve>
+	desc <An armored spacesuit.>
+	Mass -7
+	Legality 10
+	Sealed
+	Hardened
+
+	LegArmor 5
+	name <Combat Spacesuit Legging>
+	desc <An armored spacesuit.>
+	Mass -7
+	Legality 10
+	Sealed
+	Hardened
+	sub
+		SpaceFlight 3
+	end
+
+	ArmArmor 5
+	name <Combat Spacesuit Sleeve>
+	desc <An armored spacesuit.>
+	Mass -7
+	Legality 10
+	Sealed
+	Hardened
+
+	LegArmor 5
+	name <Combat Spacesuit Legging>
+	desc <An armored spacesuit.>
+	Mass -7
+	Legality 10
+	Sealed
+	Hardened
+	sub
+		SpaceFlight 3
+	end
+end
+
+Set
+name <Utility Suit [set]>
+desc <A cheaply made spacesuit.>
+Category <CLOTHING SPACE>
+Factions <BOHEM CRIHN FCOMS COMET HOELL MUGLE>
+Legality -25
+inv
+	BodyArmor 3
+	name <Utility Suit>
+	desc <A cheaply made spacesuit.>
+	Category <CLOTHING SPACE>
+	Sealed
+	sub
+		SpaceFlight 3
+	end
+
+	ArmArmor 3
+	name <Utility Sleeve>
+	desc <A cheaply made spacesuit.>
+	Category <CLOTHING SPACE>
+	Mass -2
+	Sealed
+
+	ArmArmor 3
+	name <Utility Sleeve>
+	desc <A cheaply made spacesuit.>
+	Category <CLOTHING SPACE>
+	Mass -2
+	Sealed
+
+	LegArmor 3
+	name <Utility Legging>
+	desc <A cheaply made spacesuit.>
+	Category <CLOTHING SPACE>
+	Mass -2
+	Sealed
+
+	LegArmor 3
+	name <Utility Legging>
+	desc <A cheaply made spacesuit.>
+	Category <CLOTHING SPACE>
+	Mass -2
+	Sealed
+
+	HeadArmor 3
+	name <Utility Helm>
+	desc <A cheaply made spacesuit.>
+	Category <CLOTHING SPACE>
+	Mass -3
+	Sealed
+end
+
+Set
+name <Space Suit [set]>
+desc <A regular spacesuit.>
+Category <ARMOR CLOTHING SPACE ESSENTIAL>
+Factions <MAQUI BOHEM CRIHN PRIVA FCOMS RISHI COMET HOELL MUGLE>
+Legality -15
+inv
+	BodyArmor 3
+	name <Space Suit>
+	desc <A regular spacesuit.>
+	Category <ARMOR CLOTHING SPACE>
+	Mass -4
+	Legality -15
+	Sealed
+	sub
+		SpaceFlight 3
+	end
+
+	ArmArmor 3
+	name <Spacesuit Sleeve>
+	desc <A regular spacesuit.>
+	Category <ARMOR CLOTHING SPACE>
+	Mass -4
+	Legality -15
+	Sealed
+
+	ArmArmor 3
+	name <Spacesuit Sleeve>
+	desc <A regular spacesuit.>
+	Category <ARMOR CLOTHING SPACE>
+	Mass -4
+	Legality -15
+	Sealed
+
+	LegArmor 3
+	name <Spacesuit Legging>
+	desc <A regular spacesuit.>
+	Category <ARMOR CLOTHING SPACE>
+	Mass -4
+	Legality -15
+	Sealed
+
+	LegArmor 3
+	name <Spacesuit Legging>
+	desc <A regular spacesuit.>
+	Category <ARMOR CLOTHING SPACE>
+	Mass -4
+	Legality -15
+	Sealed
+
+	HeadArmor 2
+	name <Light Space Helm>
+	desc <A light spacesuit helm with integrated rebreather.>
+	Category <CLOTHING SPACE>
+	SDL_PORTRAIT <item_lightspacehelm.png>
+	Mass -2
+	Legality -25
+	Sealed
+	Hardened
+end
+
+Set
+name <Wynn Suit [set]>
+desc <An armored spacesuit commonly used by pirates.>
+Category <ARMOR SPACE>
+Factions <BOHEM CRIHN PRIVA>
+Legality -5
+inv
+	BodyArmor 4
+	name <Wynn Suit>
+	desc <An armored spacesuit commonly used by pirates.>
+	Category <ARMOR SPACE>
+	Mass -5
+	Sealed
+
+	ArmArmor 4
+	name <Wynn Sleeve>
+	desc <An armored spacesuit commonly used by pirates.>
+	Category <ARMOR SPACE>
+	Mass -5
+	Sealed
+
+	ArmArmor 4
+	name <Wynn Sleeve>
+	desc <An armored spacesuit commonly used by pirates.>
+	Category <ARMOR SPACE>
+	Mass -5
+	Sealed
+
+	LegArmor 4
+	name <Wynn Legging>
+	desc <An armored spacesuit commonly used by pirates.>
+	Category <ARMOR SPACE>
+	Mass -5
+	Sealed
+	sub
+		SpaceFlight 2
+	end
+
+	LegArmor 4
+	name <Wynn Legging>
+	desc <An armored spacesuit commonly used by pirates.>
+	Category <ARMOR SPACE>
+	Mass -5
+	Sealed
+	sub
+		SpaceFlight 2
+	end
+
+	HeadArmor 4
+	name <Skull Helm>
+	desc <An armored spacesuit helm with a holographic skull image on the visor.>
+	Category <ARMOR SPACE>
+	Mass -6
+	Sealed
+	Phone
+end
+
+
+Set
+name <Encounter Suit [set]>
+desc <A bulky spacesuit with added protection.>
+Category <ARMOR SPACE>
+Factions <MAQUI BOHEM CRIHN PRIVA FCOMS RISHI>
+Legality -5
+inv
+	BodyArmor 4
+	name <Encounter Suit>
+	desc <A bulky spacesuit with added protection.>
+	Category <ARMOR SPACE>
+	Factions <MAQUI>
+	Mass -4
+	Legality -15
+	Sealed
+	sub
+		SpaceFlight 3
+	end
+
+	ArmArmor 4
+	name <Encounter Sleeve>
+	desc <A bulky spacesuit with added protection.>
+	Category <ARMOR SPACE>
+	Factions <MAQUI>
+	Mass -4
+	Legality -15
+	Sealed
+
+	LegArmor 4
+	name <Encounter Legging>
+	desc <A bulky spacesuit with added protection.>
+	Category <ARMOR SPACE>
+	Factions <MAQUI>
+	Mass -4
+	Legality -15
+	Sealed
+
+	ArmArmor 4
+	name <Encounter Sleeve>
+	desc <A bulky spacesuit with added protection.>
+	Category <ARMOR SPACE>
+	Factions <MAQUI>
+	Mass -4
+	Legality -15
+	Sealed
+
+	LegArmor 4
+	name <Encounter Legging>
+	desc <A bulky spacesuit with added protection.>
+	Category <ARMOR SPACE>
+	Factions <MAQUI>
+	Mass -4
+	Legality -15
+	Sealed
+
+	HeadArmor 4
+	name <Heavy Space Helm>
+	desc <An armored spacesuit helm with integrated rebreather.>
+	Category <CLOTHING ARMOR SPACE>
+	Factions <MAQUI>
+	SDL_PORTRAIT <item_spacehelm.png>
+	Mass -6
+	Legality -15
+	Sealed
+	Hardened
+end
+
+Set
+name <Ceram Armor [set]>
+desc <A strong armor plate made from the light ceram material.>
+Category <ARMOR>
+Factions <MAQUI FCOMS RISHI>
+legality 0
+inv
+	BodyArmor 6
+	Name <Ceram Breastplate>
+	desc <A strong armor plate made from the light ceram material.>
+	Category <ARMOR>
+	Factions <MAQUI>
+	Mass -10
+	legality -5
+	Hardened
+
+	HeadArmor 4
+	Name <Ceram Helmet>
+	desc <A strong helmet made from the light ceram material.>
+	Category <ARMOR>
+	Factions <MAQUI>
+	Mass -6
+	legality -5
+	Hardened
+
+	ArmArmor 4
+	Name <Ceram Plate Sleeve>
+	desc <A strong sleeve made from the light ceram material.>
+	Category <ARMOR>
+	Factions <MAQUI>
+	Mass -7
+	legality -5
+	Hardened
+
+	LegArmor 4
+	Name <Ceram Plate Legging>
+	desc <Strong legging made from the light ceram material.>
+	Category <ARMOR>
+	Factions <MAQUI>
+	Mass -7
+	legality -5
+	Hardened
+
+	ArmArmor 4
+	Name <Ceram Plate Sleeve>
+	desc <A strong sleeve made from the light ceram material.>
+	Category <ARMOR>
+	Factions <MAQUI>
+	Mass -7
+	legality -5
+	Hardened
+
+	LegArmor 4
+	Name <Ceram Plate Legging>
+	desc <Strong legging made from the light ceram material.>
+	Category <ARMOR>
+	Factions <MAQUI>
+	Mass -7
+	legality -5
+	Hardened
+end
+
+ArmArmor 7
+Name <Boarding Claw>
+desc <This armor features a sharp claw specifically designed for ripping through spaceship bulkheads.>
+Category <WEAPON MELEE>
+Factions <PRIVA HOELL>
+Mass -10
+legality 0
+Sealed
+sub
+	Melee 18
+	Name <Claw>
+	desc <A sharp claw.>
+	Acc 1
+	Speed 4
+	Mass -12
+end
+
+%  *****************
+%  ***  SHIELDS  ***
+%  *****************
+
+Shield 6
+Name <Ceram Shield>
+desc <A large shield made from ceram polymer.>
+Category <SHIELD>
+Factions <MAQUI FCOMS RISHI BOHEM>
+DefBonus 1
+mass -5
+legality -5
+Hardened
+
+Shield 4
+Name <Ceram Buckler>
+desc <A small shield made from ceram polymer.>
+Category <SHIELD>
+Factions <MAQUI FCOMS RISHI BOHEM>
+DefBonus -2
+mass -1
+legality -5
+Hardened
+
+
+%  *********************
+%  ***  ELECTRONICS  ***
+%  *********************
+
+
+%  *****************************
+%  ***  MUSICAL INSTRUMENTS  ***
+%  *****************************
+
+
+
+%  *********************
+%  ***  REPAIR FUEL  ***
+%  *********************
+
+
+
+%  *********************
+%  ***  CONSUMABLES  ***
+%  *********************
+
+Food 45
+Mass -4
+Name <Beef Tubesteak>
+desc <Cloned beef grown in zero gravity for superior texture and flavor.>
+Category <FOOD>
+Factions <MAQUI FCOMS RISHI BOHEM>
+legality -50
+
+Food 45
+Mass -4
+Name <Turkey Tubesteak>
+desc <Cloned turkey meat grown in zero gravity for superior texture and flavor.>
+Category <FOOD>
+Factions <MAQUI FCOMS RISHI BOHEM>
+legality -50
+
+Food 45
+Mass -4
+Name <Bacon Tubesteak>
+desc <Cloned bacon loaf grown in zero gravity for superior texture and flavor.>
+Category <FOOD>
+Factions <MAQUI FCOMS RISHI BOHEM>
+legality -50
+
+
+%  *******************
+%  ***  CYBERWARE  ***
+%  *******************
+
+
+
+

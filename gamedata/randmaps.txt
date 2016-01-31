@@ -1,0 +1,183 @@
+% RANDOM MAPS STANDARD PARAMETER FILE % See randmaps.pp for details
+Name27 <City Block>
+PARAM27 <Lattice 1 0 6>
+SELECTOR27 <-1 8 6>
+GapFill27 <-8 -8 -8 -8 -8 -8 -4>
+SubZone27 <-3>
+Terrain27 <GROUND>
+
+Name25 <City Block>
+PARAM25 <Lattice 1 0 6>
+SELECTOR25 <-1 8 6>
+GapFill25 <-8 -8 -8 -8 -8 -8 -4>
+SubZone25 <-3>
+Terrain25 <GROUND>
+
+Name24 <City Block>
+PARAM24 <Lattice 1 0 6>
+SELECTOR24 <-1 8 6>
+GapFill24 <-8 -8 -8 -8 -8 -8 -4>
+SubZone24 <-3>
+Terrain24 <GROUND>
+
+Name23 <Outer Space>
+Param23 <Fill 23 0>
+GapFill23 <>
+SubZone23 <23>
+Terrain23 <SPACE>
+
+Name11 <Rough Area>
+Param11 <Fill 1 11>
+GapFill11 <-5 -5 -5 -9 -13 -9>
+SubZone11 <11>
+Terrain11 <GROUND>
+
+Name9 <Medium Hills>
+Param9 <Fill 1 8>
+GapFill9 <-4 -5 -4 -5 -5 -25>
+SubZone9 <9>
+Terrain9 <GROUND>
+
+Name8 <Light Hills>
+Param8 <Fill 1 0>
+GapFill8 <-4 -5 -4 -5 -5 -5>
+SubZone8 <8>
+Terrain8 <GROUND>
+
+Name7 <Swamp>
+Param7 <Fill 1 7>
+GapFill7 <-4 -4 -9 -9 -9 -13 -17>
+SubZone7 <7>
+Terrain7 <GROUND>
+
+Name6 <City Block>
+PARAM6 <Lattice 1 0 6>
+SELECTOR6 <-1 8 6>
+GapFill6 <-8 -8 -8 -8 -8 -8 -4>
+SubZone6 <-3>
+Terrain6 <GROUND>
+
+Name3 <Deep Forest>
+Param3 <Fill 2 1>
+GapFill3 <-4 -4 -4 -5 -13>
+SubZone3 <3>
+Terrain3 <GROUND>
+
+Name2 <Forest>
+Param2 <Fill 1 2>
+GapFill2 <-4 -4 -5 -9 -4 -4 -5 -13>
+SubZone2 <2>
+Terrain2 <GROUND>
+
+Name1 <Default Wilderness>
+PARAM1 <Fill 1 0>
+GAPFILL1 <-4 -5 -9 -4 -5>
+SubZone1 <1>
+Terrain1 <GROUND>
+
+PARAMDEFAULT <Fill 1 0>
+SubZone0 <0>
+
+Name-1 <Commercial Building>
+PARAM-1 <Mall 14 13>
+SubZone-1 <-27>
+
+Name-2 <Cavern>
+PARAM-2 <Carve 14 0 13>
+SELECTOR-2 <1 5 14> % Include (1) the Floor Terrain (5) Default Floor (14)
+SubZone-2 <-27>
+
+Name-3 <Rectangle>
+PARAM-3 <Fill 1 0>
+
+Name-4 <Forest>
+PARAM-4 <Scatter 2 3 0>
+Name-5 <Hills>
+PARAM-5 <Scatter 8 9 10>
+
+Name-6 <City>
+PARAM-6 <City 1 6 20 20 10>
+SELECTOR-6 <-1 8 6>
+SubZone-6 <1>
+Terrain-6 <GROUND>
+
+Name-7 <MegaCity>
+PARAM-7 <City 1 6 30 35 25>
+SELECTOR-7 <-1 8 6>
+SubZone-7 <1>
+Terrain-7 <GROUND>
+
+Name-8 <Buildings Block>
+PARAM-8 <Scatter 27 24 25>
+
+Name-9 <Lake>
+PARAM-9 <ELLIPSE 4 17 18>
+
+Name-10 <Complex Map>
+PARAM-10 <Wall 13 Mitose 14 13>
+SUBZONE-10 <-27>
+TERRAIN-10 <GROUND>
+
+Name-11 <Complex Filler>
+PARAM-11 <Mitose 14 13>
+
+Name-12 <Ruin>
+PARAM-12 <Carve 14 0 13>
+GAPFILL-12 <-11>
+SELECTOR-12 <1 5 14> % Include (1) the Floor Terrain (5) Default Floor (14)
+SubZone-12 <-27>
+
+Name-15 <Arena>
+PARAM-15 <Fill 1 0 Wall 12>
+GAPFILL-15 <-4 -5 -5>
+
+Name-16 <BigBox>
+PARAM-16 <Fill 14 0 Wall 13>
+
+NAME-17 <Swamp>
+PARAM-17 <Scatter 7 2 4>
+
+Name-21 <Pool>
+PARAM-21 <ELLIPSE 21 4 17>
+
+Name-22 <Ground Zero>
+PARAM-22 <Scatter 5 11 22>
+
+NAME-24 <Monkey Maze>
+PARAM-24 <MonkeyMaze 14 13>
+SubZone-24 <-27>
+zSELECTOR-24 <-1 0 19>	% Exclude (-1) a non-palette (0) terrain: Threshold (19)
+
+Name-25 <Big Hill>
+PARAM-25 <ELLIPSE 8 9 10>
+
+Name-27 <Floor Rect>
+PARAM-27 <Fill 14 0>
+
+Name-29 <Club Map>
+PARAM-29 <Club 14 13>
+SubZone-29 <-27>
+
+Name-30 <Asteroid Map>
+Param-30 <Fill 1 0>
+SubZone-30 <-3>
+GapFill-30 <-5>
+Terrain-30 <GROUND>
+
+Name-31 <BigBox>
+PARAM-31 <Cellbox 14 0 Wall 13>
+SubZone-31 <-27>
+
+Name-32 <BigBox Zone>
+PARAM-32 <Cellbox 14 0>
+SubZone-32 <-27>
+Name-33 <Warzone Map>
+PARAM-33 <Lattice 1 5 6>
+SELECTOR-33 <-1 8 6>
+GapFill-33 <-22 -22 -22 -3 -3 -22 -22 -34>
+SubZone-33 <-3>
+Terrain-33 <GROUND>
+
+Name-34 <GH1 Building>
+PARAM-34 <Fill 14 0 DWall 13>
+

@@ -1,0 +1,161 @@
+HoverFighter 6
+name <Harkney>
+desig <Crihna>
+type <GROUND SPACE>
+desc <A heavy support dreadnought used by the Blades of Crihna.>
+sdl_portrait <item_harkney.png>
+
+factions <CRIHN>
+ROLE_CRIHN <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+
+sub
+Torso
+name <Hull>
+Armor 4
+	sub
+		CPit
+		Armor 1
+
+		Engine 6
+		HighPerformance
+		Armor 2
+
+		Gyro
+		Armor 1
+
+		Sensor 6
+		ECM 4
+
+		Flight 5
+
+		Computer 3
+		sub
+			Software 2
+			name <White Whale TarComp>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software
+			name <Target Analysis>
+			S_Information
+			SInfo_MechaDex
+		end
+
+		Mount
+		name <Right Body Mount>
+		inv
+			STC LAS-3
+			name <Intercept Laser>
+			type <INTERCEPT>
+		end
+
+		Mount
+		name <Left Body Mount>
+		inv
+			STC PAR-2
+		end
+	end
+	inv
+		BodyArmor 4
+		fits <Hoverfighter>
+		name <Comet Catcher>
+	end
+
+Turret
+	size 5
+	Armor 3
+	sub
+		Gun 20
+		Scale 2
+		name <Roundshot Cannon>
+		caliber <500mm ferrous ball>
+		Range 7
+		Recharge 1
+		type <BRUTAL>
+		Mass -4
+		Magazine 15
+		sub
+			Ammo 20
+			caliber <500mm ferrous ball>
+		end
+	end
+	inv
+		TurretArmor 5
+	end
+
+Storage
+	name <Right Pod>
+	size 4
+	Armor 3
+	sub
+		MLauncher 6
+		Scale 2
+		sub
+			Rockets 15
+			name <Hurricane Missiles>
+			Range 6
+			type <BLAST 2 HAYWIRE>
+			Magazine 4
+		end
+
+		Flight 4
+	end
+
+Storage
+	name <Left Pod>
+	size 4
+	Armor 3
+	sub
+		MLauncher 6
+		Scale 2
+		sub
+			Rockets 15
+			name <Hurricane Missiles>
+			Range 6
+			type <BLAST 2 HAYWIRE>
+			Magazine 4
+		end
+
+		Flight 4
+	end
+
+Wing
+	name <Right Wing>
+	size 3
+	Armor 3
+	sub
+		Flight 3
+
+		Mount
+		name <Right Wing Mount>
+		inv
+			MLauncher 16
+			sub
+				STC GM-10
+				Magazine 16
+				name <Clever Parrot Missiles>
+			end
+		end
+	end
+
+Wing
+	name <Left Wing>
+	size 3
+	Armor 3
+	sub
+		Flight 3
+
+		Mount
+		name <Left Wing Mount>
+		inv
+			MLauncher 16
+			sub
+				STC ICM-5
+				Magazine 32
+			end
+		end
+	end
+
+end
+
+

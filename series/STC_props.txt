@@ -1,0 +1,689 @@
+%  *****************
+%  ***  SCENERY  ***
+%  *****************
+
+	Rubble
+	name <Rubble>
+	desig <RUBBLE-1>
+	sdl_sprite <prop_rubble.png>
+
+	Rubble 0
+	name <Rubble>
+	desig <RUBBLE-INDESTRUCTIBLE>
+	sdl_sprite <prop_rubble.png>
+
+	Prop 10
+	name <Mannekin>
+	desig <MANNEKIN-M>
+	roguechar <M>
+	SDL_Sprite <cha_m_adven.png>
+	SDL_Colors <244 216 28  201 205 229  181 185 207>
+
+	Prop 10
+	name <Mannekin>
+	desig <MANNEKIN-F>
+	roguechar <M>
+	SDL_Sprite <cha_f_adven.png>
+	SDL_Colors <244 216 28  201 205 229  181 185 207>
+
+	Prop 10
+	name <Mecha Model>
+	desig <MECHAMODEL-1>
+	roguechar <M>
+	SDL_Sprite <btr_savin.png>
+	SDL_Colors <244 216 28  201 205 229  181 185 207>
+
+	Prop 15
+	name <Bed>
+	desig <BED-1>
+	roguechar <_>
+	Mesh 13
+	SDL_SKIN <tex_bed.png>
+	SDL_SPRITE <prop_bed.png>
+
+	Prop 5
+	name <Ammo Crate>
+	desig <CRATE-AMMO>
+	Mesh 11
+	SDL_SKIN <tex_crate.png>
+	Frame 0
+	SDL_SPRITE <prop_ammocrate.png>
+
+	Prop 10
+	name <Weapon Display>
+	desig <SHOPDISPLAY-WEAPONS-1>
+	Mesh 10
+	SDL_SPRITE <prop_weapondisplay1.png>
+	SDL_SKIN <tex_store_shelves.png>
+	Frame 1
+
+	Prop 10
+	name <Weapon Display>
+	desig <SHOPDISPLAY-WEAPONS-2>
+	Mesh 10
+	SDL_SPRITE <prop_weapondisplay1.png>
+	SDL_SKIN <tex_store_shelves.png>
+	Frame 2
+
+	Prop 10
+	name <Weapon Display>
+	desig <SHOPDISPLAY-WEAPONS-3>
+	Mesh 10
+	SDL_SPRITE <prop_weapondisplay1.png>
+	SDL_SKIN <tex_store_shelves.png>
+	Frame 3
+
+	Prop 10
+	name <Armor Display>
+	desig <SHOPDISPLAY-ARMOR-1>
+	Mesh 10
+	SDL_SKIN <tex_store_shelves.png>
+	SDL_SPRITE <prop_armordisplay2.png>
+	Frame 6
+
+	Prop 10
+	name <Armor Display>
+	desig <SHOPDISPLAY-ARMOR-2>
+	Mesh 10
+	SDL_SKIN <tex_store_shelves.png>
+	SDL_SPRITE <prop_armordisplay2.png>
+	Frame 7
+
+	Prop 5
+	name <End Table>
+	desig <ENDTABLE-1>
+	Mesh 12
+	SDL_SKIN <tex_endtable.png>
+	Frame 0
+	SDL_SPRITE <prop_endtable.png>
+
+	Prop 4
+	name <Box>
+	desig <BOX-1>
+	roguechar <=>
+	SDL_Sprite <prop_box_low.png>
+
+	Prop 5
+	name <Display Case>
+	desig <DISPLAYCASE-1>
+	roguechar <=>
+	SDL_SPRITE <prop_displaycase.png>
+
+	MetaTerrain 0 0
+	desig <VICTIM>
+	name <Body>
+	roguechar <!>
+	SDL_SPRITE <prop_body.png>
+
+	Prop 20
+	desig <COLONY-PROP>
+	roguechar <*>
+	SDL_SPRITE <prop_colony.png>
+
+	Prop 15
+	name <Space Station>
+	desig <MICROSTATION>
+	roguechar <&>
+	SDL_SPRITE <prop_colony.png>
+
+	Prop 5
+	name <COMPUTER>
+	Desig <COMPUTER-1>
+	roguechar <!>
+	SDL_SPRITE <prop_computer1.png>
+
+	MetaTerrain 0 0
+	name <COMPUTER>
+	Desig <COMPUTER-INDESTRUCTIBLE>
+	roguechar <!>
+	SDL_SPRITE <prop_computer1.png>
+	Altitude 1
+	Pass -100
+
+	Prop 15
+	name <Bio-Tank>
+	desig <BIOTANK>
+	roguechar <~>
+	SDL_SPRITE <prop_biotank.png>
+
+	Prop 25
+	name <Machine>
+	desig <MACHINE-1>
+	roguechar <~>
+	SDL_SPRITE <prop_machine.png>
+
+	Prop 5
+	name <Mushroom Patch>
+	desig <MUSHROOMPATCH-1>
+	sdl_sprite <prop_mushroompatch.png>
+	sdl_colors <185 159 92 185 159 92 170 132 80>
+
+	Prop 15
+	name <Mushroom Patch>
+	desig <MUSHROOMPATCH-2>
+	sdl_sprite <prop_mushroompatch.png>
+	sdl_portrait <prop_mushroompatch.png>
+	sdl_colors <170 153 230 170 153 230 49 91 159>
+
+
+%  *********************
+%  ***   ENTRANCES   ***
+%  *********************
+
+	Elevator
+	% V1 = First time menu check
+	name <Airlock>
+	desig <AIRLOCK-1>
+	use <ifMechaCanEnterScene Destination else GoNoEnter if= V1 1 else GoFirstTime Goto GoExit>
+	GoFirstTime <ifYesNo 2 3 4 Goto GoExit>
+	GoExit <V= 1 1 Print 5 Exit Destination>
+	GoNoEnter <Print 1>
+	Msg1 <This is the elevator to the airlocks. You need a spaceworthy mecha to go here.>
+	Msg2 <This is the elevator to the airlocks. Would you like to launch into space?>
+	Msg3 <Yes please.>
+	Msg4 <No thanks.>
+	Msg5 <You launch into space.>
+
+	Elevator
+	% V1 = First time menu check
+	name <Orbital Catapult>
+	desig <AIRLOCK-2>
+	use <ifG PCMeks 0 else GoNoMeks if= V1 1 else GoFirstTime Goto GoExit>
+	GoFirstTime <ifYesNo 2 3 4 Goto GoExit>
+	GoExit <V= 1 1 Print 5 Exit Destination>
+	GoNoMeks <Print 1>
+	Msg1 <This is the elevator to the orbital catapult.>
+	Msg2 <This is the elevator to the orbital catapult. Would you like to launch into space?>
+	Msg3 <Yes please.>
+	Msg4 <No thanks.>
+	Msg5 <You board the catapult.>
+
+	Elevator
+	desig <ELEVATOR_TO_NOWHERE>
+	use <Print 1>
+	Msg1 <This elevator doesn't respond.>
+
+	Metaterrain 0 0
+	desig <HIDDEN_ENTRANCE>
+	Stat 5 -1
+
+	Building
+	name <Building>
+	desig <BUILDING>
+	stat 1 2
+	Scale 3
+
+	Building
+	name <Building>
+	desig <BUILDING-SPACEPORT>
+	Altitude 3
+	Scale 3
+	BM_SpacePort
+	roguechar <P>
+
+	MetaTerrain 0 0
+	desig <COLONY-1>
+	roguechar <*>
+	SDL_SPRITE <prop_colony.png>
+	use <Print 1 Exit StatVal 4>
+	Altitude 1
+	Scale 3
+	Pass -100
+	Msg1 <You enter the station.>
+
+	MetaTerrain 0 0
+	desig <DERELICT-1>
+	roguechar <*>
+	SDL_SPRITE <prop_derelict.png>
+	use <Print 1 Exit StatVal 4>
+	Altitude 1
+	Pass -100
+	Msg1 <You enter the spaceship.>
+
+
+%  **********************
+%  ***   CONTAINERS   ***
+%  **********************
+
+	Prop 5
+	name <Display Case>
+	desig <DISPLAYCASE-USABLE>
+	roguechar <=>
+	SDL_SPRITE <prop_displaycase.png>
+	use <if= StatVal STAT_Lock 0 else GoLocked Print -5 OpenInv>
+	GoLocked <Print -4>
+	CLUE_CODEBREAKING <if# StatVal STAT_Lock 0 else GoNotLocked Mental ifCodeBreaking StatVal STAT_Lock else GoNoUnlock Print -1 SetStat STAT_Lock 0>
+	GoNoUnlock <Print -2>
+	GoNotLocked <Print -3>
+	CLUE_INSIGHT <Print -6>
+	Msg-1 <You unlock the display case.>
+	Msg-2 <You cannot unlock this display case at your current skill level.>
+	Msg-3 <This display case isn't locked.>
+	Msg-4 <The display case is locked.>
+	Msg-5 <You open the display case.>
+	Msg-6_1 <The case is not locked.>
+	CMsg-6_1 <if= StatVal STAT_Lock 0 Accept>
+	Msg-6_2 <The case is locked.>
+	CMsg-6_2 <if# StatVal STAT_Lock 0 Accept>
+
+	Prop 10
+	name <Crate>
+	Desig <CRATE>
+	roguechar <=>
+	use <if= StatVal STAT_Lock 0 else GoLocked Print -5 OpenInv>
+	GoLocked <Print -4>
+	CLUE_CODEBREAKING <if# StatVal STAT_Lock 0 else GoNotLocked Mental ifCodeBreaking StatVal STAT_Lock else GoNoUnlock Print -1 SetStat STAT_Lock 0>
+	GoNoUnlock <Print -2>
+	GoNotLocked <Print -3>
+	CLUE_INSIGHT <Print -6>
+	Mesh 11
+	SDL_SKIN <tex_crate.png>
+	SDL_SPRITE <prop_crate.png>
+	Frame 2
+	Msg-1 <You unlock the crate.>
+	Msg-2 <You cannot unlock this crate at your current skill level.>
+	Msg-3 <This crate isn't locked.>
+	Msg-4 <The crate is locked.>
+	Msg-5 <You open the crate.>
+	Msg-6_1 <The crate is not locked.>
+	CMsg-6_1 <if= StatVal STAT_Lock 0 Accept>
+	Msg-6_2 <The crate is locked.>
+	CMsg-6_2 <if# StatVal STAT_Lock 0 Accept>
+
+	Prop 50
+	name <Safe>
+	Desig <SAFE>
+	roguechar <=>
+	use <if= StatVal STAT_Lock 0 else GoLocked Print -5 OpenInv>
+	GoLocked <Print -4>
+	CLUE_CODEBREAKING <if# StatVal STAT_Lock 0 else GoNotLocked Mental ifCodeBreaking StatVal STAT_Lock else GoNoUnlock Print -1 SetStat STAT_Lock 0>
+	GoNoUnlock <Print -2>
+	GoNotLocked <Print -3>
+	CLUE_INSIGHT <Print -6>
+	Mesh 4
+	Frame 4
+	sdl_SKIN <tex_electronics.png>
+	sdl_SPRITE <prop_safe.png>
+	Msg-1 <You unlock the safe.>
+	Msg-2 <You cannot unlock this safe at your current skill level.>
+	Msg-3 <This safe isn't locked.>
+	Msg-4 <The safe is locked.>
+	Msg-5 <You open the safe.>
+	Msg-6_1 <It doesn't look safe at all.>
+	CMsg-6_1 <if= StatVal STAT_Lock 0 Accept>
+	Msg-6_2 <It looks pretty safe.>
+	CMsg-6_2 <if# StatVal STAT_Lock 0 Accept>
+
+
+%  *******************
+%  ***   USABLES   ***
+%  *******************
+
+	MetaTerrain 0 0
+	desig <RECOVERY-VICTIM>
+	% The PC may be able to revive this victim.
+	name <Body>
+	roguechar <!>
+	SDL_SPRITE <prop_body.png>
+	Use <ifPCHasSkill NAS_Medicine else GoNoSkill Goto CLUE_Medicine>
+	GoNoSkill <Print 1>
+	Clue_Medicine <MENTAL Alert 2 ifMedicine 7 else GoDie Alert 3 XPV 50 OneVictimRecovered Trigger0 RESCUE DeleteSelf>
+	GoDie <Alert 4 DeleteSelf>
+	Msg1 <This victim needs medical aid. Hopefully a doctor will be along shortly.>
+	Msg2 <You attempt to resuscitate the victim.>
+	Msg3 <The victim regains consciousness and is removed from the scene.>
+	Msg4 <The victim dies while being treated.>
+
+
+	Prop 10
+	name <Shrine>
+	desig <SHRINE-1>
+	SDL_SPRITE <prop_shrine.png>
+	% V1 = Recharge Counter
+	roguechar <+>
+	use <Print 1>
+	CLUE_MYSTICISM <ifG ComTime V1 else GoBeenBefore V= 1 NextDay Reputation 7 -d4 MENTAL ifUMysticism 10 else GoNoDice ifG d100 PCRep 7 else GoNoDice Print 2 XPV 150>
+	GoNoDice <Print 3>
+	GoBeenBefore <Print 4>
+	Msg1 <It's a small shrine.>
+	Msg2 <You meditate at the shrine. You feel enlightened.>
+	Msg3 <You meditate at the shrine.>
+	Msg4 <You've already meditated at this shrine today.>
+
+	Prop 50
+	name <Statue of Atan>
+	desig <SHRINE-ATAN>
+	roguechar <+>
+	SDL_Sprite <cha_f_adven.png>
+	SDL_Colors <197 80 69  201 205 229  181 185 207>
+	% V1 = Recharge Counter
+	use <Print 1>
+	CLUE_MYSTICISM <ifG ComTime V1 else GoBeenBefore V= 1 NextDay Reputation 7 -d4 MENTAL ifUMysticism 10 else GoNoDice ifG d100 PCRep 7 else GoNoDice Print 2 XPV 150>
+	GoNoDice <Print 3>
+	GoBeenBefore <Print 4>
+	CLUE_INSIGHT <Print 5>
+	CLUE_SCIENCE <Print 6>
+	Msg1 <It's a statue of Atan, the goddess of mecha pilots.>
+	Msg2 <You meditate at the shrine. You feel enlightened.>
+	Msg3 <You meditate at the shrine.>
+	Msg4 <You've already meditated at this shrine today.>
+	Msg5 <Miniature statues of Atan are commonly found in the cockpits of PreZero mecha. Many archaeologists believe that Atan was not a goddess per se, but just an incredibly popular televid character.>
+	Msg6 <This statue is made from polyvinyl chloride, the sacred material of Atan.>
+
+	Prop 5
+	name <Video Terminal>
+	Desig <TV>
+	roguechar <&>
+	use <ifYesNo 1 2 3 MoreMemo News>
+	Msg1 <This is a video info terminal. Would you like to check the news to see what's happening in the world?>
+	Msg2 <Yes I would.>
+	Msg3 <No, not really.>
+	Mesh 4
+	Frame 2
+	sdl_SKIN <tex_electronics.png>
+	SDL_SPRITE <prop_television.png>
+
+	Prop 5
+	name <Vending Machine>
+	Desig <VENDING-1>
+	% V1 = Hacking Counter
+	% V2 = Food Cost
+	rogueChar <&>
+	use <if= V2 0 else GoReallyUse V= 2 50 Goto GoReallyUse
+	GoReallyUse <ifYesNo 1 2 3 ifG PC$ V2 Cash+ -V2 GiveSTC .desc Print 4>
+	.desc <FOOD-1>
+	CLUE_CODEBREAKING <if= V1 0 ifCodeBreaking 10 else GoFail Mental Print 5 V= 1 1 V= 2 25 AddLawful -2>
+	GoFail <Print 6>
+	Msg1 <This vending machine sells boxed lunches for $ \VAL V2 . Want to buy one?>
+	Msg2 <Yes I do.>
+	Msg3 <No, I don't.>
+	Msg4 <You buy a boxed lunch.>
+	Msg5 <You hack the machine to sell food at half cost.>
+	Msg6 <You cannot hack this machine at your current skill level.>
+	Mesh 4
+	Frame 3
+	sdl_SKIN <tex_electronics.png>
+	sdl_SPRITE <prop_vendingmachine.png>
+
+	Prop 10
+	name <BlackJack Machine>
+	desig <GAMBLING-1>
+	Mesh 3
+	Frame 5
+	sdl_SKIN <tex_electronics.png>
+	SDL_SPRITE <prop_gambling1.png>
+	&Bet <* V3 5000>
+	% V1 = Recharge Counter
+	% V2 = PC's total.
+	% V3 = Starting bet level
+	% V4 = Distance from 21
+	% V5 = D4 roll
+	% V6 = Dealer's score
+	use <if= V3 0 else GoPlaceBet V= 3 1 Goto GoPlaceBet
+	GoPlaceBet <ifG ComTime V1 else GoBeenBefore ifYesNo 2 3 4 ifG PC$ &Bet else GoNoMoney Print 10 Cash+ -&Bet  V= 2 d10 V+ 2 d10 V= 1 ComTime V+ 1 86400 Goto GoHitStand>
+	GoBeenBefore <Print 1>
+	GoNoMoney <Print 5>
+	GoHitStand <if# V2 21 else GoExactWin ifG 22 V2 else GoOver ifYesNo 6 7 8 else GoCheckTotal V+ 2 d10 Goto GoHitStand>
+	GoCheckTotal <V= 4 22 V+ 4 -V2 V= 5 d4 V= 6 22 V+ 6 -V5 ifG V5 V4 else GoLose Goto GoCloseWin>
+	GoOver <Alert 9>
+	GoExactWin <Alert 11 Goto GoWin>
+	GoCloseWin <Alert 12 Goto GoWin>
+	GoLose <Alert 13>
+	GoWin <CashPrize * 5 &Bet V+ 3 1>
+	CLUE_CODEBREAKING <Print 14>
+	CLUE_SCIENCE <Print 15>
+	CLUE_MYSTICISM <Print 16>
+	Msg1 <You've already played this game today.>
+	Msg2 <This is a Martian Rules BlackJack game. The object is to get as close as possible to 21 points without going over.>
+	Msg3 <Play the game. [$ \VAL &Bet ]>
+	Msg4 <Leave it alone.>
+	Msg5 <You can't afford to play this game!>
+	Msg6 <You have \VAL V2 points. Do you want to take another card or stand on this?>
+	Msg7 <Hit me.>
+	Msg8 <Stand.>
+	Msg9 <Oh no! You have \VAL V2 points; you've gone over.>
+	Msg10 <You play blackjack.>
+	Msg11 <You got exactly 21 points!!! You win!>
+	Msg12 <You have \VAL V2 points. The dealer has \VAL V6 points. You win!>
+	Msg13 <You have \VAL V2 points. The dealer has \VAL V6 points. You lose.>
+	Msg14 <Hacking this machine would just destroy your enjoyment of the game.>
+	Msg15 <It's Martian Rules, so card counting won't be any use at all.>
+	Msg16 <You say a short prayer to lady luck.>
+
+	Prop 5
+	name <Alarmist Scope (Game)>
+	desig <VIDEOGAME-1>
+	Mesh 3
+	sdl_SKIN <tex_electronics.png>
+	SDL_SPRITE <prop_videogame.png>
+	% V1 = Recharge counter
+	% V2 = Skill roll container
+	% V3 = Have won the game; you only get the XP bonus the first time.
+	&Skill <NAS_RangedCombat>
+	roguechar <&>
+	use <ifG PC$ 99 else GoCantAfford ifG Comtime V1 else GoDoNotWant ifYesNo 1 2 3 Cash+ -100 V= 1 ComTime V+ 1 80000 V+ 1 d100000 Goto GoPlayGame>
+	GoCantAfford <Print 4>
+	GoDoNotWant <Print 5>
+	GoPlayGame <Print 12 V= 2 SkRoll &Skill STAT_Reflexes ifG V2 25 else GoCheckL4 Print 6 PCMoraleDmg -25 if= v3 0 XPV 50 V= 3 1 SkillXP &Skill 100>
+	GoCheckL4 <ifG V2 20 else GoCheckL3   Print 7 SkillXP &Skill 50  PCMoraleDmg -15>
+	GoCheckL3 <ifG V2 15 else GoCheckL2   Print 8 SkillXP &Skill 20  PCMoraleDmg -5>
+	GoCheckL2 <ifG V2 10 else GoCheckL1   Print 9 SkillXP &Skill 10>
+	GoCheckL1 <ifG V2  5 else GoLoseGame  Print 10 SkillXP &Skill 5 PCMoraleDmg 5>
+	GoLoseGame <Print 11 PCMoraleDmg 10>
+	Msg1 <This is a fairly standard shooting game. Defeat the androids while protecting the civilians.>
+	Msg2 <Play the game. [$100]>
+	Msg3 <Leave it alone.>
+	Msg4 <This is a fairly standard shooting game. You can't afford to play.>
+	Msg5 <You already played this game today.>
+	Msg6 <You destroy the master computer program and win the game! Congratulations.>
+	Msg7 < You make it to the last level, but then die.>
+	Msg8 <You finish stage one, but don't do well on stage two.>
+	Msg9 <You are blasted by a meatmaker on the last level of stage one.>
+	Msg10 <You don't get past level one.>
+	Msg11 <You accidentally shoot your partner before the mission even begins.>
+	Msg12 <You play the game.>
+
+	Prop 5
+	name <Off Target (Game)>
+	desig <VIDEOGAME-2>
+	Mesh 3
+	sdl_SKIN <tex_electronics.png>
+	SDL_SPRITE <prop_videogame.png>
+	% V1 = Recharge counter
+	% V2 = Skill roll container
+	% V3 = Have won the game; you only get the XP bonus the first time.
+	&Skill <NAS_MechaGunnery>
+	roguechar <&>
+	use <ifG PC$ 99 else GoCantAfford ifG Comtime V1 else GoDoNotWant ifYesNo 1 2 3 Cash+ -100 V= 1 ComTime V+ 1 80000 V+ 1 d100000 Goto GoPlayGame>
+	GoCantAfford <Print 4>
+	GoDoNotWant <Print 5>
+	GoPlayGame <Print 12 V= 2 SkRoll &Skill STAT_Reflexes ifG V2 25 else GoCheckL4 Print 6 PCMoraleDmg -25 if= v3 0 XPV 50 V= 3 1 SkillXP &Skill 100>
+	GoCheckL4 <ifG V2 20 else GoCheckL3   Print 7 SkillXP &Skill 50  PCMoraleDmg -15>
+	GoCheckL3 <ifG V2 15 else GoCheckL2   Print 8 SkillXP &Skill 20  PCMoraleDmg -5>
+	GoCheckL2 <ifG V2 10 else GoCheckL1   Print 9 SkillXP &Skill 10>
+	GoCheckL1 <ifG V2  5 else GoLoseGame  Print 10 SkillXP &Skill 5 PCMoraleDmg 5>
+	GoLoseGame <Print 11 PCMoraleDmg 10>
+	Msg1 <In this game, you have to hit your opponent's castle with a catapult. The castle is on wheels so it can dodge many attacks.>
+	Msg2 <Play the game. [$100]>
+	Msg3 <Leave it alone.>
+	Msg4 <In this game, you have to hit your opponent's castle with a catapult. You can't afford to play.>
+	Msg5 <You already played this game today.>
+	Msg6 <You destroy the evil floating continent and win the game! Congratulations.>
+	Msg7 <You get as far as the steam dragon but can advance no further.>
+	Msg8 <You make it to the third level before dying.>
+	Msg9 <You destroyed the enemy castle! Unfortunately, there's more than one level...>
+	Msg10 <You don't do very well.>
+	Msg11 <You completely suck.>
+	Msg12 <You play the game.>
+
+	Prop 5
+	name <Ultimatum (Game)>
+	desig <VIDEOGAME-3>
+	Mesh 3
+	sdl_SKIN <tex_electronics.png>
+	SDL_SPRITE <prop_videogame.png>
+	% V1 = Recharge counter
+	% V2 = Skill roll container
+	% V3 = Have won the game; you only get the XP bonus the first time.
+	&Skill <NAS_CloseCombat>
+	roguechar <&>
+	use <ifG PC$ 99 else GoCantAfford ifG Comtime V1 else GoDoNotWant ifYesNo 1 2 3 Cash+ -100 V= 1 ComTime V+ 1 80000 V+ 1 d100000 Goto GoPlayGame>
+	GoCantAfford <Print 4>
+	GoDoNotWant <Print 5>
+	GoPlayGame <Print 12 V= 2 SkRoll &Skill STAT_Reflexes ifG V2 25 else GoCheckL4 Print 6 PCMoraleDmg -25 if= v3 0 XPV 50 V= 3 1 SkillXP &Skill 100>
+	GoCheckL4 <ifG V2 20 else GoCheckL3   Print 7 SkillXP &Skill 50  PCMoraleDmg -15>
+	GoCheckL3 <ifG V2 15 else GoCheckL2   Print 8 SkillXP &Skill 20  PCMoraleDmg -5>
+	GoCheckL2 <ifG V2 10 else GoCheckL1   Print 9 SkillXP &Skill 10>
+	GoCheckL1 <ifG V2  5 else GoLoseGame  Print 10 SkillXP &Skill 5 PCMoraleDmg 5>
+	GoLoseGame <Print 11 PCMoraleDmg 10>
+	Msg1 <In this game, characters fight using a variety of primitive weapons in a corporate office environment.>
+	Msg2 <Play the game. [$100]>
+	Msg3 <Leave it alone.>
+	Msg4 <In this game, characters fight using a variety of primitive weapons in a corporate office environment. You can't afford to play.>
+	Msg5 <You already played this game today.>
+	Msg6 <You defeat Doorpike and win the game! Congratulations.>
+	Msg7 <You make it to general manager, but are then clubbed to death by CEO Doorpike.>
+	Msg8 <After defeating the last of the engineers, you are taken out by a manager from human resources.>
+	Msg9 <You beat all of the interns, but are defeated by an engineer with a broadsword.>
+	Msg10 <You defeat a few interns, but don't make it past that.>
+	Msg11 <You are defeated by the receptionist on the first level.>
+	Msg12 <You play the game.>
+
+	Prop 5
+	name <Baby Battle (Game)>
+	Mesh 3
+	sdl_SKIN <tex_electronics.png>
+	SDL_SPRITE <prop_videogame.png>
+	% V1 = Recharge counter
+	% V2 = Skill roll container
+	% V3 = Have won the game; you only get the XP bonus the first time.
+	&Skill <NAS_MechaFighting>
+	desig <VIDEOGAME-4>
+	roguechar <&>
+	use <ifG PC$ 99 else GoCantAfford ifG Comtime V1 else GoDoNotWant ifYesNo 1 2 3 Cash+ -100 V= 1 ComTime V+ 1 80000 V+ 1 d100000 Goto GoPlayGame>
+	GoCantAfford <Print 4>
+	GoDoNotWant <Print 5>
+	GoPlayGame <Print 12 V= 2 SkRoll &Skill STAT_Reflexes ifG V2 25 else GoCheckL4 Print 6 PCMoraleDmg -25 if= v3 0 XPV 50 V= 3 1 SkillXP &Skill 100>
+	GoCheckL4 <ifG V2 20 else GoCheckL3   Print 7 SkillXP &Skill 50  PCMoraleDmg -15>
+	GoCheckL3 <ifG V2 15 else GoCheckL2   Print 8 SkillXP &Skill 20  PCMoraleDmg -5>
+	GoCheckL2 <ifG V2 10 else GoCheckL1   Print 9 SkillXP &Skill 10>
+	GoCheckL1 <ifG V2  5 else GoLoseGame  Print 10 SkillXP &Skill 5 PCMoraleDmg 5>
+	GoLoseGame <Print 11 PCMoraleDmg 10>
+	Msg1 <This video game is about two giant babies fighting in a fully destructable virtual city.>
+	Msg2 <Play the game. [$100]>
+	Msg3 <Leave it alone.>
+	Msg4 <This video game is about two giant babies fighting in a fully destructable virtual city. You can't afford to play.>
+	Msg5 <You already played this game today.>
+	Msg6 <You defeat Asura Bun-Bun and win the game! Congratulations.>
+	Msg7 <You defeat Poopy McGee, but then lose to Asura Bun-Bun.>
+	Msg8 <You defeat Bruno, but then lose to Poopy McGee.>
+	Msg9 <You defeat Hana, but then lose to Bruno.>
+	Msg10 <You are defeated by Hana, the second baby.>
+	Msg11 <You don't manage to get very far in it at all.>
+	Msg12 <You play the game.>
+
+	Prop 5
+	name <Speed Snake (Game)>
+	desig <VIDEOGAME-5>
+	Mesh 3
+	sdl_SKIN <tex_electronics.png>
+	SDL_SPRITE <prop_videogame.png>
+	% V1 = Recharge counter
+	% V2 = Skill roll container
+	% V3 = Have won the game; you only get the XP bonus the first time.
+	&Skill <NAS_MechaPiloting>
+	roguechar <&>
+	use <ifG PC$ 99 else GoCantAfford ifG Comtime V1 else GoDoNotWant ifYesNo 1 2 3 Cash+ -100 V= 1 ComTime V+ 1 80000 V+ 1 d100000 Goto GoPlayGame>
+	GoCantAfford <Print 4>
+	GoDoNotWant <Print 5>
+	GoPlayGame <Print 12 V= 2 SkRoll &Skill STAT_Reflexes ifG V2 25 else GoCheckL4 Print 6 PCMoraleDmg -25 if= v3 0 XPV 50 V= 3 1 SkillXP &Skill 100>
+	GoCheckL4 <ifG V2 20 else GoCheckL3   Print 7 SkillXP &Skill 50  PCMoraleDmg -15>
+	GoCheckL3 <ifG V2 15 else GoCheckL2   Print 8 SkillXP &Skill 20  PCMoraleDmg -5>
+	GoCheckL2 <ifG V2 10 else GoCheckL1   Print 9 SkillXP &Skill 10>
+	GoCheckL1 <ifG V2  5 else GoLoseGame  Print 10 SkillXP &Skill 5 PCMoraleDmg 5>
+	GoLoseGame <Print 11 PCMoraleDmg 10>
+	Msg1 <This video game is about racing atop giant snakes through a variety of imaginative courses. If your jockey falls off or you go off course, you lose.>
+	Msg2 <Play the game. [$100]>
+	Msg3 <Leave it alone.>
+	Msg4 <This video game is about racing atop giant snakes through a variety of imaginative courses. You can't afford to play.>
+	Msg5 <You already played this game today.>
+	Msg6 <You finish the tesseract track and win the game! Congratulations.>
+	Msg7 <You get as far as the sunspot level.>
+	Msg8 <You complete the mecha factory, but fall off the snake on the glacier.>
+	Msg9 <You don't manage to get past the ancient Egypt track.>
+	Msg10 <You don't get very far.>
+	Msg11 <You lose before completing the first lap.>
+	Msg12 <You play the game.>
+
+
+
+%  **************************
+%  ***   UTILITY  PROPS   ***
+%  **************************
+
+	Prop
+	name <Test Item>
+	desig <TEST-ITEM>
+	SDL_MESH <cha_m_citizen.obj>
+	SDL_SKIN <skin_cha_m_citizen.png>
+	SDL_COLORS <200 0 0  200 200 0  200 0 0>
+
+
+	Cloud
+	name <Smoke>
+	desig <SMOKE-1>
+	roguechar <*>
+	stat 1 5
+	stat 2 2
+	stat 7 50
+
+	Cloud
+	name <Steam>
+	desig <SMOKE-2>
+	roguechar <*>
+	stat 1 5
+	stat 2 2
+	stat 7 -1
+
+	Cloud
+	name <Toxic Gas>
+	desig <GAS-1>
+	roguechar <*>
+	stat 1 5
+	stat 2 1
+	effect <10 DAMAGE 15 0 0 0 ARMORIGNORE NOMETAL CANRESIST POISON GASATTACK>
+	fx_desc <# chokes for # damage!>
+
+	Flame
+	name <Fire>
+	desig <FIRE-1>
+	roguechar <#>
+	stat 1 3
+	stat 2 3
+	effect <13 DAMAGE 10 0 0 0 BRUTAL CANRESIST>
+	fx_desc <# is burnt by the fire for # damage!>
+
+	ARCH Drone
+	desig <DRONE-1>
+	SDL_SPRITE <aer_drone.png>
+	statline 10 10 10 10 10 5 2 2
+	roguechar <d>
+	metal
+	sub
+	torso
+		armor 2
+		sub
+			BeamGun 3
+			name <Combat Laser>
+			ArcJet 8
+		end
+	end
+
+	Door
+	desig <ONESHOTDOOR>
+	% A one shot door gives you a single chance to pick its lock. If you fail,
+	% you must raise your CodeBreaking skill before you will be able to try again.
+	CLUE_CODEBREAKING <if# StatVal STAT_Lock 0 else GoNotLocked ifCodeBreaking StatVal STAT_Lock else GoNoUnlock Mental Print 3 SetStat STAT_Lock 0>
+	Msg4 <This lock is beyond your ability to pick.>
+
+

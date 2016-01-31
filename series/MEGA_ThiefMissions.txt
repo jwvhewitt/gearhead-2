@@ -1,0 +1,149 @@
+%%
+%% *TM_PlunderShip Content
+%%
+%%  The PC will learn the location of a cruiser, and have the chance to go
+%%  plunder it. Performing this mission will result in Criminal reputation,
+%%  obviously.
+%%
+%%  Upon activation of this subplot, activate the encounter %2%.
+%%
+%%  This encounter will end the plot, either by itself or via the FilthyLucre
+%%  subplot. The master plot should have a payrate
+%%  set; this pay rate should be 500% for a regular raid or higher if this raid
+%%  was handed out as a promotion reward or somesuch.
+%%
+%%  Param1: The outdoors scene where the cruiser is.
+%%  Param2: The encounter to be used
+%%
+
+Content
+	name <Default Plunder Mission>
+	requires <*TM_PlunderShip>
+	desc <I see a ship, I fight a ship, I plunder a ship, I like it>
+
+	% P%id%01 = Time Limit
+	% P%id%02 = Combat started
+
+	update <if= p%id%01 0 P= %id%01 ComTime P+ %id%01 86400 SetEncounterActive %2%>
+	start <if# p%id%01 0 if= P%id%02 0 ifG ComTime p%id%01 SetEncounterInactive %2%  EndPlot>
+
+	%% SubPlot1 is the Filthy Lucre rewards. Activate this plot if the ship
+	%%  is captured; it will give a reward and end the plot.
+	SubPlot1 <*TM_FilthyLucre>
+
+	sub
+		MetaScene 2 2
+		%% The ship's exterior
+		%% To capture the ship, defeat all the guards, weapons, and
+		%% thrusters. Damaging the cargo segments of the ship may result
+		%% in the ship being destroyed.
+
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		% L3 = "Just defeat the guards" message counter
+		% L4 = Initial headcount of Team 3
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1  L= 4 t3   Alert 1  P= %id%02 1>
+
+		nu1 <if= T1 0  Return   if= L1 0 L= 1 1  Alert 2  LoseRenown  AddLawful -1   EndPlot>
+		nu2 <if= T2 0  if= T4 0 if= T5 0   if= L1 0  L= 1 1  ifG t3 0 else GoSmallVictory if# t3 l4 else GoBigVictory L+ 4 -d3 L+ 4 d2 ifG t3 l4 else GoSmallVictory Goto GoBigVictory>
+		GoSmallVictory <Alert 3 xpv 50 AddRenown -1 AddLawful -3   EndPlot  Return>
+		GoBigVictory   <Alert 4 xpv 100 AddRenown 1 AddLawful -5   SetPlotStatus %plotid1% %id1%  Return>
+		nu4 <Goto nu2>
+		nu5 <Goto nu2>
+
+		end <SetEncounterInactive %2%>
+
+		Msg1 <You have found %name2%. Disable its thrusters, weapons, and guard escort to capture it.>
+		Msg2 <You failed to capture %name2%.>
+		Msg3 <You have captured %name2%, but destroyed its cargo in the process.>
+		Msg4 <You have captured %name2%! You quickly loot its cargo bay and escape before the authorities arrive.>
+
+		sub
+			team 1
+			SetEnemy 2 4 5
+			ParaX 5
+			ParaY 25
+
+			team 2
+			name <Guards>
+			SetEnemy 1
+			SetAlly 4 5
+			Deploy <WMecha 2 %threat% 100>
+			ParaX 45
+			ParaY 25
+
+			team 3
+			name <Cruiser Body>
+			% This team is neutral- the PC wants to capture these
+			% parts intact. If any of these parts get destroyed,
+			% there's a chance the desired loot will be lost.
+
+			team 4
+			name <Cruiser Weapons>
+			setenemy 1
+			setally 2 3 5
+			% Destroy the weapons and propulsion to incapacitate the
+			% cruiser.
+
+			team 5
+			name <Cruiser Propulsion>
+			setenemy 1
+			setally 2 3 4
+
+			rect
+			name <Cruiser Zone>
+			special <SubZone>
+			width 12
+			height 12
+			MFX 37
+			MFY 19
+			sub
+				SuperProp
+				requires <*Cruiser>
+				Team1 3
+				Team2 4
+				Team3 5
+			end
+		end
+	end
+
+
+%%
+%% *TM_FilthyLucre Content
+%%
+%%  The PC has just captured a ship, plundered a convoy, or unearthed a buried
+%%  treasure. Give the PC some stuff and end the plot.
+%%
+
+Content
+	name <Nothing But Cash>
+	requires <*TM_FilthyLucre Common>
+
+	update <CashPrize Reward %threat% PayRate  EndPlot>
+
+Content
+	name <Cash and a Mecha>
+	requires <*TM_FilthyLucre ~!Ne ~!Lo ~!Md>
+
+	update <Alert %id%01  CashPrize Reward %threat% PayRate  RandomMecha .%id%_facs %threat%  EndPlot>
+	.%id%_facs <GENERAL \FACTION_DESIG RootSceneFac \FACTION_DESIG CURRENTSCENEFAC>
+
+	Msg%id%01 <You find a mecha along with the rest of the loot.>
+
+Content
+	name <Cash and a Custom Mecha>
+	requires <*TM_FilthyLucre ~!Hi ~!Ex>
+
+	update <Alert %id%01  CashPrize Reward %threat% PayRate  CustomMecha .%id%_facs %threat%  EndPlot>
+	.%id%_facs <GENERAL \FACTION_DESIG RootSceneFac \FACTION_DESIG CURRENTSCENEFAC>
+
+	Msg%id%01 <You find a prototype mecha along with the rest of the loot.>
+	Msg%id%01_1 <You find a custom mecha along with the rest of the loot.>
+
+
+
+
+

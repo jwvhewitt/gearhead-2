@@ -1,0 +1,357 @@
+% ArenaScript Command Macros
+V= <GrabSource             GSetNAtt NAG_ScriptVar ? ?>
+V+ <GrabSource             GAddNAtt NAG_ScriptVar ? ?>
+L= <GrabCurrentScene       GSetNAtt NAG_ScriptVar ? ?>
+L+ <GrabCurrentScene       GAddNAtt NAG_ScriptVar ? ?>
+G= <GrabAdventure          GSetNAtt NAG_ScriptVar ? ?>
+G+ <GrabAdventure          GAddNAtt NAG_ScriptVar ? ?>
+P= <GrabPlot               GSetNAtt NAG_ScriptVar ? ?>
+P+ <GrabPlot               GAddNAtt NAG_ScriptVar ? ?>
+E= <GrabPlot               GSetNAtt NAG_ElementID ? ?>
+S= <GrabStory              GSetNAtt NAG_ScriptVar ? ?>
+S+ <GrabStory              GAddNAtt NAG_ScriptVar ? ?>
+N= <GrabStory              GSetNAtt NAG_ElementID ? ?>
+rcs <Trigger0 RESET_CORE_STORY>
+PCSick <GrabPCPilot GSetNAtt 14 20 10>
+PCVerySick <GrabPCPilot GSetNAtt 14 20 30>
+SetTeamFaction <GrabTeam ? GSetNAtt NAG_Personal NAS_FactionID ?>
+SetSelfFaction <GrabSource GSetNAtt NAG_Personal NAS_FactionID ?>
+SetSelfTeam <GrabSource GSetNAtt NAG_Location NAS_Team ?>
+RandomMecha <MechaPrize ? ? 0 0>
+CustomMecha <MechaPrize ? ? RandomTheme d12>
+EraseRumor <GrabSource GSetSAtt rumor na GSetSAtt rumemo na>
+EraseSpecial <GrabSource GSetSAtt special na>
+ItemVar= <GrabItem ? GSetNAtt NAG_ScriptVar ? ?>
+ItemStat= <GrabItem ? GSetStat ? ?>
+ItemVar+ <GrabItem ? GAddNAtt NAG_ScriptVar ? ?>
+FacVar= <GrabFaction ? GSetNAtt NAG_ScriptVar ? ?>
+AddFortune <GrabFaction ? GAddNAtt NAG_Narrative NAS_Fortune ?>
+NPCVar= <GrabNPC ? GSetNAtt NAG_ScriptVar ? ?>
+NPCVar+ <GrabNPC ? GAddNAtt NAG_ScriptVar ? ?>
+SceneVar= <GrabScene ? GSetNAtt NAG_ScriptVar ? ?>
+SceneVar+ <GrabScene ? GAddNAtt NAG_ScriptVar ? ?>
+EncounterVar= <GrabEntrance ?  GSetNAtt NAG_ScriptVar ? ?>
+SetEncounterActive <SetEncounter ? 1 UpdateProps>
+SetEncounterInactive <SetEncounter ? 0 UpdateProps>
+SetEntranceActive <GrabItem ? GSetNAtt NAG_Narrative NAS_EncounterActive 1>
+SetEntranceInactive <GrabItem ? GSetNAtt NAG_Narrative NAS_EncounterActive 0>
+SetSelfEncInactive <GrabSource GSetNAtt NAG_Narrative NAS_EncounterActive 0>
+IfSelfEncActive <GrabSource if# GNAtt NAG_Narrative NAS_EncounterActive 0>
+ifEntranceActive <GrabItem ? if# GNAtt NAG_Narrative NAS_EncounterActive 0>
+SetItemStolen <GrabItem ? GSetNAtt NAG_Narrative 8 1>
+SetItemFudge <GrabItem ? GSetNAtt 2 4 ?>
+SetItemDesc <GrabItem ? GSetSAtt desc ?>
+SetEncounterName <GrabEntrance ? GSetSAtt name ?>
+SetStat <GrabSource GSetStat ? ?>
+NPCSkill+ <GrabNPC ? GAddNAtt NAG_Skill ? ?>
+SelfSkill= <GrabSource GSetNAtt NAG_Skill ? ?>
+PCSkill+ <GrabPCPilot GAddNAtt NAG_Skill ? ?>
+PCSTAT+ <GrabPCPilot GAddStat ? ?>
+PCSTAT= <GrabPCPilot GSetStat ? ?>
+NPCSTAT= <GrabNPC ? GSetStat ? ?>
+NPCSTAT+ <GrabNPC ? GAddStat ? ?>
+PCENEMY <GrabNPC ?  GSetNAtt NAG_Relationship 0 NAV_ArchEnemy>
+PCFENEMY <GrabFaction ?  GSetNAtt NAG_Relationship 0 NAV_ArchEnemy>
+PCALLY <GrabNPC ?  GSetNAtt NAG_Relationship 0 NAV_ArchAlly GAddNAtt NAG_Personal NAS_NumConversation 1>
+PCFAMILY <GrabNPC ?  GSetNAtt NAG_Relationship 0 NAV_Family GAddNAtt NAG_Personal NAS_NumConversation 1>
+PCFRIEND <GrabNPC ?  GSetNAtt NAG_Relationship 0 NAV_Friend GAddNAtt NAG_Personal NAS_NumConversation 1>
+PCLOVER <GrabNPC ?  GSetNAtt NAG_Relationship 0 NAV_LOVER GAddNAtt NAG_Personal NAS_NumConversation 1>
+PCNORELATION <GrabNPC ?  GSetNAtt NAG_Relationship 0 0>
+REPUTATION <TReputation NAV_DefPlayerTeam ? ?>
+FacXP+ <GrabFaction ? GAddNAtt NAG_Experience NAS_FacXP ?>
+FacXP= <GrabFaction ? GSetNAtt NAG_Experience NAS_FacXP ?>
+FacVar+ <GrabFaction ? GAddNAtt NAG_ScriptVar ? ?>
+PCFacXP= <GrabFaction PCFac GSetNAtt NAG_Experience NAS_FacXP ?>
+PCFacLevel+ <GrabAdventure GAddNAtt NAG_Experience NAS_FacLevel ?>
+PCRewardLevel+ <GrabAdventure GAddNAtt NAG_Experience NAS_RewardLevel ?>
+CASHPRIZE <GrabPCPilot  GAddNAtt NAG_Experience NAS_Credits ?  VMsg AS_CashPrize !>
+CASH+ <GrabPCPilot  GAddNAtt NAG_Experience NAS_Credits ?>
+ADDNPCREACT <GrabPCPilot GAddNAtt NAG_ReactionScore ? ?>
+SAVEPOS <GrabCurrentScene GSetNAtt NAG_ParaLocation NAS_X PCX  GSetNAtt NAG_ParaLocation NAS_Y PCY>
+SETPCFAC <GrabPCPilot GSetNAtt NAG_Personal NAS_FactionID ?  GrabAdventure GSetNAtt NAG_Personal NAS_FactionID ! GrabFaction ! GSetNAtt NAG_Relationship 0 0 ClearFacXP>
+CLEARFACXP <GrabPCPilot GSetNAtt NAG_Experience NAS_FacXP 0>
+SETNPCFACTION <GrabNPC ? GSetNAtt NAG_Personal NAS_FactionID ?>
+SETSCENEFACTION <GrabScene ? GSetNAtt NAG_Personal NAS_FactionID ?>
+SetNPCTeam <GrabNPC ? GSetNAtt NAG_Location NAS_Team ?>
+SetItemTeam <GrabItem ? GSetNAtt NAG_Location NAS_Team ?>
+SetChatNPCTeam <GrabChatNPC GSetNAtt NAG_Location NAS_Team ?>
+DELETENPC <GrabNPC ?  DeleteGG>
+KILLNPC <GrabNPC ? GAddNAtt 12 0 9999 Trigger NU NPCTeam ! Trigger FAINT !>
+KILLPC <GrabPC GAddNAtt 12 0 9999 Trigger0 NU1>
+DELETEITEM <GrabItem ?  DeleteGG>
+KILLMOOD <GrabItem ?  DeleteGG>
+KILLPLOTMOOD <GrabController ControllerID DeleteGG>
+ANNIHILATEPLOTMOOD <GrabController ControllerID DeleteGG EndPlotsByConID ControllerID>
+SETMOODTIMELIMIT <GrabItem ? GSetNAtt -23 1 ComTime GAddNAtt -23 1 ?>
+DeleteSelf <GrabSource DeleteGG>
+MOVENPC <GrabNPC ?  MoveGG ?>
+MOVEANDPACIFYNPC <GrabNPC ? MoveAndPacifyGG ?>
+DEPLOYNPC <GrabNPC ? DeployGG ?>
+DynaNPC <GrabNPC ? DynaGG ?>
+NPCLevel <GrabNPC ? GSkillLevel ?>
+SelfLevel <GrabSource GSkillLevel ?>
+ItemLevel <GrabItem ? GSkillLevel ?>	% Can be used for monsters.
+ConGen <GrabNPC ? GSetNAtt 3 0 1 GAddNAtt 3 0 -PCGender> % set NPC opposite gender of PC
+IsoGen <GrabNPC ? GSetNAtt 3 0 PCGender>                 % set NPC same gender as PC
+NPCConGen <GrabNPC ? GSetNAtt 3 0 1 GAddNAtt 3 0 -NPCGender ?> % set first NPC opposite gender of second NPC
+IsoAge <GrabNPC ? GSetNAtt NAG_CharDescription NAS_DAge PCDAge>
+DynaItem <GrabItem ? DynaGG 0>
+DynaItemTeam <GrabItem ? DynaGG ?>
+MOVEITEM <GrabItem ?  MoveGG ?>
+FREEZENPC <GrabNPC ? MoveGG 0>
+FREEZEITEM <GrabItem ? MoveGG 0>
+GIVEITEM <GrabItem ?  GiveGG Trigger GET !>
+IFSELFOK <GrabSource ifGOK>
+IFSELFDEAD <GrabSource ifGDead>
+IFNPCOK <GrabNPC ?  IfGOK>
+IFNPCDEAD <GrabNPC ? ifGDead>
+IFNPCMALE <if= NPCGender ? 0>
+IFNPCFEMALE <if= NPCGender ? 1>
+IFPCOK <GrabPCPilot IfGOK>
+IFPCSealed <GrabPCPilot IfGSealed>
+ifNPCinPlay <GrabNPC ?  IfGInPlay>
+ifChatNPCinPlay <GrabChatNPC  IfGInPlay>
+ifChatNPCisCombatant <GrabChatNPC if# GNatt NAG_CharDescription NAS_IsCombatant 0>
+ifChatNPCnotCombatant <GrabChatNPC if= GNatt NAG_CharDescription NAS_IsCombatant 0>
+IFM <GrabLocal ? IFGInPlay>
+IFITEMOK <GrabItem ? IfGOK>
+IFItemDESTROYED <GrabItem ? ifGDead>
+IFSCENEEXISTS <GrabScene ? IFGOK>
+IFFACTIONEXISTS <GrabFaction ? IFGOK>
+IFNPCSEXY <GrabNPC ? IfGSexy>
+IFNPCKNOWN <GrabNPC ? ifG GNAtt NAG_Personal NAS_NumConversation 0>
+IFNPCUNKNOWN <GrabNPC ? if= GNAtt NAG_Personal NAS_NumConversation 0>
+IFCHATNPCSEXY <GrabChatNPC IfGSexy>
+IFCHATNPCKNOWN <GrabChatNPC ifG GNAtt NAG_Personal NAS_NumConversation 0>
+IFCHATNPCUNKNOWN <GrabChatNPC if= GNAtt NAG_Personal NAS_NumConversation 0>
+IFNPCALLY <GrabNPC ? ifGArchAlly>
+IFCHATNPCALLY <GrabChatNPC ifGArchAlly>
+IFCHATNPCCANJOINLANCE <GrabChatNPC ifGCanJoinLance>
+IFFACTIONENEMY <GrabFaction ? ifGArchEnemy>
+IFFACTIONALLY <GrabFaction ? ifGArchAlly>
+IFNPCARCHENEMY <GrabNPC ? ifGArchEnemy>
+IFCHATNPCARCHENEMY <GrabChatNPC ifGArchEnemy>
+IFCHATNPCNOTFAMILY <GrabChatNPC if# GNAtt NAG_Relationship 0 NAV_Family>
+ifVisible <if= StatVal STAT_MetaVisibility 0>
+DYNAMIC <NewD ? GrabDynamic GSetNAtt 21 4 ? GSetNAtt 21 5 ? GSetSAtt NU1 ? GSetSAtt NU2 ?>
+DynaFaction <GrabDynamic GSetNAtt NAG_Personal NAS_FactionID ?>
+DynaVar= <GrabDynamic GSetNAtt NAG_Scriptvar ? ?>
+ComposeD <GrabDynamic GSetSAtt ? ?>
+SetMapType <GrabDynamic GSetStat STAT_MapGenerator ?>
+SetMapString <GrabDynamic GSetSAtt SPECIAL ?>
+SOLOATTACK <GrabNPC ? GSetNAtt NAG_Location NAS_Team -2 GSD GTargetPC GQuickShot GrabTeam 1 GSetNAtt NAG_SideReaction -2 -1>
+GSD <GSetNAtt NAG_EpisodeData NAS_Orders 0>
+GTargetPC <GSetNAtt NAG_EpisodeData NAS_Target PCUID>
+GQuickShot <GSetNAtt NAG_Action NAS_CallTime 0>
+MonsterUP <GrabTeam ? GAddStat STAT_WMonster ?>
+MonsterSet <GrabTeam ? GSetStat STAT_WMonster ?>
+MonsterOFF <GrabTeam ? GSetStat STAT_WMonster 0>
+NPCgoPC <GrabNPC ? GrabRoot GSetNAtt NAG_EpisodeData NAS_Orders 5 GSetNAtt NAG_EpisodeData 3 PCUID>
+UIDgoPC <GrabLocal ?  GSetNAtt NAG_EpisodeData NAS_Orders 5 GSetNAtt NAG_EpisodeData 3 PCUID>
+UIDSeekEdge <GrabLocal ?  GSetNAtt NAG_EpisodeData NAS_Orders 2 GSetNAtt NAG_EpisodeData 3 ?>
+NPCSeekEdge <GrabNPC ? GrabRoot  GSetNAtt NAG_EpisodeData NAS_Orders 2 GSetNAtt NAG_EpisodeData 3 ?>
+PCMoraleDmg <GrabPCPilot GMoraleDMG ?>
+SkillXP <GrabPC GSkillXP ? ?>
+GiveSTC <GNewPart ? GiveGG>
+GiveSTCTreasure <GNewPart ? GSetNAtt 2 4 ? GiveGG>
+PCEat <GrabPCPilot GSetNAtt NAG_Condition NAS_Hunger 0 Time 1800>
+RunAway <GrabNPC ? GrabRoot GRunAway>
+LocalRunAway <GrabLocal ? GRunAway>
+SelfRunAway <GrabSource GRunAway>
+TeamAttack <GrabTeam ? GSetNAtt NAG_SideReaction 1 -1 GrabTeam 1 GSetNAtt NAG_SideReaction ! -1>
+TeamAttackTeam <GrabTeam ? GSetNAtt NAG_SideReaction ? -1> % Note: Does not force reciprocity
+ifTeamHostile <grabTeam ? if= GNAtt NAG_SideReaction 1 -1>
+ifTeamNotHostile <grabTeam ? if# GNAtt NAG_SideReaction 1 -1>
+TeamAlly <GrabTeam ? GSetNAtt NAG_SideReaction 1 1 GSetNAtt NAG_SideReaction -1 1 GrabTeam 1 GSetNAtt NAG_SideReaction ! 1>
+TeamNeutral <GrabTeam ? GSetNAtt NAG_SideReaction 1 0 GSetNAtt NAG_SideReaction -1 0 GrabTeam 1 GSetNAtt NAG_SideReaction ! 0>
+MENTAL <GrabPCPilot GMental>
+STAMINA <GrabPCPilot GStamina>
+OneVictimRecovered <GrabCurrentScene GAddNAtt NAG_Narrative NAS_VictimsRecovered 1>
+SetNPCRep <GrabNPC ? GSetNAtt NAG_CharDescription - ? ?>
+NPCQuitLance <GrabNPC ? GQuitLance>
+ifPCMale <GrabPCPilot if= GNAtt NAG_CharDescription 0 0>
+ifPCFemale <GrabPCPilot if= GNAtt NAG_CharDescription 0 1>
+ifChatNPCMale <GrabChatNPC if= GNAtt NAG_CharDescription 0 0>
+ifChatNPCFemale <GrabChatNPC if= GNAtt NAG_CharDescription 0 1>
+ifChatNPCFriend <GrabChatNPC if= GNAtt NAG_Relationship 0 NAV_Friend>
+ifChatNPCLover <GrabChatNPC if= GNAtt NAG_Relationship 0 NAV_Lover>
+ifChatNPCFamily <GrabChatNPC if= GNAtt NAG_Relationship 0 NAV_Family>
+ifChatNPCNotNemesis <GrabChatNPC if# GNAtt NAG_Relationship 0 NAV_ArchEnemy>
+ifNPCLancemate <GrabNPC ? if= GNAtt NAG_Location NAS_Team NAV_LancemateTeam>
+ifChatNPCLancemate <GrabChatNPC if= GNAtt NAG_Location NAS_Team NAV_LancemateTeam>
+ifNPCHeroic <GrabChatNPC ifG GNAtt NAG_CharDescription -1  0>
+ifNPCVillainous <GrabChatNPC ifG 0  GNAtt NAG_CharDescription -1>
+ifNPCLawful <GrabChatNPC ifG GNAtt NAG_CharDescription -2  0>
+ifNPCCriminal <GrabChatNPC ifG 0  GNAtt NAG_CharDescription -2>
+ifNPCSociable <GrabChatNPC ifG GNAtt NAG_CharDescription -3  0>
+ifNPCShy <GrabChatNPC ifG 0  GNAtt NAG_CharDescription -3>
+ifNPCEasygoing <GrabChatNPC ifG GNAtt NAG_CharDescription -4  0>
+ifNPCPassionate <GrabChatNPC ifG 0  GNAtt NAG_CharDescription -4>
+ifNPCCheerful <GrabChatNPC ifG GNAtt NAG_CharDescription -5  0>
+ifNPCMelancholy <GrabChatNPC ifG 0  GNAtt NAG_CharDescription -5>
+ifNPCRenowned <GrabChatNPC ifG GNAtt NAG_CharDescription -6  0>
+ifNPCWangtta <GrabChatNPC ifG 0  GNAtt NAG_CharDescription -6>
+ifNPCPragmatic <GrabChatNPC ifG GNAtt NAG_CharDescription -7  0>
+ifNPCSpiritual <GrabChatNPC ifG 0  GNAtt NAG_CharDescription -7>
+ifPCHeroic <GrabPCPilot ifG GNAtt NAG_CharDescription -1  10>
+ifPCVillainous <GrabPCPilot ifG -10  GNAtt NAG_CharDescription -1>
+ifPCLawful <GrabPCPilot ifG GNAtt NAG_CharDescription -2  10>
+ifPCCriminal <GrabPCPilot ifG -10  GNAtt NAG_CharDescription -2>
+ifPCSociable <GrabPCPilot ifG GNAtt NAG_CharDescription -3  10>
+ifPCShy <GrabPCPilot ifG -10  GNAtt NAG_CharDescription -3>
+ifPCEasygoing <GrabPCPilot ifG GNAtt NAG_CharDescription -4  10>
+ifPCPassionate <GrabPCPilot ifG -10  GNAtt NAG_CharDescription -4>
+ifPCCheerful <GrabPCPilot ifG GNAtt NAG_CharDescription -5  10>
+ifPCMelancholy <GrabPCPilot ifG -10  GNAtt NAG_CharDescription -5>
+ifPCRenowned <GrabPCPilot ifG GNAtt NAG_CharDescription -6  10>
+ifPCWangtta <GrabPCPilot ifG -10  GNAtt NAG_CharDescription -6>
+ifPCPragmatic <GrabPCPilot ifG GNAtt NAG_CharDescription -7  10>
+ifPCSpiritual <GrabPCPilot ifG -10  GNAtt NAG_CharDescription -7>
+AddHeroic <Reputation 1 ?>
+AddLawful <Reputation 2 ?>
+AddSociable <Reputation 3 ?>
+AddEasygoing <Reputation 4 ?>
+AddCheerful <Reputation 5 ?>
+AddRenown <Reputation 6 ?>
+AddPragmatic <Reputation 7 ?>
+FacAlliance <GrabFaction ? GSetNAtt 8 ? 10>
+SetLMTactics <GrabChatNPC GSetOptMax ? GSetOptMin ?>
+GSetOptMax <GSetNAtt NAG_Personal NAS_OptMax ?>
+GSetOptMin <GSetNAtt NAG_Personal NAS_OptMin ?>
+Gut <GrabSource GSetNAtt NAG_EpisodeData 9 1>
+Flay <GrabSource GSetNAtt NAG_EpisodeData 10 1>
+StoryDL= <GrabStory GSetNAtt NAG_Narrative NAS_DifficultyLevel ?>
+StoryDL+ <GrabStory GAddNAtt NAG_Narrative NAS_DifficultyLevel ?>
+WinDramaticGoal <GrabStory GSetNAtt NAG_Completed_DC CurrentDramaticGoal 1>
+CancelDramaticGoal <GrabStory GSetNAtt NAG_Completed_DC CurrentDramaticGoal -1>
+WinEpisode <XPV 200   WinDramaticGoal StoryDL+ 7 GrabStory GAddNAtt -7 6 1 NextComp FacXP+ &AllyFac 5>
+PyrrhicWinEpisode <XPV 200            StoryDL+ 7 GrabStory GAddNAtt -7 6 1 NextComp FacXP+ &AllyFac 5> % Win the episode, but without achieving goal
+LoseEpisode <                                    GrabStory GAddNAtt -7 6 1 NextComp>
+IfDCCompleted <GrabStory if# GNAtt NAG_Completed_DC ? 0>
+IfDCNotCompleted <GrabStory if= GNAtt NAG_Completed_DC ? 0>
+IfFacReward     <GrabFaction ? if# GNAtt NAG_FacReward ? 0>
+IfAccessArmory  <GrabFaction LocalFaction if# GNAtt NAG_FacReward 1 0>
+IfNotAccessArmory  <GrabFaction LocalFaction if= GNAtt NAG_FacReward 1 0>
+GiveFacReward <GrabFaction ? GSetNAtt NAG_FacReward ? 1>
+Alarm <Trigger0 ALARM>
+IfTeamCanSeePC <GrabPC ifTeamCanSeeGG ?>
+IfNPCCanSeePC <GrabPC ifTeamCanSeeGG NPCTeam ?>
+ifPCCanSeeLocal <GrabLocal ? IfTeamCanSeeGG 1>
+StoryNote <SMemo ? History !>
+IfMechaPiloting <ifSkillTest NAS_MechaPiloting STAT_Speed ?>
+IfIntimidation <ifSkillTest NAS_Intimidation STAT_Ego ?>
+IfUIntimidation <ifUSkillTest NAS_Intimidation STAT_Ego ?>
+IfConversation <ifSkillTest NAS_Conversation STAT_Charm ?>
+IfUConversation <ifUSkillTest NAS_Conversation STAT_Charm ?>
+IfCodeBreaking <ifSkillTest NAS_CodeBreaking STAT_Craft ?>
+IfCodeBreakingKn <ifSkillTest NAS_CodeBreaking STAT_Knowledge ?>
+IfUCodeBreaking <ifUSkillTest NAS_CodeBreaking STAT_Craft ?>
+IfStealth <ifSkillTest NAS_Stealth STAT_Speed ?>
+IfStealthCH <ifSkillTest NAS_Stealth STAT_Charm ?>	% Used for lying and disguises
+IfUStealth <ifUSkillTest NAS_Stealth STAT_Speed ?>
+IfAwareness <ifSkillTest NAS_Awareness STAT_Perception ?>
+IfUAwareness <ifUSkillTest NAS_Awareness STAT_Perception ?>
+IfInsight <ifSkillTest NAS_Insight STAT_Perception ?>
+IfInsightKN <ifSkillTest NAS_Insight STAT_Knowledge ?>	% Used for obscure knowledge and trivia
+IfUInsight <ifUSkillTest NAS_Insight STAT_Perception ?>
+IfScience <ifSkillTest NAS_Science STAT_Knowledge ?>
+IfUScience <ifUSkillTest NAS_Science STAT_Knowledge ?>
+IfMysticism <ifSkillTest NAS_Mysticism STAT_Ego ?>
+IfUMysticism <ifUSkillTest NAS_Mysticism STAT_Ego ?>
+IfSurvival <ifSkillTest NAS_Survival STAT_Craft ?>
+IfSurvivalKN <ifSkillTest NAS_Survival STAT_Knowledge ?>	% Used for theoretical rather than practical knowledge
+IfUSurvival <ifUSkillTest NAS_Survival STAT_Craft ?>
+IfRepair <ifSkillTest NAS_Repair STAT_Craft ?>
+IfURepair <ifUSkillTest NAS_Repair STAT_Craft ?>
+IfTaunt <ifSkillTest NAS_Taunt STAT_Charm ?>
+IfUTaunt <ifUSkillTest NAS_Taunt STAT_Charm ?>
+IfMedicine <ifSkillTest NAS_Medicine STAT_Knowledge ?>
+IfUMedicine <ifUSkillTest NAS_Medicine STAT_Knowledge ?>
+IfShopping <ifSkillTest NAS_Shopping STAT_Charm ?>
+IfShoppingKN <ifSkillTest NAS_Shopping STAT_Knowledge ?>	% Used for economic theory and business administration
+IfUShopping <ifUSkillTest NAS_Shopping STAT_Charm ?>
+IfMartialArts <ifSkillTest NAS_CloseCombat STAT_Body ?>
+IfToughness <ifSkillTest NAS_Toughness STAT_Ego ?>
+IfUToughness <ifUSkillTest NAS_Toughness STAT_Ego ?>
+IfDancing <ifSkillTest NAS_Athletics STAT_Charm ?>
+SeekEntrance <SeekGate ParentSceneID ?>
+IfNPCSurrendered <GrabNPC ? if= GNAtt NAG_EpisodeData NAS_SurrenderStatus NAV_NowSurrendered>
+IfChatNPCSurrendered <GrabChatNPC if= GNAtt NAG_EpisodeData NAS_SurrenderStatus NAV_NowSurrendered>
+UnSurrender <GrabNPC ? GSetNAtt NAG_EpisodeData NAS_SurrenderStatus 0>
+ReAttack <GrabNPC ? GSetNAtt NAG_EpisodeData NAS_SurrenderStatus 2>
+ShowEncounter <GrabSource GSetNAtt NAG_EpisodeData NAS_EncVis ComTime GAddNAtt NAG_EpisodeData NAS_EncVis 86400>
+ShowEntrance <GrabEntrance ? GSetNAtt NAG_EpisodeData NAS_EncVis ComTime GAddNAtt NAG_EpisodeData NAS_EncVis 86400>
+ifEncounterVisible <GrabSource ifG GNatt NAG_EpisodeData NAS_EncVis ComTime>
+AddDatePoint <GrabSource GAddNAtt NAG_Narrative NAS_DatePoints 1>
+SetQuestStatus <GrabAdventure GSetNAtt NAG_PlotStatus ? ? Trigger0 Update>
+SetPlotStatus <GrabAdventure GSetNAtt NAG_PlotStatus ? ? Trigger0 Update>
+CancelSubPlot <GrabAdventure GSetNAtt NAG_PlotStatus ? -3 Trigger0 Update>
+WinSubPlot <GrabAdventure GSetNAtt NAG_PlotStatus ? -1 Trigger0 Update>
+LoseSubPlot <GrabAdventure GSetNAtt NAG_PlotStatus ? -2 Trigger0 Update>
+IfSubPlotWon <GrabAdventure if= GNAtt NAG_PlotStatus ? -1>
+IfSubPlotLost <GrabAdventure if= GNAtt NAG_PlotStatus ? -2>
+IfSubPlotCanceled <GrabAdventure if= GNAtt NAG_PlotStatus ? -3>
+IfSubPlotOver <GrabAdventure ifG 0 GNAtt NAG_PlotStatus ?>
+IfSubPlotNotWon <GrabAdventure if# GNAtt NAG_PlotStatus ? -1>
+AddTempLancemate <GrabNPC ? GSetNAtt NAG_CharDescription NAS_CharType NAV_TempLancemate GJoinLance>
+ChatNPCJoinLance <GrabChatNPC GJoinLance>
+RemoveTempLancemate <GrabNPC ? GSetNAtt NAG_CharDescription NAS_CharType 0 GQuitLance>
+AddLancemate <GrabNPC ?  GJoinLance>
+RemoveLancemate <GrabNPC ?  GQuitLance>
+AddPartyPoint <GrabCurrentScene GAddNAtt NAG_Narrative NAS_PartyPoints 1>
+OpenInv <GrabSource GOpenInv>
+IfSelfHasItem <GrabSource IfGHasItem ?>
+GiveArenaPay <GrabAdventure GAddNAtt NAG_Experience NAS_Credits ArenaPay>
+WinArenaMission <GiveArenaPay Return ArenaRep 1>
+LoseArenaMission <Return ArenaRep -8>
+WinCoreMission <GiveArenaPay Return ArenaRep 1 GrabAdventure GAddNAtt 27 3 1>
+LoseCoreMission <Return ArenaRep -5>
+SetCoreMissionEnemy <GrabAdventure GSetNAtt 27 4 ?>	% For the arena mode core campaign
+AlterCoreMissionContext <GrabAdventure GAlterContext ?>
+CommanderSays <Monologue 2 ?> % The commander will give orders in Arena mode.
+HeadDebriefing <AddDebriefing 1 ?>      % 
+CommanderDebriefing <AddDebriefing 2 ?> % Note that these debriefings only
+MechanicDebriefing <AddDebriefing 3 ?>  % work in arena mode, and only for the standard
+MedicDebriefing <AddDebriefing 4 ?>     % faction NPCs.
+SupplyDebriefing <AddDebriefing 5 ?>    % 
+IntelDebriefing <AddDebriefing 6 ?>     % 
+SetDebriefing <GrabPlot GSetNAtt NAG_XXRan NAS_DebriefingMsg ?> % A debriefing for core story plots
+Debrief <SayPlotMsg XXRDebriefingMsg SetDebriefing 0>           % To deliver the above debriefing, in the GOAL component
+AddMechaSource <GrabAdventure GSetNAtt 26 ? 1 GAddNAtt 24 2 1> % Adds a mecha faction for arena unit
+AddMajorSkill <GrabAdventure GSetNAtt 25 ? 1 GAddNAtt 24 1 1>  % Adds a skill trainer for arena unit
+AddMinorSkill <GrabAdventure GSetNAtt 25 ? 1>                  % Adds a skill trainer for arena unit
+AlterContext <GrabStory GAlterContext ?>
+IfPCHasSkill <GrabPCPilot ifGHasSkill ?>
+IfPCHasPerformance <GrabPCPilot ifGHasSkill NAS_Performance>
+SetSelfArenaState <GrabCurrentScene GSetNAtt NAG_ArenaData NAS_ArenaState ?>
+AddSelfArenaWin <GrabCurrentScene GAddNAtt NAG_ArenaData NAS_ArenaWins 1>
+AddSelfArenaThreat <GrabCurrentScene GAddNAtt NAG_ArenaData NAS_ArenaThreat ?>
+SetArenaThreat <GrabScene ? GSetNAtt NAG_ArenaData NAS_ArenaThreat ?>
+SetArenaState <GrabScene ? GSetNAtt NAG_ArenaData NAS_ArenaState ?>
+ClearSelfChallengerID <GrabCurrentScene GSetNAtt NAG_ArenaData NAS_ChallengerID 0>
+SetSelfArenaRecharge <GrabCurrentScene GSetNAtt NAG_ArenaData NAS_ArenaRecharge NextDay>
+ResetArena <GrabScene ? GSetNAtt NAG_ArenaData NAS_ArenaState NAV_AS_Vacant>
+PrepArena <GrabScene ? GSetNAtt NAG_ArenaData NAS_ArenaState NAV_AS_Ready GSetNAtt NAG_ArenaData NAS_ArenaForces ?>
+SetChallengerID <GrabScene ? GSetNAtt NAG_ArenaData NAS_ChallengerID ?>
+SetChallengerHome <GrabScene ? GSetNAtt NAG_ArenaData NAS_ChallengerHome ?>
+Jump <Exit ? GrabScene ! GSetNAtt NAG_Narrative NAS_ReturnTo SceneID>
+SetSelfX <GrabSource GSetNAtt NAG_Location NAS_X ?>
+SetSelfY <GrabSource GSetNAtt NAG_Location NAS_Y ?>
+StoreOldFaction <GrabAdventure GSetNAtt NAG_Personal NAS_OldFaction PCFac>
+RestoreOldFaction <SetPCFac OldFac>
+ClearOriginalHome <GrabNPC ? GSetNAtt NAG_ParaLocation NAS_OriginalHome 0>
+ChatLMFollow <GrabChatNPC GSetNAtt 5 10 5>
+SetDestination <GrabSource GSetStat 4 ?>
+SetXXRMotivation <GrabNPC ? GSetNAtt NAG_XXRan NAS_XXChar_Motivation ?>
+SetXXRAttitude <GrabNPC ? GSetNAtt NAG_XXRan NAS_XXChar_Attitude ?>
+SetXXRPlot <GrabFaction ? GSetNAtt NAG_XXRan NAS_XXFac_Plan ?>
+ifNPCAttitude <GrabNPC ? if= GNAtt NAG_XXRan NAS_XXChar_Attitude ?>
+Monologue <GrabNPC ? GMonologue ?>
+TeamMonologue <GrabLocal ?Pilot ? GMonologue ?>
+PCMonologue <GrabPCPilot GMonologue ?>
+ClearEncounterRecharge <GrabCurrentScene GSetNAtt 21 6 0>
+GiveMeritBadge <GrabAdventure GSetNAtt NAG_MeritBadge ? 1 Announce ABadge !>
+SilentMeritBadge <GrabAdventure GSetNAtt NAG_MeritBadge ? 1>
+SetPayRate <GrabPlot GSetNAtt 20 1 ?>
+SetNPCBio <GrabNPC ? GSetSAtt BIO ?>
+LoseTrainingChance <GrabNPC ? GAddNAtt NAG_Narrative NAS_LancemateTraining_Spent 1>

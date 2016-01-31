@@ -1,0 +1,115 @@
+%%
+%% *CORE components that can work with the special goals.
+%%
+
+
+Plot
+	name <Join PCFac Mission>
+	desc <The PC will find a member of the selected faction, and be given a mission.>
+	requires <*CORE_S_PCF P:++>
+
+	% E1 is the scene where this component will take place
+	% E2 is the NPC that the PC will speak with
+	element1 <Scene Building Public !Okay -3 !Near -7>
+	element2 <Character !Near 1 !Comrade -3 NeverFail>
+	Place2 <1 (Guards) SD>
+	NeverFail2 <Mecha Pilot>
+
+	% All this plot does is move the NPC, send an email,
+	% and activate the mission subplot
+	5min <if= PlotStatus %plotid% 0  if= RootSceneID &EpisodeScene  EMail 1  SetPlotStatus %plotid% %id1%>
+
+	start <if= PlotStatus %plotid% 0 ifNPCDead %2% LoseEpisode>
+
+	%% SubPlot1 is the mission to be offered
+	SubPlot1 <*CS_Conversation 2>
+
+	Msg1_1  <%name2%@ \NARRATIVE 7 :// I hear you want to sign up for \FACTION &AllyFac . Come see me at \EXACT_SCENE %1% and we can talk.>
+	Msg1_2  <%name2%@ \NARRATIVE 7 :// If you have business for \FACTION &AllyFac , come talk with me at \EXACT_SCENE %1% .>
+
+Plot
+	name <Peace Negotiation>
+	desc <The PC wants to negotiate peace. Good luck.>
+	requires <*CORE_S_PEA F:++>
+
+	% E1 is a local urban scene
+	% E2 is the metascene for the diplomat
+	% E3 is the enemy faction
+	% E4 is the diplomat
+	Element1 <Scene Urban !Near -7>
+	Element2 <Prefab>
+	Place2 <1>
+	Element3 <Grab 2>
+	Element4 <Character POLIT !Comrade 3 !Near 1 NeverFail>
+	Place4 <2 (Citizens) Pass>
+	NeverFail4 <Politician>
+
+	%% FAIL CONDITIONS:
+	%% - E4 dies
+	end <if= PlotStatus %plotid% %id% ifNPCDead %4% LoseEpisode>
+
+	% At initialization, set the diplomat's faction and begin the blocked meeting.
+	update <if= PlotStatus %plotid% 0  SetPlotStatus %plotid% %id%  SetPlotStatus %plotid1% %id1%  NPCLevel %4% StoryDL>
+
+	.%id2%_%plotid2%_GoWin <SMemo %id%01  SetPlotStatus %plotid3% %id3%>
+	.%id2%_%plotid2%_GoLoss <SMemo %id%02 SetPlotStatus %plotid4% %id4%>
+
+	.%id%_%plotid%_GoCancelPeaceTalks <CancelDramaticGoal LoseEpisode>
+
+	Msg%id%01 <You have completed %name4%'s task. You should go meet \OPR %4% at \EXACT_SCENE %1% .>
+	Msg%id%02 <You have failed at %name4%'s task. You should go meet \OPR %4% at \EXACT_SCENE %1% .>
+
+	% SubPlot1 is the Blocked Meeting- it won't be easy to get to the diplomat.
+	% SubPlot2 is the diplomat's request- to secure peace requires a show of good faith.
+	% SubPlot3 is the winning conclusion- depending on the situation, there may be peace or not.
+	% SubPlot4 is the losing conclusion- no peace for you, bucko.
+	SubPlot1 <*:CS_BlockedMeeting&EnemyFac&ForPeace 1 2 4>
+	SubPlot2 <*:CS_SideMission 4>
+	SubPlot3 <*CS_WinGoal 4>
+	SubPlot4 <*CS_LoseGoal 4>
+
+	sub
+		STC MS_PRESENTATION
+		SetID 2
+
+		Persona 4
+		rumor%id% <%name4% is the representative of %name3% around here.>
+		% V%id%01 = Offered mission
+		special <UNLISTED>
+		greeting <if= PlotStatus %plotid% %id% else .%id%_GoChat if= PlotStatus %plotid2% 0 else .%id%_GoRemind ifChatNPCKnown else .%id%_GoUnknownGreeting Goto .%id%_GoKnownGreeting>
+		.%id%_GoChat <NewChat SayAnything>
+		.%id%_GoRemind <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+		*.%id%_GoUnknownGreeting <*NiceToMeetYou&NoTrivial .%id%_GoDiscussTerms>
+		*.%id%_GoKnownGreeting   <*HowAreYou .%id%_GoDiscussTerms>
+		*.%id%_GoDiscussTerms <*CS_PEA_DiscussTerms StoryDL .%id%_GoBriefing .%id%_GoGiveUp>
+		.%id%_GoBriefing <NewChat Say %id%02 AddChat %id%03 AddChat %id%04  if= V%id%01 0 V= %id%01 1 History %id%05>
+		.%id%_GoGiveUp <NewChat Say %id%03 History %id%04 CancelSubPlot %plotid% Trigger0 .%id%_%plotid%_GoCancelPeaceTalks>
+		*result%id%01 <*GenericMissionReminder>
+		result%id%02 <Goto .%id%_GoGiveUp>
+		result%id%03 <Goto .%id2%_GoInit>
+		result%id%04 <NewChat Say %id%06 AddChat %id%05 AddChat %id%06>
+		result%id%05 <Goto .%id2%_GoInit>
+		result%id%06 <Goto .%id%_GoGiveUp>
+		Msg%id%01 <What's the progress on the task I assigned to you?>
+		Msg%id%02 <Before we get down to negotiations, it would be helpful if you could demonstrate your side's good faith. There's a little matter that you could do for us...>
+		Msg%id%03 <It's obvious that you are not serious about peace. \FACTION &EnemyFac will keep fighting to the end!>
+		Msg%id%04 <You cancelled the peace talks with %name4%.>
+		Msg%id%05 <%name4% offered to discuss peace if you did a task first.>
+		Msg%id%06 <Why should we take you seriously when you are completely unwilling to compromise? Trust has to be earned.>
+		Prompt%id%01 <I'm working on it.>
+		Prompt%id%02 <I've decided that I don't want peace this badly.>
+		Prompt%id%03 <Alright. What do you want me to do?>
+		Prompt%id%04 <Wait, I don't like these preconditions...>
+		Prompt%id%05 <Okay, I guess I can do one little mission for you...>
+		Prompt%id%06 <No dice. You can kiss this peace accord goodbye.>
+	end
+	inv
+		STC CORE-ACTIVATABLE
+		name <%name4%'s Office>
+		ENCOUNTER_NonCombat
+	end
+
+
+
+
+

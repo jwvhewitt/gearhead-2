@@ -1,0 +1,86 @@
+AeroFighter 4
+Name <Shard>
+Desig <SD-620>
+SDL_Sprite <aer_shard.png>
+SDL_PORTRAIT <item_shard_mecha.png>
+type <SPACE GROUND>
+FACTIONS <HOELL MAQUI FCOMS RISHI>
+desc <The Shard is a light interceptor built around a core cannon.>
+ROLE_HOELL <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+
+sub
+torso
+	Armor 4
+	mass -4
+	sub
+		CPit
+		Armor 1
+
+		Sensor 6
+
+		Mount
+		Name <Right Body Mount>
+		inv
+			STC MAC-4
+		end
+
+		Mount
+		Name <Left Body Mount>
+		inv
+
+		end
+
+		BeamGun 5
+		name <Core Cannon>
+		type <Blast 1 Brutal>
+		Integral
+		Range 6
+	end
+
+Wing
+	Name <Right Wing>
+	Armor 3
+	size 3
+	mass -2
+	sub
+		Mount
+		Name <Right Wing Mount>
+		inv
+			MLauncher 4
+			sub
+				STC SWM-2
+				Magazine 20
+			end
+		end
+
+		Flight 2
+	end
+
+Wing
+	Name <Left Wing>
+	Armor 3
+	size 3
+	mass -2
+	sub
+		Mount
+		Name <Left Wing Mount>
+		inv
+			MLauncher 4
+			sub
+				STC SWM-2
+				Magazine 20
+			end
+		end
+
+		Flight 2
+	end
+
+Storage
+	name <Thrust Pod>
+	Armor 4
+	mass -2
+	sub
+		Flight 6
+		Overcharger 4
+	end
+end

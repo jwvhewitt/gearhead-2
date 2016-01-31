@@ -1,0 +1,238 @@
+%%
+%% *REWARD missions
+%%
+%% Don't let the name fool you- these missions aren't rewards in themselves;
+%% rather, they present an opportunity for the PC to earn a significant reward.
+%% The reward missions are typically more difficult than regular missions.
+%%
+%% The MechaSource rewards require a MECHA_SOURCE_MISSION coupon. Also check to
+%% make sure that the appropriate mecha source tag is present. Note that gaining
+%% a mecha source may unlock additional missions and rewards.
+%%
+%% The mecha source missions are arranged by faction, in order of Faction ID.
+%%
+
+%% ***********************************
+%% ***   [f2]  COMET  METALWORKS   ***
+%% ***********************************
+
+ArenaMission
+	name <Defend Comet Factory>
+	requires <*REWARD MECHA_SOURCE_MISSION [f2] (SILKN|L5LAW|PRIVA|ROCKE)>
+	desc <A mecha factory belonging to Comet Metalworks is under attack.>
+	terrain <GROUND>
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 500
+
+	AsteroidMap
+	terrain <GROUND>
+	RockyTiles
+	Vacuum
+	SpaceBackdrop
+
+	Element1 <Faction COMET>
+	Element2 <Faction !Enemy 1>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	% L3 = Destroy Base Counter
+	Start <if= L1 0  CommanderSays 1  L= 1 1>
+	nu1 <if= T1 0 if= L2 0 L= 2 1 Alert 2 LoseArenaMission>
+	nu2 <if= T2 0 if= L2 0 Salvage XPV 200 L= 2 1 Alert 3 WinArenaMission if= L3 0 AddMechaSource %1% IntelDebriefing 4 History 5>
+	nu3 <if= T3 0 if= L3 0 L= 3 1>
+	nu4 <Goto nu2>
+
+	Msg1 <Destroy the attackers. Protect the factory if at all possible.>
+	Msg2 <The mission is a failure.>
+	Msg3 <The attackers have been dealt with.>
+	Msg4 <In gratitude for our help, %name1% has offered to supply us with mecha.>
+	Msg5 <You defended a factory belonging to %name1%.>
+
+	sub
+		Team 1
+		SetEnemy 2 4
+		SetAlly 3
+		home <The Base>
+
+		Team 2
+		SetAlly 4
+		SetEnemy 1 3
+		Deploy <SetSelfFaction M2 WMecha 2 ArenaRenown 300>
+		ParaX 20
+		ParaY 40
+
+		Team 3
+		SetEnemy 2 4
+		SetAlly 1
+		home <The Base>
+
+		Team 4
+		SetAlly 2
+		SetEnemy 1 3
+		Deploy <SetSelfFaction M2 WMecha 4 ArenaRenown 300>
+		ParaX 40
+		ParaY 20
+
+		rect
+		name <The Base>
+		MFX 5
+		MFY 5
+		Height 8
+		Width 8
+		FloorType 6
+	end
+	inv
+		STC BUNKER-1
+		name <Factory>
+		SetTeam 3
+		Scale 2
+
+		STC BUNKER-1
+		name <Factory>
+		SetTeam 3
+		Scale 2
+
+		STC BUNKER-1
+		name <Factory>
+		SetTeam 3
+		Scale 2
+	end
+
+
+%% **************************************
+%% ***   [f5]  PRO  DUELIST  LEAGUE   ***
+%% **************************************
+
+ArenaMission
+	name <Exhibition Game>
+	requires <*REWARD MECHA_SOURCE_MISSION [f5] -PDASS>
+	desc <The Pro Duelist League has invited you to take part in an exhibition match.>
+	special <ARENA NOPILLAGE>
+	terrain <GROUND>
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 500
+
+	ArenaMap
+
+	Element1 <Faction PDASS>
+	Element2 <Prefab>
+	Element3 <Prefab>
+	Element4 <Prefab>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	Start <if= L1 0 Monologue %2% 1 L= 1 1>
+	nu1 <if= T1 0 if= L2 0 L= 2 1 Alert 3 LoseArenaMission>
+	nu2 <if= T2 0 if= L2 0 Return XPV 200 L= 2 1 Alert 2 AddMechaSource %1% SupplyDebriefing 4 History 5 WinArenaMission>
+
+	Msg1 <Welcome to the arena. Let's see how how good \FACTION PCFac are.>
+	Msg1_1 <So, this is \FACTION PCFac . Let's see if you're good enough to survive in the arena.>
+	Msg2 <Your team won the match.>
+	Msg3 <Your team lost the match.>
+	Msg4 <Because you did so well in the arena, we have obtained some Pro Duelist mecha for you to use in real combat.>
+	Msg5 <You won an exhibition match against the Pro Duelist League.>
+
+	sub
+		Team 1
+		SetEnemy 2
+		ParaX 5
+		ParaY 15
+
+		Team 2
+		SetEnemy 1
+		Deploy <SetSelfFaction %1% WMecha 2 ArenaRenown 300>
+		ParaX 45
+		ParaY 35
+	end
+	inv
+		NPC Arena Pilot
+		SetTeam 2
+
+		NPC Arena Pilot
+		SetTeam 2
+
+		NPC Arena Pilot
+		SetTeam 2
+	end
+
+%% *************************************
+%% ***   [f7]  HOELLER  INDUSTRIES   ***
+%% *************************************
+
+
+
+%% ***********************************
+%% ***   [f13]  MUGL ENTERPRISES   ***
+%% ***********************************
+
+ArenaMission
+	name <Pop Star Wars>
+	requires <*REWARD MECHA_SOURCE_MISSION [f13] (SILKN|L5LAW|PRIVA|ROCKE|CRIHN)>
+	desc <We have received a distress call from popular musician %name3%.>
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 500
+
+	SpaceMap
+	terrain <SPACE>
+	SpaceScroll
+	Microgravity
+	Vacuum
+	SpaceBackdrop
+
+	Element1 <Faction MUGLE>
+	Element2 <Faction Corporate !Enemy 1>
+	Element3 <Prefab>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	Start <if= L1 0 Monologue %3% 1 L= 1 1>
+	nu1 <if= T1 0 if= L2 0 L= 2 1 Alert 2 LoseArenaMission>
+	nu2 <if= T2 0 if= L2 0 L= 2 1 ifNPCInPlay %3% else GoLose Salvage XPV 200 WinArenaMission Monologue %3% 3  IntelDebriefing 4 History 5 AddMechaSource %1%>
+	GoLose <Alert 2 LoseArenaMission>
+
+	Msg1 <Hey, I could really use some help here- they've got me surrounded!>
+	Msg2 <The mission is a failure.>
+	Msg3 <Finally, that's over. Thanks for your help!>
+	Msg4 <In gratitude for rescuing \OPR %3% , %name3% has provided us with some gift certificates for MUGL Enterprises.>
+	Msg5 <You rescued pop star %name3% in a space battle.>
+
+	sub
+		Team 1
+		SetEnemy 2
+		SetAlly 3
+		ParaX 5
+		ParaY 5
+
+		Team 2
+		SetEnemy 1 3
+		Deploy <SetSelfFaction %2%   WMecha 2 ArenaRenown 600>
+		ParaX 45
+		ParaY 45
+
+		Team 3
+		SetEnemy 2
+		SetAlly 1
+		ParaX 15
+		ParaY 15
+	end
+	inv
+		NPC Mecha Pilot
+		job <Singer>
+		Charm 19
+		job_desig <MEDIA>
+		SetFaction -1
+		SetTeam 3
+	end
+
+
+
+

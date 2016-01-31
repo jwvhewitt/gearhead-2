@@ -1,0 +1,21 @@
+%%
+%%  *GENERAL plots relating to the upkeep of lancemates, including the stub for
+%%  the noncombat character development.
+%%
+
+Plot
+	name <Non-Com-Char-Dev>
+	desc <NonCombat character development. Just a stub.>
+	requires <*GENERAL>
+
+	% E1 is the lancemate in question
+	Element1 <Character !Lancemate Recharged>
+
+	% Upon activation, call the subplot.
+	update <if= P1 0 P= 1 1 SetPlotStatus %plotid1% %id1%>
+
+	% SubPlot1 is the character development.
+	SubPlot1 <*LM_NonComCharDev 1>
+
+
+

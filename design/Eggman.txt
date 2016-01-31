@@ -1,0 +1,340 @@
+Battroid 4
+Name <Eggman>
+SDL_Sprite <>
+SDL_Portrait <>
+Desig <KC-1>
+desc <A light defense mecha from MUGL Enterprises.>
+TYPE <GROUND SPACE INSIDE>
+FACTIONS <MUGLE BOHEM>
+
+ROLE_BOHEM <GENERAL:TROOPER  DEFENSE:TROOPER>
+ROLE_MUGLE <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:TROOPER>
+
+sub
+Head
+	size 5
+	Armor 4
+	Mass -2
+	sub
+		Sensor 6
+		mass -1
+
+		CPit
+		Armor 1
+
+		Computer 2
+		mass -2
+		sub
+			Software 2
+			name <FreezeFrame>
+			S_SpeedComp
+			S_BoostScale 2
+
+			Software 1
+			name <FFBuddy Tarcomp>
+			S_TRBoost
+			S_BoostScale 2
+		end
+
+		ECM 2
+	end
+	inv
+		HeadArmor 2
+		Mass -1
+	end
+
+Torso
+	Armor 4
+	Mass -2
+	sub
+		HeavyActuator 4
+
+		STC LAS-5
+		mass -3
+
+		Sensor 1
+	end
+	inv
+		BodyArmor 2
+		Mass -1
+	end
+
+Storage
+	Size 1
+	Armor 3
+	Mass -1
+	sub
+		Mount
+		name <Back Mount>
+		inv
+			MLauncher 4
+			sub
+				STC ICM-5
+				Magazine 8
+			end
+		end
+
+		Flight 3
+	end
+
+Arm
+	name <Right Arm>
+	Armor 3
+	Mass -1
+	sub
+		Hand
+		name <Right Hand>
+		inv
+			STC GR-12
+		end
+
+		Mount
+		name <Right Arm Mount>
+		inv
+			Melee 7
+			name <Ion Pike>
+			desc <A collapsable spear to be used as a backup weapon.>
+			type <OVERLOAD EXTEND>
+			mass -2
+		end
+
+		HeavyActuator 2
+	end
+	inv
+		ArmArmor 1
+	end
+
+Arm
+	name <Left Arm>
+	Armor 3
+	Mass -1
+	sub
+		Hand
+		name <Left Hand>
+
+		Mount
+		name <Left Arm Mount>
+
+		HeavyActuator 2
+	end
+	inv
+		Shield 4
+		DefBonus 1
+		mass -2
+
+		ArmArmor 1
+	end
+
+Leg
+	name <Right Leg>
+	Armor 4
+	Mass -1
+	sub
+		Mount
+		name <Right Leg Mount>
+		inv
+			MLauncher 4
+			sub
+				STC GM-10
+				Magazine 4
+			end
+		end
+
+		Flight 4
+	end
+	inv
+		LegArmor 1
+	end
+
+Leg
+	name <Left Leg>
+	Armor 4
+	Mass -1
+	sub
+		Mount
+		name <Left Leg Mount>
+		inv
+			MLauncher 4
+			sub
+				STC GM-10
+				Magazine 4
+			end
+		end
+
+		Flight 4
+	end
+	inv
+		LegArmor 1
+	end
+
+end
+Battroid 4
+Name <Eggman>
+SDL_Sprite <>
+SDL_Portrait <>
+Desig <KC-1b Breaker>
+desc <A light defense mecha from MUGL Enterprises.>
+TYPE <GROUND SPACE INSIDE>
+FACTIONS <BOHEM>
+
+ROLE_BOHEM <GENERAL:SUPPORT  DEFENSE:SUPPORT>
+
+sub
+Head
+	size 5
+	Armor 4
+	Mass -2
+	sub
+		Sensor 6
+		mass -1
+
+		CPit
+		Armor 1
+
+		Computer 2
+		mass -2
+		sub
+			Software 2
+			name <FreezeFrame>
+			S_SpeedComp
+			S_BoostScale 2
+
+			Software 1
+			name <FFBuddy Tarcomp>
+			S_TRBoost
+			S_BoostScale 2
+		end
+
+		ECM 2
+	end
+	inv
+		HeadArmor 2
+		Mass -1
+	end
+
+Torso
+	Armor 4
+	Mass -2
+	sub
+		HeavyActuator 4
+
+		STC LAS-5
+		mass -3
+
+		Sensor 1
+	end
+	inv
+		BodyArmor 2
+		Mass -1
+	end
+
+Storage
+	Size 1
+	Armor 3
+	Mass -1
+	sub
+		Mount
+		name <Back Mount>
+		inv
+			MLauncher 4
+			sub
+				STC ICM-5
+				Magazine 8
+			end
+		end
+
+		Flight 3
+	end
+
+Arm
+	name <Right Arm>
+	Armor 3
+	Mass -1
+	sub
+		Hand
+		name <Right Hand>
+		inv
+			STC RG-8
+		end
+
+		Mount
+		name <Right Arm Mount>
+		inv
+			Melee 7
+			name <Ion Pike>
+			desc <A collapsable spear to be used as a backup weapon.>
+			type <OVERLOAD EXTEND>
+			mass -2
+		end
+
+		HeavyActuator 2
+	end
+	inv
+		ArmArmor 1
+	end
+
+Arm
+	name <Left Arm>
+	Armor 3
+	Mass -1
+	sub
+		Hand
+		name <Left Hand>
+
+		Mount
+		name <Left Arm Mount>
+
+		HeavyActuator 2
+	end
+	inv
+		Shield 4
+		DefBonus 1
+		mass -2
+
+		ArmArmor 1
+	end
+
+Leg
+	name <Right Leg>
+	Armor 4
+	Mass -1
+	sub
+		Mount
+		name <Right Leg Mount>
+		inv
+			MLauncher 4
+			sub
+				STC GM-10
+				Magazine 4
+			end
+		end
+
+		Flight 4
+	end
+	inv
+		LegArmor 1
+	end
+
+Leg
+	name <Left Leg>
+	Armor 4
+	Mass -1
+	sub
+		Mount
+		name <Left Leg Mount>
+		inv
+			MLauncher 4
+			sub
+				STC GM-10
+				Magazine 4
+			end
+		end
+
+		Flight 4
+	end
+	inv
+		LegArmor 1
+	end
+
+end
+

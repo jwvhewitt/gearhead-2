@@ -1,0 +1,63 @@
+%%
+%% Persona frags associated with the MISCHIEF mood.
+%%  - See PLOT_MOOD_Mischief for mood specifications.
+%%
+
+%%
+%% *Mischief_EnemyGreeting
+%%
+%%  The PC is about to fight someone associated with the mischief-maker.
+%%  In this case, the PC may be able to determine the location of the secret
+%%  base through negotiating with, bluffing, or intimidating the NPC.
+%%
+%% PARAM1: Difficulty Level
+%% PARAM2: Scene ID of hidden base
+%% PARAM3: Reveal base exit label
+%% PARAM4: Failure exit label
+%%
+
+	Persona
+	requires <*Mischief_EnemyGreeting Nemesis Common>
+	%% Instaloss if the NPC is a nemesis.
+	START <EndCHat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %4%>
+	Msg%id%01 <I heard you were searching for \SCENE %2% , \PC . You won't find it.>
+	Prompt%id%01 <[Continue]>
+
+	Persona
+	requires <*Mischief_EnemyGreeting ("Friend"|"Lover") Common>
+	%% Instawin if the NPC is a friend or a lover.
+	START <EndCHat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %3%>
+	Msg%id%01 <Hey, \PC ! Are you looking for \SCENE %2% ? I can show you where that is, no problem.>
+	Prompt%id%01 <[Continue]>
+
+	Persona
+	requires <*Mischief_EnemyGreeting>
+	START <EndChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03 AddChat %id%04>
+	result%id%01 <ifConversation SocSkillTar %1% else .%id%_GoR1Fail EndChat Say %id%02 AddChat %id%05>
+	.%id%_GoR1Fail <EndChat Say %id%03 AddChat %id%06>
+	result%id%02 <ifIntimidation HardSkillTar %1% else .%id%_GoR2Fail EndChat Say %id%04 AddChat %id%05>
+	.%id%_GoR2Fail <EndChat Say %id%05 AddChat %id%06>
+	result%id%03 <EndChat Say %id%06 AddChat %id%07>
+	result%id%04 <Goto %4%>
+	result%id%05 <Goto %3%>
+	result%id%06 <Goto %4%>
+	result%id%07 <Cash+ -Price %1% 50 Goto %3%>
+	Msg%id%01 <They say you've been trying to find your way to \SCENE %2% .>
+	Msg%id%02 <Sure, why not? I've got no real dog in this fight...>
+	Msg%id%03 <Why would I want to do that? It's much more fun making you squirm.>
+	Msg%id%04 <Hold on there, no need to get violent... I can tell you where \SCENE %2% is.>
+	Msg%id%05 <You think you can? You're free to try...>
+	Msg%id%06 <That's a fair price. Alright, I can show you the way to \SCENE %2% .>
+	Prompt%id%01 <Yeah, think you could help me out?>
+	Prompt%id%02 <Actually, I'm planning to beat the information out of you.>
+	Prompt%id%03 <I'll pay you $ \VAL Price %1% 50 for the location.>
+	CPrompt%id%03 <ifG PC$ Price %1% 50  ifShopping SocSkillTar %1%  Accept>
+	Prompt%id%04 <No, I'm just cruising around looking for random fights.>
+	Prompt%id%05 <[Continue]> Win
+	Prompt%id%06 <[Continue]> Fail
+	Prompt%id%07 <[Continue]> Pay to win
+
+
+

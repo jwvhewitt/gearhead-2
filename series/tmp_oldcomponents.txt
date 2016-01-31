@@ -1,0 +1,819 @@
+Plot
+	name <Corporate Espionage>
+	desc <The PC finds out that there's a spy in the company.>
+	requires <#A +Tgs P:COR ~F:COR S:META>
+	Size 4
+
+	% Here's how this component works: A scene is created which includes in it a
+	% CORE_CE_Spy component, and several CORE_CE_RedHerring components. When/if the
+	% PC locates the spy, it will set a local variable.
+	% The CORE_CE_Spy content is responsible for both the WinComp call and also the
+	% storynote.
+	% If the case can't be solved within 24 hours, the PC loses.
+
+	% E1 = Scene to guard
+	Element1 <Grab 6>
+
+	% P1 = Initialization Counter
+	% P2 = Time Limit
+	start <if# P2 0 ifG ComTime P2 if# SceneID E1 LoseComp 0 .next>
+	update <if= V1 0 V= 1 1  SetSceneFaction E1 &AllyFac>
+	.next <+T-- +F-->
+
+	sub
+		MetaScene 1
+		% L1 = Variable set when clue discovered/lost
+		%	if L1 is positive, the PC solved the case.
+		%	if L1 is negative, the PC either destroyed the clue or is taking a fall.
+		ClubMap
+		MapWidth 24
+		MapHeight 24
+		type <BUILDING LEGIT PUBLIC Office>
+		special <AddExit>
+		nu1 <if= T1 0 Return>
+		Content1 <Some 1 100 sub *CORE_D_CE_Clue na>
+		Content2 <Some 2  85 sub *CORE_D_CE_RedHerring na>
+
+		%% The first time this scene is entered, start the 24-hour timer.
+		start <if= P2 0 P= 2 ComTime P+ 2 86400>
+
+		sub
+			Team 1
+
+			Team 2
+			name <Civilian>
+			setally 1
+			Passive
+
+			room
+			name <Foyer>
+			desig <EntranceGrid>
+			Content1 <Some 1 100 Here *CORE_D_CE_Intro na>
+			Content2 <Some 3 45 Here *URBAN_X na>
+		end
+
+
+	end
+
+
+Plot
+	name <Basic Guard Job>
+	desc <The PC will be asked to go guard a building.>
+	requires <#A +Ttt +Fmi (+P--|+Pme|+Pun|+Pla|+Pen) ~F:CRM ~P:POL ~P:GOV>
+
+	% E1 is the scene where this component will take place
+	% E2 is the NPC that the PC will speak with
+	% E3 is a metascene for the PC to guard
+	element1 <Grab 6>
+	element2 <Grab 5>
+	element3 <MetaScene !Near -7 *Building NeverFail>
+
+	% P1 = Initialization Counter
+	% P2 = Initial victory count
+	% P3 = Mission Accepted Indicator
+
+	start <ifNPCOK E2 else GoLose>
+	GoLose <LoseComp 0 .loss>
+	.loss <+T-->
+
+	update <if= V1 0 V= 1 1 MoveNPC E2 E1  V= 2 CurrentPPScore>
+
+	return <ifNPCOK E2 if# V3 0 &SetTargetChar E2  ifG CurrentPPScore V2 else GoNoWin AlterContext .loadreward>
+	GoNoWin <AlterContext .loadnoreward>
+	.loadreward <+Tre +F-->
+	.loadnoreward <+T-- +F-->
+
+	sub
+		Persona 2
+		rumor <%name2% needs an adventurer for some kind of mission.>
+		greeting <ifChatNPCUnknown else GoKnownGreeting ifChatNPCAlly else GoUnknownGreeting Goto GoKnownGreeting>
+		*GoKnownGreeting <*IHaveAJobForYou GoBriefing>
+		*GoUnknownGreeting <*AreYouHereAboutJob GoBriefing>
+		*GoBriefing <*CORE_GuardJob GoAccept GoDeny>
+		*GoAccept <*GoodLuckOnMission GoR1Exit ChatNPCFac &EnemyFac>
+		GoR1Exit <P= 3 1 WinComp E3 .changes>
+		.changes <+Tgs +F-->
+		*GoDeny <*RejectMission GoR2Exit>
+		GoR2Exit <LoseComp 0 .changes2>
+		.changes2 <+T-- +F-->
+
+		STC MS_OFFICE
+		SetID 1
+	end
+
+
+Plot
+	name <Basic Date>
+	desc <This is a generic date. If the PC answers some questions well, the relationship status gets upgraded.>
+	Size 2
+	requires <#A +Tda S:++>
+
+	% E1 = Scene for meeting
+	% E2 = NPC to meet
+	element1 <Grab 6>
+	element2 <Grab 5>
+
+	start <ifNPCOK E2 else GoLose>
+	GoLose <LoseComp 0 .loss>
+	.loss <+T-- +F-->
+
+	update <if=  P1 0  P= 1 1  &SetTargetChar 0  MoveNPC E2 E1>
+
+	sub
+		Persona 2
+		special <UNLISTED>
+		rumor <%name2% is waiting for you in %name1%.>
+		*greeting <*DateGreeting GoQuestion>
+		*GoQuestion <*DateQuestion GoActivity>
+		*GoActivity <*DateActivity GoResult>
+		GoResult <if= NumDatePoints 0 else GoCheckLow NewChat Say 1 StoryNote 2 LoseComp 0 .next>
+		GoCheckLow <if= NumDatePoints 1 else GoSuccess EndChat Time 3600 Alert 3 Say 4 StoryNote 5   LoseComp 0 .next>
+		GoSuccess <EndChat Time 3600 Alert 3 Say 6 StoryNote 7 PCLover E2  WinComp 0 .next>
+		.next <+T-- +F-->
+		Msg1 <Um, I just remembered, I have to go. There's something important I have to do. Maybe I'll see you around later.>
+		Msg2 <\ELEMENT 2 backed out on your date.>
+		Msg3 <Afterwards...>
+		Msg4 <Thanks for taking me out. I'll call you sometime. Really.>
+		Msg5 <Your date with \ELEMENT 2 didn't go so well.>
+		Msg6 <That was a lot of fun. Let's do it again some time.>
+		Msg7 <Your date with \ELEMENT 2 went very well.>
+
+		STC MS_CLUB
+		special <SOLO>
+		SetID 1
+	end
+
+Plot
+	name <We can have that date now>
+	desc <The PC has succeeded in the task, and so may date T.>
+	requires <#A +Tre S:++ +Fda>
+
+	% E1 = Scene for meeting
+	% E2 = NPC to meet
+	% E3 = Scene for date
+	element1 <Grab 6>
+	element2 <Grab 5>
+	element3 <MetaScene !Near -7 *Building NeverFail>
+
+	% P1 = Initialization Counter
+
+	start <ifNPCOK E2 else GoLose>
+	GoLose <LoseComp 0 .loss>
+	.loss <+T-- +F-->
+
+	update <if=  P1 0  P= 1 1  &SetTargetChar 0  MoveNPC E2 E1>
+
+	sub
+		Persona 2
+		special <UNLISTED>
+		rumor <%name2% wants to speak with you in %name1%.>
+		*Greeting <*MissionWasSuccess GoContinue na na>
+		GoContinue <AddChat 1>
+		result1 <NewChat Say 1 StoryNote 2 &SetTargetChar E2   WinComp E3 .date>
+		.date <+Tda +F-->
+		Msg1 <We can go on that date now. Meet me in \ELEMENT 3 , and don't be late.>
+		Msg2 <\ELEMENT 2 invited you on a date to \ELEMENT 3 .>
+		Prompt1 <Continue>
+
+		STC MS_CAFE
+		SetID 1
+	end
+
+Plot
+	name <An Admirer>
+	desc <The PC is asked on a date by T.>
+	requires <#A +Ttt +Fda>
+
+	% E1 = Scene for meeting
+	% E2 = NPC to meet
+	% E3 = Scene for date
+	element1 <Grab 6>
+	element2 <Grab 5>
+	element3 <Scene Building Public !Near -7>
+
+	% P1 = Initialization Counter
+
+	start <ifNPCOK E2 else GoLose>
+	GoLose <LoseComp 0 .loss>
+	.loss <+T-- +F-->
+
+	update <if=  P1 0  P= 1 1  &SetTargetChar 0  MoveNPC E2 E1>
+
+	sub
+		Persona 2
+		special <UNLISTED>
+		rumor <%name2% wants to speak with you in %name1%.>
+		Greeting <NewChat Say 1 AddChat 1 AddChat 2>
+		result1 <NewChat Say 2 StoryNote 3 &SetTargetChar E2   WinComp E3 .date>
+		.date <+Tda +F-->
+		result2 <NewChat Say 4 StoryNote 5 AddRenown -1  LoseComp 0 .loss>
+		.loss <+T-- +F-->
+		Msg1 <I was wondering... How would you like to go out with me sometime?>
+		Msg2 <Great! Let's meet at \ELEMENT 3 a bit later.>
+		Msg3 <You agreed to go on a date with \ELEMENT 2 at \ELEMENT 3 .>
+		Msg4 <That's too bad...>
+		Msg5 <You rejected \ELEMENT 2 's offer to go on a date.>
+		Prompt1 <I'd like that very much.>
+		Prompt2 <Sorry, I don't think so.>
+
+		STC MS_CAFE
+		SetID 1
+	end
+
+
+
+Plot
+	name <Let's Combat Date>
+	desc <The PC is asking for a date from an adventurous sort... T won't agree if PC can't win duel.>
+	requires <#A +Ttt +Fad (T:ADVEN|T:MILIT|T:ENEMY) ~C:ADVEN ~C:MILIT ~P:PDASS ~+P-- ~+Gpo>
+
+	% E1 = Scene for meeting
+	% E2 = NPC to meet
+	% E3 = Outdoors scene
+	% E4 = Encounter
+	% E5 = Scene for immediate date if PC can convince NPC of that
+	element1 <Grab 6>
+	element2 <Grab 5>
+	element3 <Scene Outdoors !Near -7>
+	element4 <Prefab>
+	place4 <3>
+	element5 <Scene Building Public Meeting !Near -7>
+
+	% P1 = Initialization Counter
+	% P2 = Victory score at start
+	% P3 = In zero, can maybe get date
+
+	start <ifNPCOK E2 else GoLose>
+	GoLose <LoseComp 0 .loss>
+	.loss <+T-- +F-->
+
+	update <if=  P1 0  P= 1 1  &SetTargetChar 0  MoveNPC E2 E1   V= 2 CurrentPPScore   GrabEntrance E4 GSetSAtt name Msg1>
+
+	% Upon return, if the PC won the duel, the NPC will agree to a date.
+	return <if= P3 0  ifNPCOK E2 ifG CurrentPPScore V2 &SetTargetChar E2 AlterContext .next>
+	.next <+Tre +Fda>
+
+	Msg1 <\ELEMENT 2 's Mecha>
+
+	sub
+		Persona 2
+		special <UNLISTED>
+		% V1 = Have been challenged
+		rumor <%name2% is waiting for you in %name1%.>
+		Greeting <if= V1 1 else GoHowAreYou   Goto GoChallenge>
+		*GoHowAreYou <*HowAreYou GoShimli>
+		*GoShimli <*SHIMLI_CHATTER GoAsk>
+		*GoAsk <*PCInviteNPC GoChallenge GoLose>
+		GoChallenge <NewChat Say 1 V= 1 1  AddChat 1 AddChat 2 AddChat 3>
+		GoLose <NewChat Say 3 StoryNote 4 P= 3 1 AddRenown -1  LoseComp 0 .loss>
+		.loss <+T-- +F-->
+		result1 <NewChat Say 5 StoryNote 2 &SetTargetChar E2  WinComp E4 .next>
+		.next <+Tdu>
+		result2 <NewChat Say 6 AddChat 4 AddChat 5 AddChat 3>
+		result3 <NewChat Say 7 StoryNote 8 P= 3 1 LoseComp 0 .loss>
+		result4 <Goto result1>
+		result5 <ifFlirtation ChatNPCEgo else GoR5Fail AddRenown 1 NewChat Say 9 StoryNote 10   P= 3 1   &SetTargetChar E2  WinComp E5 .date>
+		.date <+Tda +F-->
+		GoR5Fail <NewChat Say 11  StoryNote 8 P= 3 1 LoseComp 0 .loss>
+		Msg1 <I'm not entirely sure you're ready for something like that. Here's an idea- let's fight a match in our meks, and if you win I'll go out with you.>
+		Msg2 <\ELEMENT 2 challenged you to a duel in \ELEMENT 3 , to prove your worthiness.>
+		Msg3 <Well, I have a lot of things to do today, so I can't really stick around.>
+		Msg4 <You didn't ask \ELEMENT 2 for a date.>
+		Msg5 <Great! Get your mecha ready then meet me in \ELEMENT 3 . I can't wait to see how well you perform...>
+		Msg6 <What's life without a bit of danger? I don't want to get involved with someone who isn't at least my equal. Now are you going to prove yourself or not?>
+		Msg7 <In that case I'd say you have more important things to worry about than going on dates. I can tell you've got a lot of issues... Maybe you need some time for yourself before starting a relationship.>
+		Msg8 <\ELEMENT 2 rejected your romantic advances.>
+		Msg9 <I'll bet you can... Okay, I'll go out with you. Meet me at \ELEMENT 5 later today. Don't be late or we may end up fighting after all.>
+		Msg10 <\ELEMENT 2 agreed to go on a date at \ELEMENT 5 .>
+		Msg11 <I sincerely doubt it. Don't waste my time.>
+		Prompt1 <It's a deal!>
+		CPrompt1 <ifG PCMeks 0 Accept>
+		Prompt2 <That's too dangerous...>
+		Prompt2_1 <I don't want to fight you...>
+		Prompt3 <I don't have a mecha!>
+		CPrompt3 <if= PCMeks 0 Accept>
+		Prompt4 <Alright, I'll do it.>
+		CPrompt4 <ifG PCMeks 0 Accept>
+		Prompt5 <There are other ways I can prove myself.>
+
+		STC MS_CAFE
+		SetID 1
+	end
+	inv
+		STC ENCOUNTER-DUEL
+	end
+
+
+
+Plot
+	name <Mecha at the Gate>
+	Size 1
+	desc <Building PC asked to guard surrounded by mecha.>
+	requires <#A +Tgs ~+Ffi S:++>
+
+	% E1 is the scene where this will take place
+	% E2 is the NPC to tell the PC about the security problem
+	element1 <Grab 6>
+	element2 <Prefab>
+	element3 <Scene Urban !Near -7>
+	element4 <Prefab>
+	place4 <3 !Near 1>
+
+	% P1 = Initialization Counter
+
+	start <ifNPCOK E2 else GoLose>
+	GoLose <LoseComp 0 .loss>
+	.loss <+T-- +F-->
+
+	update <if=  P1 0  P= 1 1  MoveNPC E2 E1>
+
+	sub
+		Persona 2
+		special <UNLISTED>
+		*greeting <*DefenseCheckIn GoBriefing>
+		GoBriefing <NewChat Say 1 StoryNote 2 WinComp E4 .changes>
+		.changes <+Tin +Ffi>
+		Msg1 <Some unauthorized mecha have been spotted just outside.>
+		Msg2 <You learned \SCENE E1 was about to be attacked.>
+
+
+		STC MS_OFFICE
+		SetID 1
+	end
+	inv
+		NPC Soldier
+		job <Security Guard>
+
+		STC ENCOUNTER-SEEKPC
+		name <Hostile Mecha>
+		EncounterMove 100
+	end
+
+
+Plot
+	name <Party Crasher>
+	Size 0
+	desc <There's a party in town and you weren't invited.>
+	requires <#A +T01 C:MEDIA>
+
+	% E1 is the scene where the "Intro NPC" is
+	% E2 is the "Intro NPC"
+	% E3 is the scene for the party
+	element1 <Scene !Near -7 cavclub>
+	element2 <Prefab>
+	place2 <1 pass>
+	element3 <MetaScene !Near -7 *Building NeverFail>
+
+	update <Print 1 ForceChat E2>
+	Msg1 <\ELEMENT 2 strikes up a conversation with you.>
+
+	inv
+		NPC Citizen
+		home <The Start Position>
+		PCFriend
+	end
+	sub
+		Persona 2
+		% THE INTRO
+		% - All +T01 components should feature a intro character. They don't have to,
+		%   of course, but it'll be a major pissoff if they don't.
+		% - The intro character should follow this form, to insure that all the major
+		%   bits are in place: the introduction, the question, the story info, and the
+		%   advice.
+		% V1 = Have given story info.
+		greeting <&SetEnemyFac E4   StoryNote 2  WinComp E3 .next  if= V1 1 else GoGreeting Goto GoAdvice>
+		.next <+Tsh +Fpa>
+		*GoGreeting <*INTRO_Introduction GoAskQuestion>
+		*GoAskQuestion <*INTRO_Question GoStoryInfo>
+		GoStoryInfo <NewChat Say 1 V= 1 1 AddChat 1>
+		*GoAdvice <*INTRO_Advice>
+		result1 <Goto GoAdvice>
+		Msg1 <I hear there's going to be a party at \ELEMENT 3 today. Lots of big names and celebrities are going to be there... Are you planning to crash it?>
+		Msg1_1 <Everybody's been talking about party they're having at \ELEMENT 3 . All the big names are going to be there... It could be a good chance for you to make some contacts. Will you try to get in?>
+		CMsg1_1 <ifNPCSociable Accept>
+		Msg1_2 <There's going to be a party at \ELEMENT 3 today. That's not my cup of tea but I thought you might be interested... Will you go there?>
+		CMsg1_2 <ifNPCShy Accept>
+		Msg1_3 <There's going to be some kind of a party at \ELEMENT 3 later. Maybe you could sneak in and meet some famous people.>
+		CMsg1_3 <ifNPCEasygoing Accept>
+		Msg1_4 <There's going to be an exclusive party at \ELEMENT 3 soon. I really wish I could go there myself... Maybe you could sneak in and get some autographs for me.>
+		CMsg1_4 <ifNPCPassionate Accept>
+		Msg1_5 <I heard there's going to be a fancy party at \ELEMENT 3 today. If you wanted, I'm sure you could sneak in and make some entertainment industry contacts.>
+		CMsg1_5 <ifNPCCheerful Accept>
+		Msg1_6 <There's going to be a party at \ELEMENT 3 later. I hear that it's very exclusive... Are you going to try to get in?>
+		CMsg1_6 <ifNPCMelancholy Accept>
+		Msg2 <You learned there's going to be a big party at \ELEMENT 2 .>
+		Prompt1 <I just might. Do you have any advice before I go?>
+		Prompt1_1 <I think I will. Have any advice for me?>
+	end
+
+Plot
+	name <Romantic Possibilities>
+	desc <You're going to go meet a possible love interest.>
+	requires <#A +T01 +Glo>
+
+	% E1 is the metascene to be used for the meeting.
+	% E2 is the scene where the newly created love interest normally resides.
+	% E3 is the scene where the "Intro NPC" is
+	% E4 is the "Intro NPC"
+	% E5 is the love interest you're going to meet
+	element1 <MetaScene !Near -7 *Building NeverFail>
+	element2 <Scene !Near -7 building public>
+	element3 <Scene !Near -7 cavclub>
+	element4 <Prefab>
+	place4 <3 pass>
+	element5 <Prefab>
+	place5 <2 Pass>
+	element6 <Prefab>
+	place6 <2 Pass>
+	element7 <Prefab>
+	place7 <2 Pass>
+	element8 <Prefab>
+	place8 <2 Pass>
+
+	% V1 = Date Selector
+
+	update <Print 1   ForceChat E4   if= d4 1 else GoCheckScience DeleteNPC E6 DeleteNPC E7 DeleteNPC E8 Goto GoFormatE5>
+	GoCheckScience <if= d3 1 else GoCheckSinger  DeleteNPC E5 E= 5 E6 E= 6 0 DeleteNPC E7 DeleteNPC E8 Goto GoFormatE5>
+	GoCheckSinger <if= d2 1 else GoCheckCitizen  DeleteNPC E5 E= 5 E7 E= 7 0 DeleteNPC E6 DeleteNPC E8 Goto GoFormatE5>
+	GoCheckCitizen <DeleteNPC E5 E= 5 E8 E= 8 0 DeleteNPC E6 DeleteNPC E7 Goto GoFormatE5>
+	GoFormatE5 <ConGen E5  NPCLevel E5 StoryDL>
+	Msg1 <\ELEMENT 4 strikes up a conversation with you.>
+
+	inv
+		NPC Citizen
+		home <The Start Position>
+		PCFriend
+
+		NPC Bounty Hunter
+		PCFriend
+
+		NPC Scientist
+		PCFriend
+		Charm 13
+
+		NPC Singer
+		PCFriend
+
+		NPC Nurse
+		PCFriend
+	end
+	sub
+		Persona 4
+		% THE INTRO
+		% - All +T01 components should feature a intro character. They don't have to,
+		%   of course, but it'll be a major pissoff if they don't.
+		% - The intro character should follow this form, to insure that all the major
+		%   bits are in place: the introduction, the question, the story info, and the
+		%   advice.
+		% V1 = Have given story info.
+		greeting <&SetTargetChar E5   StoryNote 2  WinComp E1 .next  if= V1 1 else GoGreeting Goto GoAdvice>
+		.next <+Tgt +Fad>
+		*GoGreeting <*INTRO_Introduction GoAskQuestion>
+		*GoAskQuestion <*INTRO_Question GoStoryInfo>
+		GoStoryInfo <NewChat Say 1 V= 1 1 AddChat 1>
+		*GoAdvice <*INTRO_Advice>
+		result1 <Goto GoAdvice>
+		Msg1 <So I guess you'll be heading to \SCENE E1 soon. Finally worked up the nerve to ask \ELEMENT 5 on a date?>
+		Msg1_1 <It's nearly time for you to go to \SCENE E1 . You're meeting \ELEMENT 5 there today, right? From what I hear \SPR E5 's really sweet on you. Are you hoping to ask for a date?>
+		CMsg1_1 <ifNPCSociable Accept>
+		Msg1_2 <Are you going to ask \ELEMENT 5 for a date today at \SCENE E1 ?>
+		CMsg1_2 <ifNPCShy Accept>
+		Msg1_3 <You'll be going to \SCENE E1 later today, won't you? Still trying to get a date from \ELEMENT 5 ... Have you finally worked up the nerve to ask?>
+		CMsg1_3 <ifNPCEasygoing Accept>
+		Msg1_4 <So, have you worked up the nerve to finally ask \ELEMENT 5 for a date? I know that you're meeting at \SCENE E1 today.>
+		CMsg1_4 <ifNPCPassionate Accept>
+		Msg1_5 <Good luck with \ELEMENT 5 at \SCENE E1 today. I'm sure that \SPR E5 will go on a date with you if you just ask!>
+		CMsg1_5 <ifNPCCheerful Accept>
+		Msg1_6 <It's about time for you to meet \ELEMENT 5 at \SCENE E1 . Are you planning to ask \OPR E5 for a date? I hope you're good at handling rejection...>
+		CMsg1_6 <ifNPCMelancholy Accept>
+		Msg2 <You planned to meet \PERSONA E5 at \SCENE E1 , and maybe ask for a date.>
+		Prompt1 <Yes. Any advice before I go?>
+		Prompt1_1 <That's the plan. Do you have any advice?>
+
+	end
+
+%% COMP_P--.txt
+%%
+%%  Peaceful Life components
+
+Plot
+	name <Boring Guard Job>
+	desc <Lacking any action, the PC and the guard will talk about artifacts.>
+	requires <#A +P-- +Tgs ~+Gmo ~+Gkn ~P:cor E:-->
+	Size 1
+
+	% E1 is the scene where this component will take place
+	% E2 is the natural home of the security guard
+	% E3 is the security guard that the PC will speak with
+	% E4 is the artifact the guard will tell the PC about
+	% E5 is the other cavalier who's also looking for the item
+	element1 <Grab 6>
+	element2 <Scene Building Public !Near -7 !Okay -3>
+	element3 <Prefab>
+	place3 <2 sd ally>
+	element4 <Artifact Item>
+	element5 <Prefab>
+
+	% P1 = Initialization Counter
+
+	start <ifNPCOK E3 else GoLose>
+	GoLose <LoseComp 0 .loss>
+	.loss <+T-->
+
+	update <if= V1 0 V= 1 1 Print 1   MoveNPC E3 E1 FreezeItem E4 FreezeNPC E5>
+
+	sub
+		Persona 3
+		rumor <%name3% is the security guard at %name1%.>
+		*greeting <*DefenseCheckIn GoBriefing>
+		GoBriefing <NewChat Say 1 AddChat 1 AddChat 2>
+		result1 <NewChat Say 2 AddChat 3 AddChat 4 AddChat 5>
+		result2 <NewChat Say 3 AddChat 3 AddChat 4 AddChat 5>
+		result3 <NewChat Say 6 AddChat 6 AddChat 7 StoryNote 7 &SetEnemyChar E5 &SetTargetItem E4 WinComp 0 .win>
+		.win <+Pla +T-- +F-->
+		result4 <Goto result3>
+		result5 <NewChat Say 4 StoryNote 5 AddSociable -10   DeleteNPC E5 DeleteItem E4 LoseComp 0 .loss>
+		.loss <+T-- +F-->
+		result6 <NewChat Say 8 V+ 1 1 if= V1 1 AddChat 7>
+		result7 <NewChat Say 9 V+ 1 1 if= V1 1 AddChat 6>
+		Msg1 <Well, that's a problem. There's hardly enough guarding to be done for one person, let alone two. Stick around if you like but I don't think there's much point.>
+		Msg2 <What's the big hurry? It's been a pretty boring day. Maybe you can chat for a while and tell me about your adventures, like that other cavalier who sometimes stops by.>
+		Msg3 <We get a lot of people passing through here. I like chatting with them and listening to their stories. I especially like hearing cavaliers tell about their adventures.>
+		Msg4 <That's too bad. Maybe someday when you're as bored as I am now you can come back for a visit.>
+		Msg5 <You found \ELEMENT 1 to be in no real danger.>
+		Msg6 <I met \ELEMENT 5 a while ago. Apparently \SPR E5 's searching for something called the \ELEMENT 4 . There's apparenly some clue to its location here in \NARRATIVE 7 , but \SPR E5 wouldn't say more than that.>
+		Msg7 <A bored security guard told you \ELEMENT 5 is searching for the \ELEMENT 4 .>
+		Msg8 <I couldn't say. Although \SPR E5 comes here sometimes, \SPR E5 's pretty secretive about where \SPR E5 spends the rest of \PPR E5 time.>
+		Msg9 <Nothing. It sounds valuable, I guess.>
+		Prompt1 <I guess I'll be going.>
+		Prompt2 <So what do you do here all day, then?>
+		Prompt3 <What other cavalier have you been talking to?>
+		Prompt4 <Do you ever hear anything interesting?>
+		Prompt5 <I don't have time for meaningless chatter.>
+		Prompt6 <Do you know where \ELEMENT 5 went?>
+		Prompt7 <Do you know anything else about the \ELEMENT 4 ?>
+
+		STC MS_OFFICE
+		SetID 1
+	end
+	inv
+		NPC Soldier
+		job <Security Guard>
+		chardesc old sociable sociable sociable lawful
+		EquipChar 7000
+
+		NPC Bounty Hunter
+		job <Treasure Hunter>
+		EquipChar 20000
+	end
+
+Plot
+	name <Job: Corporate Boredom>
+	desc <The PC will be given a choice between boring assignments by the corporate head.>
+	requires <#A +P-- +Ttt +Fmi T:++ T:COR P:COR ~T:Ally>
+
+	% E1 is the scene where this component will take place
+	% E2 is the NPC that the PC will speak with
+	% E3 is metascene to either guard or socialize at
+
+	element1 <Grab 6>
+	element2 <Grab 5>
+	element3 <MetaScene !Near -7 *Building NeverFail>
+
+	% P1 = Initialization Counter
+	% P2 = Initial victory count
+	% P3 = Job Accepted Counter
+
+	start <ifNPCOK E2 else GoLose>
+	GoLose <LoseComp 0 .loss>
+	.loss <+T-->
+
+	update <if= V1 0 V= 1 1 MoveNPC E2 E1 V= 2 CurrentPPScore>
+
+	return <if= P3 1 ifNPCOK E2 &SetTargetChar E2  ifG CurrentPPScore V2 else GoNoWin AlterContext .loadreward>
+	GoNoWin <AlterContext .loadnoreward>
+	.loadreward <+Tre +F-->
+	.loadnoreward <+T-- +F-->
+
+	sub
+		Persona 2
+		rumor <%name2% has some work for you.>
+		*greeting <*IHaveAJobForYou GoGiveJob>
+		GoGiveJob <NewChat Say 1 AddChat 1 AddChat 2>
+
+		result1 <NewChat Say 2 StoryNote 3 P= 3 1 WinComp E3 .warehouse>
+		.warehouse <+Tgs +F-->
+		result2 <NewChat Say 4 StoryNote 5 P= 3 1 WinComp E3 .conference>
+		.conference <+Tsh +F-->
+
+		Msg1 <Actually, there are two things that need doing, but neither is very interesting. Job number one is to guard a warehouse. Job number two is to attend a conference and promote our company. Which assignment do you want?>
+		Msg2 <Great. Head over to \ELEMENT 3 and report in, then. There's not likely to be any trouble but one can never tell.>
+		Msg3 <\ELEMENT 2 sent you to guard \ELEMENT 3 for \NARRATIVE 3 .>
+		Msg4 <Great. Head over to \ELEMENT 3 and see what's going on.>
+		Msg5 <\ELEMENT 2 sent you to a convention at \ELEMENT 3 for \NARRATIVE 3 .>
+
+		Prompt1 <I choose to guard the warehouse.>
+		Prompt2 <I choose to attend the conference.>
+
+		STC MS_OFFICE
+		SetID 1
+	end
+
+
+Plot
+	name <The Mecha Fighter>
+	Size 1
+	desc <The person you're looking for was surrounded by mecha.>
+	requires <#A +P-- +Ttt (+Frt|+Fin|+F--) T:++ (T:MILIT|T:ADVEN|T:POLIC) -T:Enemy>
+
+	%% E1 is the scene where this will take place
+	%% E2 is the NPC that the PC is looking for
+	%% E3 is the item being sought
+	element1 <Grab 6>
+	element2 <Grab 5>
+	element3 <Scene Environs !Near -7>
+	element4 <Prefab>
+	place4 <3>
+
+	start <ifNPCOK E2 else GoLose>
+	GoLose <LoseComp 0 .loss>
+	.loss <+T-- +F-->
+
+	update <if=  P1 0  P= 1 1  &SetTargetChar 0  MoveNPC E2 E1>
+
+	sub
+		Persona 2
+		special <UNLISTED>
+		rumor <%name2% has been seen in %name1%.>
+		*Greeting <*HowAreYou GoReveal>
+		GoReveal <NewChat Say 1 AddChat 1 AddChat 2  Goto GoWin>
+		GoWin <StoryNote 2  WinComp E4 .next>
+		.next <+Pun +Tin +Ffi>
+
+		result1 <NewChat Say 3>
+		result2 <NewChat Say 4 AddSociable -d10>
+
+		Msg1 <Let me tell you... Outside of the city right now, it's not a safe place. There are dark forces gathering... I had to fight my way in here, and I expect you'll have to fight your way out.>
+		Msg2 <\ELEMENT 2 revealed that enemies are gathering outside of \NARRATIVE 7 .>
+		Msg3 <I couldn't tell you. Those are questions I tend not to ask when people are shooting at me. I can tell you this, though- there's a whole lot more of them waiting in \ELEMENT 3 .>
+		Msg4 <I get the feeling that pretty soon it's going to be the problem of everyone who lives here. Go see for yourself... There's a virtual army gathering in \ELEMENT 3 .>
+
+		Prompt1 <Who are they? What do they want?>
+		Prompt2 <That's not my problem.>
+		CPrompt2 <if= N3 0   Accept>
+
+		STC MS_Cafe
+		SetID 1
+	end
+	inv
+		STC ENCOUNTER-SEEKPC
+		name <Hostile Mecha>
+		EncounterMove 50
+	end
+
+
+
+
+%% COMP_Pla.txt
+%%
+%%	+Pla	PC learns of the existence of an artifact
+
+
+
+
+%% COMP_Pme
+%%	+Pme	PC meets an enemy pilot under somewhat peaceful circumstances
+
+Plot
+	name <Meet Friend's Henchmen>
+	% V1 = Initialization
+	size 5
+	desc <Meet your friend in a compromising situation...>
+	requires <#A +T-- +Pme E:++ E:Friend -F:ALLY ~+Glo ~+Gpe>
+	changes <+T-- +Pun>
+
+	update <if= V1 0 V= 1 1 FreezeNPC E3  NPCLevel E3 StoryDL>
+
+	% E1 is where the encounter takes place
+	% E2 is the encounter itself
+	% E3 is the NPC character
+	element1 <Scene Urban !Near -7>
+	element2 <Prefab>
+	Place2 <1>
+	element3 <Grab 1>
+
+	sub
+		MetaScene 2 2
+		rumor <a group of dangerous looking mecha has been seen in %name1%.>
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 30
+		MapHeight 30
+
+		Start <if= L2 0 L= 2 1   ForceChat E3   PCFEnemy N2>
+		nu1 <if= T1 0  Return   if= L1 0 L= 1 1   StoryNote 1            LoseComp 0 .next>
+		nu2 <if= T2 0           if= L1 0 L= 1 2   StoryNote 2  Alert 3   AddRenown 1   XPV 100   Salvage   WinComp  0 .next>
+
+		.next <+T-- +Pun>
+
+		Msg1 <You fought some mecha possibly allied with \ELEMENT 3 , and lost.>
+		Msg2 <You fought some mecha possibly allied with \ELEMENT 3 , and won.>
+		Msg3 <Who sent these mecha, and what is their connection to \ELEMENT 3 ?>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			SetEnemy 1
+			Deploy <SetSelfFaction N2   WMecha 2 StoryDL 75>
+			ParaX 25
+			ParaY 25
+		end
+
+		Persona 3
+		special <UNLISTED>
+		*greeting <*COMP_Pme_MFH_Greeting GoFinal>
+		GoFinal <EndChat Say 1 Print 2>
+		Msg1 <If you get involved in this, I won't be able to protect you. Goodbye \PC . I have to leave.>
+		Msg1_1 <You've seen too much... I really wish you hadn't gotten involved in this. I won't be able to protect you. Goodbye, old friend. I have to leave now.>
+		CMsg1_1 <ifNPCSociable Accept>
+		Msg1_2 <I have to go... Please, don't come looking for me...>
+		CMsg1_2 <ifNPCShy Accept>
+		Msg1_3 <You really don't want to get involved in this, \PC . I have to go...>
+		CMsg1_3 <ifNPCEasygoing Accept>
+		Msg1_4 <I won't fight you... but I won't betray my cause either. Goodbye \PC .>
+		CMsg1_4 <ifNPCPassionate Accept>
+		Msg1_5 <Since you're my friend I can't fight you myself, but I can't protect you either. Goodbye \PC .>
+		CMsg1_5 <ifNPCCheerful Accept>
+		Msg1_6 <I'm afraid this may be the last time we speak to one another. Goodbye, \PC .>
+		CMsg1_6 <ifNPCMelancholy Accept>
+		Msg2 <\ELEMENT 3 leaves the area.>
+
+	end
+	inv
+		STC ENCOUNTER-WANDER
+		name <Mysterious Mecha>
+		EncounterMove 5
+	end
+
+
+%% COMP_Pun
+%%	+Pun	An unknown enemy attacks
+
+
+
+
+Plot
+	name <Warning Of Attack>
+	size 1
+	desc <The PC finds his target, who reveals enemies plan strike against city.>
+	requires <#A +Pun +Ttt (+Fin|+Frt) T:++ -T:Enemy S:++>
+
+	%% E1 is the scene where this will take place
+	%% E2 is the NPC that the PC is looking for
+	element1 <Grab 6>
+	element2 <Grab 5>
+	element3 <Metascene *BUILDING !Near -7 NeverFail>
+
+	start <ifNPCOK E2 else GoLose>
+	GoLose <LoseComp 0 .loss>
+	.loss <+T-- +F-->
+
+	update <if=  P1 0  P= 1 1  &SetTargetChar 0  MoveNPC E2 E1>
+
+	sub
+		Persona 2
+		special <UNLISTED>
+		rumor <%name2% has been seen in %name1%.>
+		*Greeting <*GreetThenDiscuss GoReveal>
+		GoReveal <NewChat Say 1 AddChat 1 AddChat 2>
+		GoWin <StoryNote 3  WinComp E3 .next>
+		.next <+Tgs +Ffi>
+		GoLose <AddRenown -5   AddHeroic -1   LoseComp 0 .lose>
+		.lose <+T-- +F-->
+		result1 <NewChat Say 2 Goto GoWin>
+		RESULT2 <NewChat Say 4 AddChat 3 AddChat 4>
+		result3 <Goto result1>
+		result4 <NewChat Say 5 Goto GoLose>
+		Msg1 <I've discovered that these invaders, the ones attacking \NARRATIVE 7 , intend to strike a target within the city. There's not much time...>
+		Msg2 <Go to \SCENE E3 , then. There may not be much time.>
+		Msg3 <\ELEMENT 2 told you the invaders were planning to strike \SCENE E3 .>
+		Msg4 <If we don't act quickly, lots of people are going to die. Do you really want their blood on your hands?>
+		Msg5 <That attitude's going to catch up with you someday.>
+		Prompt1 <Quickly, tell me where it is!>
+		Prompt1_1 <I'd better get there and defend it!>
+		Prompt2 <That's not my problem.>
+		CPrompt2 <if= N3 0 Accept>
+		Prompt2_1 <Why should I care about that?>
+		Prompt3 <Alright, I'll do it.>
+		Prompt4 <Forget it. I'm out of here.>
+
+		STC MS_CLUB
+	end
+
+
+
+

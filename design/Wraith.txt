@@ -1,0 +1,83 @@
+AeroFighter 4
+Name <Wraith>
+Desig <WR-106>
+SDL_Sprite <aer_wraith.png>
+SDL_Portrait <item_wraith.png>
+SDL_MESH <aer_wraith2.obj>
+SDL_SKIN <skin_placeholder.png>
+type <SPACE GROUND>
+FACTIONS <GENERAL>
+desc <The Wraith is a general purpose aerofighter produced by RegEx Corporation.>
+
+ROLE_MAQUI <GENERAL:SUPPORT  ASSAULT:SUPPORT>
+ROLE_FCOMS <GENERAL:SUPPORT  ASSAULT:SUPPORT>
+ROLE_RISHI <GENERAL:SUPPORT  ASSAULT:SUPPORT>
+ROLE_REDMA <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+ROLE_L5LAW <ASSAULT:SUPPORT>
+
+sub
+torso
+	Armor 4
+	sub
+		CPit
+
+		Sensor 5
+
+		Mount
+		Name <Right Body Mount>
+		inv
+			STC MAC-4
+			mass -4
+		end
+
+		Mount
+		Name <Left Body Mount>
+		inv
+			MLauncher 5
+			sub
+				STC HR-10
+				Magazine 5
+			end
+		end
+
+		STC VC-5
+
+		Flight 2
+	end
+
+Wing
+	Name <Right Wing>
+	Size 3
+	Armor 4
+	sub
+		Mount
+		Name <Right Wing Mount>
+		inv
+			MLauncher 4
+			sub
+				STC SWM-2
+				Magazine 20
+			end
+		end
+
+		Flight 3
+	end
+
+Wing
+	Name <Left Wing>
+	Size 3
+	Armor 4
+	sub
+		Mount
+		Name <Left Wing Mount>
+		inv
+			MLauncher 4
+			sub
+				STC SWM-2
+				Magazine 20
+			end
+		end
+
+		Flight 3
+	end
+end

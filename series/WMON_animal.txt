@@ -1,0 +1,1694 @@
+%  *******************************
+%  ***  ANIMAL  MONSTER  LIST  ***
+%  *******************************
+
+% Animals are either natural creatures or giant mutant versions of them.
+% They generally provide meat or other SURVIVAL benefits, and can often
+% be dominated.
+
+%  STATS  REF BOD SPD PER CFT EGO KNO CHA
+
+ARCH Guard Dog
+roguechar <d>
+type <guard>
+habitat <>
+sdl_sprite <monster_dogfox.png>
+sdl_colors <80 80 85 150 112 89 170 200 50>
+statline 13 8 10 15 8 6 2 5
+MonsterTV 52
+DomTarget 14
+CloseCombat 7
+Dodge 7
+Awareness 6
+Sealed
+sub
+head
+	sub
+		gear 4 0 6
+		name <Fangs>
+	end
+torso
+leg
+	name <Right Front Leg>
+leg
+	name <Left Front Leg>
+leg
+	name <Right Rear Leg>
+leg
+	name <Left Rear Leg>
+end
+
+
+ARCH Dog
+roguechar <d>
+sdl_sprite <monster_dogfox.png>
+sdl_colors <123 63 0 135 90 45 150 200 50>
+type <city guard>
+habitat <>
+statline 12 7 9 16 8 6 2 5
+MonsterTV 30
+DomTarget 14
+CloseCombat 5
+Dodge 2
+Awareness 3
+Sealed
+sub
+head
+	sub
+		gear 4 0 6
+		name <Fangs>
+	end
+torso
+leg
+	name <Right Front Leg>
+leg
+	name <Left Front Leg>
+leg
+	name <Right Rear Leg>
+leg
+	name <Left Rear Leg>
+end
+
+ARCH StormFeather
+roguechar <E>
+sdl_sprite <monster_eagle.png>
+sdl_colors <60 30 81 1 75 70 210 35 50>
+MonsterTV 78
+statline 15 10 19 17 5 6 2 7
+type <AIR MOUNTAIN ANIMAL>
+habitat <>
+DomTarget 18
+RangedCombat 5
+CloseCombat 4
+Dodge 10
+Vitality 3
+sub
+head
+armor 2
+mass -4
+	sub
+		melee 8
+		name <Peck>
+		recharge 5
+		type <ArmorPiercing>
+	end
+torso
+armor 2
+mass -4
+	sub
+		BeamGun 6
+		mass -6
+		name <Lightning Storm>
+		Range 8
+		Recharge 1
+		BV 5
+		type <SWARM HAYWIRE>
+
+		Flight 16
+		name <Feathers>
+
+		PowerSource 20
+		name <Electro-Gland>
+	end
+wing
+armor 2
+mass -3
+	sub
+		BeamGun 5
+		mass -5
+		name <Lightning Bolt>
+		range 10
+		type <HAYWIRE>
+	end
+wing
+armor 2
+mass -3
+	sub
+		BeamGun 5
+		mass -5
+		name <Lightning Bolt>
+		range 10
+		type <HAYWIRE>
+	end
+end
+
+ARCH Eagle
+roguechar <E>
+sdl_sprite <monster_eagle.png>
+sdl_colors <123 63 0 120 100 13 122 88 193>
+MonsterTV 39
+statline 15 6 17 16 5 6 2 7
+type <AIR MOUNTAIN ANIMAL>
+habitat <>
+DomTarget 15
+CloseCombat 4
+Dodge 5
+sub
+head
+armor 1
+sub
+	melee 5
+	name <Peck>
+	recharge 5
+end
+torso
+armor 1
+sub
+	Flight 12
+	name <Feathers>
+end
+wing
+wing
+end
+
+ARCH Sun Scarab
+statline 16 13 11 8 1 1 1 1
+roguechar <i>
+sdl_sprite <monster_roach.png>
+sdl_colors <234 180 88 123 63 0 170 150 230>
+type <BUG DESERT RUINS FIRE>
+habitat <>
+MonsterTV 68
+DomTarget 32
+*CLUE_SURVIVAL <*SURVIVAL_GetFlameGland 68 beetle>
+RangedCombat 3
+CloseCombat 5
+Dodge 8
+sub
+torso
+	armor 5
+	sub
+		gear 4 0 6
+		name <Bite>
+
+		BeamGun 3
+		name <Sun Flame>
+		recharge 1
+		range 5
+		type <Line Burn ArmorPiercing>
+		BV 3
+
+		PowerSource 10
+		name <Flame Gland>
+	end
+wing
+	size 6
+	armor 5
+wing
+	size 6
+	armor 5
+leg
+	size 3
+	armor 4
+leg
+	size 3
+	armor 4
+leg
+	size 3
+	armor 4
+leg
+	size 3
+	armor 4
+leg
+	size 3
+	armor 4
+leg
+	size 3
+	armor 4
+end
+
+
+ARCH Black Scarab
+statline 10 8 9 7 1 1 1 1
+roguechar <i>
+sdl_sprite <monster_roach.png>
+sdl_colors <70 70 85 56 26 81 244 216 81>
+type <BUG DESERT RUINS>
+habitat <>
+MonsterTV 35
+DomTarget 24
+CloseCombat 4
+Dodge 4
+sub
+torso
+	armor 2
+	sub
+		gear 4 0 6
+		name <Bite>
+	end
+leg
+	size 2
+	armor 2
+leg
+	size 2
+	armor 2
+leg
+	size 2
+	armor 2
+leg
+	size 2
+	armor 2
+leg
+	size 2
+	armor 2
+leg
+	size 2
+	armor 2
+end
+
+ARCH Giant Roach
+statline 10 8 9 7 1 1 1 1
+roguechar <i>
+sdl_sprite <monster_roach.png>
+sdl_colors <120 90 66 80 80 85 244 220 30>
+type <BUG VERMIN CITY>
+habitat <URBAN>
+MonsterTV 40
+DomTarget 15
+CloseCombat 5
+Dodge 4
+Toughness 13
+sub
+torso
+	armor 2
+	sub
+		gear 4 0 6
+		name <Bite>
+		type <SICKNESS>
+	end
+leg
+	size 2
+	armor 2
+leg
+	size 2
+	armor 2
+leg
+	size 2
+	armor 2
+leg
+	size 2
+	armor 2
+leg
+	size 2
+	armor 2
+leg
+	size 2
+	armor 2
+end
+
+ARCH Toxic Urchin
+roguechar <u>
+SDL_SPRITE <monster_urchin.png>
+SDL_COLORS <152 61 97 122 88 193 122 88 193>
+statline 14 5 7 5 1 1 1 1
+MonsterTV 44
+type <Water Sea>
+habitat <>
+*CLUE_SURVIVAL <*SURVIVAL_GetSashimiMaybeTainted 44 urchin>
+RangedCombat 5
+CloseCombat 3
+Dodge 3
+Vitality 10
+sub
+torso
+	armor 6
+	sub
+		BeamGun 1
+		Range 5
+		name <Toxic Spines>
+		type <Poison>
+		BV 3
+
+		Melee 3
+		name <Toxic Spines>
+		type <Poison>
+		Recharge 4
+
+		PowerSource 10
+		name <Toxin Gland>
+	end
+end
+
+ARCH Moon Bear
+roguechar <B>
+SDL_SPRITE <monster_bear.png>
+SDL_COLORS <180 185 200 220 190 150 208 0 230>
+genepool <BEAR>
+MonsterTV 90
+DomTarget 19
+type <Animal Mountain Air>
+habitat <>
+statline 17 19 13 14 8 10 2 4
+*CLUE_SURVIVAL <*SURVIVAL_GetMeatOrBearLiver 90 bear>
+CloseCombat 7
+Dodge 8
+% Bears have the talent HARD AS NAILS
+Talent 4
+sub
+head
+armor 3
+sub
+	melee 7
+	name <Bite>
+	type <BRUTAL>
+end
+torso
+armor 4
+arm
+armor 3
+sub
+	melee 5
+	name <Claw>
+	recharge 1
+	type <ArmorPiercing>
+end
+arm
+armor 3
+sub
+	melee 5
+	name <Claw>
+	recharge 1
+	type <ArmorPiercing>
+end
+leg
+armor 3
+leg
+armor 3
+end
+
+ARCH Dragon Bear
+roguechar <B>
+SDL_SPRITE <monster_bear.png>
+SDL_COLORS <234 190 90 245 220 160 0 200 0>
+genepool <BEAR>
+MonsterTV 100
+DomTarget 25
+type <Animal Exotic Forest Cave Ice>
+habitat <>
+statline 16 19 11 15 10 16 7 6
+*CLUE_SURVIVAL <*SURVIVAL_GetMeatOrBearLiverOrDragonHeart 90 bear>
+RangedCombat 4
+CloseCombat 8
+Dodge 9
+Initiative 11
+Vitality 7
+% Bears have the talent HARD AS NAILS
+Talent 4
+sub
+head
+armor 4
+sub
+	melee 5
+	name <Bite>
+	type <Burn>
+
+	BeamGun 4
+	name <Fireball Breath>
+	type <Blast 1>
+	range 6
+	recharge 1
+end
+torso
+armor 4
+sub
+	PowerSource 5
+	name <Flame Gland>
+end
+arm
+armor 4
+sub
+	melee 6
+	name <Claw>
+	type <ArmorPiercing>
+	recharge 3
+end
+arm
+armor 4
+sub
+	melee 6
+	name <Claw>
+	type <ArmorPiercing>
+	recharge 3
+end
+leg
+armor 4
+leg
+armor 4
+end
+
+ARCH Harrow Bear
+roguechar <B>
+SDL_SPRITE <monster_bear.png>
+SDL_COLORS <80 90 90 90 100 100 200 50 0>
+genepool <BEAR>
+*CLUE_SURVIVAL <*SURVIVAL_GetMeatMaybeTainted 80 bear>
+MonsterTV 80
+DomTarget 26
+type <Animal Mutant Earth Wasteland>
+habitat <>
+statline 14 18 10 11 8 10 2 1
+CloseCombat 8
+Dodge 8
+% Bears have the talent HARD AS NAILS
+Talent 4
+Vitality 5
+sub
+head
+armor 2
+sub
+	melee 9
+	name <Bite>
+	recharge 1
+end
+torso
+armor 3
+arm
+armor 2
+sub
+	melee 5
+	name <Claw>
+	recharge 1
+	type <ArmorPiercing Poison>
+end
+arm
+armor 2
+sub
+	melee 5
+	name <Claw>
+	recharge 1
+	type <ArmorPiercing Poison>
+end
+leg
+armor 2
+leg
+armor 2
+end
+
+ARCH Red Bear
+roguechar <B>
+SDL_SPRITE <monster_bear.png>
+SDL_COLORS <125 60 0 150 120 89 244 210 28>
+genepool <BEAR>
+MonsterTV 56
+DomTarget 17
+type <Animal Forest Tundra Ice>
+habitat <>
+statline 14 17 9 13 8 10 2 4
+*CLUE_SURVIVAL <*SURVIVAL_GetMeatOrBearLiver 56 bear>
+CloseCombat 6
+Dodge 5
+% Bears have the talent HARD AS NAILS
+Talent 4
+sub
+head
+armor 2
+sub
+	melee 7
+	name <Bite>
+	recharge 1
+end
+torso
+armor 3
+arm
+armor 2
+sub
+	melee 5
+	name <Claw>
+	recharge 1
+	type <ArmorPiercing>
+end
+arm
+armor 2
+sub
+	melee 5
+	name <Claw>
+	recharge 1
+	type <ArmorPiercing>
+end
+leg
+armor 2
+leg
+armor 2
+end
+
+Arch Iron Monkey
+statline 7 9 6 7 6 5 5 8
+MonsterTV 25
+DomTarget 14
+type <Animal Jungle Desert Wasteland Earth Mountain>
+habitat <>
+roguechar <m>
+sdl_sprite <monster_monkey.png>
+sdl_colors <103 3 45 245 213 160 244 216 28>
+CloseCombat 5
+Dodge 1
+sub
+head
+armor 1
+torso
+armor 2
+arm
+armor 2
+arm
+armor 2
+leg
+armor 2
+leg
+armor 2
+tail
+armor 2
+end
+
+Arch Toxic Chameleon
+statline 13 10 6 9 5 3 1 2
+*CLUE_SURVIVAL <*SURVIVAL_GetMeatMaybeTainted 48 chameleon>
+sdl_sprite <monster_chameleon.png>
+sdl_colors <220 100 170 60 70 60 230 30 50>
+MonsterTV 48
+DomTarget 17
+type <Reptile Jungle Exotic Mutant>
+habitat <>
+RogueChar <c>
+CloseCombat 3
+Dodge 6
+Awareness 5
+Stealth 15
+sub
+head
+armor 2
+sub
+	Melee 2
+	name <Tongue>
+	type <thrown return stone>
+end
+torso
+armor 2
+leg
+armor 2
+leg
+armor 2
+leg
+armor 2
+leg
+armor 2
+tail
+armor 2
+end
+
+Arch Chameleon
+statline 12 8 6 9 5 3 1 3
+MonsterTV 23
+DomTarget 16
+type <Reptile Jungle Exotic>
+habitat <>
+RogueChar <c>
+sdl_sprite <monster_chameleon.png>
+sdl_colors <125 100 15 70 125 120 230 170 90>
+*CLUE_SURVIVAL <*SURVIVAL_GetMeatOrSmallPelt 20 chameleon>
+CloseCombat 3
+Dodge 3
+Awareness 5
+Stealth 15
+sub
+head
+armor 1
+sub
+	Melee 1
+	name <Tongue>
+	type <thrown return>
+end
+torso
+armor 1
+leg
+armor 1
+leg
+armor 1
+leg
+armor 1
+leg
+armor 1
+tail
+armor 1
+end
+
+Arch Rock Lizard
+statline 12 15 16 10 2 9 2 2
+MonsterTV 60
+DomTarget 18
+roguechar <A>
+SDL_SPRITE <monster_alligator.png>
+SDL_COLORS <150 112 89 170 130 100 210 40 50>
+type <Earth Mountain Reptile>
+habitat <>
+*CLUE_SURVIVAL <*SURVIVAL_GetMeatOrLootGizzard 50 lizard>
+CloseCombat 5
+Dodge 8
+Vitality 6
+Stealth 7
+sub
+head
+armor 4
+sub
+	Melee 10
+	name <Jaws>
+	recharge 3
+	type <SICKNESS>
+end
+torso
+armor 7
+leg
+armor 7
+leg
+armor 7
+leg
+armor 7
+leg
+armor 7
+tail
+armor 7
+end
+
+Arch Albino Alligator
+statline 13 20 10 7 2 9 2 2
+MonsterTV 72
+DomTarget 22
+roguechar <A>
+SDL_SPRITE <monster_alligator.png>
+SDL_COLORS <199 188 162 152 61 97 208 35 51>
+type <City Water Swamp Cave Reptile Animal>
+habitat <>
+*CLUE_SURVIVAL <*SURVIVAL_GetMeatOrLootGizzard 72 alligator>
+CloseCombat 5
+Dodge 7
+Vitality 6
+SpotWeakness 5
+Stealth 7
+Athletics 7
+Vitality 8
+Toughness 8
+sub
+head
+armor 7
+sub
+	Melee 15
+	name <Crushing Jaws>
+	recharge 3
+end
+torso
+armor 3
+leg
+armor 7
+leg
+armor 7
+leg
+armor 7
+leg
+armor 7
+tail
+armor 7
+end
+
+Arch Emperor Fire Penguin
+statline 14 10 16 15 6 7 2 10
+type <Fire Exotic Light>
+habitat <>
+roguechar <p>
+genepool <PENGUIN>
+SDL_SPRITE <monster_penguin.png>
+SDL_COLORS <208 34 51 234 180 88 244 216 28>
+CHAT_ATTACK <SQUAAAK!!!>
+MonsterTV 105
+DomTarget 25
+RangedCombat 8
+CloseCombat 8
+Dodge 15
+Initiative 8
+sub
+head
+sub
+	melee 12
+	name <Flaming Peck>
+	type <ArmorPiercing BURN>
+end
+torso
+sub
+	BeamGun 8
+	name <Searing Flame>
+	type <Hyper BURN>
+	range 4
+
+	PowerSource 20
+	name <Flame Gland>
+end
+arm
+name <Wing>
+sub
+	MLauncher 2
+	name <Burning Feathers>
+	type <Swarm>
+	range 9
+	sub
+		rockets 1
+		magazine 20
+	end
+end
+arm
+name <Wing>
+sub
+	MLauncher 2
+	name <Burning Feathers>
+	type <Swarm>
+	range 9
+	sub
+		rockets 1
+		magazine 20
+	end
+end
+leg
+leg
+end
+
+Arch Fire Penguin
+statline 13 8 14 14 5 7 2 12
+type <Fire Exotic Mutant>
+habitat <>
+SDL_SPRITE <monster_penguin.png>
+SDL_COLORS <166 47 32 230 230 230 244 215 28>
+roguechar <p>
+genepool <PENGUIN>
+EvolveAt 12500
+MonsterTV 40
+DomTarget 15
+RangedCombat 5
+CloseCombat 5
+Dodge 5
+sub
+head
+sub
+	melee 3
+	name <Flaming Peck>
+	type <ArmorPiercing>
+end
+torso
+arm
+name <Wing>
+arm
+name <Wing>
+leg
+leg
+end
+
+ARCH Fire Toad
+SDL_SPRITE <monster_frog.png>
+SDL_COLORS <172 61 97 228 34 51 50 200 0>
+roguechar <F>
+type <animal earth swamp mutant cave fire>
+habitat <>
+statline 10 17 9 10 2 2 2 2
+*CLUE_SURVIVAL <*SURVIVAL_GetMeatOrFlameGland 56 toad>
+MonsterTV 56
+DomTarget 19
+RangedCombat 3
+CloseCombat 5
+Dodge 5
+SpotWeakness 6
+Vitality 5
+sub
+head
+	armor 1
+	sub
+		gear 4 0 7
+		name <Bite>
+		beamgun 6
+		name <Fire Breath>
+		type <BURN>
+		range 6
+		Recharge 1
+	end
+torso
+	armor 2
+	sub
+		PowerSource 20
+		name <Flame Gland>
+	end
+leg
+	armor 1
+	name <Right Front Leg>
+leg
+	armor 1
+	name <Left Front Leg>
+leg
+	armor 1
+	name <Right Rear Leg>
+leg
+	armor 1
+	name <Left Rear Leg>
+end
+
+ARCH Spike Toad
+SDL_SPRITE <monster_frog.png>
+SDL_COLORS <101 72 42  245 200 170  34 216 244>
+roguechar <F>
+type <animal earth swamp mutant cave reptile>
+habitat <>
+*CLUE_SURVIVAL <*SURVIVAL_GetMeat 72 toad>
+statline 10 16 10 7 2 2 2 2
+MonsterTV 72
+DomTarget 23
+CloseCombat 5
+Dodge 6
+SpotWeakness 5
+Vitality 5
+sub
+head
+	armor 1
+	sub
+		gear 4 0 6
+		name <Bite>
+	end
+torso
+	armor 4
+leg
+	armor 3
+	name <Right Front Leg>
+leg
+	armor 3
+	name <Left Front Leg>
+leg
+	armor 4
+	name <Right Rear Leg>
+leg
+	armor 4
+	name <Left Rear Leg>
+end
+
+ARCH Giant Frog
+SDL_SPRITE <monster_frog.png>
+SDL_COLORS <45 85 80  112 127 98  244 216 35>
+roguechar <F>
+type <animal water Green Forest Swamp>
+habitat <>
+*CLUE_SURVIVAL <*SURVIVAL_GetMeat 35 frog>
+statline 8 11 10 9 2 2 2 2
+MonsterTV 35
+DomTarget 14
+CloseCombat 4
+Dodge 3
+SpotWeakness 1
+Vitality 5
+sub
+head
+	sub
+		gear 4 0 6
+		name <Bite>
+	end
+torso
+leg
+	name <Right Front Leg>
+leg
+	name <Left Front Leg>
+leg
+	name <Right Rear Leg>
+leg
+	name <Left Rear Leg>
+end
+
+ARCH Giant Leech
+SDL_SPRITE <monster_leech.png>
+SDL_COLORS <140 105 81 136 141 101 130 143 114>
+roguechar <l>
+type <Dark Swamp Water>
+*CLUE_SURVIVAL <*SURVIVAL_GetMeatMaybeTainted 39 leech>
+habitat <>
+statline 7 8 3 4 1 1 1 1
+MonsterTV 21
+CloseCombat 2
+Initiative 15
+sub
+torso
+sub
+	melee 1
+	name <Bite>
+	ACC 2
+	recharge 7
+end
+end
+
+ARCH Marsh Lobster
+roguechar <L>
+SDL_SPRITE <monster_lobster.png>
+SDL_COLORS <134 141 101  144 161 111  168 153 230>
+type <Bug Water Swamp Green>
+habitat <>
+*CLUE_SURVIVAL <*SURVIVAL_GetSashimi 35 lobster>
+statline 12 14 8 11 5 7 4 6
+MonsterTV 35
+DomTarget 15
+CloseCombat 4
+Dodge 3
+Vitality 4
+sub
+torso
+	armor 2
+arm
+	armor 1
+	name <Right Claw>
+arm
+	armor 1
+	name <Left Claw>
+end
+
+ARCH Rock Lobster
+roguechar <L>
+SDL_SPRITE <monster_lobster.png>
+SDL_COLORS <150 112 89  80 80 85  234 180 88>
+type <Bug Earth Cave Ruins>
+habitat <>
+*CLUE_SURVIVAL <*SURVIVAL_GetSashimiOrLobsterShield 68 lobster>
+statline 13 20 9 11 5 7 4 5
+MonsterTV 52
+DomTarget 18
+CloseCombat 4
+Dodge 4
+Vitality 8
+sub
+torso
+	armor 4
+arm
+	armor 4
+	name <Right Claw>
+arm
+	armor 4
+	name <Left Claw>
+end
+
+ARCH Deep Lobster
+roguechar <L>
+SDL_SPRITE <monster_lobster.png>
+SDL_COLORS <45 26 91 6 42 120 77 121 119>
+type <Bug Water Sea Cave>
+habitat <>
+*CLUE_SURVIVAL <*SURVIVAL_GetSashimiOrLobsterShield 85 lobster>
+statline 17 29 6 13 5 8 8 3
+MonsterTV 85
+DomTarget 21
+RangedCombat 4
+CloseCombat 4
+Dodge 7
+Vitality 12
+sub
+torso
+	armor 5
+	sub
+		BeamGun 3
+		name <Electric Jolt>
+		Range 5
+		type <INTERCEPT STUN>
+
+		PowerSource 20
+		name <Reactor Heart>
+	end
+arm
+	armor 5
+	name <Right Claw>
+	type <SCATTER BRUTAL>
+arm
+	armor 5
+	name <Left Claw>
+	type <SCATTER BRUTAL>
+end
+
+ARCH Archaeopteryx
+roguechar <v>
+type <exotic forest plains air>
+habitat <>
+sdl_sprite <monster_eagle.png>
+sdl_colors <170 50 32 70 121 120 0 200 150>
+statline 10 2 11 7 2 3 2 2
+*CLUE_SURVIVAL <*SURVIVAL_GetMeat 33 bird-thing>
+MonsterTV 22
+CloseCombat 1
+Dodge 4
+DomTarget 16
+sub
+head
+	sub
+		gear 3 0 1
+		name <Bite>
+	end
+torso
+wing
+wing
+leg
+leg
+tail
+end
+
+ARCH Velociraptor
+roguechar <D>
+type <exotic cave desert reptile>
+habitat <>
+SDL_SPRITE <monster_raptor.png>
+SDL_COLORS <170 120 89 0 0 0 0 200 100>
+*CLUE_SURVIVAL <*SURVIVAL_GetMeat 52 raptor>
+statline 14 13 16 11 8 7 2 5
+DomTarget 23
+MonsterTV 52
+CloseCombat 4
+Dodge 8
+Vitality 2
+sub
+head
+	armor 1
+torso
+	armor 1
+arm
+	armor 1
+arm
+	armor 1
+leg
+	armor 1
+	sub
+		gear 4 0 5
+		name <Claw>
+	end
+leg
+	armor 1
+	sub
+		gear 4 0 5
+		name <Claw>
+	end
+end
+
+ARCH Oviraptor
+roguechar <D>
+type <exotic cave desert reptile>
+habitat <>
+SDL_SPRITE <monster_raptor.png>
+SDL_COLORS <146 161 101 0 0 0 214 216 28>
+*CLUE_SURVIVAL <*SURVIVAL_GetMeat 25 raptor>
+statline 10 6 11 13 8 7 2 5
+DomTarget 17
+MonsterTV 25
+CloseCombat 2
+Initiative 2
+Dodge 2
+sub
+head
+	armor 1
+torso
+	armor 1
+arm
+	armor 1
+arm
+	armor 1
+leg
+	armor 1
+	sub
+		gear 4 0 3
+		name <Claw>
+	end
+leg
+	armor 1
+	sub
+		gear 4 0 3
+		name <Claw>
+	end
+end
+
+ARCH Iron Crab
+SDL_SPRITE <monster_crab.png>
+SDL_COLORS <136 191 225  170 178 187  179 0 210>
+roguechar <w>
+type <animal cave water bug sea>
+habitat <>
+*CLUE_SURVIVAL <*SURVIVAL_GetSashimi 44 crab>
+statline 10 15 5 9 1 1 1 1
+DomTarget 21
+MonsterTV 44
+CloseCombat 6
+Dodge 2
+Initiative 7
+Vitality 6
+SpotWeakness 5
+sub
+torso
+	armor 5
+arm
+	armor 5
+	sub
+		gear 4 0 5
+		name <Claw>
+	end
+arm
+	armor 5
+	sub
+		gear 4 0 5
+		name <Claw>
+	end
+leg
+	armor 5
+leg
+	armor 5
+leg
+	armor 5
+leg
+	armor 5
+end
+
+ARCH Crab
+SDL_SPRITE <monster_crab.png>
+SDL_COLORS <204 51 85  200 144 64  208 93 8>
+roguechar <w>
+type <animal cave water bug sea>
+habitat <>
+*CLUE_SURVIVAL <*SURVIVAL_GetSashimi 30 crab>
+statline 9 9 6 8 1 1 1 1
+DomTarget 13
+MonsterTV 30
+CloseCombat 3
+Initiative 4
+Vitality 1
+SpotWeakness 2
+sub
+torso
+	armor 3
+arm
+	armor 2
+	sub
+		gear 4 0 3
+		name <Claw>
+	end
+arm
+	armor 2
+	sub
+		gear 4 0 3
+		name <Claw>
+	end
+leg
+	armor 2
+leg
+	armor 2
+leg
+	armor 2
+leg
+	armor 2
+end
+
+ARCH Dragon Viper
+SDL_SPRITE <monster_serpent.png>
+roguechar <S>
+type <swamp water dark exotic reptile>
+habitat <>
+*CLUE_SURVIVAL <*SURVIVAL_GetMeatOrDragonHeart 85 serpent>
+statline 15 16 16 11 4 19 2 2
+MonsterTV 85
+DomTarget 22
+RangedCombat 6
+CloseCombat 7
+Dodge 10
+Initiative 3
+Toughness 7
+sub
+head
+	armor 4
+	sub
+		gear 4 0 7
+		name <Fangs>
+		type <POISON>
+		Recharge 5
+		Acc 2
+
+		BeamGun 8
+		name <Venom Spray>
+		type <Line POISON>
+		BV 1
+		recharge 3
+		range 6
+	end
+torso
+	armor 4
+	sub
+		PowerSource 10
+		name <Venom Gland>
+	end
+tail
+	armor 4
+end
+
+ARCH Swamp Viper
+SDL_SPRITE <monster_serpent.png>
+SDL_COLORS <84 97 85  191 205 229  244 206 48>
+roguechar <S>
+type <animal swamp dark reptile>
+habitat <>
+*CLUE_SURVIVAL <*SURVIVAL_GetMeatMaybeTainted 44 viper>
+statline 13 5 12 7 2 3 2 2
+MonsterTV 44
+DomTarget 21
+CloseCombat 3
+Dodge 5
+sub
+head
+	armor 2
+	sub
+		Melee 6
+		name <Fangs>
+		type <POISON>
+		Acc 1
+	end
+torso
+	armor 2
+tail
+	armor 2
+end
+
+
+ARCH Dragon Serpent
+SDL_SPRITE <monster_serpent.png>
+SDL_COLORS <36 46 22  200 50 0  56 28 81>
+genepool <DRAGON>
+EvolveAt 20000
+*CLUE_SURVIVAL <*SURVIVAL_GetMeatOrDragonHeart 45 serpent>
+roguechar <S>
+type <exotic cave fire forest reptile>
+habitat <>
+statline 12 13 12 5 2 16 2 2
+MonsterTV 36
+DomTarget 18
+RangedCombat 1
+CloseCombat 3
+Dodge 1
+Vitality 2
+Toughness 3
+sub
+head
+	armor 1
+	sub
+		BeamGun 4
+		name <Flame Breath>
+		stat 1 4
+		stat 3 1
+		stat 4 2
+
+		Melee 5
+		name <Fangs>
+		stat 3 5
+	end
+torso
+	armor 1
+	sub
+		PowerSource 20
+		name <Flame Gland>
+	end
+tail
+	armor 1
+end
+
+ARCH Stinger
+roguechar <j>
+SDL_SPRITE <monster_jelly.png>
+SDL_COLORS <170 150 235 122 88 199 0 0 0>
+statline 11 7 10 1 1 1 1 1
+MonsterTV 64
+CloseCombat 6
+Dodge 6
+Vitality 8
+Toughness 4
+type <Water Sea Mutant>
+habitat <>
+sub
+torso
+	sub
+		melee 7
+		name <Tendril>
+		Type <POISON EXTEND FLAIL>
+
+		melee 7
+		name <Tendril>
+		Type <POISON EXTEND FLAIL>
+
+		Melee 7
+		name <Tendril>
+		Type <POISON EXTEND FLAIL>
+	end
+end
+
+ARCH Dragon Rat
+roguechar <r>
+SDL_SPRITE <monster_rat.png>
+SDL_COLORS <55 153 93 174 68 42 221 0 132>
+type <animal cave exotic earth fire vermin>
+habitat <>
+*CLUE_SURVIVAL <*SURVIVAL_GetMeatOrDragonHeart 76 rat>
+statline 13 12 15 9 9 7 5 5
+MonsterTV 76
+DomTarget 20
+CloseCombat 5
+Dodge 11
+Initiative 4
+Vitality 10
+Toughness 7
+sub
+head
+	armor 3
+	sub
+		Melee 5
+		name <Fangs>
+		stat 3 1
+
+		BeamGun 2
+		name <Flame Breath>
+		type <SCATTER BURN>
+		stat 1 2
+		stat 3 1
+		stat 4 4
+	end
+torso
+	armor 3
+	sub
+		PowerSource 20
+		name <Flame Gland>
+	end
+leg
+	armor 3
+	name <Right Front Leg>
+	sub
+		gear 4 0 4
+		name <Claws>
+	end
+leg
+	armor 3
+	name <Left Front Leg>
+	sub
+		gear 4 0 4
+		name <Claws>
+	end
+leg
+	armor 3
+	name <Right Rear Leg>
+leg
+	armor 3
+	name <Left Rear Leg>
+tail
+	armor 3
+	sub
+		gear 4 0 5
+		name <Tail Spike>
+	end
+end
+
+ARCH Death Rat
+roguechar <r>
+SDL_SPRITE <monster_rat.png>
+SDL_COLORS <119 123 178 234 195 0 217 103 126>
+type <animal cave mutant desert earth city vermin>
+habitat <>
+*CLUE_SURVIVAL <*SURVIVAL_GetMeat 56 rat>
+statline 11 7 14 8 8 6 2 2
+MonsterTV 56
+DomTarget 18
+CloseCombat 5
+Dodge 6
+Initiative 2
+sub
+head
+	armor 1
+	sub
+		gear 4 0 6
+		name <Fangs>
+	end
+torso
+	armor 1
+leg
+	armor 1
+	name <Right Front Leg>
+	sub
+		gear 4 0 3
+		name <Claws>
+		stat 3 1
+	end
+leg
+	armor 1
+	name <Left Front Leg>
+	sub
+		gear 4 0 3
+		name <Claws>
+		stat 3 1
+	end
+leg
+	armor 1
+	name <Right Rear Leg>
+leg
+	armor 1
+	name <Left Rear Leg>
+tail
+	armor 1
+end
+
+ARCH Two Headed Rat
+roguechar <r>
+SDL_SPRITE <monster_rat.png>
+SDL_COLORS <174 68 42 234 195 0 217 123 166>
+type <animal mutant vermin>
+habitat <>
+*CLUE_SURVIVAL <*SURVIVAL_GetMeat 30 rat>
+statline 10 4 10 8 8 6 2 2
+MonsterTV 40
+DomTarget 15
+CloseCombat 3
+Dodge 5
+Initiative 6
+Vitality 5
+sub
+head
+	sub
+		gear 4 0 6
+		name <Fangs>
+	end
+head
+	sub
+		gear 4 0 6
+		name <Fangs>
+	end
+torso
+leg
+	name <Right Front Leg>
+leg
+	name <Left Front Leg>
+leg
+	name <Right Rear Leg>
+leg
+	name <Left Rear Leg>
+tail
+end
+
+
+ARCH Plague Rat
+roguechar <r>
+SDL_SPRITE <monster_rat.png>
+SDL_COLORS <167 144 59 110 133 62 217 132 217>
+type <animal cave mutant swamp earth vermin>
+habitat <>
+*CLUE_SURVIVAL <*SURVIVAL_GetMeatMaybeTainted 35 rat>
+statline 10 3 10 8 8 6 2 2
+MonsterTV 48
+CloseCombat 4
+Dodge 2
+Initiative 1
+Vitality 5
+sub
+head
+	sub
+		Melee 6
+		name <Fangs>
+		type <Sickness>
+		recharge 1
+	end
+torso
+leg
+	name <Right Front Leg>
+	type <Sickness>
+leg
+	name <Left Front Leg>
+	type <Sickness>
+leg
+	name <Right Rear Leg>
+	type <Sickness>
+leg
+	name <Left Rear Leg>
+	type <Sickness>
+tail
+end
+
+ARCH Radioactive Rat
+roguechar <r>
+SDL_SPRITE <monster_rat.png>
+SDL_COLORS <65 174 42 65 174 42 220 250 26>
+type <mutant>
+habitat <>
+explosion <8 DAMAGE 20 0 0 0 ArmorPiercing Brutal Haywire Blast 2>
+statline 8 1 9 8 6 5 2 2
+MonsterTV 27
+CloseCombat 3
+Dodge 1
+sub
+head
+	sub
+		Melee 3
+		name <Bite>
+		Acc 1
+		recharge 3
+	end
+torso
+leg
+	name <Right Front Leg>
+leg
+	name <Left Front Leg>
+leg
+	name <Right Rear Leg>
+leg
+	name <Left Rear Leg>
+tail
+end
+
+ARCH Thunder Rat
+roguechar <r>
+SDL_SPRITE <monster_rat.png>
+SDL_COLORS <234 195 0 125 120 110 217 123 166>
+CHAT_SAFE <Chu?>
+CHAT_SAFE2 <Chu.>
+genepool <E-RAT>
+habitat <>
+*CLUE_SURVIVAL <*SURVIVAL_GetMeatOrSmallPelt 30 rat>
+statline 14 10 16 10 10 9 7 13
+MonsterTV 68
+DomTarget 30
+RangedCombat 4
+CloseCombat 3
+Dodge 10
+Initiative 5
+Vitality 3
+sub
+head
+armor 1
+	sub
+		Melee 5
+		name <Fangs>
+	end
+torso
+armor 1
+	sub
+		BeamGun 9
+		name <Lightning Storm>
+		Range 8
+		Recharge 1
+		BV 5
+		type <SWARM HAYWIRE>
+
+		PowerSource 20
+		name <Electro-Gland>
+	end
+leg
+armor 1
+	name <Right Front Leg>
+leg
+armor 1
+	name <Left Front Leg>
+leg
+armor 1
+	name <Right Rear Leg>
+leg
+armor 1
+	name <Left Rear Leg>
+tail
+armor 1
+	sub
+		BeamGun 7
+		name <Lightning Bolt>
+		Range 6
+		Recharge 3
+		type <HAYWIRE>
+	end
+end
+
+ARCH Electric Rat
+roguechar <r>
+genepool <E-RAT>
+EvolveAt 3000
+SDL_SPRITE <monster_rat.png>
+SDL_COLORS <234 195 0 125 120 110 217 123 166>
+CHAT_SAFE <Chu?>
+CHAT_SAFE2 <Chu.>
+type <animal exotic cave forest vermin>
+habitat <>
+*CLUE_SURVIVAL <*SURVIVAL_GetMeatOrSmallPelt 30 rat>
+statline 8 4 14 8 8 6 3 9
+MonsterTV 35
+DomTarget 10
+RangedCombat 1
+CloseCombat 2
+Dodge 5
+Vitality 1
+sub
+head
+	sub
+		gear 4 0 1
+		name <Fangs>
+		stat 3 1
+	end
+torso
+	sub
+		PowerSource 10
+		name <Electro-Gland>
+	end
+leg
+	name <Right Front Leg>
+leg
+	name <Left Front Leg>
+leg
+	name <Right Rear Leg>
+leg
+	name <Left Rear Leg>
+tail
+	sub
+		BeamGun 2
+		name <Lightning Bolt>
+		Range 2
+		Recharge 3
+		type <HAYWIRE>
+	end
+end
+
+
+ARCH Rat
+roguechar <r>
+SDL_SPRITE <monster_rat.png>
+SDL_COLORS <174 68 42 174 68 42 217 123 166>
+*CLUE_SURVIVAL <*SURVIVAL_GetMeat 20 rat>
+type <animal cave earth swamp city vermin>
+habitat <>
+statline 8 1 10 8 8 6 2 2
+MonsterTV 20
+DomTarget 12
+CloseCombat 2
+Dodge 3
+Initiative 1
+sub
+head
+	sub
+		gear 4 0 1
+		name <Fangs>
+	end
+torso
+leg
+	name <Right Front Leg>
+leg
+	name <Left Front Leg>
+leg
+	name <Right Rear Leg>
+leg
+	name <Left Rear Leg>
+tail
+end
+

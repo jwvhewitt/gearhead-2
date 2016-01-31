@@ -1,0 +1,804 @@
+%%
+%% Mecha Arena Quest Components
+%%
+
+%%
+%% *:Q_MECHA_ARENA_BASE
+%%	Contains the arena manager.
+%%
+%%	Set QuestStatus when manager admits PC to arena; end the quest after the PC has
+%%	completed the championship.
+%%
+%%	Each manager persona must have a GoBigWin script defined, to be called when the
+%%	10th match is won. This script must reset the arena.
+%%	  - If this particular arena doesn't conclude on the tenth match, then you
+%%          don't need a GoBigWin script and you shouldn't use a standard challenger
+%%          as either the last fight or the 10th fight.
+%%
+
+Content
+	name <Rocket Arena>
+	requires <*:Q_MECHA_ARENA_BASE YATSP>
+
+	% E1 is the manager
+	% E2 is the arena
+	% E3 is the manager's home scene
+	% E4 is the environs scene for the arena
+	Element1 <Prefab>
+	Place1 <3 (Citizens) pass ally>
+	Element2 <QuestScene>
+	Place2 <4>
+	Element3 <Scene ArenaSite>
+	Element4 <Scene Environs>
+
+	SubPlot1 <*:Q_MECHA_ARENA_CHALLENGE #30 1 2>
+	SubPlot2 <*:Q_MECHA_ARENA_CHALLENGE #42 1 2>
+	SubPlot3 <*:Q_MECHA_ARENA_CHALLENGE #54 1 2>
+	SubPlot4 <*:Q_MECHA_ARENA_CHALLENGE #66 1 2>
+
+	sub
+		Persona 1
+		rumor0 <%name1% manages the underground dueling meets at Aurora Night.>
+		greeting <if# PlotStatus %plotid% 0 else GoPreQuest if= ArenaState %2% NAV_AS_Win else GoCheckLoss Goto GoArenaWin>
+		GoCheckLoss <if= ArenaState %2% NAV_AS_Loss else GoCheckReady Goto GoArenaLoss>
+		GoCheckReady <if= ArenaState %2% NAV_AS_Vacant else GoArenaFull ifG ComTime ArenaRecharge %2% else GoArenaBusy Goto GoOfferFight>
+
+		GoArenaWin <if= ArenaWins %2% 10 else GoMinorWin Goto GoBigWin>
+		*GoMinorWin <*BasicArenaWin %2% GoResetArena>
+		*GoArenaLoss <*BasicArenaLoss %2% GoResetArena>
+		GoResetArena <ResetArena %2%>
+
+		*GoArenaFull <*ArenaIsFull %2%>
+		*GoArenaBusy <*ArenaIsBusy %2%>
+
+		GoChooseBattle <ifMechaCanEnterScene %2% else GoInvalidMecha if= ArenaWins %2% 9 else GoCheckQ3 Goto .%id4%_GoInit>
+		GoInvalidMecha <NewChat Say 7>
+		GoCheckQ3 <if= ArenaWins %2% 7 else GoCheckQ2 Goto .%id3%_GoInit>>
+		GoCheckQ2 <if= ArenaWins %2% 5 else GoCheckQ1 Goto .%id2%_GoInit>>
+		GoCheckQ1 <if= ArenaWins %2% 3 else GoNormalBattle Goto .%id1%_GoInit>
+		*GoNormalBattle <*StartArenaBattle %2% GoStartFight>
+		GoStartFight <SavePos PrepArena %2% 100 Jump %2%>
+		*GoRefuseBattle <*RefuseArenaFight %2%>
+
+		GoStartQuest <SetPlotStatus %plotid% %id% SetArenaThreat %2% 10 SetEncounterActive %2%>
+
+		GoOfferFight <NewChat Say 1 AddChat 1 AddChat 2>
+		GoBigWin <NewChat Say 2 History 3 XPV 500 SetPlotStatus %plotid% -1 MechaPrize .mektype 80 RandomTheme 12  CashPrize Reward ArenaThreat %2% 1000 Goto GoResetArena>
+		.mektype <ROCKE RISHI>
+		*GoPreQuest <*NiceToMeetYou GoArenaIntro>
+		GoArenaIntro <NewChat Say 4 AddChat 3 AddChat 4>
+		result1 <Goto GoChooseBattle>
+		result2 <Goto GoRefuseBattle>
+		result3 <NewChat Say 5 AddChat 5 AddChat 2 Goto GoStartQuest>
+		result4 <NewChat Say 6>
+		result5 <Goto GoChooseBattle>
+		Msg1 <Are you here for the battle? There's another match all ready to go.>
+		Msg2 <Very well done. That was your tenth fight, making you our new champion.>
+		Msg3 <You were crowned champion of the Rocket Arena.>
+		Msg4 <Hey there. You look like the sort who'd be up for a bit of action, if you catch what I'm saying...>
+		Msg5 <We've got a practice arena set up just outside the spinner... gotta keep it on the sly, since it's not entirely legal. There's a match coming up soon if you'd like to take part.>
+		Msg6 <You know what they say: nothing ventured, nothing gained.>
+		Msg7 <You're going to need a mecha that's good indoors before you can fight here. Sorry.>
+		Prompt1 <That's what I wanted to hear.>
+		CPrompt1 <ifChatNPCInPlay ifG PCMeks 0 Accept>
+		Prompt2 <Not right now, sorry.>
+		Prompt3 <I am intrigued by your mysterious offer.>
+		Prompt4 <Whatever you're selling, I want no part of it.>
+		Prompt5 <Just show me how to get there!>
+		CPrompt5 <ifChatNPCInPlay ifG PCMeks 0 Accept>
+
+		MetaScene 2 2
+		name <the Rocket Arena>
+		entrance <*QUEST-INACTIVE>
+		RockyTiles
+		Vacuum
+		SpaceBackdrop
+		Ceiling
+		terrain <INSIDE>
+		type <Arena>
+		special <SHOWALL SOLO ARENA NOPILLAGE UNCHARTABLE>
+		map <MAP_RocketArena.txt>
+		start <if= SelfArenaState NAV_AS_Ready else GoCheckBattle          Alert 1   SetSelfArenaState NAV_AS_Battle SetSelfArenaRecharge if# SelfChallengerID 0 ForceChat SelfChallengerID>
+		GoCheckBattle <if= SelfArenaState NAV_AS_Battle else GoBoringStart Print 2>
+		GoBoringStart <Print 3 Return>
+		nu1 <if= T1 0 Return   if= SelfArenaState NAV_AS_Battle SetSelfArenaState NAV_AS_Loss  Alert 5 Print 5  LoseRenown  Goto GoEndBattle>
+
+		nu2 <if= T2 0 Return   if= SelfArenaState NAV_AS_Battle SetSelfArenaState NAV_AS_Win   Alert 6 Print 6  AddSelfArenaWin  AddSelfArenaThreat d10  XPV 100 FacXP+ 5 1 AddRenown 1 ifNPCOK SelfChallengerID else GoEndBattle ForceChat SelfChallengerID Goto GoEndBattle>
+
+		GoEndBattle <ifNPCOK SelfChallengerID MoveAndPacifyNPC SelfChallengerID SelfChallengerHome ClearSelfChallengerID>
+
+		Msg1 <You enter the arena. Prepare to battle.>
+		Msg2 <The arena battle rages on.>
+		Msg3 <You enter the arena. There's no fight going on here now.>
+		Msg5 <You have lost the battle.>
+		Msg6 <You have won the battle.>
+
+		sub
+			Team 1
+			name <Player Team>
+			home <Player Start Point>
+			SetEnemy 2
+			ParaX 7
+			ParaY 7
+
+			Team 2
+			name <Enemies>
+			home <Enemy Start Point>
+			SetFaction 5
+			SetEnemy 1
+			Deploy <if= SelfArenaState NAV_AS_Ready ifG SelfArenaForces 0 WMecha 2 SelfArenaThreat SelfArenaForces>
+			ParaX 34
+			ParaY 34
+		end
+	end
+	inv
+		NPC Arena Pilot
+		SetFaction 5
+		chardesc Shy Passionate
+		NonCombatant
+		sdl_colors <203 34 51 255 212 195 56 26 81>
+	end
+
+Content
+	name <Gaos Spinner Arena>
+	requires <*:Q_MECHA_ARENA_BASE GAOSP>
+
+	% E1 is Hilda
+	% E2 is the arena
+	% E3 is the arena site
+	Element1 <Prefab>
+	Place1 <3 (Citizens) pass ally>
+	Element2 <QuestScene>
+	Place2 <3>
+	Element3 <Scene ArenaSite>
+
+	SubPlot1 <*:Q_MECHA_ARENA_CHALLENGE #33 1 2>
+	SubPlot2 <*:Q_MECHA_ARENA_CHALLENGE #45 1 2>
+	SubPlot3 <*:Q_MECHA_ARENA_CHALLENGE #57 1 2>
+	SubPlot4 <*:Q_MECHA_ARENA_CHALLENGE #69 1 2>
+	SubPlot5 <*:Q_MECHA_ARENA_CHALLENGE #81 1 2>
+
+	sub
+		Persona 1
+		greeting <if# PlotStatus %plotid% 0 else GoPreQuest if= ArenaState %2% NAV_AS_Win else GoCheckLoss Goto GoArenaWin>
+		GoCheckLoss <if= ArenaState %2% NAV_AS_Loss else GoCheckReady Goto GoArenaLoss>
+		GoCheckReady <if= ArenaState %2% NAV_AS_Vacant else GoArenaFull ifG ComTime ArenaRecharge %2% else GoArenaBusy Goto GoOfferFight>
+
+		GoArenaWin <if= ArenaWins %2% 10 else GoMinorWin Goto GoBigWin>
+		*GoMinorWin <*BasicArenaWin %2% GoResetArena>
+		*GoArenaLoss <*BasicArenaLoss %2% GoResetArena>
+		GoResetArena <ResetArena %2%>
+
+		*GoArenaFull <*ArenaIsFull %2%>
+		*GoArenaBusy <*ArenaIsBusy %2%>
+
+		GoChooseBattle <ifMechaCanEnterScene %2% else GoInvalidMecha if= ArenaWins %2% 9 else GoCheckQ4 Goto .%id5%_GoInit>
+		GoInvalidMecha <NewChat Say 10>
+		GoCheckQ4 <if= ArenaWins %2% 7 else GoCheckQ3 Goto .%id4%_GoInit>
+		GoCheckQ3 <if= ArenaWins %2% 5 else GoCheckQ2 Goto .%id3%_GoInit>
+		GoCheckQ2 <if= ArenaWins %2% 3 else GoCheckQ1 Goto .%id2%_GoInit>
+		GoCheckQ1 <if= ArenaWins %2% 1 else GoNormalBattle Goto .%id1%_GoInit>
+		*GoNormalBattle <*StartArenaBattle %2% GoStartFight>
+		GoStartFight <SavePos PrepArena %2% 100 Jump %2%>
+		*GoRefuseBattle <*RefuseArenaFight %2%>
+
+		GoStartQuest <SetPlotStatus %plotid% %id% SetArenaThreat %2% 25>
+
+		GoOfferFight <NewChat Say 1 AddChat 1 AddChat 2>
+		% Remember, there's a lot of fiddly bits for the big win.
+		GoBigWin <NewChat Say 2 History 3 XPV 500 SetPlotStatus %plotid% -1   MechaPrize .mektype 100 RandomTheme 16  CashPrize Reward ArenaThreat %2% 5000   Goto GoResetArena>
+		.mektype <PDASS COMET HOELL MUGLE FCOMS MAQUI RISHI>
+		*GoPreQuest <*NiceToMeetYou GoArenaIntro>
+		GoArenaIntro <NewChat Say 4 AddChat 3 AddChat 4>
+
+		result1 <Goto GoChooseBattle>
+		result2 <Goto GoRefuseBattle>
+		result3 <ifG PCRenown 20 else GoR3NoRenown NewChat Say 8 AddChat 1 AddChat 2  Goto GoStartQuest>
+		GoR3NoRenown <if= PCFac 5 else GoR3NoMember NewChat Say 7 AddChat 5 AddChat 6>
+		GoR3NoMember <NewChat Say 6>
+		result4 <NewChat Say 5>
+		result5 <NewChat Say 8 AddChat 1 AddChat 2 Goto GoStartQuest>
+		result6 <NewChat Say 9>
+
+		Msg1 <It's good to see you back, \PC . We have another match happening soon. Would you like to take part?>
+		Msg2 <That was your tenth victory.>
+		Msg3 <You were crowned champion of the Valhalla Arena.>
+		Msg4 <This is the Valhalla Arena, the largest authorized dueling venue in the L5 pattern. Pilots from all over meet here to face off in deadly combat.>
+		Msg5 <We usually host five games per day. You can watch the matches from the obervation booth, or catch replays on the local Valhalla channel.>
+		Msg6 <I'm sorry, but you don't currently qualify to fight here. Come back after you've spent a bit more time building your reputation.>
+		Msg7 <Your ranking indicates that you're not yet qualified to fight here, but if you really think you can handle it I could slot you in.>
+		Msg8 <No problem. We have a match starting soon; would you like to get started right away?>
+		Msg9 <If you enter a fight before you're ready, all you end up doing is smash your mecha and ruin your reputation.>
+		Msg10 <You're going to need a mecha suitable for Earthlike conditions before you can fight here. Sorry.>
+
+		Prompt1 <That's what I'm here for.>
+		CPrompt1 <ifChatNPCInPlay ifG PCMeks 0 Accept>
+		Prompt2 <Wait a sec while I get repairs.>
+		Prompt3 <I'd like to register, please.>
+		Prompt4 <What time is the next match?>
+		Prompt5 <Please do that; I want to fight now!>
+		Prompt6 <I guess I should wait, then.>
+
+		MetaScene 1
+		sub
+			room
+			name <Manager's Office>
+			special <SHAREDPALETTE>
+			desig <HOME>
+			minimap <.............1......&---&>
+
+			room
+			name <Glory Road>
+			special <SHAREDPALETTE>
+			minimap <######&2&##...##...##...#>
+			inv
+				Elevator
+				name <To Arena>
+				desig <ENTRANCE %2%>
+				use <ifMechaCanEnterScene Destination else GoNoEnter  Print 1 Exit Destination>
+				GoNoEnter <Print 101>
+				Msg101 <You need a landworthy mecha to enter the arena.>
+				MiniMapComponent 2
+			end
+		end
+
+		STC QS_MechaArena
+		name <the Valhalla Arena>
+		SetID 2
+		entrance <>
+	end
+	inv
+		NPC Celebrity
+		name <Hilda>
+		job <Arena Manager>
+		chardesc Female Easygoing Sociable Renowned Renowned
+		Age 6
+		SetFaction 5
+		SDL_PORTRAIT <por_f_sexy(AC-).png>
+		SDL_COLORS <1 75 67 255 212 195 245 200 100>
+	end
+
+
+Content
+	name <Cayley Rock Arena>
+	requires <*:Q_MECHA_ARENA_BASE CAYLE>
+
+	% E1 is Peters
+	% E2 is the arena
+	% E3 is the steelworks lounge
+	% E4 is the environs scene for the arena
+	% E5 is the steelworks building
+	% E6 is Kodie
+	% E7 is the lounge entrance
+	Element1 <Prefab>
+	Place1 <3 (Citizens) pass ally>
+	Element2 <QuestScene>
+	Place2 <4>
+	Element3 <QuestScene>
+	Place3 <5>
+	Element4 <Scene Environs>
+	Element5 <Scene ArenaSite>
+	Element6 <Prefab>
+	Place6 <3 (Guards) sd ally>
+	Element7 <Prefab>
+	Place7 <5>
+
+	%% P1 = Have gained access to the arena
+
+	SubPlot1 <*:Q_MECHA_ARENA_CHALLENGE #35 1 2>
+	SubPlot2 <*:Q_MECHA_ARENA_CHALLENGE #60 1 2>
+
+	sub
+		Persona 1
+		rumor0 <the steelworkers have a secret mecha tournament going on. Actually it's not much of a secret.>
+		greeting <if# PlotStatus %plotid% 0 else GoPreQuest if= ArenaState %2% NAV_AS_Win else GoCheckLoss Goto GoArenaWin>
+		GoCheckLoss <if= ArenaState %2% NAV_AS_Loss else GoCheckReady Goto GoArenaLoss>
+		GoCheckReady <if= ArenaState %2% NAV_AS_Vacant else GoArenaFull ifG ComTime ArenaRecharge %2% else GoArenaBusy Goto GoOfferFight>
+
+		GoArenaWin <if= ArenaWins %2% 10 else GoMinorWin Goto GoBigWin>
+		*GoMinorWin <*BasicArenaWin %2% GoResetArena>
+		*GoArenaLoss <*BasicArenaLoss %2% GoResetArena>
+		GoResetArena <ResetArena %2%>
+
+		*GoArenaFull <*ArenaIsFull %2%>
+		*GoArenaBusy <*ArenaIsBusy %2%>
+
+		GoChooseBattle <ifMechaCanEnterScene %2% else GoInvalidMecha if= ArenaWins %2% 9 else GoCheckQ1 Goto .%id2%_GoInit>
+		GoInvalidMecha <NewChat Say 9>
+		GoCheckQ1 <if= ArenaWins %2% 5 else GoNormalBattle Goto .%id1%_GoInit>
+		*GoNormalBattle <*StartArenaBattle %2% GoStartFight>
+		GoStartFight <SavePos PrepArena %2% 100 Jump %2%>
+		*GoRefuseBattle <*RefuseArenaFight %2%>
+
+		GoStartQuest <SetPlotStatus %plotid% %id% SetArenaThreat %2% 5 SetEncounterActive %2%>
+
+		GoOfferFight <NewChat Say 1 AddChat 1 AddChat 2>
+		% Remember, there's a lot of fiddly bits for the big win.
+		GoBigWin <NewChat Say 7 History 8 XPV 500 SetPlotStatus %plotid% -1 MechaPrize .mektype 72 4 12 Goto GoResetArena>
+		.mektype <PDASS REGEX KETTE BIOCO FEDDE>
+		*GoPreQuest <*NiceToMeetYou GoArenaIntro>
+		GoArenaIntro <NewChat Say 2 AddChat 3 AddChat 4>
+
+		result1 <Goto GoChooseBattle>
+		result2 <Goto GoRefuseBattle>
+		result3 <NewChat Say 3 AddChat 5 AddChat 6 Goto GoStartQuest>
+		result4 <NewChat Say 4>
+		result5 <NewChat Say 5 AddChat 1 AddChat 2>
+		result6 <NewChat Say 6 AddChat 1 AddChat 2 AddCheerful -d10>
+
+		Msg1 <Welcome back to the Steel Arena. Are you ready to fight?>
+		Msg2 <Welcome to the Steel Arena. Are you here to fight, or just to watch?>
+		Msg3 <Our arena is on the far side of the rock. It's probably the best arena in all the colonies! We buried a ton of simgravs down there, so it feels just like you're fighting on Earth!>
+		Msg4 <Alright, then. You should be able to see the fight on one of the monitors, somewhere...>
+		Msg5 <It really is! We've got a battle coming up soon. Do you want to take part?>
+		Msg6 <Er... no, no I haven't, but I watch all the mecha tournament shows... Earth pilots rock. So, do you want to fight now?>
+		Msg7 <Since that was your tenth win, you've officially won our big prize! Here's a brand new dueling mecha, straight from Earth!>
+		Msg8 <You were crowned champion of the Steel Arena.>
+		Msg9 <You're going to need a mecha suitable for surface combat before you can fight here. Sorry.>
+
+		Prompt1 <I'm ready to go.>
+		CPrompt1 <ifChatNPCInPlay ifG PCMeks 0 Accept>
+		Prompt2 <Wait a minute, okay?>
+		Prompt3 <I'm here to fight!>
+		Prompt4 <I think I'll just watch, for now.>
+		Prompt5 <Sounds like fun!>
+		Prompt6 <You've never been to Earth, have you?>
+
+		MetaScene 1
+		sub
+			room
+			name <The Steel Arena>
+			special <SHAREDPALETTE>
+			desig <HOME>
+			minimap <#...#........1......#---#>
+		end
+
+		STC QS_MechaArena
+		name <the Steel Arena>
+		SetID 2
+		AsteroidMap
+		RockyTiles
+		Vacuum
+		SpaceBackdrop
+
+		MetaScene 3
+		name <Steelworks Lounge>
+		type <building factory private sleazy meeting dangerous>
+		mapwidth 24
+		mapheight 24
+		ClubMap
+		IndustrialTiles
+		special <NOEXIT>
+		% V1 = Initialization
+		% V2 = Have been allowed into the lounge.
+		% V3 = CID of the bouncer
+		start <Print 1>
+		Msg1 <You enter the lounge area of Cayley Steelworks.>
+		NeededCells 4
+		content1 <Some 1  75 Sub *WEAPON_SHOP   na>
+		content2 <Some 1  35 Sub *SHOP_RANDOM   na>
+		content3 <Some 1 100 Sub *BAR_SERVICE   na>
+		Content4 <Some 1 100 Sub *MECHANIC_SHOP>
+		content9 <Fill Sub *CLUB_X na>
+		sub
+			team 1
+
+			team 2
+			name <Citizens>
+			Passive
+
+			team 3
+			name <Guards>
+			SetAlly 2
+
+			room
+			name <Foyer>
+			desig <EntranceGrid>
+			Content <Some 2 65 Here *URBAN_X>
+
+			room
+			name <Entry Point>
+			minimap <############1##..........>
+			inv
+				Elevator
+				MiniMapComponent 1
+				Destination -1
+			end
+		end
+
+		Persona 6
+		special <NOESCAPE NOPLOTS UNLISTED>
+		% V1 = Has offered training
+		greeting <if# V1 0 else GoCheckPermission Say 15 AddChat 9 AddChat 10>
+		GoCheckPermission <if# P1 0 else GoChallenge ifG React 35 else GoSayAnything V= 1 1 Say 14  AddChat 9 AddChat 10>
+		GoSayAnything <NewChat SayAnything>
+		GoChallenge <if= PCFac 5 else GoCheckHome EndChat Say 1 Goto GoStamp>
+		GoCheckHome <if= PCHomeTown RootSceneID else GoCheckPriva   EndChat Say 2 Goto GoStamp>
+		GoCheckPriva <if= PCFac 6 else GoNoEntry   EndChat Say 3 Goto GoStamp>
+		GoNoEntry <EndChat Say 4  AddChat 1 AddChat 2 AddChat 3 AddChat 4>
+		% It's like getting your hand stamped to get back in..
+		GoStamp <P= 1 1 GrabSource GSetSAtt special .nothing Exit %3%>
+		result1 <EndChat Say 5>
+		result2 <ifIntimidation 8 else GoR2Fail EndChat Say 7 AddReact d10 Goto GoStamp>
+		GoR2Fail <EndCHat Say 8>
+		result3 <EndChat Say 9 AddChat 7 AddChat 8>
+		result4 <EndChat ifG React d20 else GoR4Fail Say 12 Goto GoStamp>
+		GoR4Fail <Say 13 AddReact -d10>
+		result7 <EndChat Say 10 Cash+ -5000 Goto GoStamp>
+		result8 <Goto result1>
+		result9 <EndChat Say 16 school .skills Say 17>
+		.skills <4 5 6>
+		result10 <NewChat Say 18>
+		Msg1 <You're with the dueling guild? Come on up. The arena manager's over there in the back.>
+		Msg2 <Hey, \PC , I've got this job now where I'm supposed to guard the door. We don't want any undesirables coming in to ruin our fun. I'll open 'er up for ya.>
+		Msg3 <Hey, you're a privateer, aren't you? You guys rock. Come on up.>
+		Msg4 <This is a private lounge. No entry to anyone who don't belong here. That means you.>
+		Msg5 <Buh-bye.>
+		Msg7 <Heh... I like you, you've got some real nerve. You can come in here if you wants. I think you'll fit right in with the regulars.>
+		Msg8 <Them's big words for a one who's on the wrong side of the door.>
+		Msg9 <What the blue blazes are you talking about? How will you make this worth my while?>
+		Msg10 <Wow, that's a whole lot of money... most times I only gets $1500 or so. Sure, you can come on in...>
+		Msg12 <Yeh, I guess it'd be nice to have someone pretty here for a change. Come in.>
+		Msg13 <You're a real minger. We got enough ugly faces in here for now.>
+		Msg14 <I know you're supposed to be a mecha pilot, but if you'd like I can help you learn how to fight. That's how I get most of my money... the pay for this bouncer gig blows.>
+		Msg15 <How you like to practice some fighting skills now?>
+		Msg15_1 <How'd you like to practice some fighting skills? I could really use the cash.>
+		Msg15_2 <How'd you like to practice fighting? That's the only excitement I get these days.>
+		Msg16 <Let's get started... I'll try not to hurt you.>
+		Msg17 <Come back later and we'll do this again.>
+		Msg18 <Alright, well have fun here in the lounge.>
+		Prompt1 <Sorry, I'll leave now.>
+		Prompt2 <Let me in or prepare to get your arse kicked.>
+		CPrompt2 <ifPCPassionate Accept>
+		Prompt3 <It'll be worth your while to let me in.>
+		CPrompt3 <ifG PC$ 10000 Accept>
+		Prompt4 <Couldn't you just let me through?>
+		CPrompt4 <ifNPCSexy ChatNPCID Accept>
+		Prompt7 <I'll pay you $5000. [give money]>
+		Prompt8 <Um, I'll be back later.>
+		Prompt9 <Let's train.>
+		Prompt10 <Maybe some other time.>
+
+		MetaScene 7
+		sub
+			room
+			special <SHAREDPALETTE>
+			desig <HOME>
+			minimap <......###..#1#...........>
+		end
+	end
+	inv
+		NPC Citizen
+		name <Peters>
+		job <Arena Manager>
+		chardesc Male Passionate Sociable Cheerful Pragmatic
+		Age 2
+		SetFaction 5
+
+		NPC Soldier
+		job <Bouncer>
+		home <Entry Point>
+		Renown 20
+		Knowledge 5
+		Charm 5
+		name <Kodie>
+		desig <NPC_Kodie>
+		chardesc Male Passionate Sociable
+		SetTeam 3
+		Age -1
+
+		Elevator
+		name <Steelworks Lounge>
+		desig <ENTRANCE %3%>
+		use <if# P1 0 else GoTalkKodie if= StatVal STAT_MetaVisibility 0 Print 1 Exit Destination>
+		GoTalkKodie <ifNPCOK %6% else GoJustGo Alert 101 ForceChat %6%>
+		GoJustGo <P= 1 1 Print 1 Exit Destination>
+		Msg101 <You try the door but can't get it to open. All of a sudden the security monitor activates.>
+	end
+
+
+
+Content
+	name <Mullins Arena>
+	requires <*:Q_MECHA_ARENA_BASE MAQSP>
+
+	% E1 is Mullins
+	% E2 is the arena
+	% E3 is the Privateer's Guild
+	% E4 is an environs scene for the arena
+	Element1 <Prefab>
+	Place1 <3 (Citizens) Pass Ally>
+	Element2 <QuestScene>
+	Place2 <4>
+	Element3 <Scene Building Public Sleazy>
+	Element4 <Scene Environs>
+
+	SubPlot1 <*:Q_MECHA_ARENA_CHALLENGE #30 1 2>
+	SubPlot2 <*:Q_MECHA_ARENA_CHALLENGE #42 1 2>
+	SubPlot3 <*:Q_MECHA_ARENA_CHALLENGE #54 1 2>
+	SubPlot4 <*:Q_MECHA_ARENA_CHALLENGE #66 1 2>
+
+	sub
+		Persona 1
+		rumor <Mullins used to be one of the greatest privateers, but had to retire when she was crippled in battle.>
+		rumor0 <there's an illegal mecha arena somewhere in the colony.>
+		greeting <if# PlotStatus %plotid% 0 else GoPreQuest if= ArenaState %2% NAV_AS_Win else GoCheckLoss Goto GoArenaWin>
+		GoCheckLoss <if= ArenaState %2% NAV_AS_Loss else GoCheckReady Goto GoArenaLoss>
+		GoCheckReady <if= ArenaState %2% NAV_AS_Vacant else GoArenaFull ifG ComTime ArenaRecharge %2% else GoArenaBusy Goto GoOfferFight>
+
+		GoArenaWin <if= ArenaWins %2% 10 else GoMinorWin Goto GoBigWin>
+		*GoMinorWin <*BasicArenaWin %2% GoResetArena>
+		*GoArenaLoss <*BasicArenaLoss %2% GoResetArena>
+		GoResetArena <ResetArena %2%>
+
+		*GoArenaFull <*ArenaIsFull %2%>
+		GoArenaBusy <if= PlotStatus %plotid% -1 else GoReallyBusy Goto GoSkillTraining>
+		*GoReallyBusy <*ArenaIsBusy %2%>
+
+		GoChooseBattle <ifMechaCanEnterScene %2% else GoInvalidMecha if= ArenaWins %2% 9 else GoCheckQ3 Goto .%id4%_GoInit>
+		GoInvalidMecha <NewChat Say 11>
+		GoCheckQ3 <if= ArenaWins %2% 7 else GoCheckQ2 Goto .%id3%_GoInit>>
+		GoCheckQ2 <if= ArenaWins %2% 5 else GoCheckQ1 Goto .%id2%_GoInit>>
+		GoCheckQ1 <if= ArenaWins %2% 3 else GoNormalBattle Goto .%id1%_GoInit>
+		*GoNormalBattle <*StartArenaBattle %2% GoStartFight>
+		GoStartFight <SavePos PrepArena %2% 100 Jump %2%>
+		*GoRefuseBattle <*RefuseArenaFight %2%>
+
+		GoStartQuest <SetPlotStatus %plotid% %id% SetArenaThreat %2% 10  SetEncounterActive %2%>
+
+		GoOfferFight <NewChat Say 1 AddChat 1 AddChat 2 AddChat 3>
+		GoBigWin <NewChat Say 4 History 5 XPV 500 SetPlotStatus %plotid% -1 AddChat 4  CashPrize Reward ArenaThreat %2% 1000 Goto GoResetArena>
+		GoSkillTraining <NewChat Say 6 AddChat 5>
+		*GoPreQuest <*NiceToMeetYou GoArenaIntro>
+		GoArenaIntro <NewChat Say 7 AddChat 6 AddChat 7 AddCHat 8>
+
+		result1 <Goto GoChooseBattle>
+		result2 <Goto GoRefuseBattle>
+		result3 <EndChat Say 2 School .skills Say 3>
+		.skills <1 2 3 4 5 6   11 15 16>
+		result4 <Goto result3>
+		result5 <Goto result3>
+		result6 <NewChat Say 8 AddChat 1 AddChat 2 Goto GoStartQuest>
+		result7 <NewChat Say 9 AddCheerful -1 Goto GoStartQuest>
+		result8 <NewChat Say 10 AddChat 9 AddChat 10 AddLawful 1 AddEasygoing d4 AddRenown -1 Goto GoStartQuest>
+		result9 <Goto result6>
+		result10 <Goto GoRefuseBattle>
+
+		Msg1 <Good to see you again. Are you ready to take part in today's fight?>
+		Msg2 <There's more than one path to success in the arena. Choose a strategy and train accordingly.>
+		Msg3 <The real test will come on the battlefield.>
+		Msg4 <You did it! Congratulations, you are now the champion of the Privateer Arena! In recognition of this feat, I'll give you something more valuable than a prize: the chance to learn from my years of combat experience.>
+		Msg5 <You were crowned champion at the Privateer Arena.>
+		Msg6 <There's no battle going on right now, but I can teach you about combat if you'd like.>
+		Msg7 <Hey, would you like to test your mettle in real combat? Some of the pirates around here run dueling matches just outside the spinner, in the shadow of the solar arrays. If you'd like to take part there's a cash prize for whoever wins.>
+		Msg8 <There's a match ready to go right now. Would you like to take part, or will you be back later?>
+		Msg9 <Come on back when you're feeling braver.>
+		Msg10 <It's technically illegal, but the police have better things to worry about than a few pilots having a bit of fun. Sure people get hurt sometimes but everyone knew what they were getting into. What do you say?>
+		Msg11 <You're going to need a mecha suitable for deep space before you can fight here. Sorry.>
+
+		Prompt1 <I'm ready to battle.>
+		CPrompt1 <ifChatNPCInPlay ifG PCMeks 0 Accept>
+		Prompt2 <Maybe some other time.>
+		Prompt3 <I'd like to train my skills.>
+		CPrompt3 <if= PlotStatus %plotid% -1 Accept>
+		Prompt4 <Let's start training right now.>
+		Prompt5 <Let's do that.>
+		Prompt6 <I'd like that very much.>
+		Prompt7 <No thanks, I'd rather live.>
+		Prompt8 <Isn't that illegal?>
+		Prompt9 <Alright, I could give it a try.>
+		Prompt10 <Sorry, that's not my thing.>
+
+		STC QS_MechaArena
+		name <the Privateer's Arena>
+		SetID 2
+		SpaceMap
+		Microgravity
+		Vacuum
+		SpaceBackdrop
+		terrain <SPACE>
+	end
+	inv
+		NPC Mercenary
+		name <Mullins>
+		% Mullins is Miaga's mother. She was a hero in the privateer fleet
+		% until being horribly injured in the line of duty. The left half
+		% of Mullins's body is mostly cybernetic.
+		NonCombatant
+		statline 13 10 14 16 8 17 10 13
+		CharDesc Female Heroic Criminal Sociable Melancholy Renowned
+		% Age 45; since basic char age is 20, add +25.
+		Age 25
+		%% Mullins is a member of the Pro Duelist Association
+		SetFaction 5
+		SDL_PORTRAIT <por_f_mullins(O-Y).png>
+		SDL_SPRITE <cha_f_thief.png>
+		SDL_COLORS <200 200 0 142 62 39 1 75 67>
+	end
+
+Content
+	name <Debug Arena>
+	requires <*:Q_DEBUGARENA>
+	%% This is a copy of the Cayley Arena used for debugging purposes. It should only load if
+	%% an arena challenger is marked as *:Q_DEBUG_MECHA_ARENA_CHALLENGE
+
+	% E1 is the manager
+	% E2 is the arena
+	% E3 is the cavalier's club
+	Element1 <Prefab>
+	Place1 <3 (Citizens) Pass Ally>
+	Element2 <QuestScene>
+	Place2 <3>
+	Element3 <Scene cavclub>
+
+	SubPlot1 <*:Q_DEBUG_MECHA_ARENA_CHALLENGE #5 1 2>
+
+	sub
+		Persona 1
+		greeting <if# PlotStatus %plotid% 0 else GoPreQuest if= ArenaState %2% NAV_AS_Win else GoCheckLoss Goto GoArenaWin>
+		GoCheckLoss <if= ArenaState %2% NAV_AS_Loss else GoCheckReady Goto GoArenaLoss>
+		GoCheckReady <if= ArenaState %2% NAV_AS_Vacant else GoArenaFull ifG ComTime ArenaRecharge %2% else GoArenaBusy Goto GoOfferFight>
+
+		GoArenaWin <if= ArenaWins %2% 10 else GoMinorWin Goto GoBigWin>
+		*GoMinorWin <*BasicArenaWin %2% GoResetArena>
+		*GoArenaLoss <*BasicArenaLoss %2% GoResetArena>
+		GoResetArena <ResetArena %2%>
+
+		*GoArenaFull <*ArenaIsFull %2%>
+		*GoArenaBusy <*ArenaIsBusy %2%>
+
+		GoChooseBattle <if= ArenaWins %2% 0 else GoNormalBattle Goto .%id1%_GoInit>
+		*GoNormalBattle <*StartArenaBattle %2% GoStartFight>
+		GoStartFight <SavePos PrepArena %2% 100 Jump %2%>
+		*GoRefuseBattle <*RefuseArenaFight %2%>
+
+		GoStartQuest <SetPlotStatus %plotid% %id% SetArenaThreat %2% 5  SetEncounterActive %2%>
+
+		GoOfferFight <NewChat Say 1 AddChat 1 AddChat 2>
+		% Remember, there's a lot of fiddly bits for the big win.
+		GoBigWin <NewChat Say 7 History 8 XPV 100 SetPlotStatus %plotid% -1 MechaPrize .mektype 72 RandomTheme 12 Goto GoResetArena>
+		.mektype <PDASS REGEX KETTE BIOCO FEDDE>
+		GoPreQuest <NewChat Say 1 AddChat 1 AddChat 2 Goto GoStartQuest>
+
+		result1 <Goto GoChooseBattle>
+		result2 <Goto GoRefuseBattle>
+		result3 <NewChat Say 3 AddChat 5 AddChat 6 Goto GoStartQuest>
+		result4 <NewChat Say 4>
+		result5 <NewChat Say 5 AddChat 1 AddChat 2>
+		result6 <NewChat Say 6 AddChat 1 AddChat 2 AddCheerful -d10>
+
+		Msg1 <Welcome to the Debug Arena. Are you ready to fight?>
+		Msg3 <Our arena is on the far side of the rock. It's probably the best arena in all the colonies! We buried a ton of simgravs down there, so it feels just like you're fighting on Earth!>
+		Msg4 <Alright, then. You should be able to see the fight on one of the monitors, somewhere...>
+		Msg5 <It really is! We've got a battle coming up soon. Do you want to take part?>
+		Msg6 <Er... no, no I haven't, but I watch all the mecha tournament shows... Earth pilots rock. So, do you want to fight now?>
+		Msg7 <Since that was your tenth win, you've officially won our big prize! Here's a brand new dueling mecha, straight from Earth!>
+		Msg8 <You were crowned champion of the Steel Arena.>
+
+		Prompt1 <I'm ready to go.>
+		CPrompt1 <ifChatNPCInPlay ifG PCMeks 0 Accept>
+		Prompt2 <Wait a minute, okay?>
+		Prompt3 <I'm here to fight!>
+		Prompt4 <I think I'll just watch, for now.>
+		Prompt5 <Sounds like fun!>
+		Prompt6 <You've never been to Earth, have you?>
+
+		MetaScene 1
+		sub
+			room
+			name <The Debug Arena>
+			special <SHAREDPALETTE>
+			desig <HOME>
+			minimap <#...#..2.....1......#---#>
+			inv
+				Trapdoor
+				MiniMapComponent 2
+				desig <ENTRANCE %2%>
+			end
+		end
+
+		STC QS_MechaArena
+		name <the Debug Arena>
+		SetID 2
+	end
+	inv
+		NPC Citizen
+		job <Arena Manager>
+		SDL_COLORS <170 50 171  255 212 195  244 216 28>
+		SetFaction 5
+	end
+
+
+%%
+%% *:Q_CHARA_ARENA_BASE
+%%	Contains a personal-scale arena.
+%%
+%%	These places will typically only show up in dystopian, dangerous,
+%%	and typically bad cities.
+%%
+
+Content
+	name <Theles Spinner Arena>
+	requires <*:Q_CHARA_ARENA_BASE THESP>
+
+	% E1 is the manager
+	% E2 is the arena
+	% E3 is the prize
+	% E4 is the arena site
+	Element1 <Prefab>
+	Place1 <4 (Citizens) Pass Ally>
+	Element2 <QuestScene>
+	Place2 <4>
+	Element3 <Prefab>
+	Place3 </>
+	Element4 <Scene ArenaSite>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% -1 else GoCheckProgress NewChat Say 5>
+		GoCheckProgress <if# PlotStatus %plotid% 0 else GoPreQuest if= ArenaState %2% NAV_AS_Win else GoCheckLoss Goto GoArenaWin>
+		GoCheckLoss <if= ArenaState %2% NAV_AS_Loss else GoCheckReady Goto GoArenaLoss>
+		GoCheckReady <if= ArenaState %2% NAV_AS_Vacant else GoArenaFull ifG ComTime ArenaRecharge %2% else GoArenaBusy Goto GoOfferFight>
+		GoArenaWin <if= ArenaWins %2% 10 else GoMinorWin Goto GoBigWin>
+		*GoMinorWin <*CharaArenaWin %2% GoResetArena>
+		*GoArenaLoss <*CharaArenaLoss %2% GoResetArena>
+		GoResetArena <ResetArena %2%>
+		*GoArenaFull <*ArenaIsFull %2%>
+		*GoArenaBusy <*ArenaIsBusy %2%>
+		*GoChooseBattle <*StartCharaBattle %2% GoStartFight>
+		GoStartFight <SavePos PrepArena %2% 100 Jump %2%>
+		*GoRefuseBattle <*RefuseArenaFight %2%>
+		GoStartQuest <SetPlotStatus %plotid% %id% SetArenaThreat %2% 15>
+		GoOfferFight <NewChat Say 1 AddChat 1 AddChat 2>
+		% Remember, there's a lot of fiddly bits for the big win.
+		GoBigWin <NewChat Say 2 History 3 GiveItem %3% XPV 100 SetPlotStatus %plotid% -1  Goto GoResetArena>
+		*GoPreQuest <*NiceToMeetYou GoArenaIntro>
+		GoArenaIntro <NewChat Say 4 AddChat 3 AddChat 4>
+		result1 <Goto GoChooseBattle>
+		result2 <Goto GoRefuseBattle>
+		result3 <NewChat Say 6 AddChat 1 AddChat 2  Goto GoStartQuest>
+		result4 <NewChat Say 7>
+		Msg1 <Welcome back. Are you ready to fight?>
+		Msg2 <In honor of your tenth victory, I'd like to present you with this Thracian helmet.>
+		Msg3 <You were crowned champion of the Gladiator Pit.>
+		Msg4 <Hey, are you looking to make some cash? I've got a great deal. We have a gladiator pit just below here. Take part in the games and you could make big money. Lose, and you don't have to worry about being poor ever again.>
+		Msg5 <Champions like you get retired from the games. We used to let them just keep on fighting, but that screwed with the betting odds.>
+		Msg6 <All matches are to the death. You could try surrendering but nobody can hear you over the screams. If you want, you can have your first match right away.>
+		Msg7 <Look around you. When violence is a way of life, the only entertainment possible becomes megaviolence.>
+		Prompt1 <I'm all set to go.>
+		CPrompt1 <ifChatNPCInPlay Accept>
+		Prompt2 <Not right now, no.>
+		Prompt3 <That sounds like something I'd like.>
+		Prompt4 <You've got to be kidding.>
+
+		MetaScene 1
+		sub
+			room
+			name <Manager's Office>
+			special <SHAREDPALETTE>
+			desig <HOME>
+			minimap <.......2.....1......&---&>
+			inv
+				TrapDoor
+				desig <ENTRANCE %2%>
+				MiniMapComponent 2
+			end
+		end
+
+		STC QS_CharaArena
+		name <the Gladiator Pit>
+		SetID 2
+	end
+	inv
+		NPC Bandit
+		job <Arena Manager>
+
+		HeadArmor 7
+		mass -12
+		name <Thracian Helmet>
+		Sealed
+		Hardened
+		Ego 10
+	end
+
+

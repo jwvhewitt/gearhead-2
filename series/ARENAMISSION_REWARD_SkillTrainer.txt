@@ -1,0 +1,399 @@
+%%
+%% *REWARD missions
+%%
+%% Don't let the name fool you- these missions aren't rewards in themselves;
+%% rather, they present an opportunity for the PC to earn a significant reward.
+%% The reward missions are typically more difficult than regular missions.
+%%
+%% The SkillTrainer rewards usually need a SKILL_TRAIN_MISSION coupon. Check to
+%% make sure that the appropriate skill tag is present. Minor skills, which do
+%% not require a coupon, will be indicated in the section headers.
+%%
+%% The skill trainer missions are arranged by Skill ID.
+%%
+
+%% ********************************
+%% ***   [s1]  MECHA  GUNNERY   ***
+%% ********************************
+ArenaMission
+	name <Missile Defense>
+	requires <*REWARD SKILL_TRAIN_MISSION [s1]>
+	desc <A missile has been launched by %name1%. You must intercept and destroy it before it's too late.>
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 500
+
+	SpaceMap
+	terrain <SPACE>
+	SpaceScroll
+	Microgravity
+	Vacuum
+	SpaceBackdrop
+
+	Element1 <Faction Enemy>
+
+	% L1 = Initialization/Timer
+	% L2 = Victory counter
+	start <if= L1 0 L= 1 ComTime L+ 1 300 CommanderSays 1>
+
+	% Every 5 minutes, and every player move, check to see if the time is up.
+	TMove1 <Goto GoCheckTime>
+	TMove2 <Goto GoCheckTime>
+	5min <Goto GoCheckTime>
+	GoCheckTime <ifG ComTime L1 CommanderSays 4 LoseArenaMission>
+
+	nu1 <if= T1 0 if= L2 0 L= 2 1 Alert 2 LoseArenaMission>
+	nu3 <if= T3 0 if= L2 0 L= 2 1 Alert 3 XPV 200 WinArenaMission  IntelDebriefing 5 History 6 AddMajorSkill 1 if= T2 0 Salvage>
+
+	Msg1 <You have five minutes to destroy the missile. Good luck.>
+	Msg2 <The mission is a failure.>
+	Msg3 <The mission is a success.>
+	Msg4 <The missile is too close to detonation- I'm aborting this mission. Return to base immediately.>
+	Msg5 <Disaster has been averted. Because of your crack shooting skills, I've enrolled you in our sharpshooter program.>
+	Msg6 <You shot down a missile launched by %name1%.>
+
+	sub
+		Team 1
+		SetEnemy 2 3
+		ParaX 5
+		ParaY 5
+
+		Team 2
+		SetEnemy 1
+		SetAlly 3
+		Deploy <SetSelfFaction M1   WMecha 2 ArenaRenown 600>
+		ParaX 30
+		ParaY 30
+
+		Team 3
+		SetEnemy 1
+		SetAlly 2
+	end
+	inv
+		Prop 5
+		name <Missile>
+		Scale 2
+		SDL_SPRITE <aer_drone.png>
+		SDL_COLORS <201 205 229 122 130 130 208 34 51>
+		update <V= 1 HardSkillTar ArenaRenown  V+ 1 3  SelfSkill= 10 V1>
+		Hardened
+		SetTeam 3
+		XPos 45
+		YPos 45
+	end
+
+
+
+%% *********************************
+%% ***   [s2]  MECHA  FIGHTING   ***
+%% *********************************
+ArenaMission
+	name <Smash and Burn>
+	requires <*REWARD SKILL_TRAIN_MISSION [s2] -!Ne>
+	desc <You will be dropped deep into territory controlled by %name1%. Your mission is to cause as much destruction as possible.>
+
+	MapWidth 60
+	MapHeight 60
+
+	PayRate 500
+
+	CityBlockMap
+	terrain <GROUND>
+
+	Element1 <Faction Enemy>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	% L3 = Destroy Bases Counter- if all four are destroyed, earn Mecha Fighting training
+	% L4 = Reinforcement calculator
+	% L11 = B1 Destroyed
+	% L12 = B2 Destroyed
+	% L13 = B3 Destroyed
+	% L14 = B4 Destroyed
+	Start <if= L1 0 CommanderSays 1 L= 1 1>
+	nu1 <if= T1 0 Return if= L2 0 L= 2 1 ifG L3 0 else GoLoseMission Goto GoWinMission>
+
+	%%  1  2
+	%%   PC 	<--- Map!
+	%%  3  4
+	nu11 <if= T11 0 if= L11 0 L= 11 1 XPV 100 L+ 3 1 if# L3 4 else GoWinMission Print 4   L= 4 * 50 L3 L+ 4 100   WMecha 24 ArenaRenown L4>
+	nu12 <if= T12 0 if= L12 0 L= 12 1 XPV 100 L+ 3 1 if# L3 4 else GoWinMission Print 4   L= 4 * 50 L3 L+ 4 100   WMecha 23 ArenaRenown L4>
+	nu13 <if= T13 0 if= L13 0 L= 13 1 XPV 100 L+ 3 1 if# L3 4 else GoWinMission Print 4   L= 4 * 50 L3 L+ 4 100   WMecha 22 ArenaRenown L4>
+	nu14 <if= T14 0 if= L14 0 L= 14 1 XPV 100 L+ 3 1 if# L3 4 else GoWinMission Print 4   L= 4 * 50 L3 L+ 4 100   WMecha 21 ArenaRenown L4>
+
+	GoWinMission <Alert 3 WinArenaMission if= L3 4 IntelDebriefing 5 History 6 AddMajorSkill 2>
+	GoLoseMission <Alert 2 LoseArenaMission>
+
+	Msg1 <There are four bases located in this area. Destroy as many as you can, then escape before reinforcements arrive.>
+	Msg2 <The mission is a failure.>
+	Msg3 <The mission is a success.>
+	Msg4 <One of the bases has been destroyed.>
+	Msg5 <Because of your talent for large scale mayhem, your team has been enrolled in the mecha fighting training program. Good work.>
+	Msg6 <You destroyed four bases belonging to %name1% in a single mission.>
+
+	sub
+		Team 1
+		SetEnemy 11 12 13 14 21 22 23 24
+		ParaX 30
+		ParaY 30
+
+		Team 11
+		SetEnemy 1
+		SetAlly 12 13 14 21 22 23 24
+		home <Base 1>
+
+		Team 21
+		SetEnemy 1
+		SetAlly 11 12 13 14 22 23 24
+		Deploy <SetSelfFaction M1 WMecha 21 ArenaRenown 100>
+		home <Base 1>
+
+		rect
+		name <Base 1>
+		Desig <NW>
+		sub
+			SuperProp
+			requires <*Fortress>
+			SetTeam 11
+		end
+
+		Team 12
+		SetEnemy 1
+		SetAlly 11 13 14 21 22 23 24
+		home <Base 2>
+
+		Team 22
+		SetEnemy 1
+		SetAlly 11 12 13 14 21 23 24
+		Deploy <SetSelfFaction M1 WMecha 22 ArenaRenown 100>
+		home <Base 2>
+
+		rect
+		name <Base 2>
+		Desig <NE>
+		sub
+			SuperProp
+			requires <*Fortress>
+			SetTeam 12
+		end
+
+		Team 13
+		SetEnemy 1
+		SetAlly 11 12 14 21 22 23 24
+		home <Base 3>
+
+		Team 23
+		SetEnemy 1
+		SetAlly 11 12 13 14 21 22 24
+		Deploy <SetSelfFaction M1 WMecha 23 ArenaRenown 100>
+		home <Base 3>
+
+		rect
+		name <Base 3>
+		Desig <SW>
+		sub
+			SuperProp
+			requires <*Fortress>
+			SetTeam 13
+		end
+
+		Team 14
+		SetEnemy 1
+		SetAlly 11 13 12 21 22 23 24
+		home <Base 4>
+
+		Team 24
+		SetEnemy 1
+		SetAlly 11 12 13 14 21 23 22
+		Deploy <SetSelfFaction M1 WMecha 24 ArenaRenown 100>
+		home <Base 4>
+
+		rect
+		name <Base 4>
+		Desig <SE>
+		sub
+			SuperProp
+			requires <*Fortress>
+			SetTeam 14
+		end
+	end
+
+%% *********************************
+%% ***   [s3]  MECHA  PILOTING   ***
+%% *********************************
+%% NOTE: Mecha Piloting should not be made available at !Ne or !Lo levels.
+ArenaMission
+	name <Deep Extraction>
+	requires <*REWARD SKILL_TRAIN_MISSION [s3] -!Ne -!Lo>
+	desc <You must recover an allied scout from %name1% territory.>
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 500
+
+	ForestMap
+	terrain <GROUND>
+
+	Element1 <Faction Enemy>
+	Element2 <Faction Ally>
+	Element3 <Prefab>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	Start <if= L1 0 Monologue %3% 1 L= 1 1>
+	nu1 <if= T1 0 if= L2 0 L= 2 1 Alert 2 LoseArenaMission>
+	nu2 <if= T2 0 if= L2 0 Salvage Return XPV 200 L= 2 1 Alert 3 WinArenaMission ifNPCInPlay %3% else GoBadWin Monologue %3% 4 IntelDebriefing 5 AddMajorSkill 3 History 7>
+	GoBadWin <IntelDebriefing 6>
+
+	Msg1 <I'm surrounded by enemies! Help me get rid of them.>
+	Msg2 <The mission is a failure.>
+	Msg3 <The mission is a success.>
+	Msg4 <Thanks, we did it!>
+	Msg5 <Good work resucing %name3%. In thanks, \SPR %3% has offered to teach you some things about mecha piloting.>
+	Msg6 <We recovered some useful information from %name3%'s wreckage, but not as much as we would have if \SPR %3% returned here alive.>
+	Msg7 <You rescued %name3% from %name1%.>
+
+	sub
+		Team 1
+		SetEnemy 2
+		SetAlly 3
+		ParaX 5
+		ParaY 5
+
+		Team 2
+		SetEnemy 1 3
+		Deploy <SetSelfFaction M1   WMecha 2 ArenaRenown 600>
+		ParaX 20
+		ParaY 30
+
+		Team 3
+		SetEnemy 2
+		SetAlly 1
+		ParaX 45
+		ParaY 45
+	end
+	inv
+		NPC Mecha Pilot
+		job <Recon Pilot>
+		SetFaction -2
+		SetTeam 3
+	end
+
+
+%% *****************************
+%% ***   [s11]  INITIATIVE   ***
+%% *****************************
+ArenaMission
+	name <Lightning Strike>
+	requires <*REWARD SKILL_TRAIN_MISSION [s11]>
+	desc <You must defeat a group of enemy mecha quickly in order to rendezvous with an allied strike team.>
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 500
+
+	WildMap
+	terrain <GROUND>
+
+	Element1 <Faction Enemy>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	% L3 = Time Limit
+	Start <if= L1 0 CommanderSays 1 L= 1 1 L= 3 ComTime L+ 3 300>
+	nu1 <if= T1 0 if= L2 0 L= 2 1 Alert 2 LoseArenaMission>
+	nu2 <if= T2 0 if= L2 0 Salvage Return XPV 200 L= 2 1 Alert 3 WinArenaMission ifG L3 ComTime else GoFailRendezvous IntelDebriefing 5 AddMajorSkill 11>
+	GoFailRendezvous <IntelDebriefing 4>
+
+	Msg1 <You should defeat these enemies within five minutes in order to make the rendezvous with Strike Team Beta. The success of this operation is depending on you.>
+	Msg2 <The mission is a failure.>
+	Msg3 <The mission is a success.>
+	Msg4 <You did not make the rendezvous with Strike Team Beta in time.>
+	Msg5 <Because of your performance on this mission, I've arranged a place in our rapid assault training program for this unit. Congratulations.>
+
+	sub
+		Team 1
+		SetEnemy 2
+		ParaX 10
+		ParaY 10
+
+		Team 2
+		SetEnemy 1
+		Deploy <SetSelfFaction M1   WMecha 2 ArenaRenown 450>
+		ParaX 40
+		ParaY 40
+	end
+
+
+%% ********************************
+%% ***   [s13]  MECHA  REPAIR   ***
+%% ********************************
+%% NOTE: Mecha Repair should not be made available at !Ne level.
+
+
+%% ***************************
+%% ***   [s14]  MEDICINE   ***
+%% ***************************
+%% NOTE: Medicine should not be made available at !Ne level.
+%% Minor Skill
+
+
+%% **************************************
+%% ***   [s15]  ELECTRONIC  WARFARE   ***
+%% **************************************
+
+
+%% *********************************
+%% ***   [s16]  SPOT  WEAKNESS   ***
+%% *********************************
+
+
+%% *******************************
+%% ***   [s17]  CONVERSATION   ***
+%% *******************************
+%% Minor Skill
+ArenaMission
+	name <Rush Hour Panic>
+	requires <*REWARD [s17]>
+	desc <A group of mecha from %name1% has been encountered in a heavily populated area.>
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 500
+
+	CityBlockMap
+	terrain <GROUND>
+
+	Element1 <Faction Enemy>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	% L3 = Time Limit
+	Start <if= L1 0 CommanderSays 1 L= 1 1 L= 3 ComTime L+ 3 180>
+	nu1 <if= T1 0 if= L2 0 L= 2 1 Alert 2 LoseArenaMission>
+	nu2 <if= T2 0 if= L2 0 Salvage Return XPV 200 L= 2 1 Alert 3 WinArenaMission ifG L3 ComTime IntelDebriefing 4 AddMinorSkill 17>
+
+	Msg1 <Enemy mecha have been spotted. Try to eliminate them quickly; it'll look bad for us if the battle takes too long.>
+	Msg2 <The mission is a failure.>
+	Msg3 <The mission is a success.>
+	Msg4 <We got some good press from that battle. How would you like to be our faction spokesperson? I've signed you up for some public relations training.>
+
+	sub
+		Team 1
+		SetEnemy 2
+		ParaX 10
+		ParaY 10
+
+		Team 2
+		SetEnemy 1
+		Deploy <SetSelfFaction M1   WMecha 2 ArenaRenown 450>
+		ParaX 40
+		ParaY 40
+	end
+
+

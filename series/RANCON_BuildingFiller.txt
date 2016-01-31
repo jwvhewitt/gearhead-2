@@ -1,0 +1,565 @@
+%%
+%% Contains all kind of rooms to add to buildings. Many of these rooms
+%% will contain things that unlawful characters can steal.
+%%
+
+%% *UNIVERSITY_X Content
+%%	Filler for universities. Professor's offices, student lounges, etc.
+%%	Minimaps open on one side.
+
+Content
+	requires <*UNIVERSITY_X>
+	minimap <#1#2#......3........#---#>
+
+	element1 <Prefab>
+	element2 <Prefab>
+	element3 <Prefab>
+	team3 <citizens>
+	teamdata3 <pass>
+
+	sub
+		Persona 3
+		*Greeting <*NiceToMeetYou GoChat>
+		*GoChat <*MISC_CHATTER>
+	end
+	inv
+		STC TV
+		PDir 2
+
+		STC COMPUTER-1
+		PDir 2
+		use <ifYesNo 1 2 3 MoreMemo Email>
+		Msg1 <This is a public thruweb terminal. Would you like to check your email?>
+		Msg2 <Yes I would.>
+		Msg3 <No, not really.>
+
+		NPC Student
+	end
+
+Content
+	requires <*UNIVERSITY_X>
+	minimap <#1#2#......3........#---#>
+
+	element1 <Prefab>
+	element2 <Prefab>
+	element3 <Prefab>
+	team3 <citizens>
+	teamdata3 <pass>
+
+	sub
+		Persona 3
+		*Greeting <*NiceToMeetYou GoChat>
+		*GoChat <*MISC_CHATTER>
+	end
+	inv
+		STC VENDING-1
+		PDir 2
+
+		STC VIDEOGAME-4
+		PDir 2
+
+		NPC Student
+	end
+
+
+
+%% *FACTORY_X Content
+%%	Filler for factories.
+%%	Minimaps should be open on all four sides.
+
+Content
+	requires <*FACTORY_X>
+	content <Required *STORAGE_X na Local>
+
+%% *CONSTRUCTION_X Content
+%%	Filler for construction sites, shipyards, and so on.
+%%	Minimaps should be open on all four sides.
+
+Content
+	requires <*CONSTRUCTION_X>
+	content <Required *STORAGE_X na Local>
+
+Content
+	requires <*CONSTRUCTION_X ~Static>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Construction Worker
+	end
+
+Content
+	requires <*CONSTRUCTION_X ~Static>
+	Minimap <.......#...###..1#.......>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Construction Worker
+	end
+
+
+%% *STORAGE_X Content
+%%	Filler for basements, workshops, and so on.
+%%	Minimaps should be open on all four sides.
+
+Content
+	requires <*STORAGE_X>
+	Element1 <Prefab>
+	minimap <......###..###...........>
+
+Content
+	%% Pylon
+	requires <*STORAGE_X>
+	Minimap <.......#...###...#.......>
+
+Content
+	requires <*STORAGE_X Common>
+	Minimap <12......................3>
+	element1 <PREFAB>
+	element2 <PREFAB>
+	element3 <PREFAB>
+	inv
+		STC BOX-1
+		STC BOX-1
+		STC BOX-1
+	end
+
+Content
+	requires <*STORAGE_X Common>
+	Minimap <.......1....23...........>
+	element1 <PREFAB>
+	element2 <PREFAB>
+	element3 <PREFAB>
+	inv
+		STC BOX-1
+		STC BOX-1
+		STC BOX-1
+	end
+
+%% *HOTEL_X Content
+%%	Contains a hotel room. There should be something worth stealing inside.
+
+Content
+	%% Empty Room. All others can be based off this one.
+	requires <*HOTEL_X>
+	minimap <#####.#21..+...##...##+##>
+	ZONE_SPECIAL <NoGO>
+	element1 <Prefab>
+	element2 <Prefab>
+	inv
+		STC BED-1
+		PDir 2
+
+		STC ENDTABLE-1
+		PDir 2
+	end
+
+Content
+	%% Locked Room, but otherwise empty. All others can be based off this one.
+	requires <*HOTEL_X>
+	minimap <#####.#21..+...##...##=##>
+	ZONE_SPECIAL <NoGO>
+	element1 <Prefab>
+	element2 <Prefab>
+	Sub
+		STC OneShotDoor
+	end
+	inv
+		STC BED-1
+		PDir 2
+
+		STC ENDTABLE-1
+		PDir 2
+	end
+
+Content
+	requires <*HOTEL_X>
+	minimap <......1.............##+##>
+	Element1 <Prefab>
+	ZONE_SPECIAL <NoGO>
+	Sub
+		STC OneShotDoor
+		update <if= V1 0 SetStat STAT_LOCK SkillTar 15 V= 1 1>
+	end
+	Inv
+		Treasure
+		Fudge 900
+		name <Tiki Clock>
+		Mass 1
+		desc <A decorative souvenir clock, crafted in the style of an ancient Polynesian idol. It must be worth something to someone.>
+		StolenGoods
+	end
+
+Content
+	requires <*HOTEL_X>
+	minimap <......1.............##+##>
+	Element1 <Prefab>
+	ZONE_SPECIAL <NoGO>
+	Sub
+		STC OneShotDoor
+		update <if= V1 0 SetStat STAT_LOCK SkillTar 35 V= 1 1>
+	end
+	Inv
+		Treasure
+		name <Corporate Datachip>
+		Fudge 40000
+		desc <There must be loads of valuable information stored here. The right people would pay a fortune for it.>
+		StolenGoods
+	end
+
+Content
+	requires <*HOTEL_X>
+	minimap <......1.............##+##>
+	Element1 <Prefab>
+	ZONE_SPECIAL <NoGO>
+	Sub
+		STC OneShotDoor
+		update <if= V1 0 SetStat STAT_LOCK SkillTar 55 V= 1 1>
+	end
+	Inv
+		Treasure
+		name <Necklace>
+		Fudge 70000
+		desc <A gold necklace.>
+		StolenGoods
+	end
+
+Content
+	requires <*HOTEL_X>
+	minimap <......1.............##+##>
+	Element1 <Prefab>
+	ZONE_SPECIAL <NoGO>
+	Sub
+		STC OneShotDoor
+		update <if= V1 0 SetStat STAT_LOCK SkillTar 75 V= 1 1>
+	end
+	Inv
+		Treasure
+		name <Emerald Bracelet>
+		Fudge 700000
+		desc <A golden bracelet decorated with many jewels.>
+		StolenGoods
+	end
+
+
+%% *HABITATION_X Content
+%%	Filler rooms for apartment buildings, space stations, and so on.
+%%	Minimaps open to the bottom.
+
+Content
+	%% A Single Rat
+	requires <*HABITATION_X Poor>
+	minimap <..1.................##+##>
+	ZONE_SPECIAL <NoGO>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	inv
+		monster Rat
+	end
+
+Content
+	%% Rat Nest
+	requires <*HABITATION_X Dangerous ~Poor>
+	minimap <..1...234....5......##+##>
+	ZONE_SPECIAL <NoGO>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	element2 <Prefab>
+	teamdata2 <sd enemy>
+	element3 <Prefab>
+	teamdata3 <sd enemy>
+	element4 <Prefab>
+	teamdata4 <sd enemy>
+	element5 <Prefab>
+	teamdata5 <sd enemy>
+	inv
+		monster Rat
+		monster Rat
+		monster Rat
+		monster Rat
+		monster Death Rat
+	end
+
+Content
+	%% Crazed Killer
+	requires <*HABITATION_X Dystopia>
+	minimap <..1.................##+##>
+	element1 <Prefab>
+	Team1 <Enemies>
+	teamdata1 <SD ENEMY>
+	ZONE_SPECIAL <NoGO>
+	Surrender%1% <Print %id%01 DeleteNPC %1%>
+	Msg%id%01 <%name1% returns to \PPR %1% senses and wanders off.>
+	sub
+		Persona 1
+		special <UNLISTED NOPLOTS>
+		greeting <NewChat SayAnything>
+	end
+	inv
+		NPC Bandit
+		job <Futsie>
+	end
+
+
+Content
+	%% No Room
+	requires <*HABITATION_X>
+	minimap <#########################>
+
+Content
+	%% Empty Room
+	requires <*HABITATION_X>
+	minimap <....................##+##>
+	content <Optional *URBAN_X na Local>
+
+Content
+	requires <*HABITATION_X ~Legit ~Public>
+	minimap <#################1####+##>
+	element1 <Prefab>
+	ZONE_SPECIAL <NoGO>
+	inv
+		Melee 2
+		mass 5
+		name <Mop>
+		desc <A cleaning instrument.>
+	end
+
+Content
+	%% Basic room.
+	requires <*HABITATION_X ~Static ~Public ~Legit>
+	minimap <....................##+##>
+	content <Required *URBAN_X na Local>
+
+Content
+	%% Room with something worth stealing.
+	requires <*HABITATION_X ~Legit>
+	minimap <..1.................##=##>
+	element1 <Prefab>
+	ZONE_SPECIAL <NoGO>
+	Sub
+		STC OneShotDoor
+		update <if= V1 0 SetStat STAT_LOCK SkillTar 55 V= 1 1>
+	end
+	inv
+		Treasure
+		Fudge 300000
+		mass 5
+		name <Antique Video Player>
+		desc <This entertainment unit is long obsolete, but might have some value for collectors.>
+		StolenGoods
+	end
+
+%% *BEDROOM Content
+%%   A simple living area.
+
+Content
+	requires <*BEDROOM>
+	minimap <#####.#21..+...##...##+##>
+	ZONE_SPECIAL <NoGO>
+	element1 <Prefab>
+	element2 <Prefab>
+	inv
+		STC BED-1
+		PDir 2
+
+		STC ENDTABLE-1
+		PDir 2
+	end
+
+
+%% *SPACEPORT_X Content
+%%   Things you would find in a spaceport.
+Content
+	requires <*SPACEPORT_X>
+	Content <Required *GARAGE_X - Local>
+
+
+%% *GARAGE_X Content
+%%   Things you would find in a garage.
+Content
+	requires <*GARAGE_X>
+	Content <Required *MECHANIC_SHOP - Local>
+
+Content
+	requires <*GARAGE_X>
+	minimap <......1.2...3.......##=##>
+	ZONE_SPECIAL <NoGO>
+	element1 <Prefab>
+	element2 <Prefab>
+	element3 <Prefab>
+	get%1% <if= L%id%01 0 L= %id%01 1 AddLawful -3>
+	get%2% <if= L%id%01 0 L= %id%01 1 AddLawful -3>
+	get%3% <if= L%id%01 0 L= %id%01 1 AddLawful -3>
+	sub
+		STC OneShotDoor
+	end
+	inv
+		RepairFuel 1500
+		name <Mecha Parts>
+		mass 20
+
+		RepairFuel 1500
+		name <Mecha Parts>
+		mass 20
+
+		RepairFuel 1500
+		name <Mecha Parts>
+		mass 20
+	end
+
+
+%% *HOSPITAL_X Content
+%%   Things you would find in a hospital... A clinic will usually have one
+%%   mandatory doctor content and multiple random HOSPITAL_X contents.
+%%   These could be additional doctors, or other things.
+
+Content
+	%% Abomination
+	requires <*HOSPITAL_X Dystopia>
+	minimap <..1.................##=##>
+	ZONE_SPECIAL <NoGO>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	inv
+		monster Hunter-Scout
+		name <Abomination>
+	end
+
+Content
+	requires <*HOSPITAL_X>
+	Content <Required *DOCTOR - Local>
+
+Content
+	requires <*HOSPITAL_X>
+	minimap <1...3.....2...4.....##+##>
+	element1 <Prefab>
+	element2 <Prefab>
+	element3 <Prefab>
+	element4 <Prefab>
+	inv
+		STC BED-1
+		PDir 0
+
+		STC BED-1
+		PDir 0
+
+		STC BED-1
+		PDir 4
+
+		STC BED-1
+		PDir 4
+	end
+
+Content
+	requires <*HOSPITAL_X>
+	minimap <.1.2...3............##=##>
+	ZONE_SPECIAL <NoGO>
+	element1 <Prefab>
+	element2 <Prefab>
+	element3 <Prefab>
+	get%1% <if= L%id%01 0 L= %id%01 1 AddLawful -3>
+	get%2% <if= L%id%01 0 L= %id%01 1 AddLawful -3>
+	get%3% <if= L%id%01 0 L= %id%01 1 AddLawful -3>
+	sub
+		STC OneShotDoor
+	end
+	inv
+		STC PILL_QuickFix
+		STC PILL_Regen
+		item Medicated Bandages
+	end
+
+%% *CLUB_X Content
+%%   Insert some content into this coffee shop, dance bar, or party.
+Content
+	requires <*CLUB_X>
+	minimap <....................##.##>
+	content <Optional *URBAN_X - Local>
+
+Content
+	requires <*CLUB_X>
+	minimap <....................##+##>
+	content <Optional *URBAN_X - Local>
+
+Content
+	requires <*CLUB_X ~Sleazy>
+	minimap <....................##=##>
+	ZONE_SPECIAL <NoGO>
+	content <Optional *URBAN_X - Local>
+
+Content
+	requires <*CLUB_X Sleazy ~Private>
+	minimap <....................##?##>
+	ZONE_SPECIAL <NoGO>
+	content <Optional *URBAN_X - Local>
+
+Content
+	requires <*CLUB_X>
+	minimap <######...##...##...##...#>
+	content <Optional *URBAN_X - Local>
+
+Content
+	requires <*CLUB_X Static>
+	content <Required *BAR_SERVICE - Local>
+
+Content
+	requires <*CLUB_X Dynamic>
+	minimap <######...##...##.1.##...#>
+	element1 <Character Bartender>
+	sub
+		Persona 1
+		*greeting <*HowAreYou GoShop>
+		*GoShop <*SERVICE_BARTENDER GoBye>
+		*GoBye <*GOODBYE>
+	end
+
+
+Content
+	requires <*CLUB_X ~Sleazy>
+	minimap <#################.####+##>
+
+Content
+	requires <*CLUB_X ~Legit ~Public>
+	minimap <#################1####+##>
+	element1 <Prefab>
+	ZONE_SPECIAL <NoGO>
+	inv
+		Melee 2
+		mass 5
+		name <Mop>
+		desc <A cleaning instrument.>
+	end
+
+Content
+	requires <*CLUB_X ~Private Dynamic>
+	minimap <#.2.##...###?####1####+##>
+	get%2% <if= L%id%01 0 L= %id%01 1 AddLawful -5 SetItemStolen %1%>
+	ZONE_SPECIAL <NoGO>
+	element1 <Prefab>
+	element2 <Prefab>
+	inv
+		Melee 2
+		mass 5
+		name <Mop>
+		desc <A cleaning instrument.>
+
+		Food 5
+		Name <Imperialis Classico>
+		FoodFX:CauseStatus
+		FoodMod:Stone
+		FoodMorale 10
+		Fudge 300000
+		desc <A vintage wine from the Age of Superpowers. It is extremely rare and extremely expensive.>
+	end
+

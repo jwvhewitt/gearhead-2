@@ -1,0 +1,108 @@
+Battroid 4
+Name <War Cry>
+SDL_Sprite <>
+SDL_Portrait <item_warcry.png>
+Desig <H-10>
+desc <A general purpose battroid from Hoeller Industries.>
+TYPE <GROUND SPACE INSIDE>
+FACTIONS <HOELL PRIVA RISHI FCOMS>
+ROLE_HOELL <GENERAL:TROOPER  ASSAULT:TROOPER>
+ROLE_PRIVA <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_FCOMS <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+
+sub
+Head
+	size 3
+	Armor 3
+	Mass -1
+	sub
+		Sensor 5
+
+		ECM 2
+	end
+
+Torso
+	Armor 3
+	Mass -1
+	sub
+		CPit
+		Armor 1
+
+		HoverJet 4
+
+		Mount
+		name <Torso Mount>
+		inv
+			MLauncher 4
+			sub
+				STC HR-10
+				Magazine 4
+			end
+		end
+
+		Sensor 2
+	end
+	inv
+		BodyArmor 2
+		Mass -2
+	end
+
+Arm
+	name <Right Arm>
+	Armor 3
+	Mass -1
+	sub
+		Hand
+		name <Right Hand>
+		inv
+			STC RG-8
+		end
+
+		Mount
+		name <Right Arm Mount>
+		inv
+			EMelee 3
+			name <Beam Bayonet>
+		end
+	end
+
+Arm
+	name <Left Arm>
+	Armor 3
+	Mass -1
+	sub
+		Hand
+		name <Left Hand>
+		inv
+
+		end
+
+		Mount
+		name <Left Arm Mount>
+		inv
+
+		end
+	end
+	inv
+		Shield 2
+		DefBonus 1
+	end
+
+Leg
+	name <Right Leg>
+	Armor 4
+	Mass -1
+	sub
+		HoverJet 4
+	end
+
+Leg
+	name <Left Leg>
+	Armor 4
+	Mass -1
+	sub
+		HoverJet 4
+	end
+
+end
+

@@ -1,0 +1,88 @@
+%%  ***********************
+%%  ***   EGG  SCENES   ***
+%%  ***********************
+%%
+%% These are scenes which get inserted into a new adventure as directed by
+%% the egg.
+%%
+
+%%  *EGG_RESIDENCE_[tag]
+%%    These scenes act as the PC's residence. Be sure to include some containers
+%%    for stashing loot. When added to the adventure its designation will be
+%%    changed to "PCHOME".
+
+	Scene
+	name <Home>
+	desig <*EGG_RESIDENCE_Apartment>
+	type <building private residence pchome>
+	entrance <*BUILDING short>
+	special <ADDEXIT SHOWALL>
+	MallMap
+	MapWidth 15
+	MapHeight 15
+
+
+	WallType 20
+	FloorType 16
+
+	% L1 = First Time Counter
+
+	start <if# L1 0 else GoFirstTime Print 1>
+	GoFirstTime <L= 1 1>
+	Msg1 <You enter your home.>
+
+	NeededCells 1
+	Content1 <Fill       Sub *BEDROOM           na>
+
+	sub
+		team 1
+
+		team 2
+		name <Citizens>
+		SetAlly 1
+		Passive
+
+		team 3
+		name <Guards>
+		SetAlly 2
+
+		room
+		name <Foyer>
+		desig <EntranceGrid>
+		special <SHAREDPALETTE>
+
+		room
+		name <PC's Room>
+		special <STARTHERE SHAREDPALETTE>
+		minimap <#####1#234+#........##+##>
+		inv
+			STC RUBBLE-1
+			MiniMapComponent 1
+			% V1 = Have rummaged once.
+			use <if= V1 1 else GoFirstTime Print 1 OpenInv>
+			GoFirstTime <ifYesNo 2 3 4 else GoRefuse V= 1 1 Print 1 OpenInv>
+			GoRefuse <Print 5>
+			Msg1 <You rummage through the junk in your closet.>
+			Msg2 <You should really clean out your closet more often. Do you want to rummage through this pile of junk?>
+			Msg3 <Yes, I do.>
+			Msg4 <No, there's nothing good here.>
+			Msg5 <It'll still be here the next time you come back.>
+
+			STC BED-1
+			PDir 2
+			MiniMapComponent 3
+
+			STC ENDTABLE-1
+			PDir 2
+			MiniMapComponent 2
+
+			STC Crate
+			PDir 3
+			MiniMapComponent 4
+		end
+
+	end
+
+
+
+

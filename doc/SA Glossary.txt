@@ -1,0 +1,204 @@
+String Attribute Glossary
+
+A catch-all doc for the strange things that may be stored in string attributes.
+
+CATEGORY
+	Determines what shopkeepers will stock.
+	WEAPON, MELEE, MISSILE, THROWN, EXOTIC
+	TOOL, SCIENCE, INSTRUMENT, RELIGION
+	GRENADE
+	ACCESSORY
+	ARMOR, CLOTHING, SHIELD
+	MEDICINE, FOOD
+	ENTERTAINMENT
+	CYBERWARE
+	ELECTRONICS, COMPUTER, SOFTWARE, COMMUNICATIONS
+	SPACE
+	CONTRABAND
+	SPORTS
+	ODDITIES, NINJA, PIRATE
+	SOUVENIR
+	TREASURE, JEWELRY, ARTWORK, ANTIQUE, GEMSTONE, MINERAL
+	MEXTRA, MEK_WEP, MEK_ARM, MEK_ENG
+	NPCONLY - This item will only be generated for NPCs; useful for armor sets
+	ESSENTIAL - These items will be generated in the CavClub store
+
+CONTEXT
+	Used for selecting random content connected to this thing. Tags are 5 chars long.
+	MILIT, POLIT, POLIC, CRIME, CORPO: Faction types
+	SPACE
+
+DESC
+	Description. Contains a readable description of the gear.
+
+
+DESIG
+	Designation
+	A unique identifier for this gear which is independant of its name.
+	Designations are used to select gears from the STC file.
+	Designations may be applied to map features to direct the placement
+of scene elements. The map feature designated as "EXIT" will recieve gateways
+to all sub-scenes.
+	For map features: EntranceGrid, ExitGrid
+
+DESTINATION
+	Used in the ATLAS file. Holds the name of the destination for a metaterrain
+gear.
+
+EFFECT
+	Contains an effect string that gets triggered when food is eaten.
+
+EXACT_NAME
+	Contains the exact name of a scene, in cases where ambiguity would
+	result from using the common name.
+
+FACTIONS
+	Included in scenes in the Atlas file. Tells which factions are active
+in this location. Factions are identified by their DESIG.
+	Also included in the Design files. Tells what factions will use what
+equipment.
+	Items available to all factions should have the GENERAL tag.
+
+HABITAT
+	Included in monsters and dungeons to limit the monster selection. If
+the habitat attribute is undefined or empty, this model can show up in any habitat.
+	The habitat description of a scene will likely be composed of two tags separated
+by a period. The first tag describes the world, and the second tag describes the specific
+region of that world.
+	Available keywords are:
+	SPACE, EARTH
+	URBAN, ASTER, MNTNS
+
+HINT_%plotid%
+	Contains a hint associated with a subplot. When the PC is given a mission
+they may also be given a hint. If a given hint begins with a colon, it will redirect
+the hint search to a different subplot. For instance:
+		HINT_%plotid% <:%plotid1%>
+	When the hint for %plotid% is called, actually it will be the hint for %plotid1%
+which will be shown.
+
+KEYWORDS
+	Lists keywords by which the PC can telephone somebody.
+	The keywords include all the categories sold by the NPC (see above),
+plus:
+	RESTAURANT, SHUTTLE
+
+NAME
+	The name of the gear.
+	To link a persona to a unique NPC in the atlas file, name the
+persona "[NPC Name] Persona".
+	Teams may be requested by name by random scene content. See that
+documentation for a list of the standard team names.
+
+NEVERFAIL[n]
+	Holds instructions for the creation of a neverfail plot element. This
+attribute is placed in the story or plot alongside the relevant element request.
+	For characters, this string holds the NPC's job.
+
+PARAM
+	Included in a scene. Contains a custom map generation sequence.
+
+PERSONATYPE
+	Included in a root scene. This is added to all persona requests taking
+place in this location.
+	City,Town,Village,asteroid,mine,spinner,capitol,mine
+
+PLACE[n]
+	Determines the placement of a prefab element in a plot or story. Contains
+the value of the element where this prefab element should be inserted. It may also
+contain a !Near clause to place the prefab element close to another element in the
+destination scene.
+	Placed in the plot or story itself.
+	If the first character is ~, will place element in the same scene as
+the other element.
+
+QUEST
+	Contains a Static Adventure Content request. See those docs for more
+information.
+
+SDL_PORTRAIT
+	Contains the filename of the SDL portrait for a NPC. The portraits are filtered
+based on age, charm, and mecha.
+	Age: [Y]oung (<25), [O]ld (>35), [A]dult (>24), [J]unior (<36)
+	Charm: [C]harming (>14), [U]gly (<10), [P]lain (<15), [A]verage(>9)
+	Mecha: [Y]es, [N]o
+
+SPCONTEXT
+	Used internally to pass context information to subplots.
+
+SPECIAL
+	Holds instructions for the handling of this gear.
+	Scene tags: NoExit, Solo, NoRescue, NoPillage,
+		Arena (ejection rolls automatically succeed)
+		Unsafe (never counts as a safe place to rest or repair)
+		Unregulated (local tolerance value overrides city-wide tolerance rating)
+		Unchartable (map will be generated anew each time the PC visits)
+		Uniform (encounters will inherit same map generator as parent)
+	RandMaps tags: StartHere,
+		Cell: doors surrounding the feature initialized,
+		AddExit (Mall, MonkeyMap, ClubMap only),
+		SubZone: Feature inherits the subzone type of its parent,
+		SharedPalette: Feature inherits the palette definitions of its parent
+	MapFeature tags: NoGo (randomly placed gears won't be placed here)
+	Persona Special tags: NOESCAPE (can't quit conversation with ESC)
+		UNLISTED (can't contact NPC by phone)
+		NOPLOTS (NPC won't be selected for random plots)
+	Job Special tags: NeedsFaction
+	Encounter Special tags: NoMSID (Encounter won't be given MetaScene ID when added as prefab)
+	Quest Fragment tags: Reusable
+
+TERRAIN
+	Used in a scene or metascene to specify what mecha can be deployed
+there. GROUND is the default. SPACE indicates a battle in space. Duh.
+	Must correspond to the TYPE string attribute of a mecha.
+
+
+TYPE
+	Generally used when randomly selecting an example.
+	For a scene:
+		Building
+		Dungeon
+		Capitol
+		City: Included in root scene, indicates this is a largish city
+		Corporate: This scene belongs to a corporation
+		Cuisine: This city is famous for its food
+		Culture: This city is famous for its art, music, or performances
+		Dangerous
+		Disaster: This city was seriously damaged by some accident
+		Dystopia: This city is thoroughly, systematically evil
+		Environs: Outside the city limits where encounters can be placed
+		Financial: This city is a financial hub
+		Ground, Space: Terrain types
+		Hometown: Included in root scene; may be selected as home of new PCs
+		Industrial
+		Laboratory
+		Legit, Sleazy
+		Meeting: This is a place used for meetings and dates
+		Military: This city has a big military base
+		Mine: This is a mine. Not yours, a mine.
+		Open: A dungeon which is automatically accessable
+		Outdoors: An outside area where encounters can be placed
+		Poor
+		Preserve: A nature preserve; used for an outdoors scene, instead of park
+		Public, Private
+		Residence: An apartment, house, or other residential building
+		Resort
+		Rich
+		Research: This city does a lot of scientific research
+		Safe
+		Target: A city that might get invaded
+		Town: Included in root scene, indicates that people live here
+		TradeHub
+		University
+		Urban: A city area where encounters can be placed
+	For a mecha:
+		Ground, Space
+	For a monster:
+		Habitat designations
+	For a weapon:
+		Holds the attack attributes
+
+ZONE_SPECIAL
+	Contained in a random scene content gear. This string attribute is copied to
+	the map zone associated with the content.
+

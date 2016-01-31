@@ -1,0 +1,48 @@
+%%
+%% START-OF-GAME RANDOM CONTENT
+%%
+%% The cavalier club or wherever the PC starts should have several things
+%% to help the PC out.
+
+%% *INTRO_SHOP Content
+%%	This will be a shop selling things a starting PC might need.
+
+Content
+	requires <*INTRO_SHOP>
+	content <Required *DECOR_FOR_GENERAL_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		special <NoPlots>
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_INTRO GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+	end
+
+
+%% *INTRO_HEALTHCLUB Content
+%%	The guaranteed health club for the VIP Room.
+
+Content
+	requires <*INTRO_HEALTHCLUB>
+	minimap <#...#............1..&---&>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_HEALTHCLUB GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Athlete
+	end
+
+
+

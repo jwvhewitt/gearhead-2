@@ -1,0 +1,154 @@
+%%
+%% *CrimeWave Plots
+%%
+%%  A criminal faction is running amok in town. There will be missions to fight them,
+%%  and maybe some random encounters.
+%%
+%% Mood Spec:
+%%  E1 = The city itself
+%%  E2 = The enemy faction
+%%
+
+Plot
+	name <Rampaging Criminals>
+	desc <Some mecha from the criminal faction may attack the PC.>
+	requires <*CrimeWave -!Ne>
+
+	% E1 is an outdoors scene
+	% E2 is an encounter to place there
+	% E3 is the faction that's rampaging
+	Element1 <Scene Environs>
+	Element2 <Prefab>
+	Place2 <1>
+	Element3 <Grab 2>
+
+	% P1 = Time Limit/Initialization Counter
+	start <if# P1 0 ifG ComTime P1 EndPlot>
+	update <if= P1 0 P= 1 ComTime P+ 1 21600>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		SetFaction 3
+
+		start <if= L2 0 L= 2 1 Alert 1>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1    AddRenown -1        EndPlot>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   AddRenown 1 Alert 2   XPV 100   SALVAGE   EndPlot>
+
+		Msg1 <You are attacked by mecha from %name3%!>
+		Msg2 <You have defeated the mecha.>
+
+		% Random scene content- there's a small chance that an enemy or an ally will show up.
+		Content1 <Some 1 5 Sub *CRC_Nemesis   na>
+		Content2 <Some 1 5 Sub *CRC_Backup    na>
+
+		sub
+			team 1
+			SetEnemy 2
+			SetAlly 3
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 3
+			Deploy <SetSelfFaction %3% WMecha 2 %threat% 100>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			name <Allies>
+			SetEnemy 2
+			SetAlly 3
+			ParaX 5
+			ParaY 5
+		end
+	end
+	inv
+		STC ENCOUNTER-WANDER
+		name <Criminals>
+		EncounterMove 20
+		ATTACK <ifG StatVal STAT_MetaVisibility -1   ifG PCScale 0   if# PCFac %3%   ifUStealth 15 else GoAutoAttack ifYesNo 3 -4 -5 else GoAvoidAttack Goto GoAutoAttack>
+		Msg3 <You are suddenly confronted by mecha from %name3%.>
+	end
+
+Plot
+	name <Crime Stoppers>
+	% The basic patrol job is a fight against some generic enemy mecha.
+	% As a police job, this misssion doesn't offer salvage but it will
+	% give a point of Lawful reputation.
+	% This job will result in the PC making an enemy.
+	requires <*CrimeWave>
+	PayRate 135
+
+	% E1 is the town itself
+	% E2 is a character who will offer the mission
+	% E3 is a scene where the encounter will take place
+	% E4 is the enemy faction
+	Element1 <Scene Town>
+	Element2 <Character (POLIC|POLIT|Bounty) !Okay 1 !Xclude -2>
+	Element3 <Scene Outdoors>
+	Element4 <Grab 2>
+
+	% SubPlot1 is the combat encounter
+	SubPlot1 <*MECHAMISSION_Versus 2 3 4>
+
+	% P1 = Time Limit
+	% P2 = Email Indicator
+	start <if= PlotStatus %plotid% 0 ifNPCOK %2% else GoDelete ifG ComTime P1 EndPlot>
+	GoDelete <EndPlot>
+	update <if= PlotStatus %plotid% 0 if= P1 0 P= 1 ComTime P+ 1 86400>
+
+	% Insert email here
+	5min <if= PlotStatus %plotid% 0 if= P2 0  if# NPCFac %2% 0  if= PCFac NPCFac %2%  if= RootSceneID %1% ifG PCCharm d30  Email 1 P= 2 1>
+	Msg1   <%name2%@ \SCENE NPCSCene %2% :// Hey \RANK , I've got a mission for you in %name1%.>
+	Msg1_1 <%name2%@ \SCENE NPCSCene %2% :// Report to \SCENE NPCSCene %2% for a mission at once.>
+	Msg1_2 <%name2%@ \SCENE NPCSCene %2% :// Your services are required by \FACTION NPCFac %2% . Come see me for mission briefing.>
+	Msg1_3 <%name2%@ \SCENE NPCSCene %2% :// I've got a mission for you. Come to \SCENE NPCSCene %2% for the briefing.>
+
+	sub
+		Persona 2
+		rumor0 <%name2% needs a pilot to fight %name4%.>
+		greeting <if= PlotStatus %plotid% %id1% else GoCheckOffer Goto GoRemind>
+		*GoRemind <*MechaMissionReminder %3%>
+		GoCheckOffer <if# PlotStatus %plotid% 0 else GoCheckEnemy NewChat SayAnything>
+		*GoCheckEnemy <*ENEMY_CHECK GoCheckEmail ChatNPCFac GoEnd>
+		GoCheckEmail <if= P2 1 else GoCheckMember Goto GoGotEmail>
+		*GoGotEmail <*DidYouGetEmail GoMissionBriefing>
+		GoCheckMember <if= PCFac ChatNPCFac else GoCheckAuto  Goto GoIsMember>
+		*GoIsMember <*IHaveAJobForYou GoMissionBriefing>
+		*GoCheckAuto <*AutoMissionTest&Mecha GoMissionBriefing GoRejectMission GoCheckSkill ChatNPCFac %4%>
+		*GoCheckSkill <*GenericMissionTest&Mecha  GoMissionBriefing GoEnd GoRejectMission ChatNPCFac %4% %threat%>
+		*GoRejectMission <*RejectMission GoEnd>
+		GoEnd <EndPlot>
+		GoMissionBriefing <NewChat Say 1  AddChat 1 AddChat 2>
+		*result1 <*GoodLuckOnMission GoR1Final ChatNPCFac %4%>
+		GoR1Final <Memo 2 SetPlotStatus %plotid% %id1%>
+		result2 <Goto GoRejectMission>
+		Msg1 <Criminals from %name4% have been operating in %name3%. If you could defeat them, it'd be worth $ \VAL Reward %threat% PayRate and salvage.>
+		Msg1_1 <>
+		CMsg1_1 <ifNPCSociable Accept>
+		Msg1_2 <>
+		CMsg1_2 <ifNPCShy Accept>
+		Msg1_3 <>
+		CMsg1_3 <ifNPCEasygoing Accept>
+		Msg1_4 <>
+		CMsg1_4 <ifNPCPassionate Accept>
+		Msg1_5 <>
+		CMsg1_5 <ifNPCCheerful Accept>
+		Msg1_6 <>
+		CMsg1_6 <ifNPCMelancholy Accept>
+		Msg2 <%name2% in \SCENE NPCSCene %2% hired you to fight %name4% in %name3%.>
+		Prompt1 <That sounds easy enough.>
+		Prompt1_1 <Alright, I can do that.>
+		Prompt1_2 <I'll do it.>
+		Prompt2 <This isn't my kind of mission.>
+		CPrompt2 <if# PCFac ChatNPCFac Accept>
+		Prompt2_1 <Sorry, I'm not interested.>
+		Prompt2_2 <Really, I don't want to get involved.>
+	end
+

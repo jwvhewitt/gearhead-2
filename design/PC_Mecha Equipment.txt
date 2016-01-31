@@ -1,0 +1,893 @@
+%  ************************
+%  ***  MELEE  WEAPONS  ***
+%  ************************
+
+	Melee 13
+	Scale 2
+	name <Heat Axe>
+	type <BRUTAL>
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Acc -1
+	mass -7
+	Legality -10
+
+	Melee 7
+	Name <Mecha Sword>
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Scale 2
+	mass -2
+	Legality -10
+
+	Melee 8
+	Name <Mecha Axe>
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Scale 2
+	Acc -1
+	Legality -10
+
+	Melee 14
+	Name <Mecha Warhammer>
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Scale 2
+	Acc -1
+	mass -6
+	Legality -10
+
+	melee 12
+	name <Mecha Chain>
+	Scale 2
+	UsesSpeed
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	acc 1
+	type <FLAIL EXTEND>
+	Legality -10
+
+	Melee 20
+	Name <Mecha Scythe>
+	Scale 2
+	UsesReflexes
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Speed 2
+	Acc 1
+	Type <EXTEND>
+	Mass -12
+	Legality -10
+
+	Melee 5
+	name <Mecha Shuriken>
+	Category <NINJA MEK_WEP>
+	factions <GENERAL>
+	type <ARMORPIERCING THROWN RETURN>
+	mass -3
+	speed 3
+	scale 2
+	Legality -10
+
+%  ********************************
+%  ***  ENERGY  MELEE  WEAPONS  ***
+%  ********************************
+
+	EMelee 6
+	name <Plasma Torch>
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Scale 2
+	Acc 1
+	Legality -10
+
+	EMelee 10
+	name <Plasma Sword>
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Scale 2
+	Acc 1
+	Legality -10
+
+
+%  ****************************
+%  ***  BALLISTIC  WEAPONS  ***
+%  ****************************
+
+	STC MBAZ-17
+	desig <>
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+
+	STC MRIF-5
+	desig <>
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+
+	BeamGun 7
+	Name <Mining Laser>
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Scale 2
+	Range 4
+	Legality -20
+
+	STC SML-5
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+
+	STC MAC-2
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+
+	STC VC-5
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+
+	STC MAC-4
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+
+	STC RG-8
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+
+	STC RG-16
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+
+	STC GR-12
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+
+	STC GR-24
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+
+	STC LAS-3
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+
+	STC LAS-5
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+
+	STC LAS-5
+	name <Intercept Laser>
+	type <INTERCEPT>
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	mass -3
+	Legality -20
+
+	STC LAS-10
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+
+	STC PHS-8
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+
+	STC PHS-25
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+
+	STC PAR-2
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+
+	STC PAR-6
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+
+	STC PAR-13
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+
+%  ***************************
+%  ***  MISSILE LAUNCHERS  ***
+%  ***************************
+
+	MLauncher 4
+	Scale 2
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+	sub
+		STC ICM-5
+		magazine 8
+	end
+
+	MLauncher 20
+	scale 2
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+	sub
+		STC THM-12
+		magazine 16
+	end
+
+	MLauncher 5
+	Scale 2
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+	sub
+		STC AAM-8
+		Magazine 6
+	end
+
+	MLauncher 2
+	Scale 2
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+	sub
+		STC HWM-4
+		magazine 4
+	end
+
+	MLauncher 8
+	Scale 2
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+	sub
+		STC GM-10
+		magazine 8
+	end
+
+	MLauncher 10
+	Scale 2
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+	sub
+		STC HR-10
+		magazine 10
+	end
+
+	MLauncher 9
+	scale 2
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+	sub
+		STC HFR-3
+		magazine 30
+	end
+
+	MLauncher 2
+	scale 2
+	Category <MEXTRA MEK_WEP>
+	factions <GENERAL>
+	Legality -10
+	sub
+		STC SCRM-1
+		magazine 20
+	end
+
+
+%  *****************
+%  ***  SHIELDS  ***
+%  *****************
+
+	Shield 2
+	Name <Small Shield>
+	DefBonus -2
+	Scale 2
+	Category <MEXTRA MEK_ARM>
+	factions <GENERAL>
+	Legality -20
+
+	Shield 3
+	Name <Medium Shield>
+	DefBonus -1
+	Scale 2
+	Category <MEXTRA MEK_ARM>
+	factions <GENERAL>
+	Legality -20
+
+	Shield 4
+	Name <Large Shield>
+	Scale 2
+	Category <MEXTRA MEK_ARM>
+	factions <GENERAL>
+	Legality -20
+
+	Shield 5
+	Name <Body Shield>
+	DefBonus 1
+	Scale 2
+	Category <MEXTRA MEK_ARM>
+	factions <GENERAL>
+	Legality -20
+
+	EShield 3
+	Name <Small Beam Shield>
+	DefBonus -1
+	Scale 2
+	Category <MEXTRA MEK_ARM>
+	factions <GENERAL>
+	Legality -20
+
+	EShield 5
+	Name <Medium Beam Shield>
+	Scale 2
+	Category <MEXTRA MEK_ARM>
+	factions <GENERAL>
+	Legality -20
+
+	EShield 9
+	Name <Large Beam Shield>
+	DefBonus 1
+	Scale 2
+	Category <MEXTRA MEK_ARM>
+	factions <GENERAL>
+	Legality -20
+
+%  *****************
+%  ***  SENSORS  ***
+%  *****************
+
+	Sensor 1
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Scale 2
+	Legality -50
+
+	Sensor 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Scale 2
+	Legality -50
+
+	Sensor 3
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Scale 2
+	Legality -50
+
+	Sensor 4
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Scale 2
+	Legality -50
+
+	Sensor 5
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Scale 2
+	Legality -50
+
+	Sensor 6
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Scale 2
+	Legality -50
+
+	Sensor 7
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Scale 2
+	Legality -50
+
+	Sensor 8
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Scale 2
+	Legality -50
+
+	Sensor 9
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Scale 2
+	Legality -50
+
+	Sensor 10
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Scale 2
+	Legality -50
+
+	ECM 1
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Scale 2
+	Legality -50
+
+	ECM 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Scale 2
+	Legality -50
+
+	ECM 3
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Scale 2
+	Legality -50
+
+	ECM 4
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Scale 2
+	Legality -50
+
+	ECM 5
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Scale 2
+	Legality -50
+
+	ECM 6
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Scale 2
+	Legality -50
+
+%  **************************
+%  ***  MOVEMENT SYSTEMS  ***
+%  **************************
+
+	Wheels 1
+	desig <WH01>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Wheels 2
+	desig <WH02>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Wheels 3
+	desig <WH03>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Wheels 4
+	desig <WH04>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Wheels 5
+	desig <WH05>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Wheels 7
+	desig <WH07>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Wheels 9
+	desig <WH09>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Tracks 1
+	desig <TR01>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Tracks 2
+	desig <TR02>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Tracks 3
+	desig <TR03>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Tracks 4
+	desig <TR04>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Tracks 5
+	desig <TR05>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Tracks 7
+	desig <TR07>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Tracks 9
+	desig <TR09>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	HoverJet 1
+	desig <HJ01>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	HoverJet 2
+	desig <HJ02>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	HoverJet 3
+	desig <HJ03>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	HoverJet 4
+	desig <HJ04>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	HoverJet 5
+	desig <HJ05>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	HoverJet 7
+	desig <HJ07>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	HoverJet 9
+	desig <HJ09>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Flight 1
+	desig <FL01>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Flight 2
+	desig <FL02>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Flight 3
+	desig <FL03>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Flight 4
+	desig <FL04>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Flight 5
+	desig <FL05>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Flight 7
+	desig <FL07>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Flight 9
+	desig <FL09>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	ArcJet 1
+	desig <AJ01>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	ArcJet 2
+	desig <AJ02>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	ArcJet 3
+	desig <AJ03>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	ArcJet 4
+	desig <AJ04>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	ArcJet 5
+	desig <AJ05>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	ArcJet 7
+	desig <AJ07>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	ArcJet 9
+	desig <AJ09>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Overcharger 1
+	desig <OC01>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Overcharger 2
+	desig <OC02>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Overcharger 3
+	desig <OC03>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Overcharger 4
+	desig <OC04>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Overcharger 5
+	desig <OC05>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Overcharger 7
+	desig <OC07>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Overcharger 9
+	desig <OC09>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	SpaceFlight 1
+	desig <SF01>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	SpaceFlight 2
+	desig <SF02>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	SpaceFlight 3
+	desig <SF03>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	SpaceFlight 4
+	desig <SF04>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	SpaceFlight 5
+	desig <SF05>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	SpaceFlight 7
+	desig <SF07>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	SpaceFlight 9
+	desig <SF09>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	HeavyActuator 1
+	desig <HA01>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	HeavyActuator 2
+	desig <HA02>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	HeavyActuator 3
+	desig <HA03>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	HeavyActuator 4
+	desig <HA04>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	HeavyActuator 5
+	desig <HA05>
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	HeavyActuator 2
+	desig <HA02+>
+	mass -1
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	HeavyActuator 3
+	desig <HA03+>
+	mass -2
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	HeavyActuator 4
+	desig <HA04+>
+	mass -2
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	HeavyActuator 5
+	desig <HA05+>
+	mass -3
+	Scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+%  *******************
+%  ***  COMPUTERS  ***
+%  *******************
+
+	Computer 1
+	desig <Admiral 64>
+	scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Computer 2
+	desig <Kepler XF>
+	scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Computer 3
+	desig <Go-5T>
+	scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+
+	Computer 4
+	desig <Lan 9000>
+	scale 2
+	Category <MEXTRA MEK_ENG>
+	factions <GENERAL>
+	Legality -50
+

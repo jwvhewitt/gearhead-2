@@ -1,0 +1,229 @@
+%% This unit contains persona fragments in which the PC is looking for some kind
+%% of information. The NPC involved may or may not be forthcoming with the information.
+
+
+% TYPE: *QuestionsAboutFaction
+%		&IsEnemy	The faction is an enemy of the PC.
+%	The PC will ask the NPC about a faction.
+%   PARAM1: Exit Label
+%   PARAM2: Faction being asked about
+
+	Persona
+	requires <*QuestionsAboutFaction>
+	START <NewChat Say %id%01 AddChat %id%01>
+	Result%id%01 <Goto %1%>
+	Msg%id%01 <You look like there's something you want. How can I help?>
+	Msg%id%01_1 <You don't look like you're just dropping round for a social call. What can I do for you?>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Yes, what is it?>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Is there something you're looking for?>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <I can tell from your piercing gaze that you didn't just come here to chat. What are you after?>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <You look happy to see me.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <What are you here for?>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <I'm looking for information about \FACTION %2% .>
+	Prompt%id%01_1 <I heard that you know something about \FACTION %2% .>
+	Prompt%id%01_2 <I wanted to ask you about \FACTION %2% .>
+
+% TYPE: *IHaveInformation
+%		&AboutNPC		The information is about a NPC.
+%		&AboutItem		The information is about an item.
+%		&AboutScene		The information is about a scene.
+%		&AboutFaction		The information is about a faction.
+%		&AboutMoney
+%	The NPC has information that the PC might find valuable.
+%	Note that depending on the NPC, the information may be withheld until
+%	the PC pays money or something else.
+%   PARAM1: Tell Info Exit Label (no message printed here)
+%   PARAM2: ID number of whatever the info's about; must use one of the above subtypes.
+%           If no subtype is specified, you can use "na" for this.
+
+Persona
+requires <*IHaveInformation &AboutScene>
+START <NewChat Say %id%01 AddChat %id%01>
+Result%id%01 <Goto %1%>
+Msg%id%01 <I know something about \SCENE %2% ... Interested?>
+Prompt%id%01 <Go on.>
+
+Persona
+requires <*IHaveInformation &AboutItem>
+START <NewChat Say %id%01 AddChat %id%01>
+Result%id%01 <Goto %1%>
+Msg%id%01 <Ah, you must want to hear about the \ITEM %2% , is that right?>
+Prompt%id%01 <That's right.>
+
+Persona
+requires <*IHaveInformation &AboutNPC>
+%% V%id%01 = Have already given spiel
+START <if= V%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01>
+Result%id%01 <Goto %1%>
+Msg%id%01 <I know some things about \PERSONA %2% that you're going to want to hear.>
+Msg%id%01_1 <I've heard that you've been asking about \PERSONA %2% . I know some things about \OPR %2% that might be useful to you.>
+CMsg%id%01_1 <ifNPCSociable Accept>
+Msg%id%01_2 <Hey, I've got some info about \PERSONA %2% .>
+CMsg%id%01_2 <ifNPCShy Accept>
+Msg%id%01_3 <>
+CMsg%id%01_3 <ifNPCEasygoing Accept>
+Msg%id%01_4 <>
+CMsg%id%01_4 <ifNPCPassionate Accept>
+Msg%id%01_5 <>
+CMsg%id%01_5 <ifNPCCheerful Accept>
+Msg%id%01_6 <>
+CMsg%id%01_6 <ifNPCMelancholy Accept>
+Prompt%id%01 <You don't say?>
+Prompt%id%01_1 <Really? This I've got to hear.>
+CPrompt%id%01_1 <ifPCSociable Accept>
+Prompt%id%01_2 <Hurry up with it, then.>
+CPrompt%id%01_2 <ifPCShy Accept>
+Prompt%id%01_3 <Cool. What do you know?>
+CPrompt%id%01_3 <ifPCEasygoing Accept>
+Prompt%id%01_4 <This had better be worth my time.>
+CPrompt%id%01_4 <ifPCPassionate Accept>
+Prompt%id%01_5 <Fantastic. Go on.>
+CPrompt%id%01_5 <ifPCCheerful Accept>
+Prompt%id%01_6 <I'm going to regret asking about this, aren't I?>
+CPrompt%id%01_6 <ifPCMelancholy Accept>
+
+
+Persona
+requires <*IHaveInformation "friend">
+%% V%id%01 = Have already given spiel
+START <if= V%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01>
+Result%id%01 <Goto %1%>
+Msg%id%01 <\PC , I'm glad you're here. I have some important news.>
+Msg%id%01_1 <Glad to see you made it, \PC . I have some information for you.>
+Msg%id%01_2 <Hey \PC . I've got some information that you're probably going to find very useful.>
+Prompt%id%01 <Tell me about it.>
+Prompt%id%01_1 <Sounds interesting. What is it?>
+CPrompt%id%01_1 <ifPCSociable Accept>
+Prompt%id%01_2 <Go on.>
+CPrompt%id%01_2 <ifPCShy Accept>
+Prompt%id%01_3 <Really? Neat.>
+CPrompt%id%01_3 <ifPCEasygoing Accept>
+Prompt%id%01_4 <Could you go straight to the important part?>
+CPrompt%id%01_4 <ifPCPassionate Accept>
+Prompt%id%01_5 <Great! What is it?>
+CPrompt%id%01_5 <ifPCCheerful Accept>
+Prompt%id%01_6 <This sounds like trouble...>
+CPrompt%id%01_6 <ifPCMelancholy Accept>
+
+Persona
+requires <*IHaveInformation>
+%% V%id%01 = Have already given spiel
+START <if= V%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01>
+Result%id%01 <Goto %1%>
+Msg%id%01 <I heard you've been asking around... I have some information you might want to hear, \PC .>
+Msg%id%01_1 <They say you've been asking a lot of questions. Well, I know something you might want to hear.>
+Msg%id%01_2 <You've been asking a lot of difficult questions, \PC ... fortunately, I may have some of the answers.>
+Msg%id%01_11 <The word on the street is that you've been asking a lot of questions, \PC . It's not just what you ask but who you ask that's important, you know. I've got some information that you might find useful.>
+CMsg%id%01_11 <ifNPCSociable Accept>
+Msg%id%01_12 <\PC , I have some information you'll want to know.>
+CMsg%id%01_12 <ifNPCShy Accept>
+Msg%id%01_13 <Hey, if you've got a minute, let me tell you about something. I think you'll like it.>
+CMsg%id%01_13 <ifNPCEasygoing Accept>
+Msg%id%01_14 <Information is power. Whoever has the best information will usually win, while those who live in ignorance are doomed to fail. I know some things that you'll want to hear.>
+CMsg%id%01_14 <ifNPCPassionate Accept>
+Msg%id%01_15 <It's lucky that you bumped into me, \PC . I happen to know some things that could be very useful to you.>
+CMsg%id%01_15 <ifNPCCheerful Accept>
+Msg%id%01_16 <Right now you are wandering around in ignorance, but I know some things that could help you out.>
+CMsg%id%01_16 <ifNPCMelancholy Accept>
+Prompt%id%01 <I'm listening.>
+Prompt%id%01_1 <Well, go on, tell me what it is.>
+CPrompt%id%01_1 <ifPCSociable Accept>
+Prompt%id%01_2 <Go on.>
+CPrompt%id%01_2 <ifPCShy Accept>
+Prompt%id%01_3 <You don't say? Cool.>
+CPrompt%id%01_3 <ifPCEasygoing Accept>
+Prompt%id%01_4 <Hurry up and get to the point.>
+CPrompt%id%01_4 <ifPCPassionate Accept>
+Prompt%id%01_5 <Lucky I ran into you, then.>
+CPrompt%id%01_5 <ifPCCheerful Accept>
+Prompt%id%01_6 <Let me hear it.>
+CPrompt%id%01_6 <ifPCMelancholy Accept>
+
+% TYPE: *LookingForScene
+%	The PC is looking for a scene. In this fragment, he'll be able to interview
+%	the NPC and hopefully learn something. If the NPC refuses to tell, this PFrag
+%	will terminate here.
+%   PARAM1: Identity of Scene
+%   PARAM2: Success Exit Label (no message printed here)
+
+Persona
+requires <*LookingForScene>
+START <NewChat Say %id%01 AddChat %id%01>
+Result%id%01 <Goto %2%>
+Msg%id%01 <Yes, may I help you?>
+Msg%id%01_1 <>
+CMsg%id%01_1 <ifNPCSociable Accept>
+Msg%id%01_2 <What?>
+CMsg%id%01_2 <ifNPCShy Accept>
+Msg%id%01_3 <Oh, hi. Are you looking for something?>
+CMsg%id%01_3 <ifNPCEasygoing Accept>
+Msg%id%01_4 <>
+CMsg%id%01_4 <ifNPCPassionate Accept>
+Msg%id%01_5 <>
+CMsg%id%01_5 <ifNPCCheerful Accept>
+Msg%id%01_6 <What do you want?>
+CMsg%id%01_6 <ifNPCMelancholy Accept>
+Prompt%id%01 <I'm looking for \SCENE %1% .>
+Prompt%id%01_1 <Tell me about \SCENE %1% .>
+
+% TYPE: *LookingForItem
+%	The PC is looking for an item. In this fragment, he'll be able to interview
+%	the NPC and hopefully learn something. If the NPC refuses to tell, this PFrag
+%	will terminate here.
+%   PARAM1: Identity of Item
+%   PARAM2: Success Exit Label (no message printed here)
+
+Persona
+requires <*LookingForItem>
+START <NewChat Say %id%01 AddChat %id%01>
+Result%id%01 <Goto %2%>
+Msg%id%01 <Yes, may I help you?>
+Prompt%id%01 <I'm looking for the \ITEM %1% .>
+
+
+% TYPE: *LookingForNPC
+%		&NoFailure	It's not possible to fail the test
+%	The PC is looking for a NPC. In this fragment, he'll be able to interview
+%	the NPC and hopefully learn something.
+%   PARAM1: Identity of NPC
+%   PARAM2: Success Exit Label
+%   PARAM3: Failure Exit Label
+
+Persona
+requires <*LookingForNPC>
+START <NewChat Say %id%01 AddChat %id%01>
+Result%id%01 <Goto %2%>
+Msg%id%01 <Yes, may I help you?>
+Msg%id%01_1 <>
+CMsg%id%01_1 <ifNPCSociable Accept>
+Msg%id%01_2 <What?>
+CMsg%id%01_2 <ifNPCShy Accept>
+Msg%id%01_3 <Oh, hi. Are you looking for someone?>
+CMsg%id%01_3 <ifNPCEasygoing Accept>
+Msg%id%01_4 <>
+CMsg%id%01_4 <ifNPCPassionate Accept>
+Msg%id%01_5 <>
+CMsg%id%01_5 <ifNPCCheerful Accept>
+Msg%id%01_6 <What do you want?>
+CMsg%id%01_6 <ifNPCMelancholy Accept>
+Prompt%id%01 <I'm looking for \PERSONA %1% .>
+Prompt%id%01_1 <What do you know about \PERSONA %1% ?>
+CPrompt%id%01_1 <ifPCSociable Accept>
+Prompt%id%01_2 <Tell me about \PERSONA %1% .>
+CPrompt%id%01_2 <ifPCShy Accept>
+Prompt%id%01_3 <Ever hear of someone called \PERSONA %1% ?>
+CPrompt%id%01_3 <ifPCEasygoing Accept>
+Prompt%id%01_4 <I know that you know about \PERSONA %1% .>
+CPrompt%id%01_4 <ifPCPassionate Accept>
+Prompt%id%01_5 <I hope you can tell me about \PERSONA %1% .>
+CPrompt%id%01_5 <ifPCCheerful Accept>
+Prompt%id%01_6 <I don't suppose you know \PERSONA %1% , do you?>
+CPrompt%id%01_6 <ifPCMelancholy Accept>
+
+

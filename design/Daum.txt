@@ -1,0 +1,316 @@
+Battroid 5
+Name <Daum>
+Desig <SAN-D1>
+SDL_Sprite <btr_daum.png>
+SDL_PORTRAIT <item_daum.png>
+desc <In NT100, RegEx corporation and the Federation Defense Force began a project to update the BuruBuru design using modern technology.>
+type <SPACE GROUND INSIDE>
+factions <GENERAL>
+
+ROLE_MAQUI <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_CRIHN <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_L5LAW <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_FCOMS <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_RISHI <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+
+sub
+Head
+	Armor 3
+	mass -1
+	sub
+		Sensor 5
+
+		STC LAS-5
+		name <Intercept Laser>
+		type <INTERCEPT>
+		Integral
+		mass -1
+	end
+	inv
+		HeadArmor 2
+		Mass -1
+	end
+
+torso
+	Armor 3
+	mass -1
+	sub
+		CPit
+		Armor 2
+
+		Sensor 1
+
+		Mount
+		Name <Right Torso Mount>
+
+		Mount
+		Name <Left Torso Mount>
+		inv
+			MLauncher 8
+			sub
+				STC SWM-2
+				Magazine 40
+			end
+		end
+
+		Computer 3
+		mass -3
+		sub
+			Software 1
+			name <Vadel Inc Target System>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 1
+			name <Vadel Inc Maneuver System>
+			S_MVBoost
+			S_BoostScale 2
+		end
+
+		HoverJet 3
+	end
+	inv
+		BodyArmor 3
+		Mass -2
+	end
+
+Arm
+	Name <Right Arm>
+	Armor 3
+	mass -1
+	sub
+		Hand
+		inv
+			Gun 2
+			Name <Bolt Cannon>
+			Range 6
+			caliber <25mm Ferrous>
+			Speed 3
+			BV 4
+			Acc -1
+			Magazine 250
+			sub
+				Ammo 2
+				caliber <25mm Ferrous>
+			end
+		end
+
+		Mount
+		Name <Right Arm Mount>
+	end
+	inv
+		ArmArmor 2
+		Mass -1
+	end
+
+Arm
+	Name <Left Arm>
+	Armor 3
+	mass -1
+	sub
+		Hand
+
+		Mount
+		Name <Left Arm Mount>
+		inv
+			Melee 7
+			Name <Longsword>
+			Acc 1
+		end
+	end
+	inv
+		ArmArmor 2
+		Mass -1
+
+		EShield 5
+		DefBonus -1
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 3
+	sub
+		HoverJet 4
+
+		Mount
+		Name <Right Leg Mount>
+	end
+	inv
+		LegArmor 2
+		Mass -1
+		sub
+			HoverJet 1
+		end
+	end
+
+Leg
+	Name <Left Leg>
+	Armor 3
+	sub
+		HoverJet 4
+
+		Mount
+		Name <Left Leg Mount>
+	end
+	inv
+		LegArmor 2
+		Mass -1
+		sub
+			HoverJet 1
+		end
+	end
+end
+
+Battroid 5
+Name <Daum>
+Desig <SAN-D1h HW>
+SDL_Sprite <btr_daum.png>
+SDL_PORTRAIT <item_daum.png>
+desc <In NT100, RegEx corporation and the Federation Defense Force began a project to update the BuruBuru design using modern technology.>
+type <SPACE GROUND INSIDE>
+factions <GENERAL>
+
+ROLE_MAQUI <GENERAL:SUPPORT  ASSAULT:SUPPORT>
+ROLE_CRIHN <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+ROLE_FCOMS <ASSAULT:SUPPORT>
+ROLE_PRIVA <GENERAL:SUPPORT  ASSAULT:SUPPORT>
+ROLE_RISHI <GENERAL:SUPPORT  ASSAULT:SUPPORT>
+ROLE_BOHEM <ASSAULT:SUPPORT>
+
+sub
+Head
+	Armor 3
+	mass -1
+	sub
+		Sensor 5
+
+		STC LAS-5
+		name <Intercept Laser>
+		type <INTERCEPT>
+		Integral
+		mass -1
+	end
+	inv
+		HeadArmor 2
+		Mass -1
+	end
+
+torso
+	Armor 3
+	mass -1
+	sub
+		CPit
+		Armor 2
+
+		Sensor 1
+
+		Mount
+		Name <Right Torso Mount>
+
+		Mount
+		Name <Left Torso Mount>
+		inv
+			MLauncher 8
+			sub
+				STC GM-10
+				Magazine 8
+			end
+		end
+
+		Computer 3
+		mass -3
+		sub
+			Software 1
+			name <Vadel Inc Target System>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 1
+			name <Vadel Inc Maneuver System>
+			S_MVBoost
+			S_BoostScale 2
+		end
+
+		HoverJet 3
+	end
+	inv
+		BodyArmor 3
+		Mass -2
+	end
+
+Arm
+	Name <Right Arm>
+	Armor 3
+	mass -1
+	sub
+		Hand
+		inv
+			STC MBAZ-17
+		end
+
+		Mount
+		Name <Right Arm Mount>
+	end
+	inv
+		ArmArmor 2
+		Mass -1
+	end
+
+Arm
+	Name <Left Arm>
+	Armor 3
+	mass -1
+	sub
+		Hand
+
+		Mount
+		Name <Left Arm Mount>
+		inv
+			Melee 7
+			Name <Longsword>
+			Acc 1
+		end
+	end
+	inv
+		ArmArmor 2
+		Mass -1
+
+		EShield 5
+		DefBonus -1
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 3
+	sub
+		HoverJet 4
+
+		Mount
+		Name <Right Leg Mount>
+	end
+	inv
+		LegArmor 2
+		Mass -1
+		sub
+			HoverJet 1
+		end
+	end
+
+Leg
+	Name <Left Leg>
+	Armor 3
+	sub
+		HoverJet 4
+
+		Mount
+		Name <Left Leg Mount>
+	end
+	inv
+		LegArmor 2
+		Mass -1
+		sub
+			HoverJet 1
+		end
+	end
+end
+

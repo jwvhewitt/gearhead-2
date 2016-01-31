@@ -1,0 +1,92 @@
+%%
+%% Fungal Infestation Plots
+%%
+%%  The colony has been infested with fungus; plenty of SF:0 jobs to go root them out.
+%%
+%% Mood Spec:
+%%  - No Elements
+%%
+
+Plot
+	name <Crawlspace Cleaner>
+	desc <You'll get hired to go clean out a service tunnel.>
+	requires <*FUNFESTATION>
+	PayRate 300
+
+	% E1 is the character offering the mission.
+	Element1 <Character (CRAFT|LABOR|TRADE|CORPO|POLIT) -ArchEnemy Recharged>
+
+	% V1 = Timer
+
+	% FAIL CONDITIONS-
+	% - E1 dies
+	% - Time runs out before the scene is entered
+	end <ifNPCDead %1% EndPlot>
+
+	start <if= PlotStatus %plotid1% 0 else GoCheckWin ifG ComTime V1 EndPlot>
+	GoCheckWin <ifSubPlotWon %plotid1% else GoCheckLoss   PMemo %plotid% 1   SetPlotStatus %plotid2% %id2%>
+	GoCheckLoss <ifSubPlotLost %plotid1%                  PMemo %plotid% 2   SetPlotStatus %plotid3% %id3%>
+
+	update <if= V1 0 V= 1 ComTime V+ 1 80000 V+ 1 d12000>
+
+	Msg1 <You have cleared out the vermin for %name1%. You should go collect your reward.>
+	Msg2 <You failed to clear out the vermin. You should report to %name1%.>
+
+	% SubPlot1 is the fungus-cleaning task.
+	% SubPlot2 is the victory condition
+	% SubPlot3 is the failure condition
+	SubPlot1 <*:TASK_KillFungus 1>
+	SubPlot2 <*UTIL_WinMission&Chara 1>
+	SubPlot3 <*UTIL_LoseMission&Chara 1>
+
+	sub
+		Persona 1
+		rumor0 <%name1% has a bit of a fungus problem.>
+		% if PlotStatus = PlotID then the PC has been informed of the job, and can get it
+		%  automatically until timeout.
+		greeting <if= PlotStatus %plotid1% 0 else GoRemind if= PlotStatus %plotid% %id% else GoCheckEnemy Goto GoMissionBriefing>
+		*GoRemind <*GenericMissionReminder>
+		*GoCheckEnemy <*ENEMY_CHECK GoCheckAuto ChatNPCFac GoEnd>
+		GoEnd <EndPlot>
+		*GoCheckAuto <*AutoMissionTest&Chara GoMissionBriefing GoRejectMission GoCheckSkill ChatNPCFac na>
+		GoRejectMission <ENdPlot RevertPersona>
+		*GoCheckSkill <*GenericMissionTest&Chara&Extermination GoMissionBriefing GoEnd GoRejectMission ChatNPCFac na %threat%>
+		GoMissionBriefing <SetPlotStatus %plotid% %id% PMemo %plotid% %id%02 NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+		GoNotHere <NewChat Say %id%03>
+		result%id%01 <ifChatNPCInPlay Else GoNotHere EndChat Say %id%04 SetPlotStatus %plotid1% %id1%>
+		*result%id%02 <*RejectMission GoEnd>
+		result%id%03 <RevertPersona>
+		Msg%id%01 <There's a fungal infestation underneath this building. If you could help clear out some of the more dangerous ones, it'd be safe for the workers to go down and finish the job. I can offer you $ \VAL Reward %threat% PayRate for the mission.>
+		Msg%id%01_1 <You've probably heard about the problems we've been having with fungus. There's an infestation right under this building, and I could use your help to clear it out. Go down there and exterminate the bugs and you'll earn $ \VAL Reward %threat% PayRate .>
+		CMsg%id%01_1 <ifNPCSociable Accept>
+		Msg%id%01_2 <There's a fungal infestation in this building. I can offer you $ \VAL Reward %threat% PayRate to make it go away.>
+		CMsg%id%01_2 <ifNPCShy Accept>
+		Msg%id%01_3 <>
+		CMsg%id%01_3 <ifNPCCheerful Accept>
+		Msg%id%01_4 <The station's biodefense has failed, and mutant fungi have established themselves on the inside. If you clear out the infestation beneath this complex I can pay you $ \VAL Reward %threat% PayRate .>
+		CMsg%id%01_4 <ifNPCMelancholy Accept>
+		Msg%id%01_5 <>
+		CMsg%id%01_5 <ifNPCEasygoing Accept>
+		Msg%id%01_6 <>
+		CMsg%id%01_6 <ifNPCPassionate Accept>
+		Msg%id%02 <%name1% asked you to help clear out a fungal infestation beneath \SCENE NPCScene %1% .>
+		Msg%id%03 <In that case, come on over to \SCENE NPCScene %1% and I'll let you into the crawlspace.>
+		Msg%id%03_1 <Come to \SCENE NPCScene %1% , then. You can't exterminate fungus over the phone.>
+		Msg%id%04_1 <Good luck down there. Come back and talk to me once all the fungus have been eliminated.>
+		Msg%id%04_2 <Great! Here, I'll show you to the passageway... Come back after you've exterminated the fungus.>
+		Msg%id%04_3 <The crawlspace is right behind this panel. Good luck down there.>
+		Msg%id%04_4 <Exterminate all the fungus, then come back to me for your reward.>
+		Msg%id%04_5 <It's just down this tunnel. Kill all the fungus, then come see me about the reward.>
+		Prompt%id%01 <I'm ready to do that now.>
+		Prompt%id%01_1 <I might as well get started right away.>
+		Prompt%id%01_2 <Alright, I'm ready to go.>
+		Prompt%id%02 <Sorry, but I don't think I can help you.>
+		Prompt%id%02_1 <On second thought, I don't want this job.>
+		Prompt%id%02_2 <Upon further reflection, I don't want this job.>
+		Prompt%id%03 <Why don't we talk about something else first?>
+		Prompt%id%03_1 <Before we do that, I'd like to talk about something else.>
+		Prompt%id%03_2 <Wait a minute, I have other things to talk about.>
+	end
+
+
+

@@ -1,0 +1,1289 @@
+%% *TREASUREROOM_? CONTENT
+
+Content
+	requires <*TREASUREROOM_WRECK !Ne>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 2000
+		Loot_Category <SPACE ANTIQUE PIRATE JEWELRY FOOD>
+		Loot_Factions <GENERAL FCOMS RISHI MAQUI>
+	end
+
+Content
+	requires <*TREASUREROOM_WRECK !Lo>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 8000
+		Loot_Category <SPACE ANTIQUE PIRATE JEWELRY FOOD>
+		Loot_Factions <GENERAL FCOMS RISHI MAQUI>
+	end
+
+Content
+	requires <*TREASUREROOM_WRECK !Md>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 32000
+		Loot_Category <SPACE ANTIQUE PIRATE JEWELRY FOOD>
+		Loot_Factions <GENERAL FCOMS RISHI MAQUI>
+	end
+
+Content
+	requires <*TREASUREROOM_WRECK !Hi>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 128000
+		Loot_Category <SPACE ANTIQUE PIRATE JEWELRY FOOD>
+		Loot_Factions <GENERAL FCOMS RISHI MAQUI>
+	end
+
+Content
+	requires <*TREASUREROOM_WRECK !Ex>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 512000
+		Loot_Category <SPACE ANTIQUE PIRATE JEWELRY FOOD>
+		Loot_Factions <GENERAL FCOMS RISHI MAQUI>
+	end
+
+%% *DUNGEON_THREAT CONTENT
+%%   Dungeon threats. Little things to make life more dangerous for hapless adventurers.
+
+Content
+	name <Big Bug>
+	requires <*DUNGEON_THREAT !Ne (Condemned|Sewer)>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <This place looks dirty.>
+	inv
+		Monster Giant Roach
+		% Less dangerous than usual
+		CloseCombat 2
+		Dodge 1
+	end
+
+Content
+	name <Roach Motel>
+	requires <*DUNGEON_THREAT !Lo (Condemned|Sewer)>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	element2 <Prefab>
+	teamdata2 <sd enemy>
+	element3 <Prefab>
+	teamdata3 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <This place looks absolutely filthy.>
+	inv
+		Monster Giant Roach
+		Monster Giant Roach
+		Monster Giant Roach
+	end
+
+Content
+	name <Mining Robot>
+	requires <*DUNGEON_THREAT !Ne mine>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <The walls of this level have been worked by machines.>
+	inv
+		Monster Mining bot
+	end
+
+Content
+	name <Robot Gang>
+	requires <*DUNGEON_THREAT !Lo mine>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	element2 <Prefab>
+	teamdata2 <sd enemy>
+	element3 <Prefab>
+	teamdata3 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <You see many rectangular footprints in the dust on the floor.>
+	inv
+		Monster Mining bot
+		Monster Mining bot
+		Monster Guardbot
+	end
+
+Content
+	name <I'm melting!>
+	requires <*DUNGEON_THREAT !Md mine>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <This level shows signs of recent volcanic activity.>
+	inv
+		Monster Forgebot
+	end
+
+Content
+	name <The Robot King>
+	requires <*DUNGEON_THREAT !Hi (mine|Factory)>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	element2 <Prefab>
+	teamdata2 <sd enemy>
+	element3 <Prefab>
+	teamdata3 <sd enemy>
+	element4 <Prefab>
+	teamdata4 <sd enemy>
+	element5 <Prefab>
+	teamdata5 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <This level seems somewhat regal.>
+	inv
+		Monster Murder Machine
+		inv
+			item Golden Crown
+		end
+		Monster Guardbot
+		Monster Guardbot
+		Monster Guardbot
+		Monster Guardbot
+	end
+
+Content
+	name <The Robot Emperor>
+	requires <*DUNGEON_THREAT !Ex (mine|Factory)>
+	minimap <.......47..213..65.......>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	element2 <Prefab>
+	teamdata2 <sd enemy>
+	element3 <Prefab>
+	teamdata3 <sd enemy>
+	element4 <Prefab>
+	teamdata4 <sd enemy>
+	element5 <Prefab>
+	teamdata5 <sd enemy>
+	element6 <Prefab>
+	teamdata6 <sd enemy>
+	element7 <Prefab>
+	teamdata7 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <This level seems extremely regal.>
+	inv
+		Monster Murder Machine
+		inv
+			item Jeweled Crown
+		end
+		Monster ForgeBot
+		Monster ForgeBot
+		Monster Guardbot
+		Monster Guardbot
+		Monster Androbot
+		Monster Workbot
+	end
+
+Content
+	name <Threadfall>
+	requires <*DUNGEON_THREAT !Ne Asteroid>
+	minimap <......1.....3.....2......>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	element2 <Prefab>
+	teamdata2 <sd enemy>
+	element3 <Prefab>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <You see the footprints of another person in the dust here.>
+	inv
+		Monster Silver Shil
+		Monster Silver Shil
+		STC Victim
+		Use <Print 1>
+		CLUE_MEDICINE <Print 2>
+		CLUE_MYSTICISM <Print 3>
+		Msg1 <This unfortunate explorer has been digested down to the bone.>
+		Msg2 <It's far too late for that.>
+		Msg3 <You say a short prayer for the soul of the deceased.>
+	end
+
+Content
+	name <Hunting Grounds>
+	requires <*DUNGEON_THREAT !Lo Asteroid>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <The ground is littered with the empty husks of slain fungi.>
+	inv
+		Monster Fungal Hunter
+	end
+
+Content
+	name <Threadfall Mk2>
+	requires <*DUNGEON_THREAT !Md Asteroid>
+	minimap <......1.....3.....2......>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	element2 <Prefab>
+	teamdata2 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <You see footprints in the dust, but no other sign of human presence.>
+	inv
+		Monster Scarlet Shil
+		Monster Scarlet Shil
+	end
+
+Content
+	name <San Ojingeo>
+	requires <*DUNGEON_THREAT !Hi Asteroid>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	element2 <Prefab>
+	teamdata2 <sd enemy>
+	element3 <Prefab>
+	teamdata3 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <You suddenly feel hungry for sushi.>
+	inv
+		Monster Space Squid
+	end
+
+Content
+	name <From Moria to you>
+	requires <*DUNGEON_THREAT !Ne Cave>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	element2 <Prefab>
+	teamdata2 <sd enemy>
+	element3 <Prefab>
+	teamdata3 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <This level is slimy.>
+	inv
+		Monster Icky Slime
+		Monster Icky Slime
+		Monster Icky Slime
+	end
+
+Content
+	name <Like Gwar, but less so>
+	requires <*DUNGEON_THREAT !Lo Cave>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <This level is very slimy.>
+	inv
+		Monster Green Jelly
+	end
+
+Content
+	name <Yith Go Home>
+	requires <*DUNGEON_THREAT !Hi Cave>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	element2 <Prefab>
+	teamdata2 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <All of a sudden, your brain hurts.>
+	inv
+		Monster Flying Polyp
+		Monster Flying Polyp
+	end
+
+Content
+	name <Bad Mushroom>
+	requires <*DUNGEON_THREAT !Ne SPACE>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <You notice a strange blue fungus growing on the walls.>
+	inv
+		Monster Armored Fungus
+		% This armored fungus is slightly easier than a regular one.
+		Dodge 1
+		Vitality 0
+	end
+
+Content
+	name <Fungus Bomb>
+	requires <*DUNGEON_THREAT !Lo SPACE>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	element2 <Prefab>
+	teamdata2 <sd enemy>
+	element3 <Prefab>
+	teamdata3 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <You notice some organic filaments drifting through space.>
+	inv
+		Monster Fungal Sphere
+		Monster Fungal Sphere
+		Monster Fungal Sphere
+	end
+
+Content
+	name <Killer Cleanbot>
+	requires <*DUNGEON_THREAT !Ne (Derelict|Industrial|Ruin)>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <This level is clean... too clean.>
+	inv
+		Monster Cleanbot
+		name <KILLER CLEANBOT>
+		CloseCombat 4
+		Dodge 4
+		Vitality 4
+		SpotWeakness 2
+	end
+
+Content
+	name <Station Defense>
+	requires <*DUNGEON_THREAT !Lo (Derelict|Industrial|Laboratory)>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <This level seems to be well-defended.>
+	inv
+		Monster Guardbot
+	end
+
+Content
+	name <Vacuum Flowers>
+	requires <*DUNGEON_THREAT !Lo (Ruin|Cave) SPACE>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <You sense an alien presence here.>
+	inv
+		Monster Exorg Floater
+	end
+
+Content
+	name <Big Rat>
+	requires <*DUNGEON_THREAT !Ne GROUND>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <You hear the pitter-patter of little feet.>
+	inv
+		Monster Plague Rat
+	end
+
+Content
+	name <Mouse Nest>
+	requires <*DUNGEON_THREAT !Lo GROUND>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	element2 <Prefab>
+	teamdata2 <sd enemy>
+	element3 <Prefab>
+	teamdata3 <sd enemy>
+	element4 <Prefab>
+	teamdata4 <sd enemy>
+	element5 <Prefab>
+	teamdata5 <sd enemy>
+	element6 <Prefab>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <You hear the pitter-patter of little feet. Lots of little feet.>
+	inv
+		monster Rat
+		monster Rat
+		monster Rat
+		monster Rat
+		monster Death Rat
+		Food 60
+		name <Big Cheese>
+		mass -10
+		FoodMorale 2
+		Fudge 3000
+		desc <A very large hunk of cheese. It hasn't been chewed on too badly.>
+	end
+
+Content
+	name <Hunter-Killer>
+	requires <*DUNGEON_THREAT !Md ~EARTH>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <You sense something unnatural...>
+	inv
+		monster Hunter-Killer
+	end
+
+Content
+	name <Sentinel>
+	requires <*DUNGEON_THREAT (!Hi|!Ex) ~EARTH>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <You hear the sounds of heavy machinery in the distance.>
+	inv
+		monster Sentinel
+	end
+
+
+%% *DUNGEON_REWARD CONTENT
+%%   Dungeon treasure. Something that's good for everyone.
+
+Content
+	name <Old Junk 1>
+	requires <*DUNGEON_REWARD !Ne (Ruin|Sewer)>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 8000
+		Loot_Category <EXOTIC ANTIQUE TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Old Junk 2>
+	requires <*DUNGEON_REWARD !Lo (Ruin|Sewer)>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 30000
+		Loot_Category <EXOTIC ANTIQUE TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Old Junk 3>
+	requires <*DUNGEON_REWARD !Md (Ruin|Sewer)>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 150000
+		Loot_Category <EXOTIC ANTIQUE TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Old Junk 4>
+	requires <*DUNGEON_REWARD !Hi (Ruin|Sewer)>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 750000
+		Loot_Category <EXOTIC ANTIQUE TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Old Junk 5>
+	requires <*DUNGEON_REWARD !Ex (Ruin|Sewer)>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 3750000
+		Loot_Category <EXOTIC ANTIQUE TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Foot Locker 1>
+	requires <*DUNGEON_REWARD !Ne (Derelict|Building)>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 8000
+		Loot_Category <WEAPON ARMOR TOOL TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Foot Locker 2>
+	requires <*DUNGEON_REWARD !Lo (Derelict|Building)>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 30000
+		Loot_Category <WEAPON ARMOR TOOL TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Foot Locker 3>
+	requires <*DUNGEON_REWARD !Md (Derelict|Building)>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 150000
+		Loot_Category <WEAPON ARMOR TOOL TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Foot Locker 4>
+	requires <*DUNGEON_REWARD !Hi (Derelict|Building)>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 750000
+		Loot_Category <WEAPON ARMOR TOOL TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Foot Locker 5>
+	requires <*DUNGEON_REWARD !Ex (Derelict|Building)>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 3750000
+		Loot_Category <WEAPON ARMOR TOOL TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Box of Jewels 1>
+	requires <*DUNGEON_REWARD !Ne (Mine|Cave)>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 8000
+		Loot_Category <GEMSTONE MINERAL>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Box of Jewels 2>
+	requires <*DUNGEON_REWARD !Lo (Mine|Cave)>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 30000
+		Loot_Category <GEMSTONE MINERAL>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Box of Jewels 3>
+	requires <*DUNGEON_REWARD !Md (Mine|Cave)>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 150000
+		Loot_Category <GEMSTONE MINERAL>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Box of Jewels 4>
+	requires <*DUNGEON_REWARD !Hi (Mine|Cave)>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 750000
+		Loot_Category <GEMSTONE MINERAL>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Box of Jewels 5>
+	requires <*DUNGEON_REWARD !Ex (Mine|Cave)>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 3750000
+		Loot_Category <GEMSTONE MINERAL>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Emergency Spacesuit>
+	requires <*DUNGEON_REWARD (Mine|derelict|ruin) Space ~!Md>
+	minimap <......###..#1=..###......>
+	element1 <Prefab>
+	inv
+		STC CRATE
+		inv
+			BodyArmor 2
+			name <SkinSuit Suit>
+			desc <A skintight spacesuit.>
+			Mass -3
+			Sealed
+
+			ArmArmor 2
+			name <SkinSuit Sleeve>
+			desc <A skintight spacesuit.>
+			Mass -3
+			Sealed
+
+			LegArmor 2
+			name <SkinSuit Legging>
+			desc <A skintight spacesuit.>
+			Mass -3
+			Sealed
+
+			ArmArmor 2
+			name <SkinSuit Sleeve>
+			desc <A skintight spacesuit.>
+			Mass -3
+			Sealed
+
+			LegArmor 2
+			name <SkinSuit Legging>
+			desc <A skintight spacesuit.>
+			Mass -3
+			Sealed
+
+			HeadArmor 2
+			name <Mining Helmet>
+			desc <A light spacesuit helm with integrated rebreather and a communicator.>
+			Mass -1
+			Sealed
+			Phone
+
+			PowerSource 8
+			name <Power Cell 200>
+		end
+	end
+
+Content
+	name <Mining Equipment>
+	requires <*DUNGEON_REWARD Mine (!Ne|!Lo)>
+	element1 <Prefab>
+	inv
+		Item Pick
+	end
+
+Content
+	name <Mining Equipment 2>
+	requires <*DUNGEON_REWARD Mine (!Lo|!Md)>
+	element1 <Prefab>
+	inv
+		EMelee 20
+		Name <Rock Drill>
+		Type <BRUTAL>
+		Mass 14
+		Acc -1
+		Speed 1
+		desc <A plasma drill used in mining. It would also make a decent weapon.>
+		inv
+			PowerSource 4
+			mass -1
+			name <Power Cell 100>
+		end
+	end
+
+
+%% *DUNGEON_DECOR CONTENT
+%%   Dungeon Extras. Little bits of personality for dungeon levels, or things which aren't
+%%   usable by all characters, or reward/threat combos.
+
+Content
+	name <Magic Mushrooms>
+	requires <*DUNGEON_DECOR (cave|sewer) (!Hi|!Ex)>
+	element1 <Prefab>
+	minimap < ... .......1....... ... >
+	inv
+		STC MUSHROOMPATCH-2
+		% V1 = Have extracted mushroom
+		CLUE_SURVIVAL <ifSelfOK if= V1 0 else GoBeenBefore ifSurvival 10 else GoFail Mental V= 1 1 Print 3 GiveSTC .mushroom GSetStat 6 d9 GSetSTat 7 * 250 d4>
+		.mushroom <EDIBLE-MUSHROOM>
+		GoBeenBefore <Print 1>
+		GoFail <Print 2>
+		Msg1 <It will take years for new mushrooms to grow here.>
+		Msg2 <You aren't skilled enough to tell if these mushrooms are poisonous or not.>
+		Msg3 <You find a rare edible mushroom here. These things are supposed to be really good for your health.>
+	end
+
+Content
+	name <Pile of Filth: Red Herring>
+	requires <*DUNGEON_DECOR (sewer|condemned)>
+	element1 <Prefab>
+	minimap < ... .......1....... ... >
+	inv
+		STC RUBBLE-INDESTRUCTIBLE
+		name <Filth>
+		use <if= V1 0 else GoOpen ifYesNo 1 2 3 V= 1 1 ifToughness 5 else GoMakeSick Print 4>
+		GoMakeSick <PCSick Print 5>
+		GoOpen <Print 6>
+		Msg1 <You stand before a pile of filth.>
+		Msg2 <Rummage through it.>
+		Msg3 <Leave it alone.>
+		Msg4 <You find nothing.>
+		Msg5 <You find nothing, but you think you're going to be sick.>
+		Msg6 <You don't want to touch that again.>
+	end
+
+Content
+	name <Pile of Filth 1>
+	requires <*DUNGEON_DECOR !Ne (sewer|condemned)>
+	element1 <Prefab>
+	minimap < ... .......1....... ... >
+	inv
+		STC RUBBLE-INDESTRUCTIBLE
+		name <Filth>
+		% V1 = Have "unlocked" the goodies
+		use <if= V1 0 else GoOpen ifYesNo 1 2 3 V= 1 1 ifToughness 10 else GoMakeSick Goto GoOpen>
+		GoMakeSick <Print 4 PCSick OpenInv>
+		GoOpen <Print 5 OpenInv>
+		Msg1 <You stand before a pile of filth.>
+		Msg2 <Rummage through it.>
+		Msg3 <Leave it alone.>
+		Msg4 <You find some things, but you think you're going to be sick.>
+		Msg5 <You rummage through the filth.>
+		RandomLoot 9000
+		Loot_Category <TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Pile of Filth 2>
+	requires <*DUNGEON_DECOR !Lo (sewer|condemned)>
+	element1 <Prefab>
+	minimap < ... .......1....... ... >
+	inv
+		STC RUBBLE-INDESTRUCTIBLE
+		name <Filth>
+		% V1 = Have "unlocked" the goodies
+		use <if= V1 0 else GoOpen ifYesNo 1 2 3 V= 1 1 ifToughness 10 else GoMakeSick Goto GoOpen>
+		GoMakeSick <Print 4 PCSick OpenInv>
+		GoOpen <Print 5 OpenInv>
+		Msg1 <You stand before a pile of filth.>
+		Msg2 <Rummage through it.>
+		Msg3 <Leave it alone.>
+		Msg4 <You find some things, but you think you're going to be sick.>
+		Msg5 <You rummage through the filth.>
+		RandomLoot 33000
+		Loot_Category <TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Pile of Filth 3>
+	requires <*DUNGEON_DECOR !Md (sewer|condemned)>
+	element1 <Prefab>
+	minimap < ... .......1....... ... >
+	inv
+		STC RUBBLE-INDESTRUCTIBLE
+		name <Filth>
+		% V1 = Have "unlocked" the goodies
+		use <if= V1 0 else GoOpen ifYesNo 1 2 3 V= 1 1 ifToughness 10 else GoMakeSick Goto GoOpen>
+		GoMakeSick <Print 4 PCSick OpenInv>
+		GoOpen <Print 5 OpenInv>
+		Msg1 <You stand before a pile of filth.>
+		Msg2 <Rummage through it.>
+		Msg3 <Leave it alone.>
+		Msg4 <You find some things, but you think you're going to be sick.>
+		Msg5 <You rummage through the filth.>
+		RandomLoot 160000
+		Loot_Category <TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Pile of Filth 4>
+	requires <*DUNGEON_DECOR !Hi (sewer|condemned)>
+	element1 <Prefab>
+	minimap < ... .......1....... ... >
+	inv
+		STC RUBBLE-INDESTRUCTIBLE
+		name <Filth>
+		% V1 = Have "unlocked" the goodies
+		use <if= V1 0 else GoOpen ifYesNo 1 2 3 V= 1 1 ifToughness 13 else GoMakeSick Goto GoOpen>
+		GoMakeSick <Print 4 PCSick OpenInv>
+		GoOpen <Print 5 OpenInv>
+		Msg1 <You stand before a pile of filth.>
+		Msg2 <Rummage through it.>
+		Msg3 <Leave it alone.>
+		Msg4 <You find some things, but you think you're going to be sick.>
+		Msg5 <You rummage through the filth.>
+		RandomLoot 810000
+		Loot_Category <TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Pile of Filth 5>
+	requires <*DUNGEON_DECOR !Ex (sewer|condemned)>
+	element1 <Prefab>
+	minimap < ... .......1....... ... >
+	inv
+		STC RUBBLE-INDESTRUCTIBLE
+		name <Filth>
+		% V1 = Have "unlocked" the goodies
+		use <if= V1 0 else GoOpen ifYesNo 1 2 3 V= 1 1 ifToughness 16 else GoMakeSick Goto GoOpen>
+		GoMakeSick <Print 4 PCSick OpenInv>
+		GoOpen <Print 5 OpenInv>
+		Msg1 <You stand before a pile of filth.>
+		Msg2 <Rummage through it.>
+		Msg3 <Leave it alone.>
+		Msg4 <You find some things, but you think you're going to be sick.>
+		Msg5 <You rummage through the filth.>
+		RandomLoot 4050000
+		Loot_Category <TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Treasure Rock 1>
+	requires <*DUNGEON_DECOR !Ne (asteroid|mine|cave)>
+	element1 <Prefab>
+	minimap < ... .......1....... ... >
+	inv
+		STC RUBBLE-INDESTRUCTIBLE
+		% V1 = Have "unlocked" the rock
+		use <if= V1 1 else GoBlocked Goto GoOpen>
+		GoBlocked <Print 1>
+		CLUE_SCIENCE <if= V1 0 else GoOpen ifScience 3 else GoSciFail V= 1 1 Goto GoOpen>
+		GoOpen <Print 2 OpenInv>
+		GoSciFail <Print 3>
+		Msg1 <It's a rock.>
+		Msg2 <You examine the mineral composition of this rock...>
+		Msg3 <You examine the mineral composition of this rock, but don't find anything interesting.>
+		RandomLoot 10000
+		Loot_Category <GEMSTONE MINERAL>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Treasure Rock 2>
+	requires <*DUNGEON_DECOR !Lo (asteroid|mine|cave)>
+	element1 <Prefab>
+	minimap < ... .......1....... ... >
+	inv
+		STC RUBBLE-INDESTRUCTIBLE
+		% V1 = Have "unlocked" the rock
+		use <if= V1 1 else GoBlocked Goto GoOpen>
+		GoBlocked <Print 1>
+		CLUE_SCIENCE <if= V1 0 else GoOpen ifScience 6 else GoSciFail V= 1 1 Goto GoOpen>
+		GoOpen <Print 2 OpenInv>
+		GoSciFail <Print 3>
+		Msg1 <It's a rock.>
+		Msg2 <You examine the mineral composition of this rock...>
+		Msg3 <You examine the mineral composition of this rock, but don't find anything interesting.>
+		RandomLoot 36000
+		Loot_Category <GEMSTONE MINERAL>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Treasure Rock 3>
+	requires <*DUNGEON_DECOR !Md (asteroid|mine|cave)>
+	element1 <Prefab>
+	minimap < ... .......1....... ... >
+	inv
+		STC RUBBLE-INDESTRUCTIBLE
+		% V1 = Have "unlocked" the rock
+		use <if= V1 1 else GoBlocked Goto GoOpen>
+		GoBlocked <Print 1>
+		CLUE_SCIENCE <if= V1 0 else GoOpen ifScience 9 else GoSciFail V= 1 1 Goto GoOpen>
+		GoOpen <Print 2 OpenInv>
+		GoSciFail <Print 3>
+		Msg1 <It's a rock.>
+		Msg2 <You examine the mineral composition of this rock...>
+		Msg3 <You examine the mineral composition of this rock, but don't find anything interesting.>
+		RandomLoot 180000
+		Loot_Category <GEMSTONE MINERAL>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Treasure Rock 4>
+	requires <*DUNGEON_DECOR !Hi (asteroid|mine|cave)>
+	element1 <Prefab>
+	minimap < ... .......1....... ... >
+	inv
+		STC RUBBLE-INDESTRUCTIBLE
+		% V1 = Have "unlocked" the rock
+		use <if= V1 1 else GoBlocked Goto GoOpen>
+		GoBlocked <Print 1>
+		CLUE_SCIENCE <if= V1 0 else GoOpen ifScience 12 else GoSciFail V= 1 1 Goto GoOpen>
+		GoOpen <Print 2 OpenInv>
+		GoSciFail <Print 3>
+		Msg1 <It's a rock.>
+		Msg2 <You examine the mineral composition of this rock...>
+		Msg3 <You examine the mineral composition of this rock, but don't find anything interesting.>
+		RandomLoot 900000
+		Loot_Category <GEMSTONE MINERAL>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Treasure Rock 5>
+	requires <*DUNGEON_DECOR !Ex (asteroid|mine|cave)>
+	element1 <Prefab>
+	minimap < ... .......1....... ... >
+	inv
+		STC RUBBLE-INDESTRUCTIBLE
+		% V1 = Have "unlocked" the rock
+		use <if= V1 1 else GoBlocked Goto GoOpen>
+		GoBlocked <Print 1>
+		CLUE_SCIENCE <if= V1 0 else GoOpen ifScience 15 else GoSciFail V= 1 1 Goto GoOpen>
+		GoOpen <Print 2 OpenInv>
+		GoSciFail <Print 3>
+		Msg1 <It's a rock.>
+		Msg2 <You examine the mineral composition of this rock...>
+		Msg3 <You examine the mineral composition of this rock, but don't find anything interesting.>
+		RandomLoot 4500000
+		Loot_Category <GEMSTONE MINERAL>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Urban Survivalist>
+	requires <*DUNGEON_DECOR !Lo (Building|Sewer) -SPACE>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	element2 <Prefab>
+	element3 <Prefab>
+	element4 <Prefab>
+	minimap <......12....34..###......>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <This place doesn't appear to be entirely abandoned.>
+	inv
+		NPC Soldier
+		job <Survivalist>
+		Renown 20
+		update <if= V1 0 V= 1 1 SelfLevel 20>
+
+		STC CRATE-AMMO
+		PDir 5
+		use <OpenInv>
+		RandomLoot 25000
+		Loot_Category <WEAPON ARMOR FOOD AMMO>
+		Loot_Factions <GENERAL MAQUI RISHI BOHEM FCOMS FEDER AEGIS>
+
+		STC BED-1
+		PDir 6
+
+		STC ENDTABLE-1
+		PDir 6
+		use <OpenInv>
+		RandomLoot 12000
+		Loot_Category <TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Urban Survivalist>
+	requires <*DUNGEON_DECOR !Md (Building|Sewer) -SPACE>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	element2 <Prefab>
+	element3 <Prefab>
+	element4 <Prefab>
+	minimap <......12....34..###......>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <This place doesn't appear to be entirely abandoned.>
+	inv
+		NPC Soldier
+		job <Survivalist>
+		Renown 45
+		update <if= V1 0 V= 1 1 SelfLevel 45>
+
+		STC CRATE-AMMO
+		PDir 5
+		use <OpenInv>
+		RandomLoot 90000
+		Loot_Category <WEAPON ARMOR FOOD AMMO>
+		Loot_Factions <GENERAL MAQUI RISHI BOHEM FCOMS FEDER AEGIS>
+
+		STC BED-1
+		PDir 6
+
+		STC ENDTABLE-1
+		PDir 6
+		use <OpenInv>
+		RandomLoot 10000
+		Loot_Category <TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Urban Survivalist>
+	requires <*DUNGEON_DECOR !Hi (Building|Sewer) -SPACE>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	element2 <Prefab>
+	element3 <Prefab>
+	element4 <Prefab>
+	minimap <......12....34..###......>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <This place doesn't appear to be entirely abandoned.>
+	inv
+		NPC Soldier
+		job <Survivalist>
+		Renown 70
+		update <if= V1 0 V= 1 1 SelfLevel 70>
+
+		STC CRATE-AMMO
+		PDir 5
+		use <OpenInv>
+		RandomLoot 250000
+		Loot_Category <WEAPON ARMOR FOOD AMMO>
+		Loot_Factions <GENERAL MAQUI RISHI BOHEM FCOMS FEDER AEGIS>
+
+		STC BED-1
+		PDir 6
+
+		STC ENDTABLE-1
+		PDir 6
+		use <OpenInv>
+		RandomLoot 100000
+		Loot_Category <TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+
+Content
+	name <Broken Computer>
+	requires <*DUNGEON_DECOR (Derelict|Laboratory)>
+	minimap <............1............>
+	element1 <Prefab>
+	inv
+		STC COMPUTER-1
+		use <Print 1>
+		CLUE_CODEBREAKING <Print 1>
+		CLUE_REPAIR <if= V1 0 else GoBeenBefore V= 1 1 Print 2 GiveSTC .parts  SkillXP NAS_Repair 25>
+		CLUE_SCIENCE <if= V1 0 else GoBeenBefore V= 1 1 Print 2 GiveSTC .parts  SkillXP NAS_Science 25>
+		.parts <SPAREPARTS-1>
+		GoBeenBefore <Print 3>
+		msg1 <This old computer appears to be broken.>
+		msg2 <You salvage some spare parts from this computer.>
+		msg3 <There's nothing else you can do here.>
+	end
+
+Content
+	name <Defense Robot (Good)>
+	requires <*DUNGEON_DECOR (Ruin|Laboratory|Factory) ~!Lo ~!Md>
+	minimap <......#1#..#2#..###......>
+	element1 <Prefab>
+	element2 <Prefab>
+	Teamdata2 <sd ally>
+	inv
+		Door
+		use <if= V1 0 else GoUsed ifYesNo 101 102 103 else GoRefuse Print 104 SetStat STAT_Pass 0  Transform 1 V= 1 1>
+		GoRefuse <Print 105>
+		GoUsed <Print 106>
+		NPCOpenDoor < >
+		CLUE_SCIENCE <if= V1 0 ifScience 5 else GoSkillFailed Print 107>
+		CLUE_INSIGHT <if= V1 0 ifInsight 5 else GoSkillFailed Print 107>
+		GoSkillFailed <Print 108>
+		Msg101 <[DEFENSE ROBOT RECHARGE STATION] Lift bar to activate defense robot.>
+		Msg102 <Lift the bar.>
+		Msg103 <Leave it alone.>
+		Msg104 <You activate the defense robot.>
+		Msg105 <You leave the defense robot in the recharge station.>
+		Msg106 <You have already activated the defense robot.>
+		Msg107 <Everything seems to be working correctly here.>
+		Msg108 <You can't tell anything about this door.>
+
+		Monster Androbot
+	end
+
+Content
+	name <Defense Robot (Bad)>
+	requires <*DUNGEON_DECOR (Ruin|Laboratory|Factory) -!Ne ~!Hi ~!Ex>
+	minimap <......#1#..#2#..###......>
+	element1 <Prefab>
+	element2 <Prefab>
+	Teamdata2 <sd enemy>
+	inv
+		Door
+		use <if= V1 0 else GoUsed ifYesNo 101 102 103 else GoRefuse Print 104 SetStat STAT_Pass 0  Transform 1 V= 1 1>
+		GoRefuse <Print 105>
+		GoUsed <Print 106>
+		NPCOpenDoor < >
+		CLUE_SCIENCE <if= V1 0 ifScience 5 else GoSkillFailed Print 107>
+		CLUE_INSIGHT <if= V1 0 ifInsight 5 else GoSkillFailed Print 107>
+		GoSkillFailed <Print 108>
+		Msg101 <[DEFENSE ROBOT RECHARGE STATION] Lift bar to activate defense robot.>
+		Msg102 <Lift the bar.>
+		Msg103 <Leave it alone.>
+		Msg104 <You activate the defense robot.>
+		Msg105 <You leave the defense robot in the recharge station.>
+		Msg106 <You have already activated the defense robot.>
+		Msg107 <Something doesn't seem entirely right here...>
+		Msg108 <You can't tell anything about this door.>
+
+		Monster Androbot
+	end
+
+Content
+	name <Robot Team>
+	requires <*DUNGEON_DECOR !Lo (mine|cave)>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	element2 <Prefab>
+	teamdata2 <sd enemy>
+	element3 <Prefab>
+	inv
+		Monster Mining bot
+		Monster Mining bot
+		Treasure
+		name <Gold Nugget>
+		Fudge 32000
+		Mass 1
+	end
+
+Content
+	name <Big Robot Team>
+	requires <*DUNGEON_DECOR !Hi (mine|cave)>
+	element1 <Prefab>
+	teamdata1 <sd enemy>
+	element2 <Prefab>
+	teamdata2 <sd enemy>
+	element3 <Prefab>
+	inv
+		Monster Forgebot
+		Monster Forgebot
+		Item Platinum Ingot
+		mass 1
+		fudge 600000
+	end
+
+Content
+	name <Computer Map>
+	requires <*DUNGEON_DECOR (Ruin|Derelict|Laboratory)>
+	minimap < ... .###..#1+..###. ... >
+	element1 <Prefab>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <This level seems to be in good condition.>
+	inv
+		STC COMPUTER-1
+		use <Print 1>
+		CLUE_CODEBREAKING <if= V1 0 else GoBeenBefore V= 1 1 Mental ifCodeBreakingKn SkillTar 50 else GoFail Print 4 MagicMap>
+		CLUE_SCIENCE      <if= V1 0 else GoBeenBefore V= 1 1 Mental ifScience HardSkillTar 50  else GoFail Print 4 MagicMap>
+		CLUE_INSIGHT      <if= V1 0 else GoBeenBefore V= 1 1 Mental ifInsightKn SkillTar 50  else GoFail Print 4 MagicMap>
+		GoBeenBefore <Print 2>
+		GoFail <Print 3>
+		msg1 <This old computer still seems to be working.>
+		Msg2 <There's nothing useful on this computer.>
+		Msg3 <You don't find anything useful on this computer.>
+		Msg4 <Searching the computer, you find a map of the current level.>
+	end
+
+Content
+	name <Just Decor>
+	requires <*DUNGEON_DECOR ~!Ne>
+	minimap <.......#...###...#.......>
+
+Content
+	name <Dungeon Shrine>
+	requires <*DUNGEON_DECOR>
+	element1 <Prefab>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifPCSpiritual else %pop% ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <You feel a spiritual aura in this place.>
+	inv
+		STC SHRINE-1
+	end
+
+
+%% *DUNGEON_GOAL CONTENT
+%%  - When sold, the dungeon goal content should be enough to buy a cheap level-appropriate mecha.
+%%    !Ne  =  1,000,000
+%%    !Lo  =  2,000,000
+%%    !Md  =  4,000,000
+%%    !Hi  =  8,000,000
+%%    !Ex  = 16,000,000
+
+Content
+	requires <*DUNGEON_GOAL !Ne>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 1000000
+		Loot_Category <TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	requires <*DUNGEON_GOAL !Lo>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 2000000
+		Loot_Category <TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+
+Content
+	requires <*DUNGEON_GOAL !Md>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 4000000
+		Loot_Category <TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+
+Content
+	requires <*DUNGEON_GOAL !Hi>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 8000000
+		Loot_Category <TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+
+Content
+	requires <*DUNGEON_GOAL !Ex>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 16000000
+		Loot_Category <TREASURE>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	name <Gold Nugget>
+	requires <*DUNGEON_GOAL (Mine|Cave) !Ne>
+	minimap < ... .......1....... ... >
+	% E1 is the nugget.
+	element1 <Prefab>
+	inv
+		Treasure
+		name <Gold Nugget>
+		desc <A shiny lump of raw gold.>
+		Fudge 1200000
+		mass 7
+	end
+
+Content
+	name <Gold Nugget>
+	requires <*DUNGEON_GOAL (Mine|Cave) !Lo>
+	minimap < ... .......1....... ... >
+	% E1 is the nugget.
+	element1 <Prefab>
+	inv
+		Treasure
+		name <Gold Nugget>
+		desc <This gold nugget is fairly big.>
+		Fudge 2500000
+		mass 18
+	end
+
+

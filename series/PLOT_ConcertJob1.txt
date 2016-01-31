@@ -1,0 +1,58 @@
+Plot
+	name <Concert Job 1>
+	requires <*GENERAL>
+
+	% This is a basic concert job for performers. 
+
+	% E1 is the character to offer the job.
+	Element1 <Character Bartender RECHARGED>
+
+	%% P1 = Timer/Initialization Counter
+	%% P2 = Difficulcy Rating; PC's renown at time of initialization
+
+
+	start <ifNPCOK E1 else GoDelete ifG V1 0 Goto GoCheckTime>
+	update <ifNPCOK E1 else GoDelete if= V1 0 else GoCheckTime  V= 1 ComTime  V+ 1 86400   P= 2 PCRenown  P+ 2 d4   P+ 2 -d4   ifG 2 P2 P= 2 d4>
+	GoDelete <EndPlot>
+	GoCheckTime <ifG ComTime V1  EndPlot>
+	CleanUp <EndPlot>
+
+sub
+	Persona 1
+	rumor <%name1% needs a singer.>
+	% V1 = Have offered job
+	% V2 = Concert Score
+	greeting <if= V1 1 else GoCheckPerformance Goto GoOfferJob>
+	GoCheckPerformance <ifChatNPCInPlay else GoNotHere ifPCHasPerformance else GoNoJob ifG React d50 else GoNoAuto Goto GoAutoOffer>
+	GoNotHere <EndChat Say 4>
+	*GoAutoOffer <*DoYouWantAJob&NonCombat GoIntroJob>
+	GoIntroJob <NewChat Say 6 AddChat 1 AddChat 2>
+	*GoNoAuto <*PerformanceTest GoOfferJob GoRejectJob GoFailJob>
+	GoOfferJob <NewChat Say 1 V= 1 1 Memo 5 AddChat 3 AddChat 4>
+	GoRejectJob <NewChat Say 2 EndPlot>
+	GoFailJob <NewChat Say 3   EndPlot>
+	GoNoJob <EndPlot RevertPersona>
+	result1 <Goto GoOfferJob>
+	result2 <Goto GoRejectJob>
+	result3 <EndChat Say 7 AddChat 5>
+	result4 <NewChat Say 8>
+	result5 <V= 2 Concert d5 SkillTar P2 ifG V2 50 else GoLoseMission Goto GoWinMission>
+	GoWinMission <NewChat Say 9 XPV 100 AddRenown 1 CashPrize Reward P2 V2  AddReact d6  EndPlot>
+	GoLoseMission <NewChat Say 10 LoseRenown AddReact -d10 EndPlot>
+	Msg1 <We can start the concert any time you're ready.>
+	Msg2 <That's a shame. I'll find someone else to perform here, then.>
+	Msg3 <You're not exactly the person I had in mind... We need someone who will bring customers in, not scare them away.>
+	Msg4 <If you need to talk, come see me in \SCENE EScene 1 .>
+	Msg5 <\PERSONA E1 in \SCENE Escene 1 will hire you to sing at \PPR E1 bar.>
+	Msg6 <There's a concert here tonight. I'd like for you to perform at it.>
+	Msg7 <All right then... break a leg.>
+	Msg8 <Don't take too long.>
+	Msg9 <Good job there, \PC ! Here's your pay, and your cut of the tips.>
+	Msg10 <What the hell were you doing out there? I had to refund half the tickets...>
+	Prompt1 <Alright, I'll do that.>
+	Prompt2 <Sorry, I'm not interested.>
+	Prompt3 <I'm ready to go right now.>
+	Prompt4 <I need some time to get ready first.>
+	Prompt5 <[Begin Concert]>
+
+end

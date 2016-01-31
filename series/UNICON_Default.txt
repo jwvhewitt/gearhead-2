@@ -1,0 +1,237 @@
+%% *URBAN_X Content
+%%   Things you might find in a city. Generic content for cafes, parks,
+%%   shopping malls, waiting rooms, and so on. Mostly just NPCs.
+
+	Content
+	name <Recruitable Mechanic>
+	requires <*URBAN_X Public Static (Garage|Arena) ~Meeting>
+
+	%% A mechanic/engineer who might be recruitable as a lancemate.
+
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+
+	sub
+		Persona 1
+		rumor <%name1% plans to earn some money to open a garage.>
+		% V1 = Have made offer
+		% V2 = Hiring Price
+		*Greeting <*NiceToMeetYou GoCheckMember>
+		GoCheckMember <if# V1 0 else GoCheckEnemy NewChat SayAnything>
+		GoCheckEnemy <IFCHATNPCARCHENEMY else GoOffer EraseRumor Goto GoChat>
+		GoOffer <ifChatNPCCanJoinLance else GoPine ifG PCRenown ChatNPCRenown else GoPine ifG React 15 else GoPine V= 2 Threat ChatNPCRenown 7 NewChat Say 1 AddChat 1 AddChat 2 AddChat 3>
+		*GoPine <*GodImBored>
+		result1 <PCAlly %1% History 2 Cash+ -V2 ChatNPCJoinLance V= 1 1 EraseRumor Goto GoWelcome>
+		*GoWelcome <*WelcomeToLance>
+		result2 <NewChat Say 3 V= 1 1 EraseRumor AddSociable -d10>
+		*result3 <*HurryBackWithMoney>
+		Msg1 <Every good pilot needs a tech to back \OPR 0 up. I'm looking to join a lance so I can save up money to open my own garage. If you're interested, my hiring rate is $ \VAL V2 .>
+		Msg2 <You hired %name1% the mechanic.>
+		Msg3 <You can never have as many tech skills as you need.>
+		Prompt1 <Alright, I could use a tech. [Give money]>
+		CPrompt1 <ifG PC$ V2 Accept>
+		Prompt2 <I've already got all the tech skills I need.>
+		Prompt3 <I'll be back sometime when I have money.>
+	end
+	inv
+		NPC Mechanic
+		Combatant
+		MechaEngineering 10
+	end
+
+
+	Content
+	name <Recruitable Thief>
+	requires <*URBAN_X Public Static ~Meeting -Legit>
+
+	%% A thief who might be recruitable as a lancemate.
+
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+
+	sub
+		Persona 1
+		rumor <%name1% is a freelance countersecurity consultant. That's a fancy way to say thief.>
+		% V1 = Have made offer
+		% V2 = Hiring Price
+		*Greeting <*NiceToMeetYou GoCheckMember>
+		GoCheckMember <if# V1 0 else GoCheckEnemy NewChat SayAnything>
+		GoCheckEnemy <IFCHATNPCARCHENEMY else GoOffer EraseRumor Goto GoChat>
+		GoOffer <ifChatNPCCanJoinLance else GoPine ifG PCRenown ChatNPCRenown else GoPine ifG React 15 else GoPine V= 2 Threat ChatNPCRenown 7 NewChat Say 1 AddChat 1 AddChat 2 AddChat 3>
+		*GoPine <*GodImBored>
+		result1 <PCAlly %1% History 2 Cash+ -V2 ChatNPCJoinLance V= 1 1 EraseRumor Goto GoWelcome>
+		*GoWelcome <*WelcomeToLance>
+		result2 <NewChat Say 3 V= 1 1 EraseRumor AddSociable -d10>
+		result3 <NewChat Say 4 AddChat 4 AddChat 5>
+		result4 <NewChat Say 5>
+		result5 <Goto result1>
+		Msg1 <I can't help but notice that you are someone who may be in need of my services. I am a freelance countersecurity consultant; for the low price of $ \VAL V2 you can add my considerable skills to your lance.>
+		Msg2 <You hired countersecurity expert %name1%.>
+		Msg3 <Understood, it will never be mentioned again.>
+		Msg4 <There are specialties which all cavaliers need but which few take the time to practice. I am an expert at opening locked doors discretely, circumventing security devices, and elsewise finding things which other people would rather go unfound.>
+		Msg5 <Take all the time you need. It's not like I have anything better to do than hang around here.>
+		Prompt1 <It's a deal. [Give money]>
+		CPrompt1 <ifG PC$ V2 Accept>
+		Prompt2 <I'm not interested.>
+		Prompt3 <What kind of skills are you talking about?>
+		Prompt4 <I'll think about it.>
+		Prompt5 <Sounds good. You're in. [Give money]>
+		CPrompt5 <ifG PC$ V2 Accept>
+	end
+	inv
+		NPC Thief
+		Combatant
+		chardesc sociable pragmatic
+	end
+
+
+	Content
+	name <Recruitable Random>
+	requires <*URBAN_X Public Static>
+	%% A completely random NPC who might be recruitable as a lancemate.
+
+	element1 <.>
+	element2 <Scene Town !Near 1>
+	element3 <NewNPC 0 2>
+	team3 <citizens>
+	teamdata3 <pass>
+
+	sub
+		Persona 3
+		rumor <%name3% dreams of leaving town and becoming a cavalier.>
+		% V1 = Have made offer
+		*Greeting <*NiceToMeetYou GoCheckMember>
+		GoCheckMember <if# V1 0 else GoCheckEnemy Goto GoChat>
+		*GoChat <*MISC_CHATTER>
+		GoCheckEnemy <IFCHATNPCARCHENEMY else GoOffer EraseRumor Goto GoChat>
+		GoOffer <ifChatNPCCanJoinLance else GoPine ifG PCRenown ChatNPCRenown else GoPine ifG React 15 else GoPine NewChat Say 2 AddChat 1 AddChat 2 AddChat 3>
+		*GoPine <*GodImBored>
+		result1 <PCAlly %3% History 6 ChatNPCJoinLance V= 1 1 EraseRumor Goto GoWelcome>
+		*GoWelcome <*WelcomeToLance>
+		result2 <NewChat Say 3 V= 1 1 EraseRumor AddSociable -d10>
+		result3 <NewChat Say 4 AddChat 4 AddChat 1>
+		result4 <NewChat Say 5 V= 1 1 EraseRumor>
+		Msg2 <Say, you're a cavalier, aren't you? If you're looking for a partner I'd love to join your crew.>
+		Msg2_1 <Hey, you're an adventurer, right? I'd like to join your group, if you'd be willing to have me.>
+		Msg2_2 <You're a mecha pilot, aren't you? I do a bit of piloting myself. If you need an assistant I'd love to join up with you.>
+		Msg3 <I see. That's fine... I'll just stay here, then.>
+		Msg3_1 <I understand. I won't ask again.>
+		Msg4 <Well, I mean, it's a dream, isn't it? I want to get out of this place, see the solar system, have exciting adventures...>
+		Msg4_1 <Well, you see, I've always wanted to be an adventurer. Of course it's not as easy as it looks, especially when you're just starting out. I've been practicing mecha combat on the simulators and I think I'm ready to really begin.>
+		CMsg4_1 <ifNPCSociable Accept>
+		Msg4_2 <My reasons are my own. I advise you not to ask again.>
+		CMsg4_2 <ifNPCShy Accept>
+		Msg4_3 <Meh. It seemed like a good idea.>
+		CMsg4_3 <ifNPCEasygoing Accept>
+		Msg4_4 <I've seen everything there is to see around here. It's time I moved on to something interesting.>
+		CMsg4_4 <ifNPCPassionate Accept>
+		Msg4_5 <Well, it's fun, isn't it? Flying around, piloting mecha, blowing up stuff... I want to do that myself!>
+		CMsg4_5 <ifNPCCheerful Accept>
+		Msg4_6 <The way I see things, I have two choices. I could stay here and die a boring death of old age. Or, I could go adventure and have an exciting death. I choose option number two.>
+		CMsg4_6 <ifNPCMelancholy Accept>
+		Msg5 <You could be right. Still, I'll never stop dreaming...>
+		Msg5_1 <I probably am, but that doesn't stop me from wanting to leave...>
+		Msg6 <%name3% joined your lance.>
+		Prompt1 <Alright, you can join.>
+		Prompt1_1 <I could use an extra hand.>
+		Prompt2 <Sorry, I don't need a lackey.>
+		Prompt2_1 <Not interested.>
+		Prompt3 <Why do you want to join me?>
+		Prompt4 <You're better off where you are.>
+	end
+
+
+	Content
+	requires <*URBAN_X Mall Static>
+	% A student to mooch money from the PC... previously a PFrag.
+
+	name <Student Moocher>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <pass>
+
+	sub
+		Persona 1
+		% v%id%01 = Timer; if -1, quest is completed.
+		*Greeting <*NiceToMeetYou GoMooch>
+		GoMooch <if= v%id%01 0 else .%id%_GoCheckTime NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+		.%id%_GoCheckTime <if# v%id%01 -1 else .%id%_GoNothing ifG ComTime v%id%01 else .%id%_GoWait ifNPCLawful else .%id%_GoChaos Goto .%id%_GoLaw>
+		.%id%_GoWait <NewChat Say %id%02>
+		.%id%_GoNothing <NewChat SayAnything>
+		.%id%_GoChaos <NewChat SayAnything AddChat %id%03>
+		.%id%_GoLaw <NewChat Say %id%09 AddChat %id%06 AddChat %id%07>
+		result%id%01 <NewChat Say %id%04 V= %id%01 ComTime V+ %id%01 86543 AddReact 15 AddSociable d6 Cash+ -500>
+		result%id%02 <NewChat Say %id%03 V= %id%01 -1>
+		result%id%03 <NewChat Say %id%05 V= %id%01 -1  AddChat %id%04 AddChat %id%05>
+		result%id%04 <NewChat ifConversation 10 else .%id%_GoR4Fail Say %id%06 CashPrize 500>
+		.%id%_GoR4Fail <Say %id%07>
+		result%id%05 <NewChat ifIntimidation 5 else .%id%_GoR5Fail Say %id%06 CashPrize 500>
+		.%id%_GoR5Fail <Say %id%08>
+		result%id%06 <NewChat Say %id%10 V= %id%01 -1 AddReact 5 AddHeroic 1>
+		result%id%07 <NewChat Say %id%11 V= %id%01 -1 CashPrize 500>
+		Msg%id%01 <Hey, could I ask you a big favor? I need a loan of $500. If you could give this to me I'd pay you back tomorrow.>
+		Msg%id%02 <I'll pay you back tomorrow. Really!>
+		Msg%id%03 <I understand.>
+		Msg%id%04 <Thanks! You're a real life-saver! I won't forget this!>
+		Msg%id%05 <Money? I don't remember anything about any money. What are you talking about?>
+		Msg%id%06 <Alright, you can have it back... here. You're pretty sharp for an old-timer. I'll be seeing you around.>
+		Msg%id%07 <I really don't know what you're talking about. Are you sure you don't have me confused with someone else? I've heard that forgetfulness is a common symptom of old age.>
+		Msg%id%08 <I don't have the money! Beat me up if you want, you're still not going to get anything...>
+		Msg%id%09 <Here's the money I owe you. Thank you very much for the help yesterday.>
+		Msg%id%10 <Really? That's so generous. I won't forget your kindness!>
+		Msg%id%11 <Here you go. If ever you need help, I'll do my best.>
+		Prompt%id%01 <Sure, I could do that.>
+		CPrompt%id%01 <ifG PC$ 499 Accept>
+		Prompt%id%02 <Sorry, kid, I can't.>
+		Prompt%id%03 <Hey, where's my money?>
+		Prompt%id%04 <I loaned you some money yesterday!>
+		Prompt%id%05 <Look, give me the money, or I'll get rough...>
+		Prompt%id%06 <Forget it, you can keep it.>
+		Prompt%id%07 <You're welcome.>
+	end
+	inv
+		NPC Student
+		chardesc Young Sociable
+	end
+
+	Content
+	requires <*URBAN_X Sleazy Static ~Dangerous>
+	% This bandit will attack the PC. If the PC manages to subdue him,
+	% he'll join as a lancemate.
+	name <Recruitable Bandit>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+
+	% L%id%01 = Victory Counter
+	% L%id%02 = Initial Team of Bandit
+
+	SURRENDER%1% <if= L%id%01 0 XPV 100  L= %id%01 1  ForceChat %1%  GrabNPC %1%  GSetNAtt NAG_Location NAS_Team CitizensTeam>
+
+	sub
+		Persona 1
+		rumor <%name1% really likes to fight.>
+		special <NOESCAPE NOPLOTS UNLISTED>
+		% V1 = Has been recruited or otherwise placated
+		greeting <if= V1 1 else GoCheckSurrender NewChat SayAnything>
+		GoCheckSurrender <ifNPCSurrendered ChatNPCID else GoFirstTime Goto GoGainLM>
+		GoGainLM <PCAlly ChatNPCID AddReact 20   NewChat Say 1 History 5 Goto GoPlacate>
+		GoPlacate <V= 1 1   UnSurrender ChatNPCID   GrabSource GSetSAtt special .nothing>
+		GoFirstTime <EndChat Say 2 AddChat 1 AddChat 2>
+		result1 <ifIntimidation 20 else GoAttack Goto GoGainLM>
+		GoAttack <EndChat Say 3 SoloAttack ChatNPCID>
+		result2 <EndChat Say 4 AddRenown -5 Goto GoPlacate>
+		Msg1 <You're a really strong fighter. I'd like to hang with you, if that's cool...>
+		Msg2 <You're breathing my air, spongenuts. Better clear out before I decide to off you.>
+		Msg3 <You wanna die? Okay, I was looking for something to liven up today anyhow...>
+		Msg4 <Hah, that's right, run away little sheep... Go back to yer mommy...>
+		Msg5 <%name1% joined your lance after you defeated \OPR %1% in combat.>
+		Prompt1 <Don't threaten me.>
+		Prompt2 <Sorry, I'll be going now...>
+	end
+	inv
+		NPC Bandit
+	end
+

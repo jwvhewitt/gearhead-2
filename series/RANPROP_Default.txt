@@ -1,0 +1,783 @@
+%% Contains prop collections.
+
+% To include a superprop in a scene, you need to include a SuperProp request gear.
+% Attach a request to this gear telling what kind of superprop you want to add. For
+% instance, to add an enemy fortress, add the following to the scene:
+%
+%  SuperProp
+%  requires <*Fortress>
+%
+
+%% *SUPERWEAPON Props
+%%
+%%	These props represent artillery pieces or otherwise big honking experimental
+%%	weapons.
+%%
+%%	No SuperWeapon should be larger than 5x5.
+%%
+%% Team 1 = Default Team
+
+SuperProp
+requires <*SUPERWEAPON !Ne>
+Width 2
+Height 2
+inv
+	STC SW-WEDGE-0
+	SetTeam 1
+	XPos 0
+	YPos 0
+	Dir 4
+
+	STC SW-WEDGE-0
+	SetTeam 1
+	XPos 1
+	YPos 0
+	Dir 6
+
+	STC SW-WEDGE-0
+	SetTeam 1
+	XPos 0
+	YPos 1
+	Dir 2
+
+	STC SW-WEDGE-0
+	SetTeam 1
+	XPos 1
+	YPos 1
+	Dir 0
+end
+
+SuperProp
+requires <*SUPERWEAPON !Lo>
+Width 2
+Height 2
+inv
+	STC SW-WEDGE-1
+	SetTeam 1
+	XPos 0
+	YPos 0
+	Dir 4
+
+	STC SW-WEDGE-1
+	SetTeam 1
+	XPos 1
+	YPos 0
+	Dir 6
+
+	STC SW-WEDGE-1
+	SetTeam 1
+	XPos 0
+	YPos 1
+	Dir 2
+
+	STC SW-WEDGE-1
+	SetTeam 1
+	XPos 1
+	YPos 1
+	Dir 0
+end
+
+SuperProp
+requires <*SUPERWEAPON !Md>
+Width 2
+Height 2
+inv
+	STC SW-WEDGE-2
+	SetTeam 1
+	XPos 0
+	YPos 0
+	Dir 4
+
+	STC SW-WEDGE-2
+	SetTeam 1
+	XPos 1
+	YPos 0
+	Dir 6
+
+	STC SW-WEDGE-2
+	SetTeam 1
+	XPos 0
+	YPos 1
+	Dir 2
+
+	STC SW-WEDGE-2
+	SetTeam 1
+	XPos 1
+	YPos 1
+	Dir 0
+end
+
+SuperProp
+requires <*SUPERWEAPON !Hi>
+Width 3
+Height 3
+inv
+	STC SW-WEDGE-2
+	SetTeam 1
+	XPos 0
+	YPos 0
+	Dir 4
+
+	STC SW-WEDGE-2
+	SetTeam 1
+	XPos 2
+	YPos 0
+	Dir 6
+
+	STC SW-TOWER-1
+	SetTeam 1
+	XPos 1
+	YPos 1
+	Dir 0
+
+	STC SW-WEDGE-2
+	SetTeam 1
+	XPos 0
+	YPos 2
+	Dir 2
+
+	STC SW-WEDGE-2
+	SetTeam 1
+	XPos 2
+	YPos 2
+	Dir 0
+
+	STC SW-SLAB-1
+	SetTeam 1
+	XPos 1
+	YPos 0
+	Dir 6
+
+	STC SW-SLAB-1
+	SetTeam 1
+	XPos 1
+	YPos 2
+	Dir 2
+
+	STC SW-SLAB-1
+	SetTeam 1
+	XPos 0
+	YPos 1
+	Dir 4
+
+	STC SW-SLAB-1
+	SetTeam 1
+	XPos 2
+	YPos 1
+	Dir 0
+end
+
+SuperProp
+requires <*SUPERWEAPON !Ex>
+Width 5
+Height 5
+
+inv
+	STC SW-SLAB-2
+	SetTeam 1
+	XPos 1
+	YPos 1
+
+	STC SW-SLAB-2
+	SetTeam 1
+	XPos 2
+	YPos 2
+
+	STC SW-SLAB-2
+	SetTeam 1
+	XPos 3
+	YPos 3
+
+	STC SW-SLAB-2
+	SetTeam 1
+	XPos 1
+	YPos 3
+
+	STC SW-SLAB-2
+	SetTeam 1
+	XPos 3
+	YPos 1
+
+	STC SW-WEDGE-2
+	SetTeam 1
+	XPos 1
+	YPos 0
+	Dir 4
+
+	STC SW-WEDGE-2
+	SetTeam 1
+	XPos 0
+	YPos 1
+	Dir 4
+
+	STC SW-WEDGE-2
+	SetTeam 1
+	XPos 3
+	YPos 0
+	Dir 6
+
+	STC SW-WEDGE-2
+	SetTeam 1
+	XPos 4
+	YPos 1
+	Dir 6
+
+	STC SW-WEDGE-2
+	SetTeam 1
+	XPos 0
+	YPos 3
+	Dir 2
+
+	STC SW-WEDGE-2
+	SetTeam 1
+	XPos 1
+	YPos 4
+	Dir 2
+
+	STC SW-WEDGE-2
+	SetTeam 1
+	XPos 4
+	YPos 3
+	Dir 0
+
+	STC SW-WEDGE-2
+	SetTeam 1
+	XPos 3
+	YPos 4
+	Dir 0
+
+	STC SW-TOWER-1
+	SetTeam 1
+	XPos 2
+	YPos 1
+	Dir 6
+
+	STC SW-TOWER-1
+	SetTeam 1
+	XPos 2
+	YPos 3
+	Dir 2
+
+	STC SW-TOWER-1
+	SetTeam 1
+	XPos 1
+	YPos 2
+	Dir 4
+
+	STC SW-TOWER-1
+	SetTeam 1
+	XPos 3
+	YPos 2
+	Dir 0
+
+	STC SW-SLAB-1
+	SetTeam 1
+	XPos 2
+	YPos 0
+	Dir 6
+
+	STC SW-SLAB-1
+	SetTeam 1
+	XPos 2
+	YPos 4
+	Dir 2
+
+	STC SW-SLAB-1
+	SetTeam 1
+	XPos 0
+	YPos 2
+	Dir 4
+
+	STC SW-SLAB-1
+	SetTeam 1
+	XPos 4
+	YPos 2
+	Dir 0
+end
+
+
+%% *CRUISER Props
+%% Team 1 = Crew
+%% Team 2 = Weapons
+%% Team 3 = Propulsion
+%%  Less well armed than a battleship, cruisers typically need to be captured or defended
+%%  rather than destroyed.
+
+SuperProp
+requires <*CRUISER !Ne>
+% =#>
+Width 3
+Height 1
+inv
+	Prop 10
+	name <Engine>
+	sdl_skin <tex_spaceship_engine.png>
+	SetTeam 3
+	Mesh 9
+	XPos 0
+	YPos 0
+	Dir 0
+
+	Prop 10
+	name <Hull>
+	SetTeam 1
+	sdl_skin <tex_spaceship_body.png>
+	Mesh 5
+	XPos 1
+	YPos 0
+
+	STC SS-CANNON-0
+	SetTeam 2
+	XPos 2
+	YPos 0
+	Mesh 6
+	Dir 0
+end
+
+SuperProp
+requires <*CRUISER !Lo>
+%  /
+% =##>
+%  \
+Width 4
+Height 3
+inv
+	Prop 10
+	name <Engine>
+	sdl_skin <tex_spaceship_engine.png>
+	SetTeam 3
+	Mesh 9
+	XPos 0
+	YPos 1
+	Dir 0
+
+	Prop 10
+	name <Hull>
+	SetTeam 1
+	sdl_skin <tex_spaceship_body.png>
+	Mesh 5
+	XPos 1
+	YPos 1
+
+	Prop 10
+	name <Hull>
+	SetTeam 1
+	sdl_skin <tex_spaceship_body.png>
+	Mesh 5
+	XPos 2
+	YPos 1
+
+	Prop 10
+	name <Hull>
+	sdl_skin <tex_spaceship_body.png>
+	SetTeam 1
+	XPos 3
+	YPos 1
+	Mesh 6
+	Dir 0
+
+	STC SS-CANNON-0
+	SetTeam 2
+	XPos 1
+	YPos 0
+	Dir 4
+
+	STC SS-CANNON-0
+	SetTeam 2
+	XPos 1
+	YPos 2
+	Dir 
+end
+
+SuperProp
+requires <*CRUISER !Md>
+% =#>
+% <t#>
+% =#>
+Width 4
+Height 3
+inv
+	Prop 15
+	name <Engine>
+	sdl_skin <tex_spaceship_engine.png>
+	SetTeam 3
+	Mesh 9
+	XPos 0
+	YPos 0
+	Dir 0
+
+	Prop 15
+	name <Engine>
+	sdl_skin <tex_spaceship_engine.png>
+	SetTeam 3
+	Mesh 9
+	XPos 0
+	YPos 2
+	Dir 0
+
+	Prop 15
+	name <Hull>
+	SetTeam 1
+	sdl_skin <tex_spaceship_body.png>
+	Mesh 5
+	XPos 1
+	YPos 0
+
+	Prop 15
+	name <Hull>
+	SetTeam 1
+	sdl_skin <tex_spaceship_body.png>
+	Mesh 5
+	XPos 2
+	YPos 1
+
+	Prop 15
+	name <Hull>
+	SetTeam 1
+	sdl_skin <tex_spaceship_body.png>
+	Mesh 5
+	XPos 1
+	YPos 2
+
+	Prop 15
+	name <Bridge>
+	SetTeam 1
+	sdl_skin <tex_spaceship_body.png>
+	Mesh 8
+	XPos 1
+	YPos 1
+
+	Prop 15
+	name <Hull>
+	sdl_skin <tex_spaceship_body.png>
+	SetTeam 1
+	XPos 3
+	YPos 1
+	Mesh 6
+	Dir 0
+
+	Prop 15
+	name <Hull>
+	sdl_skin <tex_spaceship_body.png>
+	SetTeam 1
+	XPos 0
+	YPos 1
+	Mesh 6
+	Dir 4
+
+	STC SS-CANNON-0
+	SetTeam 2
+	Mesh 6
+	XPos 2
+	YPos 0
+	Dir 0
+
+	STC SS-CANNON-0
+	SetTeam 2
+	Mesh 6
+	XPos 2
+	YPos 2
+	Dir 0
+end
+
+
+SuperProp
+requires <*CRUISER -!ne -!lo -!md>
+%	 /
+%	=#>
+%	<T##>
+%	=#>
+%	 \
+Width 5
+Height 5
+inv
+	Prop 20
+	name <Engine>
+	sdl_skin <tex_spaceship_engine.png>
+	SetTeam 3
+	Mesh 9
+	XPos 0
+	YPos 1
+	Dir 0
+
+	Prop 20
+	name <Engine>
+	sdl_skin <tex_spaceship_engine.png>
+	SetTeam 3
+	Mesh 9
+	XPos 0
+	YPos 3
+	Dir 0
+
+	Prop 20
+	name <Hull>
+	SetTeam 1
+	sdl_skin <tex_spaceship_body.png>
+	Mesh 5
+	XPos 1
+	YPos 1
+	Dir 6
+
+	Prop 20
+	name <Hull>
+	SetTeam 1
+	sdl_skin <tex_spaceship_body.png>
+	Mesh 5
+	XPos 1
+	YPos 3
+	Dir 6
+
+	Prop 20
+	name <Bridge>
+	sdl_skin <tex_spaceship_body.png>
+	SetTeam 1
+	Mesh 8
+	XPos 1
+	YPos 2
+	Dir 0
+
+	Prop 20
+	name <Hull>
+	SetTeam 1
+	sdl_skin <tex_spaceship_body.png>
+	Mesh 5
+	XPos 2
+	YPos 2
+	Dir 6
+
+	Prop 20
+	name <Hull>
+	SetTeam 1
+	sdl_skin <tex_spaceship_body.png>
+	Mesh 5
+	XPos 3
+	YPos 2
+	Dir 6
+
+	Prop 20
+	name <Hull>
+	sdl_skin <tex_spaceship_body.png>
+	SetTeam 1
+	Mesh 6
+	XPos 2
+	YPos 3
+	Dir 0
+
+	Prop 20
+	name <Hull>
+	sdl_skin <tex_spaceship_body.png>
+	SetTeam 1
+	Mesh 6
+	XPos 2
+	YPos 1
+	Dir 0
+
+	Prop 20
+	name <Hull>
+	sdl_skin <tex_spaceship_body.png>
+	SetTeam 1
+	Mesh 6
+	XPos 4
+	YPos 2
+	Dir 0
+
+	Prop 20
+	name <Hull>
+	sdl_skin <tex_spaceship_body.png>
+	SetTeam 1
+	Mesh 6
+	XPos 0
+	YPos 2
+	Dir 4
+
+	STC SS-CANNON-1
+	SetTeam 2
+	XPos 1
+	YPos 0
+	Dir 4
+
+	STC SS-CANNON-1
+	SetTeam 2
+	XPos 1
+	YPos 4
+	Dir 0
+end
+
+
+
+%% *BATTLESHIP Props
+%% Team 1 = Crew
+%% Team 2 = Weapons
+%% Team 3 = Propulsion
+
+SuperProp
+requires <*BATTLEShip>
+Width 4
+Height 3
+inv
+	Prop 20
+	name <Hull>
+	SetTeam 1
+	sdl_skin <tex_spaceship_body.png>
+	Mesh 6
+	XPos 1
+	YPos 0
+	Dir 6
+
+	Prop 20
+	name <Hull>
+	sdl_skin <tex_spaceship_body.png>
+	SetTeam 1
+	Mesh 6
+	XPos 2
+	YPos 0
+	Dir 6
+
+	STC SS-CANNON-1
+	SetTeam 2
+	XPos 3
+	YPos 0
+	Dir 6
+
+	STC SS-CANNON-1
+	SetTeam 2
+	XPos 0
+	YPos 0
+	Dir 2
+
+	Prop 20
+	name <Engine>
+	sdl_skin <tex_spaceship_engine.png>
+	SetTeam 3
+	Mesh 9
+	XPos 0
+	YPos 1
+	Dir 0
+
+	STC SS-CANNON-1
+	SetTeam 2
+	XPos 0
+	YPos 2
+	Dir 4
+
+
+	Prop 20
+	name <Bridge>
+	sdl_skin <tex_spaceship_body.png>
+	SetTeam 1
+	Mesh 8
+	XPos 1
+	YPos 1
+	Dir 0
+
+	Prop 20
+	name <Hull>
+	sdl_skin <tex_spaceship_body.png>
+	SetTeam 1
+	Mesh 5
+	XPos 2
+	YPos 1
+	Dir 4
+
+	Prop 20
+	name <Hull>
+	sdl_skin <tex_spaceship_body.png>
+	SetTeam 1
+	Mesh 6
+	XPos 3
+	YPos 1
+	Dir 0
+
+
+	Prop 20
+	name <Hull>
+	sdl_skin <tex_spaceship_body.png>
+	SetTeam 1
+	Mesh 6
+	XPos 1
+	YPos 2
+	Dir 2
+
+	Prop 20
+	name <Hull>
+	sdl_skin <tex_spaceship_body.png>
+	SetTeam 1
+	Mesh 6
+	XPos 2
+	YPos 2
+	Dir 2
+
+	STC SS-CANNON-1
+	SetTeam 2
+	XPos 3
+	YPos 2
+	Dir 0
+end
+
+%% *FORTRESS Props
+%%  Team 1 = Support Buildings; at least one
+%%  Team 2 = Defense Buildings; maybe none
+%% No fortress should be larger than 6x6.
+
+SuperProp
+requires <*Fortress -!Ex -!Hi -!Md>
+Width 1
+Height 1
+inv
+	STC Bunker-1
+	SetTeam 1
+end
+
+SuperProp
+requires <*Fortress -!Ne -!Hi -!Ex>
+Width 3
+Height 1
+inv
+	STC TURRET-2
+	SetTeam 2
+	Dir 4
+
+	STC Bunker-1
+	SetTeam 1
+	XPos 1
+
+	STC TURRET-2
+	SetTeam 2
+	XPos 2
+	Dir 0
+end
+
+SuperProp
+requires <*Fortress -!Ne -!Lo>
+Width 3
+Height 3
+inv
+	STC TURRET-2
+	SetTeam 2
+	YPos 1
+	Dir 4
+
+	STC TURRET-2
+	SetTeam 2
+	XPos 1
+	Dir 6
+
+	STC Bunker-1
+	SetTeam 1
+	XPos 1
+	YPos 1
+
+	STC TURRET-2
+	SetTeam 2
+	XPos 2
+	YPos 1
+	Dir 0
+
+	STC TURRET-2
+	SetTeam 2
+	XPos 1
+	YPos 2
+	Dir 2
+end
+
+

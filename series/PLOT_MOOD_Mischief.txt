@@ -1,0 +1,173 @@
+%%
+%% *Mischief Plots
+%%
+%%  Someone is being rowdy and unmutual. The PC can fight some henchmen or
+%%  associates to learn the location of the enemy's hideout.
+%%
+%%  %name2% will be used to identify the mischief maker, so name the
+%%  encounter something sensible!!!
+%%
+%%  NOTE: Don't try grabbing the NPC, because it's most likely in use by
+%%    whatever plot/quest spawned this mood. Then why is it part of the spec?
+%%    Because its context might be useful to know, that's why.
+%%
+%% Mood Spec:
+%%  E1 = The outdoors scene
+%%  E2 = The encounter being sought
+%%  E3 = **The NPC behind it all
+%%
+
+Plot
+	name <Applied Mischief>
+	desc <An NPC allied with the mischief-maker may attack the PC.>
+	requires <*Mischief>
+
+	% E1 is the outdoors scene
+	% E2 is an encounter to place there
+	% E3 is the encounter being sought
+	% E4 is the NPC to be negotiated with
+	Element1 <Grab 1>
+	Element2 <Prefab>
+	Place2 <1>
+	Element3 <Grab 2>
+	Element4 <Character !Okay -3 (Criminal|Villainous|Enemy) !G HasMecha>
+	Place4 <2 (Enemies)>
+
+	% P1 = Time Limit/Initialization Counter
+	% P2 = E4 refused to fight PC
+	start <if# P1 0 ifG ComTime P1 EndPlot>
+	update <if= P1 0 P= 1 ComTime P+ 1 21600 SetPlotStatus %plotid% %id%>
+
+	&RevealEncounter <SetEncounterActive %3%  AnnihilatePlotMood Exit %1% SeekGate %3%>
+
+	sub
+		MetaScene 2 2
+		rumor%id% <%name4% is on the way to %name3%.>
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		start <if= L2 0 L= 2 1 Alert 1 ForceChat %4%>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1    AddRenown -1        EndPlot>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   AddRenown 1 SALVAGE  if= P2 0 else GoJustEnd ifNPCOK %4% else GoJustEnd Monologue %4% 3 XPV 100 &RevealEncounter>
+		GoJustEnd <Alert 2   EndPlot>
+
+		Msg1 <You are attacked by %name4%!>
+		Msg2 <You have defeated the mecha.>
+		Msg3 <Alright, you beat me- you can find %name3% in %name1%.>
+		Msg3_1 <I surrnder! You can find %name3% in %name1%.>
+		Msg3_2 <You win this time, \PC ... %name3% is in %name1%.>
+
+		sub
+			team 1
+			SetEnemy 2
+			SetAlly 3
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 3
+			Deploy <SetSelfFaction NPCFac MoodE 3 WMecha 2 %threat% 80>
+			ParaX 45
+			ParaY 45
+		end
+
+		Persona 4
+		special <UNLISTED NOESCAPE>
+		*greeting <*Mischief_EnemyGreeting %threat% %3% GoReveal GoFight>
+		GoReveal <EndChat Say 1 Retreat 2 L= 1 1 XPV 100 &RevealEncounter>
+		GoFight <ifG PCRenown ChatNPCRenown else GoNoFight Goto GoThemeExpo>
+		GoNoFight <EndCHat Say 2 RunAway %4% P= 2 1>
+		*GoThemeExpo <*THEME_EXPO&Enemy na>
+		Msg1 <You can find %name3% in %name1%. I'll show you the way.>
+		Msg1_1 <%name3% is in %name1%... Here are the coordinates.>
+		Msg1_2 <If you're really sure you want to go, %name3% is in %name1%. Don't blame me for what you find there.>
+		Msg2 <You're not enough of a challenge for me to bother with; my lance should be able to handle you on their own.>
+		Msg2_1 <While fighting you would be fun, it wouldn't really be much of a challenge. I'm going to leave you to my men.>
+		Msg2_2 <I'm too busy to kick your arse today. My lance can do that by themselves.>
+	end
+	inv
+		Encounter
+		name <Mischief Makers>
+		EncounterMove 20
+		use <ifG StatVal STAT_MetaVisibility -1    ifUStealth 2 else GoAutoAttack   ifYesNo 1 2 3 else GoAutoAttack Goto GoTrack>
+		attack <ifG StatVal STAT_MetaVisibility -1  ifG PCScale 0    ifUStealth SkillTar %threat% else GoAutoAttack ifYesNo 1 2 3 else GoAutoAttack Goto GoTrack>
+		GoAutoAttack <Alert -2 Exit Destination>
+		GoTrack <Alert 4 XPV 100 &RevealEncounter Exit %1% SeekGate %3%>
+		Msg1 <You encounter a group of mecha from %name3%.>
+		Msg2 <Trail them.>
+		Msg3 <Approach them.>
+		Msg4 <You track the mecha to %name3%.>
+	end
+
+Plot
+	name <Pure Mischief>
+	desc <Some mecha allied with the mischief-maker may attack the PC.>
+	requires <*Mischief>
+
+	% E1 is the outdoors scene
+	% E2 is an encounter to place there
+	% E3 is the encounter being sought
+	Element1 <Grab 1>
+	Element2 <Prefab>
+	Place2 <1>
+	Element3 <Grab 2>
+
+	% P1 = Time Limit/Initialization Counter
+	start <if# P1 0 ifG ComTime P1 EndPlot>
+	update <if= P1 0 P= 1 ComTime P+ 1 21600 SetPlotStatus %plotid% %id%>
+
+	&RevealEncounter <SetEncounterActive %3%  AnnihilatePlotMood Exit %1% SeekGate %3%>
+
+	sub
+		MetaScene 2 2
+		rumor%id% <mecha from %name3% have been causing trouble in %name1%.>
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		start <if= L2 0 L= 2 1 Alert 1>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1    AddRenown -1        EndPlot>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   AddRenown 1 SALVAGE   ifInsight SkillTar %threat% else GoCheckSurvival Alert 3 &RevealEncounter  XPV 100>
+		GoCheckSurvival <ifSurvival SkillTar %threat% else GoTrackFailed  Alert 4 &RevealEncounter  XPV 100>
+		GoTrackFailed <Alert 2   EndPlot>
+
+		Msg1 <You are attacked by some of \PERSONA MoodE 3 's henchmen!>
+		Msg2 <You have defeated the mecha.>
+		Msg3 <In one of the defeated mecha you find the coordinates to %name3%.>
+		Msg4 <After defeating these mecha, you track their movements back to %name3%.>
+
+		sub
+			team 1
+			SetEnemy 2
+			SetAlly 3
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 3
+			Deploy <SetSelfFaction NPCFac MoodE 3 WMecha 2 %threat% 80>
+			ParaX 45
+			ParaY 45
+		end
+	end
+	inv
+		Encounter
+		name <Mischief Makers>
+		EncounterMove 20
+		use <ifG StatVal STAT_MetaVisibility -1    ifUStealth 2 else GoAutoAttack   ifYesNo 1 2 3 else GoAutoAttack Goto GoTrack>
+		attack <ifG StatVal STAT_MetaVisibility -1  ifG PCScale 0    ifUStealth SkillTar %threat% else GoAutoAttack ifYesNo 1 2 3 else GoAutoAttack Goto GoTrack>
+		GoAutoAttack <Alert -2 Exit Destination>
+		GoTrack <Alert 4 XPV 100 &RevealEncounter Exit %1% SeekGate %3%>
+		Msg1 <You encounter a group of mecha from %name3%.>
+		Msg2 <Trail them.>
+		Msg3 <Approach them.>
+		Msg4 <You track the mecha to %name3%.>
+	end
+
+
+

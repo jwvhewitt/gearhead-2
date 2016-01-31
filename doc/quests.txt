@@ -1,0 +1,144 @@
+***************************
+***   IMPORTANT  NOTE   ***
+***************************
+
+Quests are now covered under MegaPlots. In general, a quest will function
+in the same was as a megaplot. I'm leaving this document here for a bit
+until the merger gets ironed out.
+
+...
+
+For convenience an instance of static adventure content will be referred
+to as a Quest, even though most will not follow the standard quest format
+seen in most games (do foo, receive bar).
+
+A Quest is a collection of adventure components combined with each other
+and then embedded into the adventure.
+
+
+QUEST FRAGMENT NAMES
+
+A quest fragment type name must begin with an asterix, as in "*SUCCESS".
+
+A quest fragment that begins a new subquest must begin with an asterix
+and a colon, as in "*:PROVESELF".
+
+A quest fragment name may include optional descriptors separated from
+the main name by periods, as in "*:FINDMONEY.CHARITY" or "*:FINDMONEY.INVESTMENT".
+
+
+ELEMENT HANDLING
+
+Do not insert a persona fragment in the greeting of a persona! This will be megalisted
+in, and mess up loads of stuff.
+
+Rumors attached to a persona have the format "RUMOR%id% <>". When the quest status equals
+ID this rumor will be used.
+
+If "." is requested as an element, it will be the city where this story takes place.
+
+
+
+QUEST REQUEST
+
+   [Quest Type] [Quest Threat Rating]
+
+A character can request one quest. A scene can request as many as wanted.
+Contained in a "QUEST" string attribute of a scene.
+
+If the Quest Threat Rating is omitted or 0, a default difficulcy rating will
+be calculated based on the location of the quest relative to the PC's starting
+point.
+
+Must contain a content type preceded by a *.
+
+The context for the content request includes the following:
+- SceneContext for the city, in quotes
+  - Context string, desig, type, terrain, static/dynamic, personatype, faction, world
+- XXRan context for the key scene, prefixed by "S:"
+  - Existence, faction, context SAtt
+- XXRan context for the key character, prefixed by "C:"
+  - Existence, relation to PC, faction, job context
+- XXRan context for params, prefixed as "1:" through "9:"
+
+
+QUEST REQUEST FROM A QUEST
+
+[ Content Type ] [#threat] [E1] [E2] ...
+
+Starts with the content type.
+
+Next is an optional threat value override. If a number preceded by a hash is included,
+this overrides the current difficulcy rating of this quest thread.
+
+Next, a list of element IDs to be passed from the current fragment to the next.
+Note that only 9 parameters can be passed, despite the fact that a plot may have
+(as of now, anyway) up to 10 elements.
+
+
+REPLACEMENT STRINGS
+
+%id%	The layer ID of this component.
+%qid%	The quest ID associated with this component.
+%prev_id%	The layer ID of the parent fragment
+%prev_qid%	The quest ID of the parent fragment
+%scenesq_id%	The layer ID of this scene's subquest (NewScene only)
+%scenesq_qid%	The quest ID of this scene's subquest (NewScene only)
+%scenechar% 	The CID of the scene's key character (NewScene only)
+%scenefac% 	The ID of the scene's faction (NewScene only)
+%threat%	The difficulcy level of the fragment, expressed as renown.
+%sktar%		An appropriate skill roll target, based on the difficulcy.
+%sktar_hard%	A hard skill roll based on the difficulcy.
+%1%..%10%	The element IDs
+%name1%..%name10%	The element names
+%s1%..%s10%	The element scenes
+%id1%..%id8%	Layer IDs of subquests
+%qid1%..%qid8%	Quest IDs of subquests
+
+
+VALUES ASSOCIATED WITH A QUEST
+
+Quest ID:       Every quest has a globally unique ID number.
+                This number is used to determine the "plot state" of
+                a given quest.
+Layer ID:       Every layer in a quest has an ID number which is
+                unique within the scope of the quest.
+
+A component can set the Quest Status to either its own ID (which it should do when
+initializing) or to a negative number (which means that the quest is over).
+
+If a subquest relies on information from the parent quest, it should have a check to
+make sure the parent quest is at the right state before doing anything.
+
+
+REUSABLE FRAGMENTS
+
+Most fragments are unique- once added to the adventure, they are removed from the list
+and will not be used again. If a fragment has a "REUSABLE" tag in its SPECIAL string
+attribute, it will be reusable over and over again.
+
+Reusable fragments should not include any new characters.
+
+
+QUEST MEMOS AND QUEST SUBMEMOS
+
+Quest memos are stored in the adventure itself. Each quest can have one memo.
+The key for a quest's memo is "MEMO_" + QuestID. After a quest is completed the
+memo no longer appears.
+
+Quests may have any number of submemos. These are located in gears associated with
+the quest. The key for a submemo is "MEMO_" + QuestStatus. The QuestID is known
+from the value stored in the gear. This memo only appears when QuestStatus holds
+the specified value. These should be used when a subquest needs to add a memo but
+shouldn't overwrite the main memo; most of these are used in entrance quests.
+
+QUEST FRAGMENT
+	Sub
+		PERSONAS
+		METASCENES contain scene scripts
+	Inv
+		Prefab Elements
+
+
+
+

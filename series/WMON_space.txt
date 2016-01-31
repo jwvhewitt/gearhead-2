@@ -1,0 +1,589 @@
+%  ******************************
+%  ***  SPACE  MONSTER  LIST  ***
+%  ******************************
+
+% Space monsters all have the "SPACE" terrain type and the SEALED intrinsic.
+
+%  STATS  REF BOD SPD PER CFT EGO KNO CHA
+
+ARCH Exorg Watcher
+MonsterTV 130
+NoCorpse
+Sealed
+Biotech
+roguechar <X>
+sdl_sprite <>
+sdl_colors <28 52 38 45 45 45 194 16 38>
+type <Space Exorg Asteroid>
+habitat <SPACE>
+statline 17 19 16 22 15 20 12 14
+CloseCombat 9
+RangedCombat 12
+Dodge 14
+Vitality 5
+Awareness 15
+SpotWeakness 8
+ElectronicWarfare 8
+Toughness 8
+sub
+torso
+	armor 5
+	AntiBeam
+	sub
+		BeamGun 8
+		range 7
+		name <Eye Laser>
+		type <ArmorPiercing>
+
+		PowerSource 6
+		name <Energy Gland>
+
+		EMelee 12
+		name <Laser Burn>
+
+		ECM 6
+	end
+leg
+	armor 5
+	AntiBeam
+	sub
+		Arcjet 5
+	end
+leg
+	armor 5
+	AntiBeam
+	sub
+		Arcjet 5
+	end
+leg
+	armor 5
+	AntiBeam
+	sub
+		Arcjet 5
+	end
+leg
+	armor 5
+	AntiBeam
+	sub
+		Arcjet 5
+	end
+end
+
+ARCH Exorg Floater
+MonsterTV 60
+NoCorpse
+Sealed
+roguechar <X>
+sdl_sprite <monster_exorg_flyer.png>
+sdl_colors <255 230 210 255 157 123 200 0 100>
+type <Space Exorg Asteroid>
+habitat <SPACE>
+statline 15 7 15 16 5 19 10 7
+CloseCombat 7
+RangedCombat 6
+Dodge 9
+Awareness 5
+SpotWeakness 5
+sub
+torso
+	sub
+		BeamGun 3
+		range 5
+		name <Eye Laser>
+		type <ArmorPiercing>
+
+		PowerSource 3
+		name <Energy Gland>
+
+		Melee 1
+		name <Laser Burn>
+	end
+wing
+	sub
+		HoverJet 3
+	end
+wing
+	sub
+		HoverJet 3
+	end
+wing
+	sub
+		HoverJet 3
+	end
+wing
+	sub
+		HoverJet 3
+	end
+end
+
+ARCH Space Squid
+roguechar <Q>
+SDL_SPRITE <monster_seadragon.png>
+SDL_COLORS <180 36 70 135 30 17 200 200 0>
+MonsterTV 92
+type <fungus cave ruin>
+habitat <SPACE>
+statline 13 16 12 9 3 6 1 5
+*CLUE_SURVIVAL <*SURVIVAL_GetPearl 80 squid>
+RangedCombat 5
+CloseCombat 6
+Dodge 13
+Stealth 4
+sub
+torso
+armor 4
+sub
+	Melee 14
+	name <Beak>
+	acc -3
+	type <BRUTAL POISON>
+
+	Gun 5
+	name <Spore Shot>
+	caliber <Spore>
+	range 5
+	type <SCATTER BLIND>
+	Magazine 16
+	sub
+		Ammo 5
+		caliber <Spore>
+	end
+end
+tail
+name <Tentacle>
+armor 4
+sub
+	Melee 5
+	name <Hook>
+	type <ArmorPiercing Flail Sickness>
+end
+tail
+name <Tentacle>
+armor 4
+sub
+	Melee 5
+	name <Hook>
+	type <ArmorPiercing Flail Sickness>
+end
+end
+
+ARCH Scarlet Shil
+SDL_SPRITE <monster_shil.png>
+SDL_COLORS <180 36 70 0 0 0 200 244 40>
+roguechar <S>
+type <fungus ruin derelict>
+habitat <SPACE>
+statline 13 5 13 2 1 1 1 1
+MonsterTV 70
+CloseCombat 6
+Dodge 10
+Vitality 4
+sealed
+sub
+torso
+	sub
+		Melee 8
+		name <Touch>
+		type <SICKNESS POISON>
+
+		HoverJet 7
+	end
+end
+
+ARCH Silver Shil
+SDL_SPRITE <monster_shil.png>
+SDL_COLORS <199 188 162 0 0 0 244 216 28>
+roguechar <S>
+type <fungus ruin derelict>
+habitat <SPACE>
+statline 13 2 13 2 1 1 1 1
+MonsterTV 30
+CloseCombat 3
+Dodge 6
+sealed
+sub
+torso
+	sub
+		Melee 2
+		name <Touch>
+		type <SICKNESS>
+
+		HoverJet 7
+	end
+end
+
+ARCH Strobe Sphere
+SDL_SPRITE <monster_fungus3.png>
+SDL_COLORS <94 96 125 174 238 251 174 238 251>
+SDL_PORTRAIT <monster_fungus3.png>
+roguechar <'>
+type <fungus cave>
+habitat <SPACE>
+statline 11 8 10 5 1 1 1 1
+*CLUE_SURVIVAL <*SURVIVAL_GetPearl 70 fungus>
+MonsterTV 70
+RangedCombat 5
+CloseCombat 5
+Dodge 10
+Vitality 5
+Stealth 5
+sealed
+sub
+torso
+	sub
+		Melee 5
+		name <Maw>
+		type <BRUTAL POISON>
+		Speed 3
+
+		BeamGun 6
+		name <Strobe Flash>
+		type <BLIND>
+		range 4
+
+		PowerSource 5
+		name <Energy Gland>
+
+		HoverJet 8
+	end
+end
+
+ARCH Fungal Sphere
+SDL_SPRITE <monster_fungus3.png>
+SDL_PORTRAIT <monster_fungus3.png>
+SDL_COLORS <199 188 162 135 141 101 234 180 0>
+roguechar <'>
+type <fungus mine asteroid cave>
+habitat <SPACE>
+statline 10 8 10 1 1 1 1 1
+*CLUE_SURVIVAL <*SURVIVAL_GetPearl 40 fungus>
+MonsterTV 40
+RangedCombat 1
+CloseCombat 4
+Dodge 5
+Vitality 4
+sealed
+sub
+torso
+	sub
+		Melee 4
+		name <Maw>
+		type <BRUTAL>
+
+		Gun 3
+		name <Toxic Dart>
+		caliber <FUNGUS TOXIC DART>
+		range 4
+		BV 3
+		Magazine 80
+		sub
+			Ammo 3
+			type <POISON SWARM>
+			caliber <FUNGUS TOXIC DART>
+		end
+
+		HoverJet 8
+	end
+end
+
+ARCH Toxic Fungus
+SDL_SPRITE <monster_fungus2.png>
+SDL_PORTRAIT <monster_fungus2.png>
+SDL_COLORS <250 200 49 175 26 10 17 78 200>
+roguechar <f>
+type <fungus mine asteroid>
+habitat <SPACE>
+statline 9 16 8 9 1 1 1 1
+*CLUE_SURVIVAL <*SURVIVAL_LootGizzard 75 fungus>
+MonsterTV 75
+CloseCombat 6
+RangedCombat 6
+Dodge 8
+Initiative 7
+Vitality 7
+sealed
+sub
+torso
+	armor 5
+	sub
+		Gun 4
+		name <Toxic Dart>
+		caliber <FUNGUS TOXIC DART>
+		range 5
+		BV 4
+		Magazine 80
+		sub
+			Ammo 4
+			type <POISON SWARM>
+			caliber <FUNGUS TOXIC DART>
+		end
+	end
+leg
+	armor 4
+	sub
+		melee 5
+		name <Claw>
+		type <ARMORPIERCING POISON>
+	end
+leg
+	armor 4
+	sub
+		melee 5
+		name <Claw>
+		type <ARMORPIERCING POISON>
+	end
+leg
+	armor 4
+	sub
+		melee 5
+		name <Claw>
+		type <ARMORPIERCING POISON>
+	end
+leg
+	armor 4
+	sub
+		melee 5
+		name <Claw>
+		type <ARMORPIERCING POISON>
+	end
+leg
+	armor 4
+	sub
+		melee 5
+		name <Claw>
+		type <ARMORPIERCING POISON>
+	end
+leg
+	armor 4
+	sub
+		melee 5
+		name <Claw>
+		type <ARMORPIERCING POISON>
+	end
+end
+
+ARCH Armored Fungus
+SDL_SPRITE <monster_fungus2.png>
+SDL_COLORS <49 91 159 170 153 230 244 210 30>
+roguechar <f>
+type <fungus mine asteroid>
+habitat <SPACE>
+statline 7 20 7 8 1 1 1 1
+*CLUE_SURVIVAL <*SURVIVAL_LootGizzard 44 fungus>
+MonsterTV 44
+CloseCombat 4
+Dodge 4
+Initiative 7
+Vitality 5
+sealed
+sub
+torso
+	armor 4
+leg
+	armor 3
+	sub
+		melee 5
+		name <Claw>
+		type <ARMORPIERCING>
+	end
+leg
+	armor 3
+	sub
+		melee 5
+		name <Claw>
+		type <ARMORPIERCING>
+	end
+leg
+	armor 3
+	sub
+		melee 5
+		name <Claw>
+		type <ARMORPIERCING>
+	end
+leg
+	armor 3
+	sub
+		melee 5
+		name <Claw>
+		type <ARMORPIERCING>
+	end
+leg
+	armor 3
+	sub
+		melee 5
+		name <Claw>
+		type <ARMORPIERCING>
+	end
+leg
+	armor 3
+	sub
+		melee 5
+		name <Claw>
+		type <ARMORPIERCING>
+	end
+end
+
+ARCH Fungal Scavenger
+SDL_SPRITE <monster_fungus2.png>
+SDL_COLORS <135 141 101 199 188 162 244 210 30>
+roguechar <f>
+type <fungus mine asteroid>
+habitat <SPACE>
+statline 7 5 8 5 1 1 1 1
+*CLUE_SURVIVAL <*SURVIVAL_LootGizzard 25 fungus>
+MonsterTV 25
+CloseCombat 3
+Dodge 5
+sealed
+sub
+torso
+leg
+	sub
+		melee 2
+		name <Tendril>
+	end
+leg
+	sub
+		melee 2
+		name <Tendril>
+	end
+leg
+	sub
+		melee 2
+		name <Tendril>
+	end
+leg
+	sub
+		melee 2
+		name <Tendril>
+	end
+leg
+	sub
+		melee 2
+		name <Tendril>
+	end
+leg
+	sub
+		melee 2
+		name <Tendril>
+	end
+end
+
+
+ARCH Fungal Hunter
+SDL_SPRITE <monster_fungus1.png>
+SDL_COLORS <199 188 162 135 141 101 250 50 150>
+roguechar <f>
+type <fungus asteroid cave>
+habitat <SPACE>
+statline 9 13 13 9 1 1 1 1
+*CLUE_SURVIVAL <*SURVIVAL_GetPearl 65 fungus>
+MonsterTV 60
+CloseCombat 7
+Dodge 8
+Initiative 5
+SpotWeakness 5
+sealed
+sub
+torso
+	armor 4
+arm
+	armor 3
+	sub
+		melee 9
+		name <Claw>
+		type <Brutal>
+	end
+arm
+	armor 3
+	sub
+		melee 9
+		name <Claw>
+		type <Brutal>
+	end
+leg
+	armor 3
+	sub
+		melee 2
+		name <Tendril>
+	end
+leg
+	armor 3
+	sub
+		melee 2
+		name <Tendril>
+	end
+leg
+	armor 3
+	sub
+		melee 2
+		name <Tendril>
+	end
+leg
+	armor 3
+	sub
+		melee 2
+		name <Tendril>
+	end
+end
+
+arch armored worm
+roguechar <w>
+SDL_SPRITE <monster_larva.png>
+SDL_PORTRAIT <monster_larva.png>
+SDL_COLORS <49 91 159 170 153 230 244 210 30>
+type <mutant vermin mine derelict>
+habitat <SPACE>
+statline 9 12 6 5 4 5 1 1
+MonsterTV 65
+sealed
+CloseCombat 8
+Dodge 7
+Vitality 10
+Toughness 10
+%% The armored worm is tough as nails
+Talent 4
+sub
+head
+	armor 5
+	Hardened
+	sub
+		Melee 8
+		name <Jaws>
+		type <BRUTAL SICKNESS>
+		UsesBody
+	end
+torso
+	armor 5
+	sub
+		Melee 4
+		name <Spines>
+		type <ARMORPIERCING POISON>
+	end
+tail
+	armor 5
+end
+
+arch spaceworm
+roguechar <w>
+SDL_SPRITE <monster_larva.png>
+SDL_COLORS <245 213 160 245 213 160 255 230 195>
+type <mutant vermin mine derelict>
+habitat <SPACE>
+statline 7 3 6 5 4 5 1 1
+MonsterTV 15
+sealed
+CloseCombat 3
+Vitality 1
+sub
+head
+	armor 2
+	sub
+		Melee 4
+		name <Jaws>
+	end
+torso
+tail
+end
+
+

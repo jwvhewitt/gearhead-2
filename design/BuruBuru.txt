@@ -1,0 +1,1079 @@
+Battroid 5
+Name <Buru Buru>
+Desig <SAN-X9>
+type <GROUND SPACE INSIDE>
+factions <GENERAL>
+SDL_Sprite <btr_buruburu.png>
+SDL_PORTRAIT <item_buruburu.png>
+SDL_MESH <btr_buruburu.obj>
+SDL_SKIN <skin_btr_buruburu.png>
+desc <One of the oldest designs still in common use, the BuruBuru is the dependable workhorse of the mecha world.>
+Legality -15
+ROLE_FCOMS <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_MAQUI <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_RISHI <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_BOHEM <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_PRIVA <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+
+sub
+Head
+	Armor 4
+	mass 2
+	sub
+		Sensor 4
+
+		STC LAS-3
+		type <INTERCEPT>
+		Integral
+	end
+
+Torso
+	Armor 4
+	mass 3
+	sub
+		CPit
+		Armor 2
+
+		Mount
+		name <Collar Mount>
+		inv
+			MLauncher 4
+			sub
+				STC SWM-2
+				Magazine 20
+			end
+		end
+	end
+
+Arm
+	Name <Right Arm>
+	mass 3
+	Armor 4
+	sub
+		Hand
+		inv
+			STC SC-9
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	mass 3
+	Armor 4
+	sub
+		Hand
+		inv
+			Melee 5
+			Name <Axe>
+			Acc 1
+		end
+
+	end
+
+Leg
+	Name <Right Leg>
+	mass 3
+	Armor 4
+	sub
+		HoverJet 4
+	end
+
+Leg
+	Name <Left Leg>
+	mass 3
+	Armor 4
+	sub
+		HoverJet 4
+	end
+end
+
+Battroid 5
+Name <Buru Buru>
+Desig <SAN-X12 Assault>
+type <GROUND SPACE INSIDE>
+factions <GENERAL>
+SDL_Sprite <btr_buruburu.png>
+SDL_PORTRAIT <item_buruburu.png>
+SDL_MESH <btr_buruburu.obj>
+SDL_SKIN <skin_btr_buruburu.png>
+desc <A variant on the ubiquitous BuruBuru. This version is optimized for short range fighting.>
+Legality -15
+
+ROLE_FCOMS <ASSAULT:TROOPER>
+ROLE_RISHI <ASSAULT:TROOPER>
+ROLE_MAQUI <ASSAULT:TROOPER>
+ROLE_BOHEM <ASSAULT:TROOPER>
+
+sub
+Head
+	Armor 4
+	mass 1
+	sub
+		Sensor 4
+
+		STC LAS-3
+		type <INTERCEPT>
+		Integral
+	end
+
+Torso
+	Armor 4
+	mass 1
+	sub
+		CPit
+		Armor 2
+
+		Mount
+		name <Collar Mount>
+		inv
+			MLauncher 6
+			sub
+				STC LR-1
+				Magazine 60
+			end
+		end
+
+		HeavyActuator 3
+	end
+
+Arm
+	Name <Right Arm>
+	Armor 4
+	sub
+		Hand
+		inv
+			STC SC-6
+		end
+		HeavyActuator 1
+
+		Melee 1
+		Name <Shoulder Spike>
+		Acc 1
+	end
+
+Arm
+	Name <Left Arm>
+	Armor 4
+	sub
+		Hand
+		inv
+			Melee 8
+			Name <War-Hammer>
+		end
+
+		STC MAC-2
+
+		HeavyActuator 1
+	end
+
+Leg
+	Name <Right Leg>
+	mass 1
+	Armor 4
+	sub
+		HoverJet 4
+	end
+
+Leg
+	Name <Left Leg>
+	mass 1
+	Armor 4
+	sub
+		HoverJet 4
+	end
+end
+
+
+
+Battroid 5
+Name <Buru Buru>
+Desig <SAN-X9sk StarWarrior>
+type <GROUND SPACE INSIDE>
+factions <MAQUI SILKN>
+SDL_Sprite <btr_buruburu.png>
+SDL_PORTRAIT <item_buruburu.png>
+SDL_MESH <btr_buruburu.obj>
+SDL_SKIN <skin_btr_buruburu.png>
+desc <This variant is used by the Silver Knights. It features a particle cannon and improved defenses.>
+Legality -5
+ROLE_MAQUI <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_SILKN <GENERAL:SUPPORT  DEFENSE:SUPPORT>
+
+sub
+Head
+	Armor 4
+	Mass 1
+	sub
+		Sensor 4
+
+		STC LAS-3
+		type <INTERCEPT>
+		Integral
+	end
+
+Torso
+	Armor 4
+	sub
+		CPit
+		Armor 2
+
+		Mount
+		name <Collar Mount>
+		inv
+			MLauncher 4
+			sub
+				STC HR-10
+				Magazine 4
+			end
+		end
+		ECM 2
+		PowerSource 4
+		mass -4
+	end
+
+Arm
+	Name <Right Arm>
+	Armor 4
+	Mass 1
+	sub
+		Hand
+		inv
+			STC PAR-2
+		end
+
+		Mount
+		name <Right Arm Mount>
+		inv
+			STC SML-5
+		end
+
+		PowerSource 1
+		Mass -1
+	end
+
+Arm
+	Name <Left Arm>
+	Armor 4
+	Mass 1
+	sub
+		Hand
+		Mount
+		name <Left Arm Mount>
+
+		PowerSource 1
+		Mass -1
+	end
+	inv
+		Shield 3
+		DefBonus 1
+	end
+
+Leg
+	Name <Right Leg>
+	mass 1
+	Armor 4
+	sub
+		HoverJet 4
+	end
+
+Leg
+	Name <Left Leg>
+	mass 1
+	Armor 4
+	sub
+		HoverJet 4
+	end
+end
+
+Battroid 5
+Name <Buru Buru>
+Desig <SAN-X9r5 Gunner>
+type <GROUND SPACE INSIDE>
+factions <RISHI ROCKE>
+SDL_Sprite <btr_buruburu.png>
+SDL_PORTRAIT <item_buruburu.png>
+SDL_MESH <btr_buruburu.obj>
+SDL_SKIN <skin_btr_buruburu.png>
+desc <This variant is used by the mecha forces of Rishiri Spinner. It serves as a light artillery platform.>
+Legality -15
+ROLE_RISHI <GENERAL:SUPPORT  ASSAULT:SUPPORT>
+ROLE_ROCKE <GENERAL:SUPPORT  ASSAULT:SUPPORT>
+
+sub
+Head
+	Armor 4
+	mass 2
+	sub
+		Sensor 4
+
+		STC LAS-3
+		type <INTERCEPT>
+		Integral
+	end
+
+Torso
+	Armor 4
+	mass 3
+	sub
+		CPit
+		Armor 2
+
+		Mount
+		name <Collar Mount>
+		inv
+			STC MAC-4
+		end
+
+		SpaceFlight 3
+	end
+
+Arm
+	Name <Right Arm>
+	mass 3
+	Armor 4
+	sub
+		Hand
+		inv
+			STC GBAZ-17
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	mass 3
+	Armor 4
+	sub
+		Hand
+		inv
+			EMelee 10
+			Name <Beam Axe>
+			Mass 1
+		end
+
+	end
+
+Leg
+	Name <Right Leg>
+	mass 2
+	Armor 4
+	sub
+		HoverJet 4
+	end
+
+Leg
+	Name <Left Leg>
+	mass 2
+	Armor 4
+	sub
+		HoverJet 4
+	end
+end
+
+Battroid 5
+Name <Buru Buru>
+Desig <SAN-X8f>
+type <GROUND SPACE INSIDE>
+factions <FCOMS L5LAW BOHEM>
+SDL_Sprite <btr_buruburu.png>
+SDL_PORTRAIT <item_buruburu.png>
+SDL_MESH <btr_buruburu.obj>
+SDL_SKIN <skin_btr_buruburu.png>
+desc <This older variant of the BuruBuru is still used by the defense forces of various space colonies.>
+Legality -15
+ROLE_FCOMS <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_L5LAW <GENERAL:TROOPER  DEFENSE:TROOPER>
+ROLE_BOHEM <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+
+sub
+Head
+	Armor 4
+	mass 2
+	sub
+		Sensor 4
+
+		STC LAS-3
+		type <INTERCEPT>
+		Integral
+	end
+
+Torso
+	Armor 4
+	mass 3
+	sub
+		CPit
+		Armor 2
+
+		Mount
+		name <Collar Mount>
+		inv
+			MLauncher 4
+			sub
+				STC LR-1
+				Magazine 40
+			end
+		end
+	end
+
+Arm
+	Name <Right Arm>
+	mass 3
+	Armor 4
+	sub
+		Hand
+		inv
+			STC SC-9
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	mass 3
+	Armor 3
+	sub
+		Hand
+	end
+	inv
+		ArmArmor 2
+		sub
+			Melee 4
+			name <Shoulder Spike>
+		end
+
+		Shield 2
+		DefBonus -1
+	end
+
+Leg
+	Name <Right Leg>
+	mass 3
+	Armor 4
+	sub
+		HoverJet 4
+	end
+
+Leg
+	Name <Left Leg>
+	mass 3
+	Armor 4
+	sub
+		HoverJet 4
+	end
+end
+
+Battroid 5
+Name <Buru Buru>
+Desig <SAN-X9cb Crossbones>
+type <GROUND SPACE INSIDE>
+SDL_Sprite <btr_buruburu.png>
+SDL_PORTRAIT <item_buruburu.png>
+SDL_MESH <btr_buruburu.obj>
+SDL_SKIN <skin_btr_buruburu.png>
+desc <This variant is favored by pirates in the L5 region.>
+Legality -15
+factions <CRIHN PRIVA REDMA>
+ROLE_CRIHN <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_REDMA <GENERAL:TROOPER  DEFENSE:TROOPER>
+ROLE_PRIVA <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+
+sub
+Head
+	Armor 4
+	mass 2
+	sub
+		Sensor 4
+
+		STC LAS-3
+		type <INTERCEPT>
+		Integral
+	end
+
+Torso
+	Armor 4
+	mass 3
+	sub
+		CPit
+		Armor 2
+
+		Mount
+		name <Right Collar Mount>
+		inv
+			MLauncher 4
+			sub
+				STC SWM-2
+				Magazine 20
+			end
+		end
+
+		Mount
+		name <Left Collar Mount>
+
+		ECM 1
+	end
+
+Arm
+	Name <Right Arm>
+	mass 3
+	Armor 3
+	sub
+		Hand
+		inv
+			STC MB-7
+		end
+	end
+	inv
+		ArmArmor 2
+		sub
+			Melee 2
+			name <Shoulder Spike>
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	mass 3
+	Armor 3
+	sub
+		Hand
+		inv
+			Melee 7
+			name <Mecha Cutlass>
+			Speed 3
+			Mass -3
+			Acc 1
+		end
+
+	end
+	inv
+		ArmArmor 2
+		sub
+			Melee 2
+			name <Shoulder Spike>
+		end
+	end
+
+Leg
+	Name <Right Leg>
+	mass 3
+	Armor 4
+	sub
+		HoverJet 4
+	end
+
+Leg
+	Name <Left Leg>
+	mass 3
+	Armor 4
+	sub
+		HoverJet 4
+	end
+end
+
+
+Battroid 5
+Name <Buru Buru>
+Desig <SAN-X9c Urban>
+type <GROUND SPACE INSIDE>
+factions <GENERAL>
+SDL_Sprite <btr_buruburu.png>
+SDL_PORTRAIT <item_buruburu.png>
+SDL_MESH <btr_buruburu.obj>
+SDL_SKIN <skin_btr_buruburu.png>
+desc <A variant on the BuruBuru design. This version features a shield and improved short range weapons.>
+Legality -15
+ROLE_L5LAW <ASSAULT:TROOPER>
+
+sub
+Head
+	Armor 4
+	mass 2
+	sub
+		Sensor 4
+
+		STC LAS-3
+		type <INTERCEPT>
+		Integral
+	end
+
+Torso
+	Armor 4
+	mass 3
+	sub
+		CPit
+		Armor 2
+
+		Mount
+		name <Collar Mount>
+		inv
+			MLauncher 4
+			sub
+				STC SWM-2
+				Magazine 20
+			end
+		end
+	end
+
+Arm
+	Name <Right Arm>
+	mass 3
+	Armor 4
+	sub
+		Hand
+		inv
+			STC SC-6
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	mass 3
+	Armor 4
+	sub
+		Hand
+		inv
+			Melee 5
+			Name <Axe>
+			Acc 1
+		end
+
+	end
+	inv
+		Shield 5
+		name <Metro Shield>
+		DefBonus 1
+		sub
+			STC MAC-2
+		end
+	end
+
+Leg
+	Name <Right Leg>
+	mass 3
+	Armor 4
+	sub
+		HoverJet 4
+	end
+
+Leg
+	Name <Left Leg>
+	mass 3
+	Armor 4
+	sub
+		HoverJet 4
+	end
+end
+%% End Urban Buru Buru
+
+
+
+Battroid 5
+Name <Buru Buru>
+Desig <SAN-X9g Heavyfoot>
+type <GROUND SPACE INSIDE>
+SDL_Sprite <btr_buruburu.png>
+SDL_PORTRAIT <item_buruburu.png>
+SDL_MESH <btr_buruburu.obj>
+SDL_SKIN <skin_btr_buruburu.png>
+desc <A variant on the BuruBuru design. This version is equipped with a powerful gauss cannon.>
+Legality -15
+factions <GENERAL>
+ROLE_MAQUI <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+ROLE_FCOMS <GENERAL:SUPPORT  DEFENSE:SUPPORT>
+ROLE_L5LAW <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+ROLE_CRIHN <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+ROLE_REDMA <GENERAL:SUPPORT  DEFENSE:SUPPORT>
+ROLE_PRIVA <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+ROLE_ROCKE <DEFENSE:SUPPORT>
+
+sub
+Head
+	Armor 4
+	mass 2
+	sub
+		Sensor 4
+
+		STC LAS-3
+		type <INTERCEPT>
+		Integral
+	end
+
+Torso
+	Armor 4
+	mass 3
+	sub
+		CPit
+		Armor 2
+
+		Mount
+		name <Collar Mount>
+		inv
+			MLauncher 4
+			sub
+				STC SWM-2
+				Magazine 20
+			end
+		end
+	end
+
+Arm
+	Name <Right Arm>
+	mass 3
+	Armor 4
+	sub
+		Hand
+		inv
+			STC GR-24
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	mass 3
+	Armor 4
+	sub
+		Hand
+	end
+	inv
+		Shield 3
+		name <Gun Buckler>
+		DefBonus -1
+		sub
+			STC MAC-2
+		end
+	end
+
+Leg
+	Name <Right Leg>
+	mass 3
+	Armor 4
+	sub
+		HoverJet 4
+	end
+
+Leg
+	Name <Left Leg>
+	mass 3
+	Armor 4
+	sub
+		HoverJet 4
+	end
+end
+%% End Heavyfoot Buru Buru
+
+Battroid 5
+Name <Buru Buru>
+Desig <SAN-X12e Devil>
+type <GROUND SPACE INSIDE>
+factions <PDASS>
+SDL_Sprite <btr_buruburu.png>
+SDL_PORTRAIT <item_buruburu.png>
+SDL_MESH <btr_buruburu.obj>
+SDL_SKIN <skin_btr_buruburu.png>
+desc <This Buru Buru variant is used by the Pro Duelist Association for close quarters fighting.>
+Legality -15
+
+sub
+Head
+	Armor 4
+	mass 1
+	sub
+		Sensor 4
+
+		STC LAS-3
+		type <INTERCEPT>
+		Integral
+	end
+
+Torso
+	Armor 4
+	mass 1
+	sub
+		CPit
+		Armor 2
+
+		Mount
+		name <Collar Mount>
+		inv
+			MLauncher 4
+			sub
+				STC SWM-2
+				Magazine 20
+			end
+		end
+
+		HeavyActuator 3
+	end
+
+Arm
+	Name <Right Arm>
+	Armor 4
+	sub
+		Hand
+		inv
+			Gun 5
+			name <Chain Cannon>
+			caliber <70mm caseless>
+			mass -4
+			range 4
+			acc -2
+			BV 4
+			magazine 100
+			sub
+				ammo 5
+				caliber <70mm caseless>
+			end
+		end
+		HeavyActuator 1
+
+		Melee 1
+		Name <Shoulder Spike>
+		Acc 1
+	end
+
+Arm
+	Name <Left Arm>
+	Armor 4
+	sub
+		Hand
+		inv
+			melee 18
+			name <Wrecking Ball>
+			type <FLAIL EXTEND BRUTAL>  
+		end
+
+		STC MAC-2
+
+		HeavyActuator 1
+	end
+
+Leg
+	Name <Right Leg>
+	mass 1
+	Armor 4
+	sub
+		HoverJet 4
+	end
+
+Leg
+	Name <Left Leg>
+	mass 1
+	Armor 4
+	sub
+		HoverJet 4
+	end
+end
+%% End Devil BuruBuru
+
+Battroid 5
+Name <Buru Buru>
+Desig <SAN-X12bc Revenge>
+type <GROUND SPACE INSIDE>
+SDL_Sprite <btr_buruburu.png>
+SDL_PORTRAIT <item_buruburu.png>
+SDL_MESH <btr_buruburu.obj>
+SDL_SKIN <skin_btr_buruburu.png>
+desc <This Buru Buru variant is used as a command mecha by the Blades of Crihna.>
+Legality -15
+
+factions <CRIHN>
+ROLE_CRIHN <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+
+sub
+Head
+	Armor 4
+	mass 1
+	sub
+		Sensor 4
+
+		STC LAS-3
+		type <INTERCEPT>
+		Integral
+	end
+
+Torso
+	Armor 4
+	mass 1
+	sub
+		CPit
+		Armor 2
+
+		Mount
+		name <Collar Mount>
+		inv
+			MLauncher 6
+			sub
+				STC HR-10
+				Magazine 6
+			end
+		end
+
+		HeavyActuator 3
+
+		ECM 2
+	end
+
+Arm
+	Name <Right Arm>
+	Armor 4
+	sub
+		Hand
+		inv
+			Gun 5
+			name <Ishmael Cannon>
+			caliber <70mm caseless>
+			mass -4
+			range 5
+			BV 3
+			magazine 100
+			sub
+				ammo 5
+				caliber <70mm caseless>
+			end
+		end
+		HeavyActuator 1
+
+		Melee 1
+		Name <Shoulder Spike>
+		Acc 1
+	end
+
+Arm
+	Name <Left Arm>
+	Armor 4
+	sub
+		Hand
+
+		STC MAC-2
+
+		HeavyActuator 1
+	end
+	inv
+		Shield 2
+		DefBonus 1
+		sub
+			Melee 12
+			name <Ramming Spike>
+			Integral
+		end
+	end
+
+Leg
+	Name <Right Leg>
+	mass 1
+	Armor 4
+	sub
+		HoverJet 4
+	end
+
+Leg
+	Name <Left Leg>
+	mass 1
+	Armor 4
+	sub
+		HoverJet 4
+	end
+end
+%% End Revenge BuruBuru
+
+
+Battroid 5
+Name <Buru Buru>
+Desig <SAN-X8c5 Mason>
+type <GROUND SPACE INSIDE>
+factions <COMET MUGLE HOELL>
+SDL_Sprite <btr_buruburu.png>
+SDL_PORTRAIT <item_buruburu.png>
+SDL_MESH <btr_buruburu.obj>
+SDL_SKIN <skin_btr_buruburu.png>
+desc <This variant of the BuruBuru is used for industrial work, though it also makes a passable combatant if need be.>
+Legality -15
+
+sub
+Head
+	Armor 4
+	mass 2
+	sub
+		Sensor 4
+
+		STC LAS-3
+		type <INTERCEPT>
+		Integral
+	end
+
+Torso
+	Armor 4
+	mass 3
+	sub
+		CPit
+		Armor 2
+
+		Mount
+		name <Collar Mount>
+		inv
+			MLauncher 2
+			sub
+				STC HR-10
+				name <Demolition Missiles>
+				type <BLAST 2 BRUTAL>
+				Acc -1
+				magazine 2
+			end
+		end
+	end
+
+Arm
+	Name <Right Arm>
+	mass 3
+	Armor 4
+	sub
+		Hand
+		inv
+			Gun 3
+			Name <Industrial Bolt Gun>
+			Range 3
+			caliber <Construction Bolts>
+			Speed 4
+			BV 4
+			Acc -1
+			Magazine 120
+			sub
+				Ammo 3
+				caliber <Construction Bolts>
+			end
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	mass 3
+	Armor 4
+	sub
+		Hand
+		inv
+			melee 7
+			name <Jackhammer>
+			type <ARMORPIERCING>
+			acc -1
+		end
+	end
+
+Leg
+	Name <Right Leg>
+	mass 3
+	Armor 4
+	sub
+		HoverJet 4
+	end
+
+Leg
+	Name <Left Leg>
+	mass 3
+	Armor 4
+	sub
+		HoverJet 4
+	end
+end
+%% End Mason Buru Buru
+
+
+
+

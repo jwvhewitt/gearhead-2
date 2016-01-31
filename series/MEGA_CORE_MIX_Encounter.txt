@@ -1,0 +1,211 @@
+%%
+%% *:CS_MIX_Encounter Content
+%%
+%%  Y'know how to get more randomness in your random story generator? Mix things
+%%  up a bit.
+%%
+%%  This is a combat encounter against the core story enemy. The events of the
+%%  encounter will probably be based on the nature of the enemy faction. The
+%%  enemy NPC's character development will be handled by a separate Confrontation
+%%  subplot.
+%%
+%%  Upon conclusion, this subplot will set one of the following triggers:
+%%    .%id%_%plotid%_GoWin
+%%    .%id%_%plotid%_GoLoss
+%%  It will also hide the encounter with SetEncounterInactive.
+%%
+%%  Please see the *:CS_MIX_Confrontation specification for details about how
+%%  this encounter must be structured.
+%%
+%%  Due to the confrontation, this is a MAIN COURSE subplot.
+%%
+%% PARAM1: The outdoors scene where the encounter is
+%% PARAM2: The encounter to be used; parent plot responsible for reveal
+%% PARAM3: The enemy NPC
+%%
+
+Content
+	name <Defend Cruiser MIX>
+	requires <*:CS_MIX_Encounter F:CRIME>
+	desc <Stop the enemy from blowing up a cruiser.>
+
+	% E1 is the outdoors scene for the encounter
+	% E2 is the encounter gear itself
+	% E3 is the enemy NPC
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have gained reinforcements
+	% P%id%03 = Have gained decimation
+	update <if= P%id%01 0 P= %id%01 1  NPCLevel %3% StoryDL  MoveNPC %3% %2%  SetNPCTeam %3% 5 SetPlotStatus %plotid1% %id1%>
+
+	% The narrative hooks for the Confrontation
+	.%id2%_%plotid2%_GoWin  <WinSubPlot %plotid%     Trigger0 .%id%_%plotid%_GoWin>
+	.%id2%_%plotid2%_GoLoss <LoseSubPlot %plotid%    Trigger0 .%id%_%plotid%_GoLoss>
+
+	% The triggers for GainAdvantage
+	.%id1%_%plotid1%_GoReinforcements <P= %id%02 1>
+	.%id1%_%plotid1%_GoDecimation     <P= %id%03 1>
+
+	% SubPlot1 = Gain Advantage vs Raiders
+	% SubPlot2 = Confrontation
+	SubPlot1 <*:CS_GainAdvantageVsMecha&Reinforcements&Decimation>
+	SubPlot2 <*:CS_MIX_Confrontation 3 1>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 1  History 2  CancelSubPlot %plotid1% SetPlotStatus %plotid2% %id2%  if# P%id%02 0 Alert 3>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1 Alert 4   Trigger0 .%id2%_%plotid2%_GoCombatLoss>
+		nu2 <if= T2 0  if= T5 0  if= V1 0 V= 1 1 SALVAGE   ifG T3 0 else GoLoseMission    XPV 100  AddRenown 1   Alert 5   Trigger0 .%id2%_%plotid2%_GoCombatWin>
+		nu5 <Goto nu2>
+		GoLoseMission <Alert 4   Trigger0 .%id2%_%plotid2%_GoCombatLoss>
+		nu3 <Goto nu2>
+		end <SetEncounterInactive %2%>
+
+		Msg1 <You find %name3%'s gang about to raid a cruiser.>
+		Msg2 <You defended a cruiser against %name3%'s lance.>
+		Msg3 <Your reinforcements are here, as promised.>
+		Msg4 <You failed to protect the cruiser.>
+		Msg5 <You have defended the cruiser from %name3%'s lance.>
+
+		sub
+			team 1
+			SetEnemy 2 5
+			SetAlly 3 4
+			home <Cruiser Zone>
+
+			team 2
+			name <Enemies>
+			type <ASSAULT>
+			SetEnemy 1 3 4
+			SetAlly 5
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   if= p%id%03 0 else GoSmallDeploy WMecha 2 StoryDL 90>
+			GoSmallDeploy <WMecha 2 StoryDL 50>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			name <Cruiser Team>
+			setenemy 2 5
+			setally 1 4
+
+			team 4
+			name <Allies>
+			setenemy 2 5
+			setally 1 3
+			home <Cruiser Zone>
+			Deploy <if= PlotStatus %plotid% %id% if# p%id%02 0  WMecha 4 StoryDL 80>
+
+			team 5
+			name <EnemyNPC>
+			Deploy <SetSelfFaction &EnemyFac>
+			SetEnemy 1 3 4
+			SetAlly 2
+			ParaX 45
+			ParaY 45
+
+			rect
+			name <Cruiser Zone>
+			special <SubZone>
+			width 12
+			height 12
+			MFX 12
+			MFY 12
+			sub
+				SuperProp
+				requires <*Cruiser>
+				SetTeam 3
+			end
+		end
+	end
+
+
+Content
+	name <Basic Combat MIX>
+	requires <*:CS_MIX_Encounter>
+	desc <Fight the enemy and some lancemates. Ooh, fancy.>
+
+	% E1 is the outdoors scene for the encounter
+	% E2 is the encounter gear itself
+	% E3 is the enemy NPC
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have gained reinforcements
+	% P%id%03 = Have gained decimation
+	update <if= P%id%01 0 P= %id%01 1  NPCLevel %3% StoryDL  MoveNPC %3% %2%  SetNPCTeam %3% 3 SetPlotStatus %plotid1% %id1%>
+
+	% The narrative hooks for the Confrontation
+	.%id2%_%plotid2%_GoWin  <WinSubPlot %plotid%     Trigger0 .%id%_%plotid%_GoWin>
+	.%id2%_%plotid2%_GoLoss <LoseSubPlot %plotid%    Trigger0 .%id%_%plotid%_GoLoss>
+
+	% The triggers for GainAdvantage
+	.%id1%_%plotid1%_GoReinforcements <P= %id%02 1>
+	.%id1%_%plotid1%_GoDecimation     <P= %id%03 1>
+
+	% SubPlot1 = Gain Advantage vs Raiders
+	% SubPlot2 = Confrontation
+	SubPlot1 <*:CS_GainAdvantageVsMecha&Reinforcements&Decimation>
+	SubPlot2 <*:CS_MIX_Confrontation 3 1>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 1  History 2  CancelSubPlot %plotid1% SetPlotStatus %plotid2% %id2%  if# P%id%02 0 Alert 3>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1 Alert 4   Trigger0 .%id2%_%plotid2%_GoCombatLoss>
+		nu2 <if= T2 0  if= T3 0  if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Alert 5   Trigger0 .%id2%_%plotid2%_GoCombatWin>
+		nu3 <Goto nu2>
+		end <SetEncounterInactive %2%>
+
+		Msg1 <You locate the raiders.>
+		Msg2 <You fought %name3%'s lance.>
+		Msg3 <Your reinforcements are here, as promised.>
+		Msg4 <You have been defeated.>
+		Msg5 <You have defeated %name3%'s lance.>
+
+		sub
+			team 1
+			setally 4
+			SetEnemy 2 3
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 4
+			SetAlly 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   if= p%id%03 0 else GoSmallDeploy WMecha 2 StoryDL 100>
+			GoSmallDeploy <WMecha 2 StoryDL 60>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			name <EnemyNPC>
+			SetEnemy 1 4
+			SetAlly 2
+			ParaX 45
+			ParaY 45
+
+			team 4
+			setally 1
+			setenemy 2 3
+			Deploy <if= PlotStatus %plotid% %id%  if# P%id%02 0   WMecha 4 StoryDL 60>
+			ParaX 10
+			ParaY 5
+		end
+	end
+
+
+
+
+
+
+
+

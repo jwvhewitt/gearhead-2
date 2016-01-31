@@ -1,0 +1,404 @@
+%  ******************************
+%  ***  ROBOT  MONSTER  LIST  ***
+%  ******************************
+
+%  STATS  REF BOD SPD PER CFT EGO KNO CHA
+
+ARCH Forgebot
+roguechar <R>
+sdl_sprite <monster_forgebot.png>
+sdl_colors <111 155 134 77 93 83 255 70 0>
+type <robot factory mine>
+habitat <>
+statline 8 24 8 8 13 1 1 1
+*CLUE_SCIENCE <*SCIENCE_GetMechaPartsOrIngot 80 robot>
+metal
+Sealed
+MonsterTV 78
+RangedCombat 4
+CloseCombat 4
+Dodge 9
+Vitality 10
+Toughness 8
+sub
+torso
+	armor 5
+	Hardened
+	sub
+		Gun 13
+		name <Magma Spew>
+		caliber <Molten>
+		UsesCraft
+		range 3
+		Acc -2
+		Speed 1
+		Magazine 10
+		sub
+			Ammo 13
+			name <Containment Tank>
+			caliber <Molten>
+			type <BURN BRUTAL>
+		end
+
+		Melee 4
+		name <Manipulator>
+
+		Melee 4
+		name <Manipulator>
+	end
+leg
+	armor 5
+	Hardened
+	sub
+		Mount
+	end
+leg
+	armor 5
+	Hardened
+	sub
+		Mount
+	end
+end
+
+Arch Androbot
+statline 11 19 11 11 9 10 9 1
+MonsterTV 60
+roguechar <R>
+sdl_sprite <monster_androbot.png>
+sdl_colors <157 172 183 162 153 235 230 0 0>
+sdl_portrait <por_x_androbot.png>
+type <Robot Guard>
+habitat <>
+CHAT_ATTACK <Leave the premesis or face retaliation.>
+*CLUE_SCIENCE <*SCIENCE_GetSparePartsOrSDN 70 robot>
+Metal
+RangedCombat 4
+CloseCombat 5
+Dodge 5
+Vitality 5
+Awareness 5
+Sealed
+sub
+head
+armor 5
+inv
+	HeadArmor 7
+	name <Androbot Helmet>
+end
+torso
+armor 6
+inv
+	BodyArmor 9
+	name <Androbot Armor>
+end
+arm
+armor 7
+sub
+	Hand
+	inv
+		Gun 6
+		Name <Hand Cannon>
+		desig <ADB>
+		desc <This rifle was designed for use by the Androbot security unit.>
+		caliber <5mm rifle>
+		Mass 2
+		Range 4
+		Acc 1
+		Speed 1
+		BV 2
+		magazine 45
+		sub
+			Ammo 8
+			name <5mm Rifle Clip>
+			caliber <5mm rifle>
+		end
+end
+end
+arm
+armor 7
+sub
+	Hand
+end
+inv
+	Shield 8
+	DefBonus 3
+	name <Androbot Shield>
+end
+leg
+armor 7
+leg
+armor 7
+end
+
+ARCH Sentinel
+MonsterTV 120
+metal
+Sealed
+type <Robot Ruins>
+habitat <>
+sdl_sprite <monster_sentinel.png>
+sdl_colors <234 180 88 199 188 162 255 107 83>
+statline 16 35 10 15 10 10 10 1
+*CLUE_SCIENCE <*SCIENCE_GetMechaPartsOrFCS 120 robot>
+RangedCombat 8
+Dodge 12
+Initiative 7
+Vitality 15
+Athletics 10
+Concentration 10
+sub
+turret
+armor 7
+Hardened
+sub
+	mount
+	inv
+		BeamGun 25
+		name <Laser Cannon>
+		desig <Antique>
+		Acc 1
+		Range 10
+		type <ARMORPIERCING>
+		inv
+			PowerSource 10
+			name <Battery>
+		end
+	end
+end
+turret
+armor 6
+Hardened
+sub
+	mount
+	inv
+		BeamGun 16
+		name <Plasma Cannon>
+		desig <Antique>
+		type <SCATTER BRUTAL>
+		scale 0
+		mass 8
+		Range 9
+		Acc 1
+		Recharge 1
+		BV 4
+		inv
+			PowerSource 10
+			name <Battery>
+		end
+	end
+end
+turret
+armor 6
+Hardened
+sub
+	mount
+	inv
+		BeamGun 16
+		name <Plasma Cannon>
+		desig <Antique>
+		type <SCATTER BRUTAL>
+		scale 0
+		mass 8
+		Range 9
+		Acc 1
+		Recharge 1
+		BV 4
+		inv
+			PowerSource 10
+			name <Battery>
+		end
+	end
+end
+torso
+armor 8
+Hardened
+sub
+	Tracks 10
+	PowerSource 10
+	name <Secondary Reactor>
+end
+end
+
+ARCH Guardbot
+roguechar <R>
+sdl_sprite <monster_guardbot.png>
+sdl_colors <199 188 162 157 173 182 200 150 50>
+type <robot factory lab guard>
+habitat <>
+statline 10 15 10 15 5 1 1 1
+*CLUE_SCIENCE <*SCIENCE_GetSpareParts 56 robot>
+metal
+Sealed
+MonsterTV 56
+RangedCombat 2
+CloseCombat 2
+Dodge 7
+Vitality 5
+sub
+torso
+	armor 3
+	sub
+	Melee 8
+	name <Shock Baton>
+	special <EXTEND HAYWIRE>
+	recharge 1
+	mount
+		inv
+			item FS Vaken Assault Rifle
+		end
+	end
+end
+
+ARCH Murder Machine
+roguechar <R>
+SDL_SPRITE <monster_workbot.png>
+SDL_COLORS <166 47 32 201 205 225 210 0 100>
+type <robot factory ruins>
+habitat <>
+statline 13 16 11 13 5 1 1 1
+*CLUE_SCIENCE <*SCIENCE_GetSpareParts 95 robot>
+metal
+Sealed
+MonsterTV 95
+CloseCombat 10
+Dodge 12
+Vitality 10
+% Anatomist + Hard as Nails
+Talent 3
+Talent 4
+sub
+torso
+	armor 5
+	sub
+	mount
+		inv
+		melee 16
+		acc 1
+		speed 3
+		name <Buzzsaw>
+		mass 4
+		type <BRUTAL>
+		end
+	end
+end
+
+ARCH Workbot
+roguechar <R>
+SDL_SPRITE <monster_workbot.png>
+SDL_COLORS <157 172 183 130 143 114 230 60 0>
+type <robot factory>
+habitat <>
+CHAT_ATTACK <MalFuNCtIoN! mAlFunCTuiOn!>
+CHAT_ATTACK2 <ExTerMiNaTE!>
+statline 9 13 7 8 11 1 1 1
+*CLUE_SCIENCE <*SCIENCE_GetSpareParts 25 robot>
+metal
+Sealed
+MonsterTV 25
+CloseCombat 1
+sub
+torso
+	armor 2
+	sub
+	mount
+		inv
+		melee 14
+		acc 1
+		name <Buzzsaw>
+		mass 4
+		end
+	end
+end
+
+ARCH Cleanbot
+roguechar <R>
+SDL_SPRITE <monster_workbot.png>
+SDL_COLORS <190 100 120 195 205 190 0 230 90>
+type <robot factory>
+habitat <>
+CHAT_ATTACK <MalFuNCtIoN! mAlFunCTuiOn!>
+CHAT_ATTACK2 <ExTerMiNaTE!>
+statline 9 11 7 8 8 1 1 1
+*CLUE_SCIENCE <*SCIENCE_GetSpareParts 21 robot>
+metal
+Sealed
+MonsterTV 21
+CloseCombat 1
+Dodge 2
+sub
+torso
+	armor 1
+	sub
+	mount
+		inv
+			melee 3
+			name <Mop>
+			type <EXTEND>
+		end
+	end
+end
+
+ARCH Mining bot
+roguechar <R>
+SDL_SPRITE <monster_workbot.png>
+SDL_COLORS <157 172 183 130 143 114 230 60 0>
+type <robot mine>
+habitat <>
+statline 9 13 7 8 10 1 1 1
+*CLUE_SCIENCE <*SCIENCE_GetSpareParts 28 robot>
+metal
+Sealed
+MonsterTV 28
+CloseCombat 2
+Dodge 3
+sub
+torso
+	armor 2
+	sub
+	mount
+		inv
+		melee 14
+		acc 1
+		name <Rock Saw>
+		mass 4
+		end
+	end
+end
+
+
+ARCH Arachnoid Drone
+roguechar <s>
+SDL_SPRITE <monster_drone.png>
+SDL_COLORS <72 104 136 150 150 150 220 0 0>
+type <robot factory dark>
+habitat <>
+*CLUE_SCIENCE <*SCIENCE_GetSpareParts 32 robot>
+statline 11 9 13 11 5 1 1 1
+metal
+Sealed
+MonsterTV 32
+RangedCombat 1
+CloseCombat 1
+Dodge 5
+sub
+torso
+	armor 2
+	sub
+		mount
+		inv
+			item AK19 Autogun
+		end
+	end
+leg
+	armor 2
+leg
+	armor 2
+leg
+	armor 2
+leg
+	armor 2
+end
+
+
+
+

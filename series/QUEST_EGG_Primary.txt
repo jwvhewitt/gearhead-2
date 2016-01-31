@@ -1,0 +1,52 @@
+%
+%  *EGG_Primary Quests
+%
+% These are quests attached to the PC's primary mentor. They should place the
+% mentor in the adventure, usually in the PCHOME scene.
+%
+
+
+Content
+	name <Default>
+	requires <*EGG_Primary>
+
+	Element1 <Prefab>
+	Place1 <2 (Guards) SD ally>
+	Element2 <Scene PCHOME>
+
+	sub
+		Persona 1
+		greeting <if= V%id%01 1 else .%id%_GoFirstTime NewChat ifG PCRenown 80 else GoCheckElite Say %id%01>
+		GoCheckElite <ifG PCRenown 60 else GoCheckVeteran Say %id%02>
+		GoCheckVeteran <ifG PCRenown 40 else GoCheckRegular Say %id%03>
+		GoCheckRegular <ifG PCRenown 20 else GoCheckGreen Say %id%04>
+		GoCheckGreen <ifG PCRenown 0 else GoNotMuch Say %id%05>
+		GoNotMuch <Say %id%06>
+		.%id%_GoFirstTime <NewChat Say %id%07 V= %id%01 1>
+		Msg%id%01 <\PC my \OFFSPRING 0 , you are at the very top of your field. You've done good.>
+		Msg%id%02 <You're doing pretty well these days, \PC . I guess it was a good decision to become a cavalier.>
+		Msg%id%03 <I can see that this cavalier thing isn't just going to be a phase. I'm glad to see you doing something you love.>
+		Msg%id%04 <So you can make a living for yourself, but are you sure you wouldn't rather have a nice desk job somewhere?>
+		Msg%id%05 <I suppose it's nice that you're doing what you love, but it'd be even nicer if you could make a decent living.>
+		Msg%id%06 <Keep working at this cavalier thing and I'm sure you'll rise above complete uselessness someday.>
+		Msg%id%07 <So I guess you're serious about this cavalier thing. You can probably find a mission at that clubhouse you're always running off to.>
+	end
+
+Content
+	name <Default>
+	requires <*EGG_Secondary>
+
+	Element1 <Prefab>
+	Place1 <2 (Guards) SD ally>
+	Element2 <Scene PCHOME>
+
+	sub
+		Persona 1
+		greeting <NewChat Say %id%01 AddChat %id%01>
+		result%id%01 <NewChat Say %id%02 PCEat>
+		Msg%id%01 <Wherever your adventure takes you, remember that you'll always have a home to return to.>
+		Msg%id%02 <Sure. You know where the fridge is.>
+		Prompt%id%01 <How about one of those home cooked meals?>
+		CPrompt%id%01 <ifG PCHunger 10 Accept>
+	end
+

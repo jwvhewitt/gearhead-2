@@ -1,0 +1,168 @@
+%%
+%% *:DynamicAmbushByNPC Content
+%%
+%% The PC is about to be attacked by a NPC. This ambush will happen whenever
+%% an outdoors scene is entered.
+%%
+%% The parent plot sets the plot status to this layer's ID when ready.
+%%
+%% When this subplot concludes, it sets one of the following triggers:
+%%  Go_%id%_%plotid%_GoWin
+%%  Go_%id%_%plotid%_GoLoss
+%%
+%%  Param1: The NPC doing the ambush
+%%
+
+Content
+	name <Basic Dynamic Ambush By NPC>
+	desc <What a mouthful! Does what it says on the tin.>
+	requires <*:DynamicAmbushByNPC>
+
+	% E1 is the NPC doing the ambush.
+
+	% P%id%01 = Start battle counter
+
+	start <ifScene .%id%_scenetype if= P%id%01 0 P= %id%01 1 Monologue %1% %id%01  Alert %id%02  Dynamic 2 %threat% 100 .%id%_nu1 .%id%_nu2  CancelSubPlot %plotid%>
+	.%id%_scenetype <outdoors>
+	.%id%_nu1 <if= T1 0 Return if= L1 0 L= 1 1 LoseRenown             Trigger0  Go_%id%_%plotid%_GoLoss>
+	.%id%_nu2 <if= T2 0 if= L1 0 L= 1 1 AddRenown 1 XPV 100 Salvage   Trigger0  Go_%id%_%plotid%_GoWin>
+
+	Msg%id%01 <You can't escape now, \PC !>
+	Msg%id%02_1 <You are attacked by %name1%'s men!>
+	Msg%id%02_2 <You are attacked by %name1%'s lance!>
+	Msg%id%02_3 <All of a sudden, %name1%'s henchmen arrive to attack you!>
+
+%%
+%% *:MechaAmbush Content
+%%	&Duel = It's going to be a duel, which the PC can potentially refuse
+%%
+%% The PC is about to be challenged to a spontaneous duel.
+%%
+%% The parent plot sets the plot status to this layer's ID when ready.
+%%
+%% When this subplot concludes, it sets one of the following triggers:
+%%  .%id%_%plotid%_GoWin
+%%  .%id%_%plotid%_GoLoss
+%% It will also hide the encounter with SetEncounterInactive.
+%%
+%%  Param1: The outdoors scene where the encounter will be placed
+%%
+
+Content
+	name <Antagonist Ambush>
+	requires <*:MechaAmbush ~&Duel>
+
+	% E1 is the scene where the encounter will be placed
+	% E2 is the encounter itself
+	% E3 is the PC's antagonist
+	Element2 <Prefab>
+	Place2 <1>
+	Element3 <Character HasMecha @:A.ant !Global>
+	Place3 <2 (Enemies) sd enemy>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+		special <ARENA>
+
+		Start <if= L2 0 L= 2 1   Alert 1 ForceChat %3%>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1         Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Alert 2   Trigger0 .%id%_%plotid%_GoWin WinSubPlot %plotid%>
+		end <SetEncounterInactive %2%>
+
+		Msg1 <Without warning, you are challenged by %name3%!>
+		Msg2 <You have defeated the mecha.>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 10
+
+			team 2
+			name <Enemies>
+			SetEnemy 1
+			Deploy <if= PlotStatus %plotid% %id%  SetSelfFaction NPCFac %3%  WMecha 2 %threat% 70>
+			ParaX 45
+			ParaY 45
+		end
+
+		Persona 3
+		special <UNLISTED NOESCAPE>
+		greeting <EndChat Say %id%01 AddChat %id%01 AddChat %id%02>
+		*result%id%01 <*THEME_EXPO&Enemy .%id%_GoEnd>
+		.%id%_GoEnd <SetXXRAttitude %3% XXR_A_IsEqual>
+		result%id%02 <EndChat Say %id%02 Retreat 1 ifG PCRenown ChatNPCRenown NPCLevel %3% PCRenown>
+		Msg%id%01 <\PC ! I challenge you to a duel, right here and right now!>
+		Msg%id%01_1 <>
+		CMsg%id%01_1 <ifNPCSociable Accept>
+		Msg%id%01_2 <>
+		CMsg%id%01_2 <ifNPCShy Accept>
+		Msg%id%01_3 <>
+		CMsg%id%01_3 <ifNPCEasygoing Accept>
+		Msg%id%01_4 <>
+		CMsg%id%01_4 <ifNPCPassionate Accept>
+		Msg%id%01_5 <>
+		CMsg%id%01_5 <ifNPCCheerful Accept>
+		Msg%id%01_6 <>
+		CMsg%id%01_6 <ifNPCMelancholy Accept>
+		Msg%id%02 <Not in the mood for a duel? That's odd... I guess I'm going to have to wait until you're in a better condition.>
+		Msg%id%02_1 <That's exactly like you, challenging me when I want to be left alone and wanting to be left alone when I want to challenge you!>
+		Msg%id%02_2 <This is why nobody likes you, \PC . You just have no conception of timing.>
+		Prompt%id%01 <I accept your challenge!>
+		Prompt%id%01_1 <Alright, let's settle things!>
+		Prompt%id%01_2 <I'll show you what real fighting is!>
+		Prompt%id%02 <Get lost %name3%, I'm in no mood for this.>
+		Prompt%id%02_1 <Buzz off, I'm not in the mood.>
+		Prompt%id%02_2 <I don't want to fight you today.>
+	end
+	inv
+		STC CORE-MECHAAMBUSH
+	end
+
+
+Content
+	name <Default Ambush>
+	requires <*:MechaAmbush>
+
+	% E1 is the scene where the encounter will be placed
+	% E2 is the encounter itself
+	Element2 <Prefab>
+	Place2 <1>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 1>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1         Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Alert 2   Trigger0 .%id%_%plotid%_GoWin WinSubPlot %plotid%>
+		end <SetEncounterInactive %2%>
+
+		Msg1 <Without warning, you are assualted by a lance of hostile mecha!>
+		Msg2 <You have defeated the mecha.>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 10
+
+			team 2
+			SetEnemy 1
+			Deploy <if= PlotStatus %plotid% %id% WMecha 2 %threat% 100>
+			ParaX 45
+			ParaY 45
+		end
+
+	end
+	inv
+		STC CORE-MECHAAMBUSH
+	end
+

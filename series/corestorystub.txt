@@ -1,0 +1,48 @@
+% Core Story Stub
+	XRanStory
+	name <Core Story>
+	CONTEXT <>
+
+	XXRAN_PATTERN <*CORE_>
+
+	% Starting difficulty level is 3...
+	% Going up by 7 points per level, there will be 13 episodes, just like 08th MS Team.
+	NAtt 7 26 3
+	% Starting episode number is 1...
+	NAtt -7 6 1
+
+	% V1 = Initialization Counter
+
+	start <if= V1 0 V= 1 1 Alert 1 SMemo 2 goto update>
+	update <CheckComponents>
+	reset_core_story <GrabSource GSetNAtt -7 0 0 Goto update>
+
+	% For now, a fairly bland opening.
+	Msg1 <It's another normal day as you prepare to head over to the Cavalier's Club.>
+	Msg2 <You plan to go to the Cavalier's Club.>
+
+	&SetEnemyNPC <N= 1 ? SetNPCFaction ! N2>
+	&EnemyNPC <N1>
+	&SetEnemyFac <N= 2 ? SetNPCFaction N1 !>
+	&EnemyFac <N2>
+	&SetAllyFac <N= 3 ?>
+	&AllyFac <N3>
+
+	&SetEpisodeScene <N= 7 ?>
+	&EpisodeScene <N7>
+	&SetTargetItem <N= 8 ?>
+	&TargetItem <N8>
+
+	element1 <C>
+	palette_entry_code1  <E>
+	element2 <F>
+	palette_entry_code2  <F>
+	element3 <F>
+	palette_entry_code3  <P>
+
+	element7 <S>
+	palette_entry_code7  <L>
+	element8 <I>
+	palette_entry_code8  <I>
+
+

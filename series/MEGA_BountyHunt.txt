@@ -1,0 +1,257 @@
+%%
+%% This file contains components needed for the bounty hunting missions.
+%%
+
+%%
+%% *:BH_CaptureTarget
+%%
+%%  The PC has been asked to aprehend a criminal.
+%%
+%%  This subplot should level and move the target upon activation. Upon
+%%  completion, it will set one of the following triggers:
+%%
+%%   .%id%_%plotid%_GoWin
+%%   .%id%_%plotid%_GoLoss
+%%   .%id%_%plotid%_GoTimeOver
+%%
+%%  Upon winning, the target will either be frozen or dead. It's up to the
+%%  parent plot what to do next.
+%%
+%% PARAM1: The NPC to be caught
+%%
+
+Content
+	name <Hiding in Mecha>
+	% The NPC is in his mecha outside of town. In order to capture him, the
+	% PC will have to fight in a mecha.
+	requires <*:BH_CaptureTarget>
+
+	% E1 is the target being sought
+	% E2 is an environs scene, for placing the encounter
+	% E3 is the encounter/metascene itself
+
+	Element2 <Scene Environs>
+	Element3 <Prefab>
+	Place3 <2>
+
+	% P%id%01 = Time Limit/Initialization Counter
+	% P%id%02 = Have entered combat
+
+	% At startup, move the target to the encounter and get them 
+	update <if= P%id%01 0 P= %id%01 ComTime P+ %id%01 86400  NPCLevel %1% %threat%  MoveNPC %1% %3%  SetNPCTeam %1% 2>
+	start <if# p%id%01 0 if= p%id%02 0 ifG ComTime p%id%01 LoseSubPlot %plotid%  Trigger0 .%id%_%plotid%_GoTimeOver>
+
+	sub
+		Persona 1
+		Special <UNLISTED>
+		rumor%id% <%name1% is out driving around in %name2%.>
+		Greeting <if= PlotStatus %plotid% %id% else %pop% Goto .%id%_GoGreet>
+		*.%id%_GoGreet <*BattleIntroduction&SentToFight .%id%_GoThemeExpo>
+		*.%id%_GoThemeExpo <*THEME_EXPO&Enemy na>
+
+		MetaScene 3 2
+		% L1 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L1 0 L= 1 1 P= %id%02 1 ForceChat %1%>
+		nu1 <if= T1 0 Return if= L1 1  L= 1 2 ifNPCOK %1% else GoWinMission Goto GoLoseMission>
+		nu2 <if= T2 0        if= L1 1  L= 1 2 Salvage  Goto GoWinMission>
+		GoLoseMission <LoseRenown LoseSubPlot %plotid%                  Trigger0 .%id%_%plotid%_GoLoss>
+		GoWinMission  <Alert 1 XPV 100 AddRenown 1 WinSubPlot %plotid%  Trigger0 .%id%_%plotid%_GoWin>
+
+		Msg1_1 <%name1% has been captured.>
+		CMsg1_1 <ifNPCOK %1% Accept>
+		Msg1_2 <%name1% has been defeated.>
+		CMsg1_2 <ifNPCDead %1% Accept>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1
+			deploy <SetSelfFaction NPCFac %1%   WMecha 2 %threat% 100>
+			ParaX 45
+			ParaY 45
+		end
+	end
+	inv
+		STC CORE-INVISIBLEENCOUNTER
+		name <%name1%'s Mecha>
+	end
+
+Content
+	name <Basic Hideout>
+	requires <*:BH_CaptureTarget>
+
+	% E1 is the target being sought
+	% E2 is the RevealEncounter mood
+	% E3 is an outdoors scene, for placing the encounter
+	% E4 is the encounter/metascene itself
+
+	Element2 <Prefab>
+	Element3 <Scene Outdoors>
+	Element4 <Prefab>
+	Place4 <3>
+
+	% P%id%01 = Time Limit/Initialization Counter
+	% P%id%02 = Have entered combat
+
+	% At startup, move the target to the encounter and get them 
+	update <if= P%id%01 0 P= %id%01 ComTime P+ %id%01 86400  NPCLevel %1% %threat%  MoveNPC %1% %4%  SetNPCTeam %1% 2  SetMood %2% %3%>
+	start <if# p%id%01 0 if= p%id%02 0 ifG ComTime p%id%01 LoseSubPlot %plotid%  Trigger0 .%id%_%plotid%_GoTimeOver>
+
+	sub
+		Persona 1
+		Special <UNLISTED>
+		Greeting <if= PlotStatus %plotid% %id% else %pop% if= SceneID %4% else .%id%_GoNotHere  Goto .%id%_GoGreet>
+		.%id%_GoNotHere <EndChat Say %id%01>
+		.%id%_GoGreet <ifChatNPCSurrendered else .%id%_GoFirstTime Goto .%id%_GoWillSurrender>
+		*.%id%_GoFirstTime <*IntruderGreeting&Arrest .%id%_GoBargain>
+		*.%id%_GoBargain <*YoureUnderArrest %threat% .%id%_GoWillSurrender .%id%_GoWillResist na>
+		*.%id%_GoWillSurrender <*ISurrender&Arrest .%id%_GoSurrender>
+		*.%id%_GoWillResist <*IDisagreeYouDie&Arrest .%id%_GoAttack>
+		.%id%_GoAttack <>
+		.%id%_GoSurrender <RunAway %1%>
+		Msg%id%01 <...>
+
+		MetaScene 4
+		special <NOEXIT>
+		% L1 = Initialization Counter
+		% L2 = Have defeated all guards
+		BoxMap
+		MapWidth 17
+		MapHeight 17
+		content <Fill Sub *HIDEOUT_X na>
+
+		Start <if= L1 0 L= 1 1 Print 1 P= %id%02 1 ForceChat %1%>
+
+		Surrender%1% <ForceChat %1%>
+		nu1 <if= T1 0 Return if= L1 1  L= 1 2 ifNPCOK %1% else GoWinMission Goto GoLoseMission>
+		nu2 <if= T2 0        if= L1 1  L= 1 2 ifG t3 0 else GoWinMission  Alert 2  Retreat 3  Goto GoWinMission>
+		% If you eliminate all the guards, you get an easy capture roll.
+		nu3 <if= T3 0  if= L1 1  if= L2 0  L= 2 1  ifG T2 0  PCMonologue 3  ifIntimidation SkillTar %threat% else GoFailCapture  Monologue %1% 4  Retreat 2  Alert 6>
+		GoFailCapture <Monologue %1% 5>
+
+		GoLoseMission <LoseRenown LoseSubPlot %plotid%                  Trigger0 .%id%_%plotid%_GoLoss>
+		GoWinMission  <XPV 100 AddRenown 1 WinSubPlot %plotid%  Trigger0 .%id%_%plotid%_GoWin   ifNPCOK %1% ifG %threat% PCHeroism AddHeroic 1>
+
+		Msg1_1 <You enter %name1%'s hideout.>
+		Msg2 <With %name1% gone, \PPR %1% guards give up as well.>
+		Msg3 <This is your last chance to give up, %name1%.>
+		Msg3_1 <Your guards are gone... I'll give you one last chance to give up.>
+		Msg3_2 <>
+		Msg4 <Okay, I surrender... I had no idea you were going to be this hard!>
+		Msg4_1 <>
+		Msg4_2 <>
+		Msg5 <I don't need them, I can still take you!>
+		Msg5_1 <>
+		Msg5_2 <>
+		Msg6 <%name6% surrenders.>
+
+		sub
+			Team 1
+			SetEnemy 2 3
+
+			Team 2
+			name <Target>
+			SetEnemy 1
+			SetAlly 3
+
+			Team 3
+			name <Enemies>
+			Deploy <WMonster 3 %threat% 100>
+			type <Criminal Robot Mutant Devo>
+			SetEnemy 1
+			SetAlly 2
+
+			Room
+			special <STARTHERE>
+			minimap <......###..#1#...........>
+			sub
+				Elevator
+				Destination -1
+				MiniMapComponent 1
+				use <Print 1 Return>
+			end
+		end
+	end
+	inv
+		MinorMood 1
+		name <Quest Encounter Search %plotid% %id%>
+		plot_type <*FindEncounter>
+		Element1 <Grab 3>
+		Element2 <Grab 4>
+
+		STC CORE-ACTIVATABLE
+		name <%name1%'s Hideout>
+	end
+
+%%
+%% *BH_CatchMinorNPC
+%%
+%%  The PC has won a bounty hunting mission. If the NPC is alive, earn three
+%%  times the nominal pay rate. Delete the target and end the plot.
+%%
+%%  The master plot must have a pay rate set. Remember this should be one
+%%  third of the optimum pay rate.
+%% 
+%% PARAM1: The mission giver
+%% PARAM2: The target
+%%
+
+Content
+	name <Basic BH Win>
+	requires <*BH_CatchMinorNPC Common>
+
+	% E1 is the mission-giving NPC.
+	% E2 is the target
+
+	start <ifNPCDead %1% EndPlot>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop%  ifNPCOK %2% else .%id%_GoSmallWin Goto .%id%_GoBigWin>
+		.%id%_GoSmallWin <CashPrize Reward %threat% PayRate       AddReact d3  Goto .%id%_GoAnnounceSmall>
+		*.%id%_GoAnnounceSmall <*HaveKilledTarget .%id%_GoEnd ChatNPCFac>
+		.%id%_GoBigWin <CashPrize * 3 Reward %threat% PayRate     AddReact d8  DeleteNPC %2%   Goto .%id%_GoAnnounceBig>
+		*.%id%_GoAnnounceBig <*HaveCapturedTarget .%id%_GoEnd ChatNPCFac>
+		.%id%_GoEnd <EndPlot>
+	end
+
+%%
+%% *BH_LoseMinorNPC
+%%
+%%  The player has lost this mission. Delete the target and end the plot.
+%%
+%% PARAM1: The mission-giving NPC
+%% PARAM2: The target
+%%
+
+Content
+	name <Basic BH Loss>
+	requires <*BH_LoseMinorNPC>
+
+	% E1 is the mission-giving NPC.
+	% E2 is the target
+
+	% P%id%01 = Time Limit
+	start <ifNPCOK %1% else .%id%_GoEnd ifG ComTime P%id%01 DeleteNPC %2%  EndPlot>
+	.%id%_GoEnd <DeleteNPC %2%  EndPlot>
+	update <if= p%id%01 0 P= %id%01 ComTime P+ %id%01 43200>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop%  Goto .%id%_GoLostMission>
+		*.%id%_GoLostMission <*TargetEscaped .%id%_GoEnd ChatNPCFac>
+		.%id%_GoEnd <AddReact -d6   DeleteNPC %2%   EndPlot>
+	end
+
+
+
+
+

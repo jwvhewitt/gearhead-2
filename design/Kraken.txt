@@ -1,0 +1,172 @@
+AeroFighter 10
+Name <Kraken>
+Desig <Crihna>
+SDL_Sprite <>
+SDL_Portrait <>
+type <SPACE>
+FACTIONS <CRIHN>
+desc <The Kraken is a monstrous aerofighter, built using salvaged parts from PreZero battlestations.>
+ROLE_CRIHN <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+
+sub
+torso
+	Armor 9
+	mass -10
+	sub
+		CPit
+		Armor 1
+
+		Gyro
+		Armor 1
+
+		Engine
+		Armor 1
+		HighPerformance
+
+		Computer 7
+		mass -4
+		sub
+			Software 5
+			name <UrgeKiller AI Net>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 4
+			name <L.D.Gotcha TarBoost>
+			S_SpeedComp
+			S_BoostScale 2
+		end
+
+		Sensor 6
+		ECM 6
+
+		Mount
+		Name <Upper Body Mount>
+		inv
+			STC PHS-8
+		end
+
+		Mount
+		Name <Lower Body Mount>
+		inv
+			MLauncher 2
+			sub
+				STC NUKE-20
+				magazine 1
+			end
+		end
+
+		Gun 25
+		Scale 2
+		name <Triple Cannon>
+		caliber <500mm ferrous ball>
+		Range 8
+		Recharge 2
+		BV 2
+		type <BRUTAL>
+		Integral
+		mass -10
+		Magazine 60
+		sub
+			Ammo 25
+			caliber <500mm ferrous ball>
+		end
+	end
+	inv
+		BodyArmor 4
+		mass -5
+	end
+
+Wing
+	Name <Right Wing 1>
+	Size 6
+	Armor 7
+	mass -8
+	sub
+		Mount
+		Name <Right Wing 1 Mount>
+		inv
+			MLauncher 24
+			mass -1
+			sub
+				STC SWM-5
+				magazine 48
+				type <SWARM ARMORPIERCING>
+			end
+		end
+
+		SpaceFlight 6
+	end
+	inv
+		WingArmor 2
+		mass -3
+	end
+
+Wing
+	Name <Left Wing 1>
+	Size 6
+	Armor 7
+	mass -8
+	sub
+		Mount
+		Name <Left Wing 1 Mount>
+		inv
+			MLauncher 24
+			mass -1
+			sub
+				STC SWM-5
+				magazine 48
+				type <SWARM ARMORPIERCING>
+			end
+		end
+
+		SpaceFlight 6
+	end
+	inv
+		WingArmor 2
+		mass -3
+	end
+
+Wing
+	Name <Right Wing 2>
+	Size 6
+	Armor 7
+	mass -8
+	sub
+		Mount
+		Name <Right Wing 2 Mount>
+		inv
+			STC PAR-2
+		end
+
+		SpaceFlight 6
+	end
+	inv
+		WingArmor 2
+		mass -3
+	end
+
+Wing
+	Name <Left Wing 2>
+	Size 6
+	Armor 7
+	mass -8
+	sub
+		Mount
+		Name <Left Wing 2 Mount>
+		inv
+			STC VC-5
+			name <Intercept Cannon>
+			mass -9
+			BV 5
+			range 5
+		end
+
+		SpaceFlight 6
+	end
+	inv
+		WingArmor 2
+		mass -3
+	end
+
+end

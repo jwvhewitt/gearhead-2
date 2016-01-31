@@ -1,0 +1,79 @@
+%% DEFAULT RESCUE FILES
+%%
+%% RESCUE CONTEXTS
+%%   The context type beginning with a * is the type of rescue required.
+%%   *DEATH - The PC has died.
+%%   *RECOVERY - The PC has died, but is recovered by his lancemates.
+%%   *PICKUP - The PC is trapped somewhere and needs help.
+%%	Location context, desig, type, and terrain
+%%	Root scene desig, faction desig
+%%	PC extended description (job, traits)
+%%
+%% RESCUE ELEMENTS
+%%	Element 1 = Scene from which to be rescued.
+%%	The rest of the elements can be used as required.
+%%
+%% RESCUE ACTIONS
+%%	Be sure to use FORCEEXIT rather than EXIT to move the PC to the recovery
+%%	area, since the exit has probably already been set by whatever killed him.
+
+Plot
+	name <Space Pickup>
+	requires <*PICKUP SPACE>
+	Element1 <Scene>
+	Element2 <Scene SpacePort Public !Near 1>
+	update <if= P1 0   P= 1 3600 P+ 1 d86400   Time P1  ForceExit E2  SeekEntrance E2>
+	start <Print 1   EndPlot>
+	Msg1 <You are rescued by a passing mecha pilot and brought to \SCENE E2 .>
+
+Plot
+	name <Generic Pickup>
+	requires <*PICKUP>
+	Element1 <Scene>
+	Element2 <Scene Building Public !Near 1>
+	update <if= P1 0   P= 1 3600 P+ 1 d86400   Time P1  ForceExit E2  SeekEntrance E2>
+	start <Print 1   EndPlot>
+	Msg1 <You are rescued by a passing mecha pilot and brought to \SCENE E2 .>
+
+
+Plot
+	name <Generic Rescue>
+	requires <*DEATH>
+	Element1 <Scene>
+	Element2 <Scene Hospital !Near 1>
+	update <if= P1 0   P= 1 86400 P+ 1 d86400   Time P1  ForceExit E2  SeekEntrance E2>
+	start <Print 1   History 2   PCEat  EndPlot>
+	Msg1 <You wake up in a hospital.>
+	Msg2_1 <You nearly died in \ELEMENT 1 .>
+	CMsg2_1 <ifG E1 0 Accept>
+	Msg2_2 <You nearly died, but were miraculously rescued.>
+	CMsg2_2 <ifG 1 E1 Accept>
+
+Plot
+	name <Generic Recovery>
+	requires <*RECOVERY>
+	Element1 <Scene>
+	Element2 <Scene Hospital !Near 1>
+	update <if= P1 0   P= 1 86400 P+ 1 d43200   Time P1  ForceExit E2  SeekEntrance E2>
+	start <Print 1   History 2   PCEat  EndPlot>
+	Msg1 <You are brought to a hospital by your companions.>
+	Msg2_1 <You nearly died in \ELEMENT 1 .>
+	CMsg2_1 <ifG E1 0 Accept>
+	Msg2_2 <You nearly died, but were rescued by your companions.>
+	CMsg2_2 <ifG 1 E1 Accept>
+
+Plot
+	name <Generic Recovery>
+	requires <*RECOVERY>
+	Element1 <Scene>
+	Element2 <Scene Building Public !Near 1>
+	update <if= P1 0   P= 1 86400 P+ 1 d43200   History 2   Time P1  ForceExit E2  SeekEntrance E2>
+	start <Print 1   History 2   PCEat  EndPlot>
+	Msg1 <You are brought to safety and nursed back to health.>
+	Msg2_1 <You nearly died in \ELEMENT 1 .>
+	CMsg2_1 <ifG E1 0 Accept>
+	Msg2_2 <You nearly died, but were rescued by your companions.>
+	CMsg2_2 <ifG 1 E1 Accept>
+
+
+

@@ -1,0 +1,301 @@
+%%
+%% *:CS_SideMission Content
+%%
+%%   An NPC will ask the PC to do something bigger than a minor mission below.
+%%   In fact, this will probably be as big as a MAIN subplot. Woo-hoo!
+%%
+%%   When this subplot concludes, it sets one of the following triggers:
+%%    .%id%_%plotid%_GoWin
+%%    .%id%_%plotid%_GoLoss
+%%
+%%   The persona for E1 requires a .%id%_GoInit script to explain the mission.
+%%
+%% PARAM1: The NPC who will be giving the mission.
+%%
+
+Content
+	name <Destroy Mutual Enemy>
+	requires <*:CS_SideMission ~1:ENEMY -1:NOFAC>
+	desc <The PC will be asked to go defeat a mutual enemy.>
+
+	% E1 is the mission-giver
+	% E2 is an environs scene
+	% E3 is the encounter
+	% E4 is the mutual enemy faction
+	% E5 is the enemy to defeat
+	Element2 <Scene Environs !Near -7>
+	Element3 <Prefab>
+	Place3 <2>
+	Element4 <Faction !Enemy 1 !XClude -3>
+	Element5 <Prefab>
+	Place5 <3 (Enemies) sd enemy>
+
+	HINT_%id% <:%id1%>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Decimation Counter
+	% P%id%03 = Reinforcements Counter
+
+	%% FAIL CONDITIONS
+	%% - SubPlot1 (DiscoverNPCMission) Lost
+
+	update <if= P%id%01 0 P= %id%01 1   SetPlotStatus %plotid1% %id1% SetPlotStatus %plotid2% %id2%    NPCLevel %5% StoryDL>
+	end <ifSubPlotLost %plotid1% CancelSubPlot %plotid2% LoseSubPlot %plotid% Trigger0 .%id%_%plotid%_GoLoss>
+
+	.%id2%_%plotid2%_GoDecimation <P= %id%02 1>
+	.%id2%_%plotid2%_GoReinforcements <P= %id%03 1>
+
+	%% SubPlot1 = Discover the NPC's mission
+	%% SubPlot2 = Gain advantage vs NPC
+	SubPlot1 <*:CS_DiscoverNPCMission&GatheringForces 2 3 5>
+	SubPlot2 <*:CS_GainAdvantageVsNPC&Decimation&Reinforcements 5>
+
+	sub
+		Persona 1
+		.%id%_GoInit <NewChat Say %id%01 PMemo %plotid% %id%02 SetPlotStatus %plotid% %id%>
+		Msg%id%01 <There's a cavalier from %name4% who has been giving us trouble. I want you to locate this %name5% person and defeat \OPR %5% .>
+		Msg%id%02 <%name1% asked you to defeat %name5% of %name4%.>
+
+		Persona 5
+		special <UNLISTED>
+		*greeting <*BattleChallenge GoThemeExpo na>
+		*GoThemeExpo <*THEME_EXPO&Enemy na>
+
+		MetaScene 3 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   ForceChat %5%   CancelSubPlot %plotid2%>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1     Alert 1  History 2   Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1  Alert 3  History 4  XPV 100   SALVAGE   Trigger0 .%id%_%plotid%_GoWin  WinSubPlot %plotid%>
+
+		end <SetEncounterInactive %3%  ifNPCOK %5% PCEnemy %5% FreezeNPC %5%>
+
+		Msg1 <You have been defeated by %name5%.>
+		Msg2 <You were defeated by %name5%.>
+		Msg3 <You have defeated all of %name5%'s forces.>
+		Msg4 <You defeated %name5%.>
+
+		sub
+			team 1
+			setally 3
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction %4%   if# P%id%02 0 else GoBigDeploy   WMecha 2 StoryDL 60>
+			GoBigDeploy <WMecha 2 StoryDL 120>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			name <Allies>
+			setally 1
+			setenemy 2
+			Deploy <if= PlotStatus %plotid% %id%  if# P%id%03 0   WMecha 3 StoryDL 60>
+			ParaX 10
+			ParaY 5
+		end
+	end
+	inv
+		stc CORE-ACTIVATABLE
+		name <%name5%'s Lance>
+
+		NPC Mecha Pilot
+	end
+
+
+%%
+%% *:CS_MinorMission Content
+%%
+%%  An NPC will give the PC a minor task; usually, this will be done
+%%  in exchange for some help or information that the NPC might provide.
+%%  Note that because the mission description is given at initialization,
+%%  these missions shouldn't involve anything that a player might want
+%%  to opt out of, such as making enemies.
+%%
+%%  If the mission is completed, this subplot will be won. If it is failed,
+%%  this subplot will be lost.
+%%
+%%  The persona for E1 requires a .%id%_GoInit script to explain the mission.
+%%
+%% PARAM1: The NPC who will be giving the mission.
+%%
+
+Content
+	name <Clean the station>
+	requires <*:CS_MinorMission>
+	desc <The PC will be sent to clean out a microstation.>
+	Size 4
+
+	% E1 is the mission-giver
+	% E2 is a space or asteroid environs scene
+	% E3 is the encounter
+	Element2 <Scene Environs Space !Near -7>
+	Element3 <Prefab>
+	Place3 <2>
+
+	sub
+		Persona 1
+		.%id%_GoInit <NewChat Say %id%01 PMemo %plotid% %id%02 SetPlotStatus %plotid% %id%>
+		Msg%id%01 <There's an agricultural microstation outside of \SCENE RootSceneID that's been infested with fungus. I need for you to go there and clean it out.>
+		Msg%id%02 <%name1% asked you to clear out an agricultural microstation.>
+
+		MetaScene 3
+		special <SHOWALL>
+		boxmap
+		MapWidth 17
+		MapHeight 17
+		special <AddExit>
+
+		FloorType 1
+
+		nu2 <if= T2 0   if= V1 0 V= 1 1   Alert 1   XPV 100   PMemo %plotid% 2 WinSubPlot %plotid%>
+		Msg1 <You have exterminated the last of the vermin.>
+		Msg2 <You have exterminated the vermin for %name1%.>
+
+		sub
+			Team 1
+			SetEnemy 2
+
+			Team 2
+			name <Fun Guys>
+			SetEnemy 1
+			Deploy <WMonster 2 StoryDL 100>
+			type <Fungus Vermin>
+
+			Forest
+			Forest
+			Forest
+			Forest
+			Forest
+		end
+	end
+	inv
+		STC CORE-STATIONARY
+		name <Agricultural Microstation>
+	end
+
+
+
+Content
+	name <Raiders Causing Problems>
+	requires <*:CS_MinorMission (1:ADVEN|1:CORPO|1:CRAFT|1:LABOR|1:MILIT|1:POLIC|1:POLIT|1:TRADE|1:MOOK_)>
+	desc <There are some raiders who have been causing trouble. Go destroy them.>
+	Size 4
+
+	% E1 is the mission-giver
+	% E2 is an outdoors scene
+	% E3 is the encounter
+	Element2 <Scene Outdoors !Near -7>
+	Element3 <Prefab>
+	Place3 <2>
+
+	sub
+		Persona 1
+		.%id%_GoInit <NewChat Say %id%01 PMemo %plotid% %id%02 SetPlotStatus %plotid% %id%>
+		Msg%id%01 <There are some raiders in %name2% who have been causing trouble. I'd like for you to go defeat them.>
+		Msg%id%02 <%name1% asked you to defeat some raiders in %name2%.>
+
+		MetaScene 3 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1    LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   Alert 1   XPV 100   SALVAGE   PMemo %plotid% 2 WinSubPlot %plotid%>
+
+		Msg1 <You have defeated the raiders. You should go report back to %name1% now.>
+		Msg2 <You defeated the raiders for %name1%.>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			SetEnemy 1
+			Deploy <if= PlotStatus %plotid% %id%   WMecha 2 StoryDL 100>
+			ParaX 45
+			ParaY 45
+		end
+	end
+	inv
+		STC CORE-MECHAENCOUNTER
+	end
+
+%%
+%% *:CS_CaptureBuilding Content
+%%
+%%  The PC will have to capture a building. This is a pretty minor mission, so I'm
+%%  sticking it here.
+%%
+%%  When this subplot concludes, it sets one of the following triggers:
+%%   .%id%_%plotid%_GoWin
+%%   .%id%_%plotid%_GoLoss
+%%  Winning and losing the mission doesn't produce any alerts here; do that in the
+%%  parent plot scripts.
+%%
+%%  PARAM1: The outdoors scene where the building will be located.
+%%
+
+Content
+	name <Default Capture Building>
+	requires <*:CS_CaptureBuilding>
+	desc <Capture the building without destroying it.>
+	Size 5
+
+	% E1 is the outdoors scene
+	% E2 is the building exterior encounter
+	Element2 <Prefab>
+	Place2 <1>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		MapWidth 35
+		MapHeight 35
+
+		nu1 <if= T1 0   Return>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100   SALVAGE   trigger0 .%id%_%plotid%_GoWin   WinSubPlot  %plotid%>
+		nu3 <if= T3 0   if= V1 0 V= 1 1                       trigger0 .%id%_%plotid%_GoLoss  LoseSubPlot %plotid%>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			SetEnemy 1
+			Deploy <if= PlotStatus %plotid% %id%   WMecha 2 StoryDL 100>
+			home <The Base>
+
+			team 3
+			name <Inanimate Objects>
+
+			rect
+			name <The Base>
+			desig <SE>
+			Height 5
+			Width 5
+			sub
+				SuperProp
+				requires <*Fortress>
+				SetTeam 3
+			end
+		end
+	end
+	inv
+		STC CORE-STATIONARY
+		name <Building>
+	end
+
+

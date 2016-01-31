@@ -1,0 +1,128 @@
+%%
+%% *:Q_FreeMecha
+%%
+%% At the beginning of the game, there should be a chance for an enterprising
+%% young character to earn a free mecha. Lazy and old characters should also be
+%% able to get one. That's what these quests are for.
+%%
+%% If there's an NPC associated with this quest, he should be placed in the
+%% Cavalier's Club, so the PC can find him easily.
+%%
+%% The free mecha should be generated using renown 15. In the case of having
+%% to recover the mecha from a dungeon, a custom mecha with 2 modification
+%% points may be given.
+
+Content
+	name <Abandoned Base>
+	desc <There's an abandoned pirate dome where you can find a mecha.>
+	requires <*:Q_FreeMecha ASTEROID>
+
+	% E1 is the environs scene
+	% E2 is the dungeon
+	% E3 is the elevator in the dungeon that will provide the mecha
+	Element1 <Scene Environs>
+	Element2 <QuestScene>
+	Place2 <1>
+
+	sub
+		STC QS_Dungeon_UrbanHellHole
+		name <#'s Demise>
+		SetID 2
+		Entrance <*QUEST-ACTIVE>
+		sub
+			room
+			minimap <......###..##1..###......>
+			special <SHAREDPALETTE>
+			ForGoalLevel
+			inv
+				Elevator
+				rumor0 <there's an abandoned pirate dome outside the station. They may have left behind some weapons.>
+				MiniMapComponent 1
+				name <Mecha Bay>
+				use <if= PlotStatus %plotid% 0 else GoBeenBefore ifYesNo 1 2 3 WinSubPlot %plotid% MechaPrize .mektype 15 5 2>
+				.mektype <GENERAL CRIHN REDMA>
+				GoBeenBefore <Print 4>
+				Msg1 <You find an old mecha left behind when the mine closed.>
+				Msg2 <Open external bay doors.>
+				Msg3 <Leave the mecha where it is.>
+				Msg4 <There's nothing left here now.>
+			end
+		end
+	end
+
+Content
+	name <Warship Wreckage>
+	desc <There's a destroyed warship that may still have mecha inside.>
+	requires <*:Q_FreeMecha SPINNER>
+
+	% E1 is the environs scene
+	% E2 is the dungeon
+	Element1 <Scene Environs>
+	Element2 <QuestScene>
+	Place2 <1>
+
+	sub
+		STC QS_Dungeon_Derelict
+		SetID 2
+		Entrance <*QUEST-ACTIVE>
+		sub
+			room
+			minimap <......###..##1..###......>
+			special <SHAREDPALETTE>
+			ForGoalLevel
+			inv
+				Elevator
+				rumor0 <there may be something left in the derelict warship outside the station.>
+				MiniMapComponent 1
+				name <Mecha Bay>
+				use <if= PlotStatus %plotid% 0 else GoBeenBefore ifYesNo 1 2 3 WinSubPlot %plotid% MechaPrize .mektype 15 2 2>
+				.mektype <SOLAR AEGIS SILKN ROCKE CRIHN>
+				GoBeenBefore <Print 4>
+				Msg1 <You find a mecha bay. It appears to be operational.>
+				Msg2 <Open external bay doors.>
+				Msg3 <Leave it alone.>
+				Msg4 <There's nothing left here now.>
+			end
+		end
+	end
+
+Content
+	name <Hogye Memories>
+	desc <There's an asteroid mine outside the station where you can find a mecha.>
+	requires <*:Q_FreeMecha (SPINNER|ASTEROID)>
+
+	% E1 is the environs scene
+	% E2 is the dungeon
+	Element1 <Scene Environs>
+	Element2 <QuestScene>
+	Place2 <1>
+
+	sub
+		STC QS_Dungeon_AsteroidMine
+		SetID 2
+		Entrance <*QUEST-ACTIVE>
+		sub
+			room
+			minimap <......###..##2..###......>
+			special <SHAREDPALETTE>
+			ForGoalLevel
+			inv
+				Elevator
+				rumor0 <there may be some heavy equipment left in %name2%.>
+				MiniMapComponent 2
+				name <Mecha Bay>
+				use <if= PlotStatus %plotid% 0 else GoBeenBefore ifYesNo 1 2 3 WinSubPlot %plotid% MechaPrize .mektype 15 4 2>
+				.mektype <GENERAL MUGLE>
+				GoBeenBefore <Print 4>
+				Msg1 <You find an old mecha left behind when the mine closed.>
+				Msg2 <Open external bay doors.>
+				Msg3 <Leave the mecha where it is.>
+				Msg4 <There's nothing left here now.>
+			end
+		end
+	end
+
+
+
+
+

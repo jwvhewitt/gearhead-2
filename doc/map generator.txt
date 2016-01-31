@@ -1,0 +1,9 @@
+*****************************
+***   COMMAND  REFERENCE  ***
+*****************************
+
+Lattice [Field] [Marble] [Corridor (Special)]
+  Generates a lattice of 5x5 cells separated by corridors of width 3.
+  The NW, SW, NE, and SE corner cells can be selected by map features bearing
+  those designations. The corridor is drawn using the Special pen.
+

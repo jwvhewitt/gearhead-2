@@ -1,0 +1,73 @@
+%%
+%%  Thief missions aren't usually missions in the standard sense- instead, a
+%%  fellow thief will clue the PC in about something which can be stolen.
+%%
+
+Plot
+	name <Basic Plunder Ship Mission>
+	desc <The PC can buy a datachip revealing the location of a cruiser.>
+	requires <*GENERAL -Lawful>
+	PayRate 500
+
+	% E1 is a local criminal character
+	% E2 is the datachip containing the info
+	% E3 is a SPACE scene for the cruiser
+	% E4 is the cruiser itself
+	Element1 <Character THIEF Criminal Recharged>
+	Element2 <Prefab>
+	Place2 <1>
+	Element3 <Scene Space Environs>
+	Element4 <Prefab>
+	Place4 <3>
+
+	% P1 = Time Limit
+	% P2 = Email Indicator
+	start <if= PlotStatus %plotid% 0 ifNPCOK %1% else GoDelete if# P1 0 ifG ComTime P1 Goto GoDelete>
+	GoDelete <DeleteItem %2%  EndPlot>
+	update <if= PlotStatus %plotid% 0 if= P1 0 P= 1 ComTime P+ 1 86400>
+
+	% Obtaining the datachip will reveal the encounter to the PC.
+	Get%2% <Alert %id%01 PMemo %plotid% %id%02 DeleteItem %2% SetPlotStatus %plotid1% %id1%>
+
+	Msg%id%01 <You obtain the coordinates of %name4% from the datachip.>
+	Msg%id%02 <You discovered that %name4% will be passing through \EXACT_SCENE %3% today.>
+
+	% SubPlot1 is the plunder mission itself
+	SubPlot1 <*TM_PlunderShip 3 4>
+
+	sub
+		Persona 1
+		rumor0 <%name1% is very interested in shipping.>
+		&AskingPrice <Reward %threat% 50>
+		% V%id%01 = Have heard briefing(1)/Have failed briefing (-1)
+		greeting <if= PlotStatus %plotid% 0 else .%id%_GoRevert if# v%id%01 -1 else .%id%_GoRevert if= v%id%01 0 else .%id%_GoBriefing ifG 10 PCLaw else .%id%_GoCancelPlot Goto .%id%_GoCheckAuto>
+		.%id%_GoCancelPlot <NewChat SayAnything DeleteItem %2% EndPlot>
+		.%id%_GoRevert <RevertPersona>
+		*.%id%_GoCheckAuto <*AutoThiefTest .%id%_GoBriefing .%id%_GoReject .%id%_GoCheckSkill>
+		*.%id%_GoCheckSkill <*SkillThiefTest .%id%_GoBriefing .%id%_GoSayGoodbye .%id%_GoFailure %threat%>
+		.%id%_GoSayGoodbye <DeleteItem %2% EndPlot Goto .%id%_GoGoodbye>
+		*.%id%_GoGoodbye <*GoodBye>
+		*.%id%_GoReject  <*YourLossSucker .%id%_GoFailure>
+		.%id%_GoFailure <V= %id%01 -1>
+		.%id%_GoBriefing <V= %id%01 1 NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+		result%id%01 <EndChat Say %id%02 PMemo %plotid% %id%03  DeleteItem %2% Cash+ -&AskingPrice  AddReact d4  SetPlotStatus %plotid1% %id1%>
+		*result%id%02 <*HurryBackWithMoney>
+		result%id%03 <Goto .%id%_GoReject>
+		Msg%id%01 <A cargo ship will be passing through \EXACT_SCENE %3% soon. I've got a datachip detailing its exact route, and it could be yours for just $ \VAL &AskingPrice .>
+		Msg%id%02 <It's been a pleasure. These coordinates will bring you straight to %name4%; I'm not sure what it's transporting, but it's got to be valuable.>
+		Msg%id%03 <You learned from %name1% that %name4% will be passing through \EXACT_SCENE %3% today.>
+		Prompt%id%01 <Sounds fair. [Give Money]>
+		CPrompt%id%01 <ifG PC$ &AskingPrice Accept>
+		Prompt%id%02 <I'll be back when I can afford it.>
+		Prompt%id%03 <I'm not interested.>
+	end
+	inv
+		Treasure
+		name <DataChip>
+		desc <Contains the location of a cruiser you can plunder.>
+
+		STC CORE-ACTIVATABLE
+		name <the S.S. %r%>
+	end
+
+

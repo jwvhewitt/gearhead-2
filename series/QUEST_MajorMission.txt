@@ -1,0 +1,10 @@
+%%
+%%  *:Q_MajorMission Content
+%%
+%% An NPC is going to offer the PC a mission. This should be roughly
+%% equivalent to one of the Side Story quests- fairly major. 
+%%
+%%
+%%  PARAM1: The NPC offering the quest
+%%
+

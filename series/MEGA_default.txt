@@ -1,0 +1,293 @@
+%%
+%% MegaPlot Components
+%%
+
+%% Similar to quests, but work for plots.
+
+%%
+%% *:CriminalInvestigation Content
+%%
+%%  A person of some type is breaking the law. Your task is to uncover the
+%%  evidence which will prove this... or, maybe accept a bribe to keep the
+%%  whole thing quiet.
+%%
+%%  If the evidence is uncovered, this subplot will be won. If the PC accepts
+%%  a bribe or fails in the mission, it will be lost.
+%%
+%%  Upon reporting the crime, the parent plot should either end or cancel this
+%%  subplot to prevent the PC from collecting bribes after the fact.
+%%
+%% PARAM1: The character under investigation
+%% PARAM2: The city where the investigation is happening
+%%
+
+Content
+	name <Monster Maker>
+	desc <This character is running an illegal biotech lab.>
+	requires <*:CriminalInvestigation 1:EVIL_ (1:CORPO|1:TRADE|1:ACADE)>
+
+	%% E1 is the NPC under investigation
+	%% E2 is the city where this investigation will take place
+	%% E3 is an urban scene, for placing the factory
+	%% E4 is the factory scene, full of monsters
+	%% E5 is a secret- reveal this to corner E1 right away.
+	Element3 <Scene Urban !Near 2>
+	Element4 <Prefab>
+	Place4 <3>
+	Element5 <Prefab>
+
+	% P%id%01 = Learned secret about factory
+
+	end <ifNPCDead %1% CancelSubPlot %plotid1% CancelSubPlot %plotid%>
+	.%id1%_%plotid1%_GoLearnSecret <P= %id%01 1>
+
+	% SubPlot1 is the LearnSecret bit.
+	SubPlot1 <*:LearnSecretAboutNPC&Incriminating 5 1 2>
+
+	sub
+		Persona 1
+		% V%id%01 = Have opened factory
+		greeting <IfSubPlotNotWon %plotid% else .%id%_GoShocked if= PlotStatus %plotid% %id% else %pop% Goto .%id%_GoGreeting>
+		.%id%_GoShocked <EndChat Say %id%01>
+		*.%id%_GoGreeting <*SuspectGreeting .%id%_GoCheckFactory>
+		.%id%_GoCheckFactory <if# v%id%01 0 else .%id%_GoAskQuestions NewChat Say %id%02 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+		.%id%_GoAskQuestions <NewChat Say %id%03 AddChat %id%04 AddChat %id%05>
+		*result%id%01 <*ComeBackWhenYouKnowSomething>
+		result%id%02 <NewChat Say %id%04 AddCHat %id%06 AddChat %id%07 AddChat %id%08>
+		result%id%03 <NewChat Say %id%05 AddChat %id%09>
+		*result%id%04 <*ShowMeYourWorkplace&NothingToHide&Investigation .%id%_GoOpenFactory .%id%_GoRefuse %threat%>
+		.%id%_GoOpenFactory <NewChat Say %id%06 PMemo %plotid% %id%07 SetEncounterActive %4% V= %id%01 1 SetPlotStatus %plotid1% %id1%>
+		*.%id%_GoRefuse <*BrushOff&Questioning>
+		result%id%05 <Goto result%id%01>
+		result%id%06 <NewChat Say %id%08 CashPrize Reward %threat% 200 AddLawful -5 SetEncounterInactive %4%  CancelSubPlot %plotid1% LoseSubPlot %plotid%>
+		result%id%07 <Goto result%id%01>
+		result%id%08 <NewChat Say %id%09 AddChat %id%10 AddChat %id%11>
+		result%id%09 <Goto result%id%08>
+		result%id%10 <NewChat Say %id%10 CashPrize Reward %threat% 250 AddLawful -5 SetEncounterInactive %4%  CancelSubPlot %plotid1% LoseSubPlot %plotid%>
+		result%id%11 <EndChat Say %id%11 FreezeNPC %1% AddLawful 1 XPV 100  SetEncounterInactive %4%  CancelSubPlot %plotid1% WinSubPlot %plotid%>
+		Msg%id%01 <What, how did you survive!? I need to talk with my lawyer...>
+		Msg%id%02 <I trust that your investigation of my factory has turned up nothing?>
+		Msg%id%03 <I am a simple entrepreneur managing an automated factory. I don't have any idea why you're here bothering me.>
+		Msg%id%04 <Health codes...? You really haven't been to the factory yet, have you?>
+		Msg%id%05 <Go with you...? Um, I can't. I've got things to do here. It's important that you go to the factory by yourself.>
+		Msg%id%06 <You can find my factory in \EXACT_SCENE %3% . I'll warn you though, there's nothing there worth seeing.>
+		Msg%id%07 <%name1% told you where to find \PPR %1% factory in \EXACT_SCENE %3% .>
+		Msg%id%08 <That's not a bad deal. Here... maybe the two of us will be able to work together again in the future.>
+		Msg%id%09 <I... Er... Look, I'll give you $ \VAL Reward %threat% 250 if you forget all about this and just go away.>
+		Msg%id%10 <Here you are. Now go forth, and don't darken my presence ever again...>
+		Msg%id%11 <I'm going to talk with my lawyer.>
+		Prompt%id%01 <I'm still working on it.>
+		Prompt%id%02 <You're violating health codes, but I can hush that up...>
+		CPrompt%id%02 <ifPCCriminal ifInsightKn SkillTar %threat% Accept>
+		Prompt%id%03 <Actually, I'd like for you to accompany me there.>
+		CPrompt%id%03 <if= P%id%01 1 Accept>
+		Prompt%id%04 <Can I take a look at this factory?>
+		Prompt%id%05 <I'll be keeping my eye on you.>
+		Prompt%id%06 <Does it matter? $ \VAL Reward %threat% 200 or I shut you down.>
+		Prompt%id%07 <Um, no... I'll go do that now.>
+		Prompt%id%08 <Wait... Why are you so sure I haven't been there?>
+		CPrompt%id%08 <ifInsight HardSkillTar %threat% Accept>
+		Prompt%id%09 <So I can die?>
+		Prompt%id%10 <It's a deal.>
+		Prompt%id%11 <No deal. You're going down, %name1%.>
+
+		MetaScene 4
+
+		MonkeyMap
+
+		MapWidth 35
+		MapHeight 35
+
+		IndustrialTiles
+		% L1 = Victory Counter
+		start <if= L1 0 else GoBeenBefore L= 1 1 Alert 1 Alert 2 WinSubPlot %plotid%>
+		GoBeenBefore <Print 3>
+		End <SetEncounterInactive %4%>
+		Msg1 <As you enter %name1%'s factory, the access hatch slams shut behind you, trapping you inside.>
+		Msg2 <Looking around, it becomes obvious that this is some kind of illegal biotech facility. You hear something large moving in the distance.>
+		Msg3 <You enter %name1%'s factory.>
+
+		sub
+			Team 1
+			SetEnemy 2
+
+			Team 2
+			name <Monsters>
+			SetEnemy 1
+			Deploy <if= V1 0 V= 1 1 MonsterUp 2 %threat%>
+			type <Synth Hunter-X>
+
+			room
+			special <STARTHERE SHAREDPALETTE>
+			minimap <3...........2...........4>
+			inv
+				Trapdoor
+				Destination -1
+				MiniMapComponent 2
+				use <Print 101>
+				CLUE_Insight <Print 102>
+				CLUE_CodeBreaking <Print 102>
+				Msg101 <It's stuck. You can't get out this way.>
+				Msg102 <It's barred from the other side. You'll have to find another way out.>
+
+				STC BIOTANK
+				CLUE_Insight <Print 1>
+				CLUE_Science <Print 2>
+				Msg1 <This biotank has definitely been used recently.>
+				Msg2 <This equipment looks like it's related to the Hunter-X series of biomonster.>
+				MiniMapComponent 3
+
+				STC BIOTANK
+				CLUE_Insight <Print 1>
+				CLUE_Science <Print 2>
+				Msg1 <This biotank has definitely been used recently.>
+				Msg2 <This equipment looks like it's related to the Hunter-X series of biomonster.>
+				MiniMapComponent 4
+			end
+
+			room
+			special <SHAREDPALETTE>
+			minimap <............2............>
+			inv
+				Trapdoor
+				Destination -1
+				MiniMapComponent 2
+				use <Print 1 XPV 100 Return>
+			end
+		end
+
+	end
+	inv
+		STC CORE-ACTIVATABLE
+		name <%name1%'s Factory>
+		ENCOUNTER_NonCombat
+
+		Secret
+		Msg <Sometimes people go to visit %name1%'s factory, but they never come back.>
+	end
+
+
+
+%%
+%% *:ReconBeefgate Content
+%%
+%%  You're searching for a team of mecha, but the final encounter is probably
+%%  too difficult for the PC as of yet. What to do? The answer, of course, is to
+%%  install a beefgate. The PC will be sent to fight successively harder waves
+%%  of enemies until the final battle is unveiled.
+%%
+%%  Note that %name3% will be used as the title of what you're looking for, so
+%%  name your encounter accordingly.
+%%
+%% PARAM1: The Mission-Giver
+%% PARAM2: The outdoor scene where scene-to-reveal is
+%% PARAM3: Scene-to-reveal
+%% PARAM4: The faction of the beef
+
+Content
+	name <Recon Beefgate>
+	requires <*:ReconBeefgate>
+	desc <Pound the beefgate until it spits up an encounter.>
+
+	% E1 is the mission-giver
+	% E2 is the outdoors scene
+	% E3 is the scene to be revealed
+	% E4 is the enemy faction
+	% E5 is the beefgate itself
+	Element5 <Prefab>
+	Place5 <2>
+
+	% P%id%01 = BeefGate Appearance Timer
+	% P%id%02 = BeefGate Difficulty Rating
+	% P%id%03 = Number of wins against the beefgate
+	% P%id%04 = Number of wins rewarded
+
+	% This script handles the recharge if E1 is dead.
+	hour <ifNPCDead %1% ifG P%id%03 P%id%04   P= %id%01 ComTime P+ %id%01 d7200 P+ %id%01 3600 P= %id%03 P%id%04>
+
+	sub
+		Persona 1
+		% V%id%01 = Next Mission Counter
+		greeting <if= PlotStatus %plotid% %id% else %pop% ifG P%id%03 P%id%04 else .%id%_GoCheckNext P= %id%03 P%id%04  ifG p%id%02 %threat% else .%id%_GoMinorVictory Goto .%id%_GoMajorVictory>
+		.%id%_GoMajorVictory <NewChat Say %id%01 CashPrize Reward P%id%02 100  SetEncounterActive %3%  WinSubPlot %plotid%>
+		.%id%_GoMinorVictory <NewChat Say %id%02 CashPrize Reward P%id%02 80   V= %id%01 ComTime V+ %id%01 3600 V+ %id%01 d7200>
+		.%id%_GoCheckNext <if# v%id%01 0 else .%id%_GoCheckProgress ifG ComTime v%id%01 else .%id%_GoWaitNextMission  NewChat Say %id%03  Goto .%id%_GoActivateBeefgate>
+		.%id%_GoActivateBeefgate <P= %id%01 ComTime V= %id%01 0 ifG PCRenown p%id%02 P= %id%02 PCRenown>
+		.%id%_GoWaitNextMission <NewChat Say %id%04>
+		.%id%_GoCheckProgress <if# P%id%01 0 else .%id%_GoFirstTime NewChat Say %id%05>
+		*.%id%_GoFirstTime <*IHaveAJobForYou .%id%_GoBriefing>
+		.%id%_GoBriefing <NewChat Say %id%06 AddChat %id%01 AddChat %id%02>
+		result%id%01 <NewChat Say %id%07 PMemo %plotid% %id%08  Goto .%id%_GoActivateBeefgate>
+		result%id%02 <NewChat Say %id%09>
+		Msg%id%01 <You did it! Based on the data you've returned, we've located \SCENE %3% . These coordinates should bring you right there.>
+		Msg%id%02 <Good work, \PC . We still haven't located \SCENE %3% , but come back in a few hours and we may be closer.>
+		Msg%id%03 <We've found another lance from %name4% operating in \EXACT_SCENE %2% . I'd like for you to go engage them... The data you bring back might help us to locate \SCENE %3% .>
+		Msg%id%04 <Come back in a few hours and I may have another mission for you.>
+		Msg%id%05 <The mecha from %name4% are still operating in \EXACT_SCENE %2% . Come back after you've defeated them.>
+		Msg%id%06 <I've been tasked with locating \SCENE %3% . Now, there are some mecha in \EXACT_SCENE %2% from %name4%; if you were to engage them, we might be able to learn something.>
+		Msg%id%07 <Great! These coordinates will take you straight to their position... Good luck, \PC .>
+		Msg%id%08 <%name1% sent you to fight some mecha in \EXACT_SCENE %2% so you can locate \SCENE %3% .>
+		Msg%id%09 <Well, if you change your mind, I'll be right here.>
+		Prompt%id%01 <I'll go see what I can do.>
+		Prompt%id%02 <No, I don't want to.>
+
+		MetaScene 5 2
+		special <UNCHARTABLE>
+		MapWidth 50
+		MapHeight 50
+
+		% L1 = Encounter Over CounterifUStealth HardSkillTar P%id%02 else GoAutoAttack ifYesNo -3 -4 -5 else GoAvoidAttack Goto GoAutoAttack
+
+		% Losing the encounter will set the recharge for about twelve hours.
+		nu1 <if= T1 0  Return   if= L1 0  L= 1 1  LoseRenown  P= %id%01 ComTime P+ %id%01 d86400 P+ %id%01 43200>
+		% Winning the encounter will increase the difficulty + number of wins.
+		% If the mission-giving NPC is dead, it may also reveal the search scene.
+		nu2 <if= T2 0           if= L1 0  L= 1 1  AddRenown 1 Alert 1 XPV 100 Salvage  P= %id%01 0 P+ %id%02 8  P+ %id%03 1  ifNPCDead %1% ifG P%id%02 %threat% Alert 2  SetEncounterActive %3%  WinSubPlot %plotid%>
+		end <L= 1 0>
+
+		Msg1_1 <You have defeated the mecha. %name1% will want to hear about this.>
+		CMsg1_1 <ifNPCOK %1% Accept>
+		Msg1_2 <You have defeated the mecha.>
+		CMsg1_2 <ifNPCDead %1% Accept>
+		Msg2 <Searching through one of the defeated mecha, you find the coordinates of \SCENE %3% .>
+		Msg2_1 <You track the origin of these mecha back to \SCENE %3% .>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1
+			Deploy <SetSelfFaction %4%  WMecha 2 P%id%02 100>
+			ParaX 45
+			ParaY 45
+		end
+	end
+	inv
+		Encounter
+		name <%name1%'s Mission>
+		%% The BeefGate itself.
+		%% This encounter will attack once per day. If the PC defeats it, then this encounter
+		%% needs to be reset by E1 before it will appear again. If E1 is dead, it will reset
+		%% by itself.
+		update <if= PlotStatus %plotid% %id% else GoHide if# P%id%01 0 else GoHide  ifG ComTime P%id%01 else GoHide  SetStat STAT_MetaVisibility 0  ShowEncounter  Goto GoSetOrders>
+		% Sets this encounter's orders to Passive
+		GoSetOrders <GrabSource GSetNAtt NAG_EpisodeData NAS_Orders 3>
+		use <ifG StatVal STAT_MetaVisibility -1      ifNPCOK %1% else GoAutoAttack ifUStealth HardSkillTar P%id%02 else GoAutoAttack ifYesNo 1 2 3 else GoAvoidAttack Goto GoAutoAttack>
+		ATTACK <ifG StatVal STAT_MetaVisibility -1   ifNPCOK %1% else GoAutoAttack ifUStealth HardSkillTar P%id%02 else GoAutoAttack ifYesNo 1 2 3 else GoAvoidAttack Goto GoAutoAttack>
+		GoAutoAttack <Alert -2 Goto GoStartCombat>
+		GoAvoidAttack <Alert 4  XPV 100  P= %id%01 0 P+ %id%02 8 P+ %id%03 1  UpdateProps>
+		GoStartCombat <Exit Destination>
+		EncounterMove 50
+		Msg1 <You spot the mecha that %name1% told you about.>
+		Msg2 <Approach them.>
+		Msg3 <Trail them.>
+		Msg4 <You collect lots of information about the movement of these mecha. %name1% will want to hear about that.>
+	end
+
+
+
+

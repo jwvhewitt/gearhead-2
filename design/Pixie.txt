@@ -1,0 +1,252 @@
+Battroid 4
+Name <Pixie>
+SDL_Sprite <>
+SDL_Portrait <>
+Desig <MMS-02 Green>
+desc <MUGL Enterprise's first entry into the high-end battroid market.>
+TYPE <GROUND SPACE INSIDE>
+FACTIONS <MUGLE>
+ReflexSystem
+
+ROLE_MUGLE <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+
+sub
+Head
+	Size 5
+	Armor 4
+	Mass -5
+	Hardened
+	sub
+		Sensor 7
+		mass -2
+
+		ECM 6
+		mass -1
+
+		STC LAS-5
+		name <Intercept Laser>
+		type <INTERCEPT>
+		mass -4
+		Integral
+	end
+	inv
+		HeadArmor 5
+		mass -8
+		sub
+			ArcJet 4
+			Integral
+		end
+	end
+
+Torso
+	Armor 4
+	Mass -5
+	Hardened
+	sub
+		CPit
+		Armor 2
+		mass -2
+
+		Engine 4
+		Armor 2
+		mass -2
+		HighOutput
+
+		Gyro
+		Armor 2
+		mass -2
+
+		Computer 5
+		mass -5
+		sub
+			Software 2
+			name <Laniac Mecha FCS>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 2
+			name <Expert Action Processing>
+			S_MVBoost
+			S_BoostScale 2
+
+			Software 1
+			name <Target Analyzer>
+			desc <Mecha identification and analysis software.>
+			S_Information
+			SInfo_MechaDex
+		end
+
+		Beamgun 8
+		name <Magic Beam>
+		desc <A highly unpredictable beam weapon.>
+		type <EXPERIMENTAL>
+		Acc 1
+		Range 8
+		Recharge 1
+		mass -4
+		Integral
+
+		Mount
+		name <Right Torso Mount>
+		inv
+			Gun 8
+			Scale 2
+			name <Railgun>
+			desig <MMS-Px>
+			caliber <30mm ferrous>
+			Range 6
+			BV 4
+			Magazine 100
+			mass -6
+			sub
+				Ammo 8
+				type <ARMORPIERCING>
+				caliber <30mm ferrous>
+				mass -6
+			end
+		end
+
+		Mount
+		name <Left Torso Mount>
+		inv
+			MLauncher 18
+			mass -2
+			sub
+				STC SPKM-3
+				Magazine 60
+				mass -2
+			end
+		end
+	end
+	inv
+		BodyArmor 6
+		mass -9
+		sub
+			ArcJet 4
+			Integral
+		end
+	end
+
+Arm
+	name <Right Arm>
+	Armor 4
+	Mass -4
+	Hardened
+	sub
+		Hand
+		name <Right Hand>
+		inv
+			Beamgun 6
+			name <Pixie Rifle>
+			desc <A quick-firing plasma rifle with an integrated beam lash.>
+			type <BRUTAL>
+			Acc 1
+			Range 5
+			Recharge 3
+			mass -4
+			sub
+				EMelee 8
+				name <Sparkling Lash>
+				type <EXTEND FLAIL>
+				Integral
+				UsesSpeed
+			end
+		end
+
+		STC PAR-2
+
+		Overcharger 4
+		Integral
+	end
+	inv
+		ArmArmor 5
+		mass -8
+		sub
+			ArcJet 3
+			Integral
+		end
+	end
+
+Arm
+	name <Left Arm>
+	Armor 4
+	Mass -4
+	Hardened
+	sub
+		Hand
+		name <Left Hand>
+
+		STC PAR-2
+
+		Overcharger 4
+		Integral
+	end
+	inv
+		ArmArmor 5
+		mass -8
+		sub
+			ArcJet 4
+			Integral
+		end
+
+		EShield 5
+		DefBonus 3
+	end
+
+Leg
+	name <Right Leg>
+	Armor 4
+	Mass -4
+	Hardened
+	sub
+		ArcJet 5
+	end
+	inv
+		LegArmor 5
+		mass -8
+		sub
+			ArcJet 4
+			Integral
+		end
+	end
+
+Leg
+	name <Left Leg>
+	Armor 4
+	Mass -4
+	Hardened
+	sub
+		ArcJet 5
+	end
+	inv
+		LegArmor 5
+		mass -8
+		sub
+			ArcJet 4
+			Integral
+		end
+	end
+
+Wing
+	name <Right Wing>
+	size 5
+	Armor 4
+	mass -6
+	Hardened
+	sub
+		ArcJet 6
+		Integral
+	end
+
+Wing
+	name <Left Wing>
+	size 5
+	Armor 4
+	mass -6
+	Hardened
+	sub
+		ArcJet 6
+		Integral
+	end
+
+end

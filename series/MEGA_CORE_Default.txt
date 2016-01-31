@@ -1,0 +1,514 @@
+%%
+%% *:CS_BASE_PlunderShip
+%%
+%% The PC will plunder a ship, hopefully belonging to the enemy. This component
+%% does not contain any story development of its own. Instead, it will set a
+%% number of triggers which the calling subplot can use to activate events.
+%% I am doing things this way because the plundering scenario is extremely
+%% complex and duplicating it for different story contexts would be tough.
+%%
+%% Signals sent by this plot:
+%%  .%id%_%plotid%_GoAttackShip		The PC has entered the ship exterior
+%%					scene. Check the hostility of Team 2 to
+%%					see whether or not peaceful entry has
+%%					been achieved.
+%%  .%id%_%plotid%_GoBoardShip		The PC has snuck on board the ship.
+%%					Again, check the hostility of Team 2 to
+%%					find out if the entry was peaceful.
+%%  .%id%_%plotid%_GoPlunderOK		The PC has successfully plundered the
+%%					ship. Dole out loot and consequences
+%%					appropriate.
+%%  .%id%_%plotid%_GoPlunderBad		The PC has captured the ship, but
+%%					screwed up on the plundering... probably
+%%					by blowing everything to heck.
+%%  .%id%_%plotid%_GoPlunderFail	The PC didn't plunder jack.
+%%
+%% PARAM1: The outdoors scene for the encounter
+%% PARAM2: The encounter to be used for the ship; contains the name of the
+%%         ship.
+%% PARAM3: The faction which controls the ship.
+%%
+
+Content
+	name <Default Plunder>
+	desc <The PC will attempt to capture a cruiser (and its cargo) intact.>
+	requires <*:CS_BASE_PlunderShip>
+
+	% E1 is the outdoors scene where the encounter is
+	% E2 is the ship's exterior metascene
+	% E3 is the faction controlling the ship
+	% E4 is the ship's inte‭rior metascene
+	% E5 is the ship's captain
+	Element4 <Prefab>
+	Place4 <1>
+	Element5 <Character Captain !Comrade 3 !Global HasMecha NeverFail>
+	NeverFail5 <Captain>
+	Place5 <4 (Guards)>
+
+	% P%id%01 = Initializat‭ion Counter
+	% P%id%02 = Have gained peaceful entry
+
+	update <if= P%id%01 0  P= %id%01 1  SetPlotStatus %plotid1% %id1%  NPCLevel %5% StoryDL>
+
+	.%id1%_%plotid1%_GoPeacefulEntry <P= %id%02 1>
+
+	% This hint will tell the PC where to find the ship.
+	HINT_%id% <You'll find %name2% in \EXACT_SCENE %1% .>
+
+	% SubPlot1 is the PeacefulEntry task
+	SubPlot1 <*:CS_PeacefulEntry_Location 2>
+
+	sub
+		MetaScene 2 2
+		%% The ship's exterior
+
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		% L3 = "Just defeat the guards" message counter
+		% L4 = Initial headcount of Team 3
+		MapWidth 50
+		MapHeight 50
+
+		%
+		% As soon as this scene is entered, prompt to see whether the PC wants to
+		% attack the cruiser head-on or enter the ship on foot. Entering the ship
+		% is automatic if the PC has gained peaceful entry or is on foot; otherwise
+		% a stealth roll is needed.
+		%
+		% Once the destination has been decided, set the story trigger and let
+		% the parent subplot deal with things.
+		%
+		Start <if= L2 0 L= 2 1  CancelSubPlot %plotid1%   L= 4 t3   if= P%id%02 0 else GoEasyStealth ifG PCSkillVal NAS_Stealth STAT_Speed HardSkillTar StoryDL else GoNoStealth Goto GoAllowChoice>
+		GoEasyStealth <ifG   PCSkillVal NAS_Stealth STAT_Speed   SkillTar StoryDL   else GoHardStealth Goto GoAllowChoice>
+		GoNoStealth <Alert 13 Goto GoFightMecha>
+		GoHardStealth <Alert 14 Goto GoFightMecha>
+		GoAllowChoice <ifYesNo 1 2 3 else GoAttemptSneak Goto GoFightMecha>
+
+		GoAttemptSneak <if= P%id%01 0 else GoSneakIn ifG PCScale 1 else GoSneakIn ifStealth HardSkillTar StoryDL else GoSneakFail Goto GoSneakIn>
+		GoSneakIn <Exit %4%>
+		GoSneakFail <Alert 4 Goto GoFightMecha>
+
+		% If you gained peaceful entry, the guards and guns start out
+		% as neutral. Of course they turn hostile as soon as you attack
+		% the engines.
+		GoFightMecha <Alert 5   Trigger0 .%id%_%plotid%_GoAttackShip   if# P%id%02 0 TeamNeutral 2 TeamNeutral 4>
+
+		% Launching any sort of attack will alert the escort that something
+		% isn't entirely kosher.
+		PCAttack <ifTeamNotHostile 2 TeamAttack 2 TeamAttack 4 Alert 6>
+
+		nu1 <if= T1 0  Return   if= L1 0 L= 1 1  Alert 7  History 7  Trigger0 .%id%_%plotid%_GoPlunderFail  LoseRenown  LoseSubPlot %plotid%>
+		nu2 <if= T2 0  if= T4 0 else GoBringReinforcements if= T5 0 else GoBringReinforcements  if= L1 0  L= 1 1  ifG t3 0 else GoSmallVictory if# t3 l4 else GoBigVictory L+ 4 -d3 L+ 4 d2 ifG t3 l4 else GoSmallVictory Goto GoBigVictory>
+		GoBringReinforcements <Alert 8  WMecha 2 StoryDL 70>
+		GoSmallVictory <Alert 10 History 11 xpv 50 AddRenown -1 Salvage Trigger0 .%id%_%plotid%_GoPlunderBad  WinSubPlot %plotid%>
+		GoBigVictory   <Alert 12 History 11 xpv 100 AddRenown 1 Salvage Trigger0 .%id%_%plotid%_GoPlunderOK   WinSubPlot %plotid%>
+
+		nu4 <if= T4 0 if= T5 0 if= L3 0 L= 3 1 Alert 9>
+		nu5 <Goto nu4>
+
+		end <SetEncounterInactive %2%>
+
+		Msg1 <You have found %name2%. Do you want to capture the ship with your mecha, or attempt to sneak inside?>
+		Msg2 <Capture the ship.>
+		Msg3 <Try to sneak inside.>
+		Msg4 <You don't manage to sneak past the escort.>
+		Msg5 <Disable the thrusters and weapons to capture this vessel.>
+		Msg6 <The guards attack!>
+		Msg7 <You failed to capture %name2%.>
+		Msg8 <Reinforcements arrive!>
+		Msg9 <You have disabled %name2%. Just defeat the remaining guards and the vessel is yours.>
+		Msg10 <You have captured %name2%... or what remians of it.>
+		Msg11 <You captured %name2%.>
+		Msg12 <You have captured %name2%.>
+		Msg13 <You have found %name2%.>
+		Msg14 <You have found %name2%. There doesn't seem to be any easy way to sneak inside>
+
+		sub
+			team 1
+			SetEnemy 2 4 5
+			ParaX 5
+			ParaY 25
+
+			team 2
+			name <Guards>
+			SetEnemy 1
+			SetAlly 4 5
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction %3%   WMecha 2 StoryDL 150>
+			ParaX 45
+			ParaY 25
+
+			team 3
+			name <Cruiser Body>
+			% This team is neutral- the PC wants to capture these
+			% parts intact. If any of these parts get destroyed,
+			% there's a chance the desired loot will be lost.
+
+			team 4
+			name <Cruiser Weapons>
+			setenemy 1
+			setally 2 3 5
+			% Destroy the weapons and propulsion to incapacitate the
+			% cruiser.
+
+			team 5
+			name <Cruiser Propulsion>
+			setenemy 1
+			setally 2 3 4
+
+			rect
+			name <Cruiser Zone>
+			special <SubZone>
+			width 12
+			height 12
+			MFX 37
+			MFY 19
+			sub
+				SuperProp
+				requires <*Cruiser>
+				Team1 3
+				Team2 4
+				Team3 5
+			end
+		end
+
+
+		MetaScene 4
+		%% The ship's interior. To capture the ship, you can:
+		%% - Speak with the captain and intimidate/etc
+		%% - Fight the captain and make them surrender
+		%% - Disable the three control stations
+		%% Leaving the ship for any reason results in a loss.
+
+		MonkeyMap
+		MapWidth 50
+		MapHeight 50
+		NeededCells 4
+
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		% L3 = Captain surrender counter
+		% L4 = Number of systems at start
+		%      This info might be useful when negotiating with captain
+		% L5 = Discovery Counter
+		% L6 = Warning message counter
+
+		start <if= L2 0 L= 2 1 Alert 1   Trigger0 .%id%_%plotid%_GoBoardShip   L= 4 t3   if# P%id%02 0 TeamNeutral 2 TeamNeutral 4>
+
+		surrender%5% <if= L3 0 L= 3 1 ForceChat %5%>
+
+		end <ifNPCOK %5% FreezeNPC %5%>
+
+		% The PC risks discovery based on time and stealth.
+		TM1 <ifTeamNotHostile 2 ifTeamCanSeePC 2 ifG 5 Stealth Alarm>
+		5min <ifTeamNotHostile 2  else GoUpGuards  ifUStealth SkillTar StoryDL else GoAdvanceClock L+ 5 1>
+		GoAdvanceClock <L+ 5 d3 ifG L5 30 else GoCheckWarning Alarm>
+		GoCheckWarning <ifG L5 15 if= L6 0 L= 6 1 Alert 6>
+		GoUpGuards <MonsterUp 4 d3>
+
+		Alarm <TeamAttack 2 TeamAttack 4 Alert 2>
+
+		% Launching any sort of attack will alert the guards that something
+		% isn't entirely kosher.
+		PCAttack <ifTeamNotHostile 2 Alarm>
+
+		nu1 <if= T1 0  Return   if= L1 0 L= 1 1  Alert 3  History 3  Trigger0 .%id%_%plotid%_GoPlunderFail  LoseRenown  LoseSubPlot %plotid%>
+		nu3 <if= T3 0           if= L1 0 L= 1 1  Alert 4  History 5  xpv 100 AddRenown 1  Trigger0 .%id%_%plotid%_GoPlunderOK   WinSubPlot %plotid%  Retreat 2 Retreat 4 MonsterOff 4>
+
+		Msg1 <You enter %name2%. If you can disable the engines, main computer, and weapons control they will be forced to surrender.>
+		Msg2 <Suddenly, an alarm goes off!>
+		Msg3 <You failed to capture %name2%.>
+		Msg4_1 <With all the main systems disabled, Captain %name5% is forced to surrender.>
+		CMsg4_1 <ifNPCOK %5% Accept>
+		Msg4_2 <With all the main systems disabled, the crew of %name2% are forced to surrender.>
+		CMsg4_2 <ifNPCDead %5% Accept>
+		Msg5 <You captured %name2%.>
+		Msg6 <An announcement sounds. "An intruder may have infiltrated the ship. Report all suspicious activity to Captain %name5%.">
+
+		% Content1: The systems you need to disable.
+		% Content2: A very good chance of a disaster room.
+		Content1 <Variety 3 3 Sub *CS_SHIP_SYSTEMS>
+		Content2 <Some 1 55 Sub *CS_SHIP_DISASTER>
+
+		sub
+			team 1
+			SetEnemy 2 3 4
+
+			team 2
+			name <Guards>
+			SetEnemy 1
+			SetAlly 3 4
+
+			team 3
+			name <Systems>
+			% Disabling the major systems of the ship will force it
+			% to surrender. This can be done by locating and blowing
+			% each of them up, or by using skills to deactivate them.
+			SetEnemy 1
+
+			team 4
+			name <Monsters>
+			type <GUARD ROBOT>
+			SetEnemy 1
+			SetAlly 2 3
+			Deploy <if= V1 0 V= 1 1 MonsterUp 4 StoryDL>
+
+			room
+			special <StartHere>
+			sub
+				TrapDoor
+				use <Print 1 Retreat 1>
+			end
+
+			room
+			desig <HOME %e5%>
+			minimap <............1............>
+		end
+
+		Persona 5
+		%% The captain of this ill-fated vessel
+		greeting <if= PlotStatus %plotid% %id% else %pop% ifChatNPCSurrendered else .%id%_GoNegotiate  Goto .%id%_GoSurrender>
+		*.%id%_GoSurrender <*CS_BASEPS_CaptainSurrenders .%id%_GoWin>
+		.%id%_GoWin <History %id%01  xpv 100 AddRenown 1  Trigger0 .%id%_%plotid%_GoPlunderOK   WinSubPlot %plotid%    Retreat 2 Retreat 4 MonsterOff 4>
+		*.%id%_GoNegotiate <*CS_BASEPS_CaptainNegotiates .%id%_GoWin .%id%_GoAttack na>
+		.%id%_GoAttack <TeamAttack 2 TeamAttack 4>
+		Msg%id%01 <Captain %name5% surrendered %name2%.>
+	end
+	inv
+		Encounter
+		name <Ship's Interior>
+		% The interior of the ship. Now, we don't want this encounter to
+		% ever be visible. What it'll do instead is to match the position
+		% of the ship exterior encounter. That way, whichever scene you're
+		% leaving, you should emerge in the same tile on the outdoors map.
+		update <SetSelfX EncounterX %2% SetSelfY EncounterY %2% Goto GoHide>
+		Use <  >
+		Attack <  >
+	end
+
+%%
+%% *:CS_SubBossRoadblock
+%%
+%% This is an odd little utility component. In order for something to happen,
+%% the PC will need to locate and defeat a certain NPC. The battle will happen
+%% in an invisible wandering encounter; at the start of the fight, the NPC will
+%% contact the PC.
+%%
+%% If the PC loses the battle, no problem: the fight will repeat every 3-5 hours
+%% until the PC wins. If the boss NPC dies, this counts as a win even if the PC
+%% doesn't finish off the lancemates.
+%%
+%% NOTE: THIS SUBPLOT DOES NOT INCLUDE A PERSONA FOR THE NPC! It's up to the
+%%  parent plot to provide that.
+%%
+%% NOTE: THIS SUBPLOT DOES NOT SET A HISTORY NOTE! Again, that's up to the
+%%  parent.
+%%
+%% When this subplot concludes, it sets the following trigger:
+%%  .%id%_%plotid%_GoWin
+%%
+%% PARAM1: The outdoors scene for the encounter
+%% PARAM2: The NPC to be met
+%%
+
+Content
+	name <Default Roadblock>
+	desc <Fight the sub-boss and some lancemates.>
+	requires <*:CS_SubBossRoadblock>
+	Size 6
+
+	% E1 is the outdoors scene for the encounter
+	% E2 is the NPC to be met
+	% E3 is the encounter itself
+	Element3 <Prefab>
+	Place3 <1>
+
+	% P%id%01 = Initialization Counter
+	update <if= P%id%01 0 P= %id%01 1 NPCLevel %2% StoryDL MoveNPC %2% %3% SetNPCTeam %2% 2>
+
+	sub
+		MetaScene 3 2
+		rumor%id% <%name2% has been seen in %name1%.>
+		special <UNCHARTABLE>
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter; resets each time
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   L= 1 0   ForceChat %2%>
+		nu1 <if= T1 0   Return  if= L1 0   L= 1 1   LoseRenown>
+		nu2 <if= T2 0   if= L1 0   L= 1 1   Goto GoVictory>
+		Faint%2% <L= 1 1 Goto GoVictory>
+		GoVictory <XPV 100 Trigger0 .%id%_%plotid%_GoWin WinSubPlot %plotid%>
+		end <L= 2 0>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			SetEnemy 1
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction NPCFac %2%   WMecha 2 StoryDL 60>
+			ParaX 45
+			ParaY 45
+		end
+	end
+	inv
+		Encounter
+		name <%name2%'s Lance>
+		% V1 = Recharge Counter
+		% This encounter will appear once every 3-5 hours, as long as this is the active subplot.
+		update <if= PlotStatus %plotid% %id% else GoHide if# V1 0 else GoSetTimer ifG ComTime V1 else GoHide SetStat STAT_MetaVisibility 0  Goto GoSetOrders>
+		GoSetTimer <V= 1 ComTime V+ 1 1800 Goto GoHide>
+		GoSetOrders <GrabSource GSetNAtt NAG_EpisodeData NAS_Orders 3>
+		use <ifG StatVal STAT_MetaVisibility -1  V= 1 ComTime V+ 1 10800 V+ 1 d7200  Print -1 Exit Destination>
+		GoAutoAttack <V= 1 ComTime V+ 1 10800 V+ 1 d7200  Alert -2 Exit Destination>
+		GoAvoidAttack <V= 1 ComTime V+ 1 7200 V+ 1 d3600  Print -6 AddSociable -1 UpdateProps>
+	end
+
+
+%%
+%% *:CS_DifficultMeeting
+%%	&IsEnemy	The NPC to be met is an enemy
+%%	&Protected	The NPC shouldn't get killed, by the PC or anything else
+%%
+%% The PC needs to meet with someone, but arranging a meeting is difficult.
+%% Hence the name of the component. Duh. This subplot will set a PLACE for
+%% the relevant NPC and may or may not start a conversation with FORCECHAT,
+%% but will not contain the NPC's persona or make any other assumptions
+%% about what's going on.
+%%
+%% One note about the persona: The conversation should start with an acknowledgment
+%% that the PC was looking for E1.
+%%
+%% The parent subplot should disable this subplot when the conversation is over.
+%%
+%% PARAM1: The NPC the PC is seeking
+%%
+
+Content
+	name <I wouldn't need to do this if you had a cell phone>
+	desc <The PC can fight E1's henchmen; afterwards E1 contacts the PC>
+	requires <*:CS_DifficultMeeting &IsEnemy>
+	Size 5
+
+	% E1 is the NPC that the PC is seeking
+	% E2 is an outdoors scene for the combat
+	% E3 is the combat encounter itself
+	Place1 </>
+	Element2 <Scene Outdoors !Near -7>
+	Element3 <Prefab>
+	Place3 <2>
+
+	sub
+		MetaScene 3 2
+		rumor%id% <%name1% is doing something in %name2%.>
+
+		% V1 = Encounter Over Counter
+		% V2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		% Defeat the henchmen, and E1 shows up. Get defeated by them, and lose your chance
+		% forever.
+		start <if= L2 0 L= 2 1 TeamMonologue 2 1>
+		nu1 <if= T1 0   Return  if= V1 0 V= 1 1 LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0   V= 1 1   Alert 2 XPV 100  ForceChat %1%>
+
+		Msg1 <Look, it's \PC ! >
+		Msg2 <You have defeated all of %name1%'s henchmen. That ought to get \PPR %1% attention.>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			SetEnemy 1
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction NPCFac %1%   WMecha 2 StoryDL 100>
+			ParaX 45
+			ParaY 45
+		end
+	end
+	inv
+		STC CORE-INVISIBLEENCOUNTER
+		name <%name1%'s Henchmen>
+		EncounterMove 20
+	end
+
+
+
+%%
+%% *:CS_DiscoverNPCKidnappedByCSE
+%%	&NotReally	It wasn't really a kidnapping, or some other misunderstanding
+%%
+%% A very specific subplot. The NPC you're searching for has been kidnapped
+%% by the core story enemy... or apparently so, anyhow.
+%%
+%% When this subplot concludes, the following trigger must be set:
+%%		.%id%_%plotid%_GoDiscover
+%%
+%% PARAM1: The scene where the NPC supposedly is
+%% PARAM2: The NPC being sought
+%%
+
+Plot
+	name <Enemy Team Was Just Here>
+	desc <Upon searching for NPC, you learn that they've disappeared. Then you get attacked.>
+	requires <*:CS_DiscoverNPCKidnappedByCSE>
+	Size 3
+
+	% E1 is the scene where the NPC supposedly is
+	% E2 is the NPC being sought
+	% E3 is a character in E1 who can tell the PC that E2 has left
+	Element3 <Character Lawful !Near -7 NoMecha !Okay 2 NEVERFAIL>
+	Place3 <1 (Citizens) pass ally>
+
+	% This plot cannot fail. E3 isn't actually important. You don't even need to win
+	% the fight against the core story enemy.
+	% Entering the location primes the attack; exiting to the city map executes the attack.
+	% The attack will be handled with a dynamic encounter.
+
+	% p%id%01 = Attack Primed
+	START <if= p%id%01 1 else .%id%_GoCheckPrimer ifScene .%id%_desc Goto .%id%_GoStartAttack>
+	.%id%_desc <Outdoors>
+	.%id%_GoCheckPrimer <if= SceneID %1% p= %id%01 1>
+	.%id%_GoStartAttack <Alert %id%01 PMemo %id% %id%02 History %id%03 SavePos Dynamic 2 StoryDL 100 .%id%_nu1 .%id%_nu2  DynaFaction &EnemyFac WinSubPlot %plotid% Trigger0 .%id%_%plotid%_GoDiscover>
+	.%id%_nu1 <if= T1 0 Return>
+	.%id%_nu2 <if= T2 0 if= L1 0 L= 1 1 XPV 100 Salvage>
+
+	Msg%id%01_1 <As you leave the building, you are suddenly attacked! These mecha must be connected with the disappearance of %name2%.>
+	CMsg%id%01_1 <if= &EnemyFac 0 ifNPCDead &EnemyNPC Accept>
+	Msg%id%01_2 <As you leave the building, you are suddenly attacked by \PERSONA &EnemyNPC 's henchmen! It's clear that they must be responsible for the disappearance of %name2%.>
+	CMsg%id%01_2 <if= &EnemyFac 0 ifNPCOK &EnemyNPC Accept>
+	Msg%id%01_3 <As you leave the building, you are suddenly attacked! It's clear that \FACTION &EnemyFac must have something to do with the disappearance of %name2%.>
+	CMsg%id%01_3 <if# &EnemyFac 0 Accept>
+	Msg%id%02_1 <You learned that %name2% has been kidnapped.>
+	CMsg%id%02_1 <if= &EnemyFac 0 ifNPCDead &EnemyNPC Accept>
+	Msg%id%02_2 <You learned that %name2% has been kidnapped by \PERSONA &EnemyNPC .>
+	CMsg%id%02_2 <if= &EnemyFac 0 ifNPCOK &EnemyNPC Accept>
+	Msg%id%02_3 <You learned that %name2% has been kidnapped by \FACTION &EnemyFac .>
+	CMsg%id%02_3 <if# &EnemyFac 0 Accept>
+	Msg%id%03_1 <You learned that %name2% had been kidnapped.>
+	CMsg%id%03_1 <if= &EnemyFac 0 ifNPCDead &EnemyNPC Accept>
+	Msg%id%03_2 <You learned that %name2% had been kidnapped by \PERSONA &EnemyNPC .>
+	CMsg%id%03_2 <if= &EnemyFac 0 ifNPCOK &EnemyNPC Accept>
+	Msg%id%03_3 <You learned that %name2% had been kidnapped by \FACTION &EnemyFac .>
+	CMsg%id%03_3 <if# &EnemyFac 0 Accept>
+
+	sub
+		Persona 3
+		greeting <if= PlotStatus %plotid% %id% else GoChat Goto GoGreet>
+		GoChat <NewChat SayAnything>
+		*GoGreet <*LookingForNPC&NoFailure %2% GoExplain GoExplain>
+		GoExplain <NewChat Say 1 PMemo %id% 2>
+		Msg1 <%name2% was here earlier, but I saw \OPR %2% talking to some big guys and they left in a hurry. Is \SPR %2% in any trouble?>
+		Msg2 <You learned that %name2% has been kidnapped.>
+	end
+
+
+
+
+

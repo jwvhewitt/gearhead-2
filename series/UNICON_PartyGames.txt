@@ -1,0 +1,201 @@
+%% See RANCON_PartyGames.txt for documentation.
+
+Content
+	%% Bishounen-A-Go-Go
+	%% The PC must either dance with E1 or convince E2 to dance instead. Or vice versa.
+	%% L%id%01 = Indicator whether E1 or E2 were approached first
+	requires <*PartyGame Static L5Pat ~Yacht>
+
+	Element1 <Prefab>
+	Team1 <Citizens>
+	TeamData1 <Pass Ally>
+
+	Element2 <Prefab>
+	Team2 <Citizens>
+	TeamData2 <Pass Ally>
+
+	sub
+		Persona 1
+		% V1 = Flirtation/Conversation Counter
+		*greeting <*NiceToMeetYou GoCheckOver>
+		GoCheckOver <if= L%id%01 -1 else GoCheckDance Goto GoChat>
+		*GoChat <*MISC_CHATTER>
+		GoCheckDance <if= L%id%01 1 else GoCheckOther NewChat Say 3 AddChat 6 AddChat 7>
+		GoCheckOther <if= L%id%01 2 else GoFirstTime NewChat Say 2 AddChat 4 AddChat 5>
+		GoFirstTime <L= %id%01 1   NewChat Say 1  AddChat 1  AddChat 2  AddChat 3>
+		Result1 <EndChat Say 13 AddChat 10>
+		Result2 <NewChat Say 4>
+		Result3 <NewChat Say 5 AddReact -d5 AddChat 8 AddCHat 9>
+		result4 <ifConversation skilltar %param% else GoR4Fail  NewChat Say 12 L= %id%01 -1 AddPartyPoint>
+		GoR4Fail <NewChat Say 10>
+		result5 <NewChat Say 6>
+		Result6 <Goto Result1>
+		result7 <NewChat Say 7>
+		result8 <Goto result1>
+		result9 <EndChat Say 8 AddReact -d5>
+		result10 <Time 300  ifDancing hardskilltar %param% else GoR10Fail  L= %id%01 -1 AddPartyPoint PCFriend %1% Goto GoDanceWell>
+		*GoDanceWell <*YouDanceWell>
+		*GoR10Fail <*YouDanceTerribly>
+		Msg1 <This party needs something. I know, how would you like to dance with me?>
+		Msg1_1 <Are you having a good time here? It's fun, but what I'd really like to do is dance... Could you be my partner?>
+		CMsg1_1 <ifNPCCheerful Accept>
+		Msg1_2 <This party is so painfully boring... Perhaps my spirits could be lifted if I had someone worthy to dance with. How about you?>
+		CMsg1_2 <ifNPCMelancholy Accept>
+		Msg1_3 <I have been waiting here a long time for someone to dance with... perhaps you would do. Shall we dance?>
+		CMsg1_3 <ifNPCEasygoing Accept>
+		Msg1_4 <The music moves me. I must dance... Would you be my partner?>
+		CMsg1_4 <ifNPCPassionate Accept>
+		Msg2 <This party is so awfully boring...>
+		Msg2_1 <The music and the food are both good, but I wish there were something for me to do.>
+		CMsg2_1 <ifNPCCheerful Accept>
+		Msg2_2 <What a cruel world this is, in which the beautiful must be made to suffer so much. This party is so excrutiatingly boring...>
+		CMsg2_2 <ifNPCMelancholy Accept>
+		Msg2_3 <Nothing is happening. Oh, how I wish I had something to do...>
+		CMsg2_3 <ifNPCEasygoing Accept>
+		Msg2_4 <There is too much talking at this party, and not nearly enough living.>
+		CMsg2_4 <ifNPCPassionate Accept>
+		Msg3 <I'm still waiting for a dance...>
+		Msg3_1 <I'll find a dance partner who is worthy of my beauty. I'm sure of it.>
+		CMsg3_1 <ifNPCCheerful Accept>
+		Msg3_2 <The curse of beauty is to be forever alone. Though all of these people may want to dance with me, they are too awestruck to ask.>
+		CMsg3_2 <ifNPCMelancholy Accept>
+		Msg3_3 <All this time, and I still have not been able to dance.>
+		CMsg3_3 <ifNPCEasygoing Accept>
+		Msg3_4 <>
+		CMsg3_4 <ifNPCPassionate Accept>
+		Msg4 <Well then, hurry back when you're ready.>
+		Msg5 <Don't be so terrestrial. Are you embarassed to dance with a man? That's up to you, of course.>
+		Msg6 <I don't think so. You're not my type.>
+		Msg7 <It's possible... If you meet anyone looking for a partner, send them my way.>
+		Msg8 <Just so you know, I prefer women as well... but to dance alone is such an injustice.>
+		Msg10 <Really? I'm not convinced...>
+		Msg12 <Really? I believe you may be right... I will go ask her, then.>
+		Msg13 <Let's begin...>
+		Msg13_1 <>
+		CMsg13_1 <ifNPCCheerful Accept>
+		Msg13_2 <>
+		CMsg13_2 <ifNPCMelancholy Accept>
+		Msg13_3 <>
+		CMsg13_3 <ifNPCEasygoing Accept>
+		Msg13_4 <>
+		CMsg13_4 <ifNPCPassionate Accept>
+		Prompt1 <Okay, let's do it. [Dance]>
+		Prompt1_1 <Sounds like fun. [Dance]>
+		Prompt1_2 <Alright, let's dance. [Dance]>
+		Prompt2 <Maybe later.>
+		Prompt2_1 <Not right now; I'm busy.>
+		Prompt2_2 <I'll get back to you on that.>
+		Prompt3 <Er... You're not exactly my type.>
+		CPrompt3 <ifChatNPCSexy else GoAccept>
+		GoAccept <Accept>
+		Prompt3_1 <Dance? With you? I don't think so.>
+		Prompt3_2 <Er, I'm not interested in men...>
+		Prompt4 <Maybe \PERSONA %2% would like to dance with you.>
+		CPrompt4 <ifNPCOK %2% Accept>
+		Prompt5 <How would you like to dance with me?>
+		CPrompt5 <ifChatNPCSexy Accept>
+		Prompt6 <Let's try that dance now. [Dance]>
+		Prompt7 <Maybe someone else here would like to dance.>
+		CPrompt7 <ifNPCOK %2% Accept>
+		Prompt8 <Alright. Just one dance. [Dance]>
+		Prompt9 <No way. I'm out of here.>
+		Prompt10 <[Dance]>
+
+		Persona 2
+		% V1 = Flirtation/Conversation Counter
+		*greeting <*NiceToMeetYou GoCheckOver>
+		GoCheckOver <if= L%id%01 -1 else GoCheckDance Goto GoChat>
+		*GoChat <*MISC_CHATTER>
+		GoCheckDance <if= L%id%01 2 else GoCheckOther NewChat Say 3 AddChat 6 AddChat 7>
+		GoCheckOther <if= L%id%01 1 else GoFirstTime NewChat Say 2 AddChat 4 AddChat 5>
+		GoFirstTime <L= %id%01 2   NewChat Say 1  AddChat 1  AddChat 2  AddChat 3>
+		Result1 <EndChat Say 13 AddChat 10>
+		Result2 <NewChat Say 4>
+		Result3 <NewChat Say 5 AddReact -d5 AddChat 8 AddCHat 9>
+		result4 <ifConversation skilltar %param% else GoR4Fail  NewChat Say 12 L= %id%01 -1 AddPartyPoint>
+		GoR4Fail <NewChat Say 10>
+		result5 <NewChat Say 6>
+		Result6 <Goto Result1>
+		result7 <NewChat Say 7>
+		result8 <Goto result1>
+		result9 <EndChat Say 8 AddReact -d5>
+		Result10 <Time 300  ifDancing hardskilltar %param% else GoR10Fail  L= %id%01 -1 AddPartyPoint PCFriend %2% Goto GoDanceWell>
+		*GoDanceWell <*YouDanceWell>
+		*GoR10Fail <*YouDanceTerribly>
+		Msg1 <There's not a lot going on right now. How would you like to dance with me?>
+		Msg1_1 <You know what would be fun? A bit of dancing. What do you say? Let's do it.>
+		CMsg1_1 <ifNPCCheerful Accept>
+		Msg1_2 <Boring! This entire party... what it needs is some movement, some action. I know! Let's dance.>
+		CMsg1_2 <ifNPCMelancholy Accept>
+		Msg1_3 <This may seem a bit forward... How would you like to dance with me? There's nothing else happening at this party, after all.>
+		CMsg1_3 <ifNPCEasygoing Accept>
+		Msg1_4 <The music is playing and I need to dance... You! How would you like to dance with me? Let's do it right now!>
+		CMsg1_4 <ifNPCPassionate Accept>
+		Msg2 <This party is so awfully boring...>
+		Msg2_1 <>
+		CMsg2_1 <ifNPCCheerful Accept>
+		Msg2_2 <Tedious... dreadful... pointless... unending... monotonous... I'm listing words that remind me of this party. I wish something interesting would happen.>
+		CMsg2_2 <ifNPCMelancholy Accept>
+		Msg2_3 <>
+		CMsg2_3 <ifNPCEasygoing Accept>
+		Msg2_4 <>
+		CMsg2_4 <ifNPCPassionate Accept>
+		Msg3 <I'm still waiting for a dance...>
+		Msg3_1 <>
+		CMsg3_1 <ifNPCCheerful Accept>
+		Msg3_2 <>
+		CMsg3_2 <ifNPCMelancholy Accept>
+		Msg3_3 <>
+		CMsg3_3 <ifNPCEasygoing Accept>
+		Msg3_4 <>
+		CMsg3_4 <ifNPCPassionate Accept>
+		Msg4 <Well then, hurry back when you're ready.>
+		Msg5 <Is it odd for two women to dance with one another? You must be from Earth...>
+		Msg6 <I don't think so. You're not my type.>
+		Msg7 <It's possible... If you meet anyone looking for a partner, send them my way.>
+		Msg8 <It's not fair that I should dance alone... I'm the prettiest one here...>
+		Msg10 <Do you really think so? I wouldn't have the nerve to ask such a beautiful man...>
+		Msg12 <You really think \PERSONA %1% could be interested in me? Well, out of everyone in the room, he is the only one nearly so beautiful as I... I will go ask him, then.>
+		Msg13 <Let's start to it...>
+		Msg13_1 <>
+		CMsg13_1 <ifNPCCheerful Accept>
+		Msg13_2 <>
+		CMsg13_2 <ifNPCMelancholy Accept>
+		Msg13_3 <>
+		CMsg13_3 <ifNPCEasygoing Accept>
+		Msg13_4 <>
+		CMsg13_4 <ifNPCPassionate Accept>
+		Prompt1 <Okay, let's do it. [Dance]>
+		Prompt1_1 <Sounds like fun. [Dance]>
+		Prompt1_2 <Alright, let's dance. [Dance]>
+		Prompt2 <Maybe later.>
+		Prompt2_1 <Not right now; I'm busy.>
+		Prompt2_2 <I'll get back to you on that.>
+		Prompt3 <Er... You're not exactly my type.>
+		CPrompt3 <ifChatNPCSexy else GoAccept>
+		GoAccept <Accept>
+		Prompt3_1 <I'm a girl, you're a girl, this doesn't work...>
+		Prompt3_2 <No thanks, I'm not interested in women...>
+		Prompt4 <Maybe \PERSONA %1% would like to dance with you.>
+		CPrompt4 <ifNPCOK %1% Accept>
+		Prompt5 <How would you like to dance with me?>
+		CPrompt5 <ifChatNPCSexy Accept>
+		Prompt6 <Let's try that dance now. [Dance]>
+		Prompt7 <Maybe someone else here would like to dance.>
+		CPrompt7 <ifNPCOK %2% Accept>
+		Prompt8 <Alright. Just one dance. [Dance]>
+		Prompt9 <No way. I'm out of here.>
+		Prompt10 <[Dance]>
+
+	end
+	inv
+		NPC Celebrity
+		job <Bishounen>
+		chardesc Male Sociable
+
+		NPC Celebrity
+		job <Model>
+		chardesc Female Sociable
+	end
+
+

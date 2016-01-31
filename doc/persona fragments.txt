@@ -1,0 +1,58 @@
+Persona Fragments
+
+ These are little slices of conversation that can be inserted into persona
+ gears semi-randomly. They are stored in the series directory in the
+ files "PFRAG_*.txt".
+
+CONTEXT
+ - NPC character description
+ - NPC mecha theme (if applicable) written as "[MTn]", where n is the theme number
+ - Plot Context (if applicable)
+ - Story Context (if plot is subcom of a story)
+ - Scene Context (if plot is random scene content)
+   - Local scene context, type, desig
+   - Root scene desig, personatype, faction desig
+   - World desig
+ - Fragment type label
+ - Designation + Type of NPC's faction, designation preceded with C:
+
+ Fragments are selected if their "REQUIRES" string attribute matches the
+ character description of the target NPC, the total context
+ of the governing story (if appropriate), a type label provided when the
+ fragment is requested, plus the designation and context of the NPC's faction.
+
+ If generated as part of random scene content, the context includes
+ the context list used by the content generator.
+
+ The NPC's own faction designation is in quotes; in fact, this applies to
+ all traits of the NPC.
+
+ All persona fragments need a type label. All personas of a given type
+ label should share the same interface.
+
+ When inserted into a persona, the fragment is assigned an ID number.
+ A fragment may use messages and variables in the range %id%00 to %id%99.
+ To prevent conflict script lines used by persona fragments should be
+ of the form ".%id%_[label]".
+
+ A fragment may require up to eight parameters. These are strings which
+ are inserted into the fragment in place of the symbols %1% to %8%. The
+ parameters required by a given fragment vary by its type label.
+
+Requesting a Persona Fragment
+
+  *[script label] <[fragment type] [param1] [param2] ...>
+
+ Any string attribute in a persona that starts with "*" will be interpreted
+ as a fragment request. The "START" string attribute will be inserted into
+ the persona in place of the fragment request, minus the *. All other lines
+ will be copied directly.
+
+ The first symbol in a fragment request will be the type label of the
+ fragment type required. These type labels must always begin with "*".
+ The next symbols will be parameters 1 through 8 to be inserted into
+ the fragment. Parameter 1 is generally the script label to call
+ when the fragment has been completed successfully.
+
+
+

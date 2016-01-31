@@ -1,0 +1,609 @@
+%%
+%% ********************************
+%% ***   A  NOTE  ON  REWARDS   ***
+%% ********************************
+%%
+%%  Quest rewards should be much greater than regular plot rewards. Here
+%%  are some suggestions:
+%%   - 500% cash prize
+%%   - A new mecha
+%%   - A new lancemate
+%%   - NPC becomes a skill trainer, opens a custom shop, or otherwise provides
+%%     a permanent benefit to the PC
+%%
+%%  If providing a permanent bonus, also leave a history note to remind the
+%%  player of what's available.
+%%
+
+%%
+%%  *Q_Win_OneShotReward
+%%			.nocash		This will not be a cash reward.
+%%
+%% The PC will be given a one-time reward.
+%% This component will end its quest thread.
+%%
+%%  PARAM1: The NPC who provided the task
+%%          Persona 1 should include a .%id%_GoInit script.
+%%
+
+Content
+	name <Deep Scary Space>
+	desc <The NPC will inform the PC about a treasure hulk outside the station.>
+	requires <*Q_Win_OneShotReward (.nocash|1:ACADE) ~1:ACADE ~1:MEDIA ~1:FAITH ~1:LABOR Spinner>
+	% E1 is the NPC
+	% E2 is Aigaion
+	% E3 is the dungeon
+	% E4 is Aigaion's home scene
+	% E5 is the environs scene
+	% E6 is the dungeon entrance
+	Element2 <Prefab>
+	Place2 <4 (Monsters) sd enemy>
+	Element3 <QuestScene>
+	Place3 <5>
+	Element4 <QuestScene>
+	Place4 <3>
+	Element5 <Scene Environs>
+	Element6 <Prefab>
+	Place6 <5>
+
+	%% FAIL CONDITIONS:
+	%% - E1 dies
+	start <ifNPCDead %1% WinSubPlot %plotid%>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% Goto .%id%_GoInit>
+		.%id%_GoInit <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 History %id%02  XPV 100  AddReact d10  SetEntranceActive %6%  WinSubPlot %plotid%>
+		result%id%01 <NewChat Say %id%03>
+		result%id%02 <NewChat Say %id%04 AddChat %id%03>
+		result%id%03 <NewChat Say %id%05>
+		Msg%id%01 <I don't have any way to repay you for your help, but maybe I can give you some information. Have you ever heard of the space monster "Aigaion"?>
+		Msg%id%02 <%name1% in \SCENE RootSceneID told you about the space monster Aigaion.>
+		Msg%id%03 <Ah... well, you might be interested to know that it's been spotted in %name5%. People think that it's probably built a lair for itself in %name3%.>
+		Msg%id%04 <It's a giant indestructible robot. It captures ships and mecha, then uses their parts to make itself stronger. They say that it's been spotted recently in %name5%.>
+		Msg%id%05 <Well, %name3% is supposed to be packed with treasure from all the vessels Aigaion has destroyed. If you went there I'm sure you could find some great stuff!>
+		Prompt%id%01 <I know all about Aigaion.>
+		Prompt%id%02 <No, I haven't... What is it?>
+		Prompt%id%03 <So why is this information useful?>
+
+		STC QS_Dungeon_TreasureWreck
+		entrance <*QUEST-INACTIVE>
+		SetID 3
+		end <if= SceneVar %4% 2 0 SceneVar= %4% 2 SceneID>
+		sub
+			room
+			ForGoalLevel
+			minimap <......###..###..#2#......>
+			inv
+				STC AIRLOCK-1
+				desig <ENTRANCE %4%>
+				use <if= V1 1 else GoFirstTime Goto GoExit>
+				MiniMapComponent 2
+				Msg2 <This airlock leads to the outside of the wreckage. You wonder if it's a good idea to leave by a different door than you entered.>
+				Msg3 <Go out.>
+				Msg4 <Stay here.>
+			end
+		end
+
+		Metascene 4 2
+		name <Aigaion's Lair>
+		SpaceMap
+		SpaceScroll
+		Microgravity
+		Vacuum
+		SpaceBackdrop
+		MapWidth 50
+		MapHeight 50
+		% L1 = Init
+		% L2 = Dungeon entrance
+		% L3 = Victory Counter
+		% L4 = Have fought before
+		Start <if= L1 0 else GoBeenBefore L= 1 1 Alert 1 ItemLevel %2% %threat% SetPlotStatus %plotid% %id%>
+		GoBeenBefore <Print 2>
+		nu1 <if= T1 0 exit %5% SeekGate L2 L+ 4 1>
+		nu2 <if= T2 0 if= L3 0 L= 3 1 Alert 3 History 4 XPV 100 SetPlotStatus %plotid% %id1%  Alert 5 RandomMecha .fac %threat% RandomMecha .fac %threat% RandomMecha .fac %threat% RandomMecha .fac 50 RandomMecha .fac 80 CashPrize Reward %threat% 1000>
+		.fac <RISHI FCOMS MAQUI BOHEM SOLAR AEGIS CRIHN GENERAL>
+		Msg1 <As you lift off from the surface of the asteroid, you are confronted by an enormous robot.>
+		Msg2 <You enter Aigaion's lair.>
+		Msg3 <Aigaion appears to be defeated... though with this sort of robot it's impossible to be sure.>
+		Msg4 <You defeated the space monster Aigaion.>
+		Msg5 <You find some useful salvage in Aigaion's lair.>
+		sub
+			Team 1
+			SetEnemy 2
+			ParaX 7
+			ParaY 7
+
+			Team 2
+			name <Monsters>
+			SetEnemy 1
+			ParaX 23
+			ParaY 23
+		end
+	end
+	inv
+		Arch Aigaion
+		% Aigaion is a composite robot- it collects parts from the spaceships and mecha it captures,
+		% then adds them to itself. In this way it's not too much different from the average GearHead PC.
+		Scale 2
+		rumor0 <there's a space monster living in the wreckage outside the station.>
+		job <ANIMAL>
+		Metal
+		roguechar <A>
+		sdl_sprite <ara_esher.png>
+		sdl_colors <201 205 229 157 172 183 208 34 51>
+		Statline 10 32 11 13 19 14 17 2
+		sealed
+		CloseCombat
+		RangedCombat
+		Dodge
+		Vitality
+		Initiative
+		ElectronicWarfare
+		Toughness
+		sub
+			torso
+			armor 5
+			sub
+				ECM 5
+
+				PowerSource 10
+				mass -10
+				SpaceFlight 5
+			end
+
+			turret
+			armor 4
+			sub
+				BeamGun 16
+				name <Plasma Beam>
+				Recharge 1
+				type <SCATTER BRUTAL>
+				range 5
+
+				PowerSource 5
+				mass -5
+				SpaceFlight 5
+			end
+
+			arm
+			armor 5
+			sub
+				hand
+				inv
+					STC PAR-6
+				end
+
+				SpaceFlight 5
+			end
+
+			arm
+			armor 5
+			sub
+				hand
+				inv
+					STC GR-12
+				end
+
+				SpaceFlight 5
+			end
+
+			arm
+			armor 5
+			sub
+				hand
+				inv
+					STC MAC-4
+				end
+
+				SpaceFlight 5
+			end
+
+			arm
+			armor 5
+			sub
+				hand
+				inv
+					melee 18
+					name <Wrecking Ball>
+					Scale 2
+					type <FLAIL EXTEND BRUTAL>
+					mass -6
+				end
+				SpaceFlight 5
+			end
+		end
+
+		STC QUEST-MAPMARKER-STATIONARY
+		name <%name3%>
+		desig <ENTRANCE %3%>
+	end
+
+Content
+	name <Money is the sincerest form of flattery>
+	desc <The NPC will pay the PC for the job.>
+	requires <*Q_Win_OneShotReward ~1:TRADE -.nocash>
+	special <REUSABLE>
+
+	% E1 is the NPC.
+
+	%% FAIL CONDITIONS:
+	%% - E1 dies
+	start <ifNPCDead %1% WinSubPlot %plotid%>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% Goto .%id%_GoInit>
+		.%id%_GoInit <NewChat Say %id%01 CashPrize Reward %threat% 500 AddReact d10  WinSubPlot %plotid%>
+		Msg%id%01 <In thanks for your help, I'd like for you to have this money.>
+		Msg%id%01_1 <>
+		CMsg%id%01_1 <ifNPCSociable Accept>
+		Msg%id%01_2 <Thanks. Here, I'd like for you to have this money.>
+		CMsg%id%01_2 <ifNPCShy Accept>
+		Msg%id%01_3 <>
+		CMsg%id%01_3 <ifNPCEasygoing Accept>
+		Msg%id%01_4 <>
+		CMsg%id%01_4 <ifNPCPassionate Accept>
+		Msg%id%01_5 <>
+		CMsg%id%01_5 <ifNPCCheerful Accept>
+		Msg%id%01_6 <>
+		CMsg%id%01_6 <ifNPCMelancholy Accept>
+	end
+
+Content
+	name <Mecha are also very nice>
+	requires <*Q_Win_OneShotReward ~1:MILIT ~1:ADVEN ~1:CRAFT>
+	special <REUSABLE>
+
+	% E1 is the NPC
+
+	%% FAIL CONDITIONS:
+	%% - E1 dies
+	start <ifNPCDead %1% WinSubPlot %plotid%>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% Goto .%id%_GoInit>
+		.%id%_GoInit <NewChat Say %id%01 WinSubPlot %plotid% AddReact d10 RandomMecha .%id%_meks %threat%>
+		.%id%_meks <GENERAL \FACTION_DESIG RootSceneFac \FACTION_DESIG ChatNPCFac>
+		Msg%id%01 <In thanks for your help, I'd like for you to have this mecha. I know that you'll get a lot of good use out of it.>
+		Msg%id%01_1 <>
+		CMsg%id%01_1 <ifNPCSociable Accept>
+		Msg%id%01_2 <>
+		CMsg%id%01_2 <ifNPCShy Accept>
+		Msg%id%01_3 <>
+		CMsg%id%01_3 <ifNPCEasygoing Accept>
+		Msg%id%01_4 <>
+		CMsg%id%01_4 <ifNPCPassionate Accept>
+		Msg%id%01_5 <>
+		CMsg%id%01_5 <ifNPCCheerful Accept>
+		Msg%id%01_6 <In thanks for your help, I'd like for you to have this mecha. It's not much to look at and it's been used pretty hard, but maybe it'll come in handy.>
+		CMsg%id%01_6 <ifNPCMelancholy Accept>
+	end
+
+%%
+%%  *Q_WinTask
+%%
+%% The PC has completed some task (not a formal mission) for this NPC.
+%% Give a reward.
+%%
+%%  PARAM1: The NPC who provided the task.
+%%
+
+Content
+	name <One-Shot Bonus>
+	desc <Just link to a One-Shot reward.>
+	requires <*Q_WinTask>
+	% E1 is the NPC
+	update <SetPlotStatus %plotid% %id1%>
+	SubPlot1 <*Q_Win_OneShotReward 1>
+
+Content
+	name <Skill Trainer: ACADE>
+	desc <The NPC will offer to train the PC.>
+	requires <*Q_WinTask 1:ACADE>
+
+	% E1 is the NPC
+
+	%% FAIL CONDITIONS:
+	%% - E1 dies
+	start <ifNPCDead %1% WinSubPlot %plotid%>
+
+	sub
+		Persona 1
+		Greeting <if# PlotStatus %plotid% -1 else .%id%_GoStudy  if= PlotStatus %plotid% %id% else %pop%  NewChat Say %id%01 History %id%02 AddReact d10 AddChat %id%01 AddChat %id%02 SetPlotStatus %plotid% -1>
+		.%id%_GoStudy <ifChatNPCArchEnemy else .%id%_GoNoEnemy SetPlotStatus %plotid% -2 Goto .%id%_GoBlowOff>
+		*.%id%_GoBlowOff <*BrushOff>
+		.%id%_GoNoEnemy <NewChat Say %id%03 AddChat %id%01 AddChat %id%02>
+		*.%id%_GoBye <*GOODBYE>
+		result%id%01 <EndChat Say %id%04 School .%id%_skills Goto .%id%_GoBye>
+		.%id%_skills <9 13 14 21 22>
+		result%id%02 <Goto .%id%_GoBye>
+		Msg%id%01 <In thanks for your help, maybe I could tutor you in some subjects. I don't know how useful my knowledge will be to an adventurer but it couldn't hurt.>
+		Msg%id%02 <In gratitude, %name1% offered to tutor you.>
+		Msg%id%03 <Welcome back, \PC . Shall I begin my lesson?>
+		Msg%id%04 <Money spent on education is never a waste, even when it seems like you haven't learned anything.>
+		Prompt%id%01 <I'd like that.>
+		Prompt%id%02 <Maybe some other time.>
+	end
+
+Content
+	name <Skill Trainer: FAITH>
+	desc <The NPC will offer to train the PC.>
+	requires <*Q_WinTask 1:FAITH>
+
+	% E1 is the NPC
+
+	%% FAIL CONDITIONS:
+	%% - E1 dies
+	start <ifNPCDead %1% WinSubPlot %plotid%>
+
+	sub
+		Persona 1
+		Greeting <if# PlotStatus %plotid% -1 else .%id%_GoStudy  if= PlotStatus %plotid% %id% else %pop%  NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+		.%id%_GoStudy <ifChatNPCArchEnemy else .%id%_GoNoEnemy SetPlotStatus %plotid% -2 Goto .%id%_GoBlowOff>
+		*.%id%_GoBlowOff <*BrushOff>
+		.%id%_GoNoEnemy <NewChat Say %id%06 AddChat %id%03 AddChat %id%04>
+		*.%id%_GoBye <*GOODBYE>
+		result%id%01 <NewChat Say %id%02 History %id%03 AddReact d10 AddChat %id%03 AddChat %id%04   AddEasygoing d8   SetPlotStatus %plotid% -1>
+		result%id%02 <NewChat Say %id%04 AddReact d10 SetPlotStatus %plotid% -3 AddEasygoing -d8 MechaPrize .%id%_mecha %threat% 9 4>
+		.%id%_mecha <GENERAL \FACTION_DESIG RootSceneFac \FACTION_DESIG ChatNPCFac>
+		result%id%03 <EndChat Say %id%05 School .%id%_skills Goto .%id%_GoBye>
+		.%id%_skills <2 5 8 9 24>
+		result%id%04 <Goto .%id%_GoBye>
+		Msg%id%01 <You have succeeded in your task. In thanks for your help, I offer you a choice between knowledge and power.>
+		Msg%id%02 <You chose wisely. There are many things I could teach you, if you wish to train with me.>
+		Msg%id%03 <%name1% in \SCENE RootSceneID offered to teach you many things.>
+		Msg%id%04 <I see you don't hesitate... Take this mecha, then. May it serve you well.>
+		Msg%id%05 <With preparation, nothing is impossible. The key is in knowing when you are ready.>
+		Msg%id%06 <Hello \PC . Are you here to train?>
+		Prompt%id%01 <I choose knowledge.>
+		Prompt%id%02 <I choose power.>
+		Prompt%id%03 <Let's do that right now.>
+		Prompt%id%04 <Maybe I'll come back for training later.>
+	end
+
+
+%%
+%%  *Q_Win_CatchNPC
+%%
+%% The PC has captured an NPC, and is now due for a reward.
+%%
+%%  PARAM1: The NPC who provided the task.
+%%  PARAM2: The item being fetched
+%%
+
+Content
+	name <Capture vs. Reward>
+	%% The PC will be given a reward and that's it.
+	requires <*Q_Win_CatchNPC>
+	special <REUSABLE>
+
+	%% E1 is the character to give the reward.
+	%% E2 is the character who's been defeated.
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% NewChat Say %id%01 CashPrize Reward %threat% 500 WinSubPlot %plotid%>
+		Msg%id%01_10 <%name2% is now in custody. Thanks, \PC ... This wouldn't have been possible without you.>
+		CMsg%id%01_10 <ifNPCOK %2% Accept>
+		Msg%id%01_20 <%name2% won't be a threat any more. Thanks, \PC ... This wouldn't have been possible without you.>
+	end
+
+
+%%
+%%  *Q_Win_FetchItem
+%%      SubTypes:
+%%      .secret		The item contains a secret that must be preserved
+%%
+%% The PC was sent to fetch an item, and succeeded.
+%% Of course the item might not make it back to this NPC...
+%%
+%%  PARAM1: The NPC who provided the task.
+%%  PARAM2: The item being fetched
+%%
+
+
+Content
+	name <Good job, let's study>
+	%% The PC will gain a new teacher.
+	requires <*Q_Win_FetchItem (1:MILIT|1:ADVEN) -.secret>
+	special <REUSABLE>
+
+	%% E1 is the character to give the reward.
+	%% E2 is the item that was given.
+
+	start <ifNPCDead %1% LoseSubPlot %plotid%>
+
+	sub
+		Persona 1
+		Greeting <if# PlotStatus %plotid% -1 else .%id%_GoStudy  if= PlotStatus %plotid% %id% else %pop%  ifItemOK %2% else .%id%_GoFail ifChatNPCInPlay else .%id%_GoComeHere NewChat Say %id%01 AddChat %id%04 AddChat %id%05>
+		.%id%_GoFail <NewChat Say %id%05 LoseSubPlot %plotid%>
+		.%id%_GoStudy <ifChatNPCArchEnemy else .%id%_GoNoEnemy SetPlotStatus %plotid% -2 Goto .%id%_GoBlowOff>
+		*.%id%_GoBlowOff <*BrushOff>
+		.%id%_GoNoEnemy <NewChat Say %id%02 AddChat %id%01 AddChat %id%02>
+		*.%id%_GoComeHere <*NotByPhone>
+		*.%id%_GoBye <*GOODBYE>
+		result%id%01 <EndChat Say %id%03 School .%id%_skills Goto .%id%_GoBye>
+		.%id%_skills <1 2 3 4 5 6>
+		result%id%02 <NewChat Say %id%04>
+		result%id%03 <Goto result%id%01>
+		result%id%04 <NewChat Say %id%07 History %id%06 DeleteItem %2% AddReact 10 AddEasygoing  d6  CashPrize Reward %threat% 200  SetPlotStatus %plotid% -1 AddChat %id%03>
+		result%id%05 <NewChat Say %id%08 History %id%06                            AddEasygoing -d10                         SetPlotStatus %plotid% -1 AddChat %id%03>
+		Msg%id%01 <So this is the %name2%... May I have it?>
+		Msg%id%02 <Hello \PC . Are you in the mood for some training?>
+		Msg%id%03 <You're getting better all the time, but there are a few tricks you haven't picked up yet.>
+		Msg%id%04 <Okay. I'll be here when you need me.>
+		Msg%id%05 <You have failed to recover the %name2%. I guess you aren't as talented as I thought originally.>
+		Msg%id%06 <%name1% offered to become your trainer after you recovered the %name2%.>
+		Msg%id%07 <Thank you. In exchange for this item, why don't I teach you some things about fighting?>
+		Msg%id%08 <You have a lot of spirit... I can tell that you're going to be a fine warrior, someday. How would you like for me to teach you some things about fighting?>
+		Prompt%id%01 <Absolutely. Let's go.>
+		Prompt%id%02 <Not today, thanks.>
+		Prompt%id%03 <Let's get started right away.>
+		Prompt%id%04 <Sure. [Give Item]>
+		Prompt%id%05 <No way... I want to keep it.>
+	end
+
+Content
+	name <Trade Item For One-Shot Reward>
+	desc <The Mission-Giver will pay the PC for the item.>
+	requires <*Q_Win_FetchItem>
+	special <REUSABLE>
+
+	% E1 is the NPC
+	% E2 is the item
+
+	start <ifNPCDead %1% CancelSubPlot %plotid%>
+
+	% SubPlot1 is the reward
+	SubPlot1 <*Q_Win_OneShotReward 1>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% ifChatNPCInPlay else .%id%_GoComeHere NewChat Say %id%01 AddChat %id%01 AddCHat %id%02 AddChat %id%03>
+		*.%id%_GoComeHere <*NotByPhone>
+		result%id%01 <NewChat Say %id%02>
+		result%id%02 <DeleteItem %2%  Goto .%id1%_GoInit>
+		result%id%03 <LoseSubPlot %plotid%   AddReact -d4   Goto .%id%_GoLose>
+		*.%id%_GoLose <*YouLostItem>
+		Msg%id%01 <Have you found the %name2% yet?>
+		Msg%id%02 <Then come back here when you've found it!>
+		Prompt%id%01 <I'm still working on it.>
+		Prompt%id%02 <I have it right here. [Give item]>
+		CPrompt%id%02 <ifKeyItem %2% Accept>
+		Prompt%id%03 <I sort of lost the %name2%...>
+		CPrompt%id%03 <ifItemDestroyed %2% Accept>
+	end
+
+Content
+	name <Trade Item For Reward>
+	desc <The Mission-Giver will pay the PC for the item.>
+	requires <*Q_Win_FetchItem>
+	special <REUSABLE>
+
+	% E1 is the NPC
+	% E2 is the item
+
+	start <ifNPCDead %1% CancelSubPlot %plotid%>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% ifChatNPCInPlay else .%id%_GoComeHere NewChat Say %id%01 AddChat %id%01 AddCHat %id%02 AddChat %id%03>
+		*.%id%_GoComeHere <*NotByPhone>
+		result%id%01 <NewChat Say %id%02>
+		*result%id%02 <*MissionWasSuccess&Reward .%id%_GoEnd na na>
+		.%id%_GoEnd <CashPrize Reward %threat% 500  DeleteItem %2%  AddReact d10  WinSubPlot %plotid%>
+		result%id%03 <LoseSubPlot %plotid%   AddReact -d4   Goto .%id%_GoLose>
+		*.%id%_GoLose <*YouLostItem>
+		Msg%id%01 <Have you found the %name2% yet?>
+		Msg%id%02 <Then come back here when you've found it!>
+		Prompt%id%01 <I'm still working on it.>
+		Prompt%id%02 <I have it right here. [Give item]>
+		CPrompt%id%02 <ifKeyItem %2% Accept>
+		Prompt%id%03 <I sort of lost the %name2%...>
+		CPrompt%id%03 <ifItemDestroyed %2% Accept>
+	end
+
+
+%%
+%%  *Q_FetchWantedItem
+%%
+%% The PC has obtained an item that someone else wants.
+%% This subplot will allow the PC to hand over said item
+%% for a reward.
+%%
+%%  PARAM1: The NPC who provided the task.
+%%  PARAM2: The item being fetched
+%%
+
+Content
+	name <Trade Item For Reward>
+	desc <The Mission-Giver will pay the PC for the item.>
+	requires <*Q_FetchWantedItem>
+	special <REUSABLE>
+
+	% E1 is the NPC
+	% E2 is the item
+
+	start <ifNPCDead %1% else .%id%_GoCheckItem CancelSubPlot %plotid%>
+	.%id%_GoCheckItem <ifItemDestroyed %2% CancelSubPlot %plotid%>
+
+	sub
+		Persona 1
+		rumor%id% <%name1% really wants the %name2%.>
+		greeting <if= PlotStatus %plotid% %id% else %pop% ifChatNPCInPlay else .%id%_GoComeHere NewChat Say %id%01 AddChat %id%01 AddCHat %id%02 AddChat %id%03>
+		*.%id%_GoComeHere <*NotByPhone>
+		*result%id%01 <*MissionWasSuccess&Reward .%id%_GoEnd na na>
+		.%id%_GoEnd <CashPrize Reward %threat% 500  DeleteItem %2%  AddReact d10  WinSubPlot %plotid%>
+		result%id%02 <LoseSubPlot %plotid%   AddReact -d10   Goto .%id%_GoKeep>
+		*.%id%_GoKeep <*PCWillKeepItem %4%>
+		result%id%03 <LoseSubPlot %plotid%   AddReact -d4   Goto .%id%_GoLose>
+		*.%id%_GoLose <*YouLostItem>
+		Msg%id%01 <They say that you have the %name2%. Well, I want it, and I'm willing to offer you $ \VAL Reward %threat% 500 for it.>
+		Msg%id%02 <Then come back here when you've found it!>
+		Prompt%id%01 <That's a good offer. Here you go. [Give Item]>
+		CPrompt%id%01 <ifKeyItem %2% Accept>
+		Prompt%id%02 <Actually, I want to keep it for myself.>
+		CPrompt%id%02 <ifKeyItem %2% Accept>
+		Prompt%id%03 <I sort of lost the %name2%...>
+		CPrompt%id%03 <ifItemDestroyed %2% Accept>
+	end
+
+
+%%
+%%  *Q_LoseTask
+%%
+%% The PC was sent to do something, but failed. Call them a big
+%% stupid loser and end the plot thread.
+%%
+%%  PARAM1: The NPC who provided the task.
+%%
+
+Content
+	name <Default Loss>
+	desc <The NPC will debrief the PC on the loss.>
+	requires <*Q_LoseTask>
+	special <REUSABLE>
+
+	% E1 is the NPC.
+
+	start <ifNPCDead %1%  LoseSubPlot %plotid%>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% gOTO .%id%_GoReportLoss>
+		*.%id%_GoReportLoss <*MissionWasFailure .%id%_GoEnd na na>
+		.%id%_GoEnd <AddReact -d6  LoseSubPlot %plotid%>
+	end
+
+%%  DEBUGGING FRAMES
+
+Content
+	name <DEBUG: One Shot Reward>
+	requires <*:Q_Debug>
+	desc <The NPC will give the PC a reward>
+
+	% E1 is the person who will be giving the mission.
+	% E2 is the CavClub
+	Element1 <NewNPC 0 0>
+	Place1 <2 (Citizens) ally pass>
+	Element2 <Scene CavClub>
+
+	% SubQuest1 is the mission.
+	SubPlot1 <*Q_DWin_OneShotReward 1>
+
+	sub
+		Persona 1
+		rumor0 <%name1% needs a cavalier for a mission of some kind.>
+		greeting <if= PlotStatus %plotid% 0 else GoChat  Goto .%id1%_GoInit>
+		GoChat <NewChat SayAnything>
+
+		MetaScene 1
+		sub
+			room
+			desig <HOME>
+			minimap <#&&&#&...&&.1.&&...&&&-&&>
+		end
+	end
+

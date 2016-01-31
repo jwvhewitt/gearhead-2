@@ -1,0 +1,69 @@
+%%
+%% *CombatSideStory Plots
+%%
+%%  A mission has just spawned something else. This plot must be spawned
+%%  from within the combat scene, which itself needs to have teams marked
+%%  "Enemies" and "Allies".
+%%
+%%  Param1: The location where combat is taking place
+%%  Param2: The enemy faction being fought
+%%
+
+Plot
+	name <Join Criminal Faction>
+	requires <*CombatSideStory 2:CRIME 2:ENEMY -!Ne>
+	desc <A previously antagonized thief joins this faction.>
+
+	% E1 = The combat location
+	% E2 = The faction being fought
+	% E3 = The new member
+	Element3 <Character !Global (THIEF|Criminal) (@:A.ant|@:A.hat|@:A.mut) NoFac Recharged>
+
+	update <if= P1 0 P= 1 1 SetNPCFaction %3% %2% DeployNPC %3% EnemiesTeam  ForceChat %3%>
+
+	sub
+		Persona 3
+		special <Unlisted NoEscape>
+		% V%id%01 = PCRenown + d10
+		greeting <EndChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03 V= %id%01 PCRenown V+ %id%01 d10 AddChat %id%04 EndPlot>
+		*result%id%01 <*THEME_EXPO&Enemy na>
+		result%id%02 <AddCheerful d10 Goto result%id%01>
+		result%id%03 <EndChat Say %id%02 Retreat 1>
+		result%id%04 <EndChat Say %id%03 Retreat EnemiesTeam>
+		Msg%id%01_10 <Hey \PC , look at this! I joined %name2% and now my friends are going to make you pay!>
+		CMsg%id%01_10 <ifG PCRenown ChatNPCRenown Accept>
+		Msg%id%01_20 <I told you that you shouldn't have crossed me, \PC . Now that I've joined %name2% I have even more ways to make you pay. You have no chance to survive.>
+		CMsg%id%01_20 <ifG ChatNPCRenown PCRenown Accept>
+		Msg%id%01_30 <So we meet again... Which one of us is stronger? It might be tough finding out since all my new friends from %name2% are going to skew the odds.>
+		CMsg%id%01_30 <if= PCRenown ChatNPCRenown Accept>
+		Msg%id%02_1 <Yeah that's right, just run away.>
+		Msg%id%02_2 <Smart decision. You'll survive to get beaten by me again.>
+		Msg%id%02_3 <Well, I guess I can't refuse an easy victory. Catch you later.>
+		Msg%id%03_1 <Um... I see your point. We'll clear out for now, \PC , but we'll be back again someday! Somedaaaay!!!>
+		Prompt%id%01 <Your new friends can't protect you.>
+		Prompt%id%01_1 <>
+		Prompt%id%01_2 <>
+		Prompt%id%02 <You mean you're no longer unemployed? Congratulations!>
+		Prompt%id%02_1 <Wow, their standards are lower than I thought...>
+		Prompt%id%02_2 <>
+		Prompt%id%03 <Why don't I just go away quietly?>
+		CPrompt%id%03 <ifG ChatNPCRenown PCRenown Accept>
+		Prompt%id%04 <You really want me to humiliate you again?>
+		CPrompt%id%04 <ifG V%id%01 ChatNPCRenown ifIntimidation HardSkillTar ChatNPCRenown Accept>
+	end
+
+
+Plot
+	name <Lancemate Side Story>
+	requires <*CombatSideStory>
+	desc <Selects a lancemate and then calls the character development subplot.>
+
+	%% E3 = Lancemate
+	Element3 <Character !Lancemate Recharged>
+
+	% Upon activation, call the subplot.
+	update <if= P1 0 P= 1 1 SetPlotStatus %plotid1% %id1%>
+
+	% SubPlot1 is the character development.
+	SubPlot1 <*LM_CombatCharDev 1 2 3>
+

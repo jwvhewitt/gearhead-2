@@ -1,0 +1,362 @@
+**************************************************
+***   EXTRA  EXTRA  RANDOM  PLOT  GENERATION   ***
+**************************************************
+
+First there was random plot generation. Then there was extra-random plot generation.
+So, what do I name the improved plot generator for GH2? Extra-extra-random plot
+generation, of course.
+
+
+The plot components are selected based on a context string provided by the governing
+story. This string contains the xxran descriptors; a label telling the difficulcy level;
+descriptions for the xxran palette; and the PC's job.
+
+A label preceded by a ~ is optional. It will increase the chance of this component
+being selected, but doesn't have to be present.
+
+A label preceded by a - must not be present in the story context. If it is, this
+component cannot be selected.
+
+A group of labels surrounded by parenthesis and separated by |s is an or-block. One
+of the individual labels must be present and it will increase the chance of this
+component being selected.
+
+If the label "COMMON" is included in the list, this component is more likely to
+be selected.
+
+
+
+**************************
+***   STORY  CONTEXT   ***
+**************************
+
+The story context contains:
+- The xxran descriptors
+- Tags for the completed dramatic choices, preceded by ":"
+- The current difficulty level
+- The context for the elements
+- Certain merit badges, preceded by C:
+
+DIFFICULCY LEVEL: EXTREME, HIGH, MEDIUM, LOW, NEGLIGIBLE
+  !Ex, !Hi, !Md, !Lo, !Ne
+
+
+*************************
+***   PLOT  REQUEST   ***
+*************************
+
+The plot label will be *CORE_[a], where [a] is the identifier for the
+PC's dramatic choice. At the beginning of the game the choice will be INTRO.
+This identifier should always be five characters long.
+
+
+******************************
+***   EPISODE  STRUCTURE   ***
+******************************
+
+An episode consists of a base plot, several attached subplots, and the stubs
+for the dramatic choices.
+
+The basic structure for the plots is:
+
+    CORE        Exposition; sets up the next part.
+      MEET      Complication; PC is offered a mission, or somesuch.
+        MAIN    The main course, usually a mecha battle.
+        GOAL    The episode is won, the dramatic choice pays off.
+        FAIL    The episode is lost, the PC must try something else.
+
+CORE is the base plot. It must request a MEET-type subplot. Likewise, the MEET
+subplot must request a MAIN-type subplot and usually also a GOAL and a FAIL.
+
+
+****************************
+***   DRAMATIC  CHOICE   ***
+****************************
+
+At the end of an episode, the PC gets to make a dramatic choice. These choices
+are built into the episode like subplots. They may request or grab elements
+as needed.
+
+
+*****************************
+***   PERSONAL  HISTORY   ***
+*****************************
+
+Family type: Standard, Orphanage, Circle, etc
+Community members: Parents, siblings, dependants (may be siblings or children),
+ mentor, rival, twin/clone
+- Each family member should get attitude set. Siblings are Jr/Sr, while
+  parents can be affectionate, protective, or distant.
+Family atmosphere: Warm, Cool, Despairing, etc
+Affluence: Rich, Middle Class, Poor, Destitute
+Personal Issues: Seek lost parent, Seek revenge/justice
+
+A problematic family history is essentially a wager; a penalty to starting PCs,
+but a benefit if it can be overcome. On the other hand a positive family may
+cause problems later on; for instance, if your family starts out rich, at some
+point in the future there will likely be a crisis.
+
+Resolving the personal issues will result in a merit badge, and this may
+open up new options in the core story.
+
+
+
+
+*************************************
+***   NON-XXRAN  PLOT  CONTEXTS   ***
+*************************************
+
+The core story will have the descriptors below. A non-core story can have its own
+label defined in a context SAtt. This may be used to limit certain persona fragments
+and random scene content to a particular story or plot.
+
+This label must start with a "=", may be as long as you want (as long as it's unique),
+and may have several sections divided by underscores. For instance, the label "=MIL_DEFAULT"
+can be used by the MILitary story DEFAULT or any of its plots.
+
+
+**************************
+***   XXRAN  PALETTE   ***
+**************************
+
+Every story that uses the xxran commands should have a standard set of elements. This
+is so components can share elements between them, and also so that components can be
+selected quickly without doing full element searches. The standard palette entries are:
+
+1. Enemy Character (E:)
+2. Enemy Faction (F:)
+3. Target Faction (P:)
+
+7. Root location of current episode (L:)
+8. Target Item (I:)
+
+These labels are followed by "++" if the element exists, or "--" if the element doesn't.
+In addition, the desig and context strings for each element are included. For instance,
+the tag "P:cor" would indicate that the PC's faction (P:) is corporate. The tag F:AEGIS
+would indicate that the enemy faction is Aegis Overlord.
+
+In addition, the designation of the element's faction is included if appropriate.
+
+If the element is an enemy of the PC, an "ENEMY" tag is included. If the element is
+an ally of the PC, an "ALLY" tag is included.
+
+If the element has the same faction as the PC, "PCFAC" is included.
+If the element has no faction, "NOFAC" is included.
+
+If the element is a NPC, the relationship is also included. This may be one of "FAMILY",
+"LOVER", or "FRIEND". If the element is a lancemate and currently in the party, "LANCE" will
+be included.
+
+Also if the element is a NPC, the heroic/villainous trait will be included as "GOOD_" or
+"EVIL_".
+
+If the element is a scene, its terrain SAtt will also be included: "SPACE", "WATER", "GROUND"
+
+The job group of the PC is included as C:<job>. The available job designations are:
+%%   ACADE: Academic
+%%   ADVEN: Adventurer
+%%   CORPO: Merchant, Corporate, White Collar
+%%   CRAFT: Craftsman
+%%   FAITH: Monk, Priest, etc
+%%   LABOR: Skilled or unskilled labor
+%%   MEDIA: Media, Performance, etc
+%%   MEDIC: Medical
+%%   MILIT: Military
+%%   POLIT: Politician
+%%   POLIC: Police
+%%   THIEF: Criminal
+See series\CG_JOBS_* for a complete and up-to-date list.
+
+A lancemate will have a :TRAIN tag if they are currently eligible for the
+TrainNPC command.
+
+
+
+****************************
+***   PLOT  DESCRIPTORS  ***
+****************************
+
+The first two characters of a plot descriptor are its type. Only one label
+of a given type may be used in a single description. If a second label of
+the same type is added, the original label is deleted.
+
+In plot description, optional traits ("the flavor elements") are preceded
+by a ~. These are not nessecary but will increase the likelihood of this
+component being selected if they're present.
+
+The story is made up of episodes. Each episode takes place in a single city.
+Each episode is made up of several components.
+
+BACKGROUND DESCRIPTORS
+	These describe the PC's background and motivation
+	+B??	Background State
+	+G??	PC's Goal
+
++B??	PC Background/Motivation
+	Describes the situation of the PC's life so far.
+	+B--	Nothing special.
+	+Bor	PC was an orphan/raised communaly
+	+Bpd	PC's parents died
+
+	+Bad	PC responsible for ally/partner/friend's death
+	+Bld	PC's love interest died
+	+Bam	PC has amnesia
+
++G??	PC Goal
+	The stated goal of the PC.
+	+G--	Nothing special.
+	+Gre	Revenge
+	+Gmo	Money
+	+Gfa	Fame
+	+Gpe	Peace
+	+Gpo	Power
+	+Gkn	Knowledge
+	+Glo	Love
+
+Faction Arc Descriptors
+
+[f]:P.???	Faction Plot Arc
+	[f]:P.---	Default state
+	[f]:P.sub	Subterfuge. Political maneuvering against enemies.
+	[f]:P.cat	Covert attacks. Attack enemies secretly.
+	[f]:P.pil	Public Image, Luh. Increase profile, improve reputation.
+	[f]:P.pat	Public attacks. Attack enemies openly.
+	[f]:P.art	Seek Artifact. Searching for Target Item.
+	[f]:P.gat	Gathering. Foraging for resources.
+	[f]:P.wep	Weapon Program. Developing new weapons and mecha.
+	[f]:P.war	War. Like the other attack states, but embiggened.
+	[f]:P.ina	Inactive. This faction has withdrawn from play.
+
+[f]:R.???	Faction's Reaction to PC
+
+
+Character Arc Descriptors
+
+[c]:M.???	NPC Character Arc/Motivation
+	[c]:M.---	Unknown quantity
+	[c]:M.mer	Mercenary. NPC is in it for the money.
+	[c]:M.pro	Professional. NPC seeks his personal best.
+	[c]:M.com	Competitor. NPC seeks to be better than others.
+	[c]:M.ggd	Greater Good. NPC believers self to be working for greater good.
+	[c]:M.see	Seeker. The NPC still hasn't found what they're looking for.
+	[c]:M.rev	Revenge.
+	[c]:M.cha	Change. The NPC decided to change their current situation.
+	[c]:M.nih	Nihilism. The NPC seeks destruction.
+
+[c]:A.???	Attitude towards PC
+	[c]:A.---	Unknown quantity
+	[c]:A.nme	NPC hasn't met the PC yet
+	[c]:A.jr_	NPC is PC's junior/subordinate/student
+	[c]:A.sr_	NPC is PC's senior/superior/mentor
+	[c]:A.ant	NPC feels antagonistic towards the PC
+	[c]:A.tha	NPC feels thankful to the PC
+	[c]:A.sec	NPC is keeping a secret from the PC
+	[c]:A.equ	NPC respects the PC as an equal
+	[c]:A.dis	NPC has lost respect for the PC
+	[c]:A.env	NPC envies the PC
+	[c]:A.adm	NPC admires the PC
+	[c]:A.pch	PC has a reason to hate the NPC
+	[c]:A.hat	NPC has a reason to hate the PC
+	[c]:A.mut	The PC and NPC have reasons to hate one another mutually
+	[c]:A.obs	NPC obsessed with the PC
+
+
+
+************************************
+***   DEPRECIATED  DESCRIPTORS   ***
+************************************
+
++P??	Propp State
+	Describes the overall course of the story. The Advancement descriptor describes which
+	stage of this propp state the player is currently at.
+	+P--	Peaceful life
+
+	*** THE SETUP ***
+	+Pme	PC meets an enemy pilot
+	+Pun	Under Attack
+	+Psh	PC is shanghaied into working for faction
+	+P	A stalemate between the PC and the enemy
+	+Pla	PC learns of the existence of an artifact
+
+	+P	EF attempting to subvert PF
+	+P	PC obtains the target item
+	+P	Enemy obtains the target item
+	+Pew	Enemy working on new weapon program		Can enter at !Lo
+
+	*** THE REACTION ***
+	+Ppw	Player faction working on new weapon program
+	+P	PF begins defensive program
+	+P	PF begins offensive program
+	+P	PC switches sides
+	+P	Attempting Diplomacy
+
+	*** THE COUNTER-REACTION ***
+
+	+P	Under open attack by EF
+	+P	Bring the fight to EF
+	+P	EF reveals E is renegade; will help PC oppose him
+	+P	Peace negotiations with enemy
+	+P	PC is branded as a traitor
+	+P	There are traitors within PF
+	+P	You've been a pawn, manipulated so far
+	+P	EF unveils new superweapons
+
++C??	Character State
+	Describes the current state of the PC's life
+	+C--	Just going along with the flow
+
+	+Cro	PC is a rookie member of faction
+
+	+Clk	Love interest has been kidnapped
+	+Cre	PC attempts to reform enemy
+	+Cfa	The PC has to live down a failure
+	+Csu	PC has achieved minor personal success
+
+	+C	Searching for lost friend/lover/family
+	+C	Investigating mystery of past (+B)
+	+C	PC is falsely accused of something (+B)
+	+C	Love interest works for the enemy
+	+C	Love triangle with enemy
+	+C	Collaborating with enemy to end conflict
+	+C	Actively seeking revenge (+B)
+
+
++T??	Task
+	Describes the PC's current short-term goal.
+	+T--	No task.
+	+T01	Introduction. The first task given.
+	+Tgt	Goto target for conversation
+	+Tgs	PC will go to a certain scene - often to gather information or something
+
+	+Tga	PC will go to the Amore NPC for conversation/date/whatever
+
++F??	Task Flavor
+	Describes the PC's task in greater detail.
+	+F--	No flavor.
+	+Fmi	To get mission.
+	+Fin	To find information
+	+Ffi	Fight! probably...
+	+Frt	PC has Rescued Target
+	+Fch	PC will challenge NPC to a duel
+	+Fpa	It's going to be a party (+Tgs)
+	+Fcc	It's a company conference (+Tgs)
+	+Far	To arrest the target (+Tht)
+	+Fpr	To protect the target
+
+	+Fap	To apologize to the target (+Tgt,+Tga)
+
++H??	Hanging Thread
+	Describes an event which the PC has hanging over his head
+	+H--	How's it hanging? It isn't.
+	+Hed	Enemy has defected (H:++)
+	+Hrt	Have rescued someone (H:++)
+	+Hmi	Someone will offer you a mission (H:++)
+	+Hre	Someone will try to get revenge (H:++)
+	+Hra	Have rescued Amore NPC
+
+	+Has	Assassination attempt will be made against the PC.
+
+
+
+
+

@@ -1,0 +1,997 @@
+%%% COMBAT PERSONA FRAGMENTS
+
+% TYPE: *HereToHelpFight
+%	This NPC is here to aid the PC in an upcoming battle. The PC can choose to send
+%	them away. Of course, they might not listen...
+%    PARAM1: Accept Aid (no message printed here)
+%    PARAM2: Reject Aid (no message printed here)
+%    PARAM3: Reject Rejection (message printed here)
+
+	Persona
+	requires <*HereToHelpFight>
+	START <EndCHat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <Goto %2%>
+	Msg%id%01 <Hey \PC , it looks like you could use some help. I'm here to provide backup.>
+	Msg%id%01_1 <I heard you were on a mission around these parts. Why don't I help you out; after all, there's always room for more guns.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Hey. I've come to help you.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Hey \PC , how'd you like some backup for this fight? I'm all ready to go!>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <What kind of a mess have you gotten yourself into? It's a good thing I showed up to help you out.>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <Hey \PC . I was cruising through the neighborhood and saw you here, so I figured I might as well help.>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <\PC ! I'm here to assist you in this battle... Let's blow some ash up!>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+	Prompt%id%01 <Thanks; between the two of us, this should be no problem.>
+	Prompt%id%01_1 <Great! Let's do it.>
+	Prompt%id%01_2 <It'll be an honor to fight at your side.>
+	Prompt%id%02 <Get out of here, \CHATNPC - it's too dangerous.>
+	Prompt%id%02_1 <I don't need any help.>
+	Prompt%id%02_2 <You'd just get in my way- go home.>
+
+% TYPE: *RejectAid
+%	The PC has rejected the NPC's aid.
+%    PARAM1: Exit label
+
+	Persona
+	requires <*RejectAid>
+	START <EndChat Say %id%01 Goto %1%>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <Alright, I'll trust you to do this on your own... Good luck, \PC .>
+	Msg%id%01_1 <You can't do everything by yourself, you know... But I suppose I can't stop you from trying.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Good luck.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Awww, but I wanted to have some fun too! Oh well... I'll honor your wishes.>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <I came all the way out here for this and you reject me? Fine, see if I ever offer you my help again...>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <No problem. You just do whatever you like.>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <What's the matter, you're afraid of a little competition? Fine, I've got no problem with watching you fail.>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+
+% TYPE: *WelcomeToMyLair
+%	The PC has found the NPC's hideout, and combat is immanent.
+%    PARAM1: Exit label
+
+	Persona
+	requires <*WelcomeToMyLair>
+	% v%id%01 = Single Use Counter
+	START <if= v%id%01 0 else %1% V= %id%01 1 EndChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <Welcome to my lair. It must have been difficult for you to get in, but not nearly difficult enough...>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+	Prompt%id%01 <Let's settle this.>
+	Prompt%id%01_1 <Nice place you've got here, \CHATNPC .>
+	CPrompt%id%01_1 <ifPCCheerful Accept>
+	Prompt%id%01_2 <I'm not surprised that you'd live in a dump like this.>
+	CPrompt%id%01_2 <ifPCMelancholy Accept>
+	Prompt%id%01_3 <>
+	CPrompt%id%01_3 <ifPCEasygoing Accept>
+	Prompt%id%01_4 <>
+	CPrompt%id%01_4 <ifPCPassionate Accept>
+	Prompt%id%01_5 <>
+	CPrompt%id%01_5 <ifPCSociable Accept>
+	Prompt%id%01_6 <>
+	CPrompt%id%01_6 <ifPCShy Accept>
+
+% TYPE: *WaitingForDuel
+%	The NPC is waiting for the PC to come fight him.
+%    PARAM1: Duel location
+
+	Persona
+	requires <*WaitingForDuel>
+	Start <EndChat Say %id%01>
+	Msg%id%01 <I'm waiting for you in \SCENE %1% .>
+
+
+% TYPE: *HelpMeVsMecha
+%		&Reward		The PC will get a reward for helping
+%    PARAM1: The PC will help exit label	[no message]
+%    PARAM2: The PC won't help exit label	[no message]
+
+	Persona
+	requires <*HelpMeVsMecha Easygoing>
+	Start <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <NewChat Say %id%02 AddChat %id%03 AddChat %id%04>
+	result%id%02 <NewChat Say %id%03 AddChat %id%03 AddChat %id%04>
+	result%id%03 <Goto %1%>
+	result%id%04 <Goto %2%>
+	Msg%id%01 <Hey- I've got a problem here, and was wondering if you might be able to help.>
+	Msg%id%02 <I was attacked by a group of mecha. I ran away, but they're still following me... I could use some help fighting them.>
+	Msg%id%03 <Just a minute! You see, I'm kind of on the run from a bunch of mecha, who seem intent on fighting me. I really, really could use some assistance.>
+	Prompt%id%01 <Okay. What's up?>
+	Prompt%id%02 <Sorry, I'm a bit busy right now...>
+	Prompt%id%03 <I'm on the way!>
+	Prompt%id%04 <No, I'd rather not get involved...>
+
+	Persona
+	requires <*HelpMeVsMecha>
+	Start <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <Goto %2%>
+	Msg%id%01 <Help! I'm being attacked by mecha- I could use some backup!>
+	Prompt%id%01 <I'm on the way!>
+	Prompt%id%02 <Forget it, I've got better things to do.>
+
+
+% TYPE: *WeWon
+%             &Reward		The PC is getting a reward for this.
+%	The PC and the NPC fought together, and won. Hooray!
+%	The PC is also getting a reward.
+%   PARAM1: Allied Faction	[optional]
+%   PARAM2: Enemy Faction	[optional]
+
+	Persona
+	requires <*WeWon>
+	start <EndChat Say %id%01>
+	Msg%id%01 <We won! Thanks for your help.>
+
+	Persona
+	requires <*WeWon &Reward>
+	start <EndChat Say %id%01>
+	Msg%id%01 <We won! Here's your reward.>
+	Msg%id%01_1 <You and I make a pretty good team... Here's your reward money.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Here's your pay.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <That went well. Here's the pay you earned.>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <We live to fight another day. Here's your cash.>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <That was easier than I thought it would be... Thanks for your assistance. Here's your pay.>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <We crushed them. Here's your reward.>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+	Msg%id%01_10 <One more victory for \FACTION %1% . Here's your reward.>
+	CMsg%id%01_10 <ifFactionExists %1% Accept>
+	Msg%id%01_11 <The enemies of \FACTION %1% will hear about this victory... Here's your reward for a job well done.>
+	CMsg%id%01_11 <ifNPCSociable ifFactionExists %1% Accept>
+	Msg%id%01_12 <Well done... Maybe you can join \FACTION %1% someday, \PC .>
+	CMsg%id%01_12 <ifNPCShy ifFactionExists %1% if# PCFac %1% Accept>
+	Msg%id%01_13 <Once again, \FACTION %1% is victorious. It's been a good day. Here's your reward.>
+	CMsg%id%01_13 <ifNPCCheerful ifFactionExists %1% Accept>
+	Msg%id%01_14 <Only \FACTION %1% can hold back the tide of darkness... We won, this time. Here's your reward.>
+	CMsg%id%01_14 <ifNPCMelancholy ifFactionExists %1% Accept>
+	Msg%id%01_15 <It's all in a day's work for \FACTION %1% . Here's your pay.>
+	CMsg%id%01_15 <ifNPCEasygoing ifFactionExists %1% Accept>
+	Msg%id%01_16 <You've done \FACTION %1% proud. Here's your pay.>
+	CMsg%id%01_16 <ifNPCPassionate ifFactionExists %1% Accept>
+	Msg%id%01_20 <At last, \FACTION %2% has been soundly defeated. Here's your reward.>
+	CMsg%id%01_20 <ifFactionExists %2% Accept>
+	Msg%id%01_21 <We made a pretty good team against \FACTIOn %2% ... maybe we'll work together again sometime. Here's your pay.>
+	CMsg%id%01_21 <ifNPCSociable ifFactionExists %2% Accept>
+	Msg%id%01_22 <So \FACTION %2% has been defeated. Thanks.>
+	CMsg%id%01_22 <ifNPCShy ifFactionExists %2% Accept>
+	Msg%id%01_23 <Piece of cake... \FACTION %2% didn't stand a chance. Here's your pay.>
+	CMsg%id%01_23 <ifNPCCheerful ifFactionExists %2% Accept>
+	Msg%id%01_24 <The blood of \FACTION %2% has been spilled... Here's the money you earned.>
+	CMsg%id%01_24 <ifNPCMelancholy ifFactionExists %2% Accept>
+	Msg%id%01_25 <I don't know if I could have beaten \FACTION %2% without you.>
+	CMsg%id%01_25 <ifNPCEasygoing ifFactionExists %2% Accept>
+	Msg%id%01_26 <We drove those \FACTION %2% bastards back where they came from! Here's your reward.>
+	CMsg%id%01_26 <ifNPCPassionate ifFactionExists %2% Accept>
+
+% TYPE: *LetsDefeatThem
+%	The PC has joined a fight on the side of the NPC.
+%   PARAM1: Enemy Faction
+
+Persona
+	requires <*LetsDefeatThem>
+	Start <EndChat Say %id%01>
+	Msg%id%01 <Let's defeat them!>
+
+Persona
+	%% Pyromaniac Version
+	requires <*LetsDefeatThem [MT1]>
+	Start <EndChat Say %id%01>
+	Msg%id%01 <Together we'll burn them up!>
+
+Persona
+	%% Soldier Version
+	requires <*LetsDefeatThem ([MT2]|MILIT)>
+	Start <EndChat Say %id%01>
+	Msg%id%01 <Just stick together and victory will be ours!>
+
+Persona
+	%% Sophisticated Version
+	requires <*LetsDefeatThem [MT3]>
+	Start <EndChat Say %id%01>
+	Msg%id%01 <Between your muscle and my style, this should be no problem.>
+
+Persona
+	%% Industrial Version
+	requires <*LetsDefeatThem [MT4]>
+	Start <EndChat Say %id%01>
+	Msg%id%01 <Come on, let's get down to work!>
+
+Persona
+	%% Pirate Version
+	requires <*LetsDefeatThem [MT5]>
+	Start <EndChat Say %id%01>
+	Msg%id%01 <I say, we make them walk the plank!>
+
+Persona
+	%% Mad Science Version
+	requires <*LetsDefeatThem ([MT6]|Scientist)>
+	Start <EndChat Say %id%01>
+	Msg%id%01 <My calculations indicate that they stand no chance against us.>
+
+Persona
+	%% Beauty Version
+	requires <*LetsDefeatThem [MT7]>
+	Start <EndChat Say %id%01>
+	Msg%id%01 <Don't get too distracted watching me, it'll take both of us to finish them off.>
+
+Persona
+	%% Dark Version
+	requires <*LetsDefeatThem [MT8]>
+	Start <EndChat Say %id%01>
+	Msg%id%01 <We'll send them to oblivion.>
+
+Persona
+	%% Dragon Version
+	requires <*LetsDefeatThem [MT9]>
+	Start <EndChat Say %id%01>
+	Msg%id%01 <Now they'll see what real power is!>
+
+Persona
+	%% Ninja Version
+	requires <*LetsDefeatThem [MT10]>
+	Start <EndChat Say %id%01>
+	Msg%id%01 <You take them from the front, I'll sneak around to the back.>
+
+
+
+% TYPE: *LetsStartPatrol
+%	The PC has joined a patrol, and combat is about to begin.
+%   PARAM1: Exit label
+
+Persona
+	requires <*LetsStartPatrol>
+	start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <Let's get started.>
+	Msg%id%01_1 <Keep your guard up, there's no telling when we'll run into hostiles. You watch my back and I'll watch yours.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Let's begin.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <If we're lucky we'll see some combat today. Otherwise it's just going to be boring.>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <Watch your back... Fighting could start at any time.>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <Maybe we won't see anything today... but I wouldn't count on it.>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <I know there are enemy lurking around here someplace... All we have to do is find them.>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+
+
+% TYPE: *JoinOurFacPatrol
+%	There's a patrol belonging to the PC's faction or otherwise some ally
+%	of the PC. He'll be expected to join.
+%   PARAM1: Join exit label
+%   PARAM2: Refuse exit label (reply will be spoken here)
+%   PARAM3: Identity of the faction
+%   PARAM4: Identity of the enemy
+
+Persona
+	requires <*JoinOurFacPatrol =MIL_DEFAULT_OFFENSE>
+	start <EndChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <EndChat Say %id%02 Goto %2%>
+	Msg%id%01 <I didn't expect to get any reinforcements this far into enemy territory. I could use your help against \FACTION %4% .>
+	Msg%id%02 <Be careful out there.>
+	Prompt%id%01 <That's what I'm here for.>
+	Prompt%id%01_1 <Alright, that's what I want.>
+	Prompt%id%02 <Sorry, I can't help you now.>
+	Prompt%id%02_1 <I'm in no condition to help.>
+
+Persona
+	requires <*JoinOurFacPatrol>
+	start <EndChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <EndChat Say %id%02 Goto %2%>
+	Msg%id%01 <Hey, I've got a patrol here and could use your assistance.>
+	Msg%id%02 <Get fixed up as soon as you can. We need all the help we can get out here.>
+	Prompt%id%01 <Alright, I'll do that.>
+	Prompt%id%01_1 <Give me your coords, I'll be there right away.>
+	Prompt%id%02 <Sorry, I can't help you right now.>
+	Prompt%id%02_1 <I'm in no condition to help at the moment.>
+
+% TYPE: *Back_For_More
+%
+%	The PC fought this enemy previously and presumably lost; now they're
+%	back for more.
+%
+
+	Persona
+	requires <*Back_For_More>
+	Start <EndChat Say %id%01>
+	Msg%id%01 <Back for more, \PC ? I'll defeat you this time as easily as I did the last.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+
+% TYPE: *THEME_EXPO
+%		&Ally	NPC will be fighting alongside PC
+%		&Enemy	NPC will be fighting against the PC
+%	Combat is starting, so it's time for this NPC to explain his schtick.
+%	This pfrag should terminate the conversation and exit immediately to %1%.
+%
+%  PARAM1: Exit label
+%
+	Persona
+	%% Themeless Expo- just give the name of the NPC's mecha.
+	requires <*THEME_EXPO>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <Now you'll see the full power of my \ChatNPCMecha !>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <My \ChatNPCMecha will destroy you...>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+	Persona
+	%% Themeless Expo- just give the name of the NPC's mecha.
+	requires <*THEME_EXPO &Enemy>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <You don't stand a chance against my \ChatNPCMecha !>
+
+	Persona
+	%% Pyromaniac Theme
+	requires <*THEME_EXPO [MT1]>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <Nothing can stand against the burning power of my weapons... You'll see...>
+
+	Persona
+	%% Pyromaniac Theme
+	requires <*THEME_EXPO [MT1] &ENEMY>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <The heat of a thousand suns will consume you!>
+
+	Persona
+	%% Soldier Theme
+	requires <*THEME_EXPO [MT2]>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <Victory or death!>
+
+	Persona
+	%% Soldier Theme
+	requires <*THEME_EXPO [MT2] &ENEMY>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <From this point on, it's war.>
+
+	Persona
+	%% Sophisticated Theme
+	requires <*THEME_EXPO [MT3]>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <Now you'll see what real skill is.>
+
+	Persona
+	%% Sophisticated Theme
+	requires <*THEME_EXPO [MT3] &ENEMY>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <Will you be a challenge worthy of my skills? I doubt it... but let's see.>
+
+	Persona
+	%% Industrial Theme
+	requires <*THEME_EXPO [MT4]>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <It's time to get to work.>
+
+	Persona
+	%% Industrial Theme
+	requires <*THEME_EXPO [MT4] &ENEMY>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <I'll demolish ya!>
+
+	Persona
+	%% Pirate Theme
+	requires <*THEME_EXPO [MT5]>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <Yar har har!>
+
+	Persona
+	%% Pirate Theme
+	requires <*THEME_EXPO [MT5] &ENEMY>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <Prepare to be keelhauled!>
+
+	Persona
+	%% Mad Science Theme
+	requires <*THEME_EXPO [MT6]>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <It's time to unleash the power of science!>
+
+	Persona
+	%% Mad Science Theme
+	requires <*THEME_EXPO [MT6] &ENEMY>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <Are you ready to be my guinea pig? The experiment starts now...>
+
+	Persona
+	%% Beauty Theme
+	requires <*THEME_EXPO [MT7]>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <Don't take your eyes off me; you wouldn't want to miss a second of this.>
+
+	Persona
+	%% Beauty Theme
+	requires <*THEME_EXPO [MT7] &ENEMY>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <You should feel honored... The last sight you see will be one of indescribable beauty.>
+
+	Persona
+	%% Dark Theme
+	requires <*THEME_EXPO [MT8]>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <Death walks the battlefield. Whose turn will it be to die today?>
+
+	Persona
+	%% Dark Theme
+	requires <*THEME_EXPO [MT8] &ENEMY>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <Do you fear death? Soon you will embrace it.>
+
+	Persona
+	%% Dragon Theme
+	requires <*THEME_EXPO [MT9]>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <No mortal can resist the power of the dragon!>
+
+	Persona
+	%% Dragon Theme
+	requires <*THEME_EXPO [MT9] &ENEMY>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <I shall devour your soul!>
+
+	Persona
+	%% Ninja Theme
+	requires <*THEME_EXPO [MT10]>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <Beware the shadows. Soon you will learn.>
+
+	Persona
+	%% Ninja Theme
+	requires <*THEME_EXPO [MT10] &ENEMY>
+	Start <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <You won't even see your death approaching.>
+
+
+% TYPE: *BattleIntroduction
+%                          &SentToFight		The PC was sent here to fight the NPC
+%	The PC is meeting a new person for the first time... in combat.
+%   PARAM1: Start combat exit label (no message printed here)
+
+	Persona
+	requires <*BattleIntroduction &SentToFight>
+	start <EndChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <What do you think you're doing following me around? That's not going to be very good for your health.>
+	Prompt%id%01 <I'm \PC . I was sent to defeat you.>
+
+	Persona
+	requires <*BattleIntroduction>
+	start <EndChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <This is \ChatNPC . Normally I'd ask you to identify yourself, but in this case it would be pointless. I'm afraid that I'm going to have to destroy you.>
+	Prompt%id%01 <Don't overestimate your chances.>
+
+
+
+% TYPE: *ArenaChallenge
+%	The PC and NPC get a chance to trash-talk one another before battle...
+%	in a pro-wrestler sort of way.
+%   PARAM1: Start combat exit label (no message printed here)
+
+	Persona
+	requires <*ArenaChallenge>
+	start <EndChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <Are you ready to fight?>
+	Prompt%id%01 <More ready than you.>
+
+	Persona
+	requires <*ArenaChallenge "PDASS">
+	start <EndChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <It's time for another match... Only one of us can make it to the next rank.>
+	Prompt%id%01 <That's gonna be me.>
+
+% TYPE: *BattleChallenge
+%		      &CharDev	Character development (@:A,@:M) is allowed
+%				In general character development should be reserved
+%				for times when the PC is intentionally and specifically
+%				confronting this NPC, or when the NPC already has a
+%				pre-existing relationship with the PC.
+%                     &Avoid	Combat can be avoided.
+%	The PC and NPC get a chance to trash-talk one another before battle.
+%	There's a chance the PC can avoid this combat. Note that the PC might
+%	avoid combat either through intimidation/etc or by running away, in which
+%	case he can expect to lose some renown.
+%   PARAM1: Start combat exit label (no message printed here)
+%   PARAM2: Avoid combat exit label (message is printed here)
+
+	Persona
+	%% The Attitude Sorter
+	requires <*BattleChallenge &CharDev "@:A.---">
+	%% This pfrag will set a preliminary attitude for the NPC, depending
+	%% on a number of factors. The choices are:
+	%% - Antagonistic if Melancholy
+	%% - Keeping Secret if Shy
+	%% - Senior if older and more renowned
+	%% - Junior if younger and less renowned
+	%% - Equal otherwise
+	%% EndChat & AddChat done at beginning; just Say+SetXXRAttitude per op
+	start <EndChat AddChat %id%01 ifNPCMelancholy else .%id%_GoCheckSecret                    Say %id%01 SetXXRAttitude ChatNPCID XXR_A_Antagonistic>
+	.%id%_GoCheckSecret <ifNPCShy else .%id%_GoCheckSenior if= d2 1 else .%id%_GoCheckSenior  Say %id%02 SetXXRAttitude ChatNPCID XXR_A_HasSecret>
+	.%id%_GoCheckSenior <ifG ChatNPCDAge PCDAge else .%id%_GoCheckMinor ifG ChatNPCRenown PCRenown else .%id%_GoEqual Say %id%03 SetXXRAttitude ChatNPCID XXR_A_IsSenior>
+	.%id%_GoCheckMinor <ifG PCRenown ChatNPCRenown else .%id%_GoEqual                         Say %id%04 SetXXRAttitude ChatNPCID XXR_A_IsJunior>
+	.%id%_GoEqual <Say %id%05 SetXXRAttitude ChatNPCID XXR_A_IsEqual>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <What are you doing here!? This mission was going smoothly for once, the last thing I need is for some jerk to come mess it up.>
+	Msg%id%01_1 <Aw, nuts. I was just about to call it a day, then you have to show up. Don't think I'm going to forget this kind of intrusion easily.>
+	Msg%id%01_2 <What do you want!? Just what I need, another annoying battle... come on then, let's get started.>
+	Msg%id%02 <Don't meddle in things you don't understand, \PC . I won't allow you to derail my plan.>
+	Msg%id%02_1 <You're playing with forces you don't understand, \PC . That which has been set in motion cannot be stopped.>
+	Msg%id%02_2 <My plan must remain a secret. I'll destroy you if I have to...>
+	Msg%id%03 <How amusing. Do you really think you're ready to challenge someone like me?>
+	Msg%id%03_1 <What's this? A novice pilot has wandered into my crosshairs...>
+	Msg%id%03_2 <Hm, a challenger? This shouldn't take long...>
+	Msg%id%04 <Hey, wait a minute... You're not one of the guys on my side. That means we're going to fight!>
+	Msg%id%04_1 <Wow, I read all about you on PilotNet... I can't believe that I'm going to fight you myself!>
+	Msg%id%04_2 <Halt! No matter how big you are, it's my job to challenge you...>
+	Msg%id%05 <\PC ! I challenge you to battle!>
+	Msg%id%05_1 <I've heard that you're pretty good, \PC . Let's see how you measure up.>
+	CMsg%id%05_1 <ifNPCSociable Accept>
+	Msg%id%05_2 <I challenge you...>
+	CMsg%id%05_2 <ifNPCShy Accept>
+	Msg%id%05_3 <Would you look at that... they sent someone halfways decent to fight me. At least this is going to be a fun battle!>
+	CMsg%id%05_3 <ifNPCCheerful Accept>
+	Msg%id%05_4 <Even though one or the other of us is probably going to die, I can't back down from this fight...>
+	CMsg%id%05_4 <ifNPCMelancholy Accept>
+	Msg%id%05_5 <Hey \PC ! Consider yourself challenged... to battle, of course.>
+	CMsg%id%05_5 <ifNPCEasygoing Accept>
+	Msg%id%05_6 <Here comes a worthy foe. I challenge you, \PC ! To the last mecha standing!>
+	CMsg%id%05_6 <ifNPCPassionate Accept>
+	Msg%id%05_7 <I challenge you to honorable combat, \PC ! May the best pilot win...>
+	CMsg%id%05_7 <ifNPCHeroic Accept>
+	Msg%id%05_8 <I will destroy you utterly, \PC ... or at least give it a good try.>
+	CMsg%id%05_8 <ifNPCVillainous Accept>
+	Prompt%id%01 <[Continue]>
+
+
+	Persona
+	requires <*BattleChallenge "Friend">
+	start <EndChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <We have to stop meeting like this, \PC . One of us is eventually going to kill the other.>
+	Prompt%id%01 <All you have to do is back down.>
+	Prompt%id%01_1 <Don't worry, I'll send flowers to your family.>
+	CPrompt%id%01_1 <ifPCCheerful Accept>
+	Prompt%id%01_2 <I don't want to hurt you, but I will...>
+	CPrompt%id%01_2 <ifPCMelancholy Accept>
+	Prompt%id%01_3 <That's not likely to happen.>
+	CPrompt%id%01_3 <ifPCEasygoing Accept>
+	Prompt%id%01_4 <If that happens, then so be it!>
+	CPrompt%id%01_4 <ifPCPassionate Accept>
+	Prompt%id%01_5 <Nice to see you too, \ChatNPC .>
+	CPrompt%id%01_5 <ifPCSociable Accept>
+	Prompt%id%01_6 <Enough talk. Let's get started.>
+	CPrompt%id%01_6 <ifPCShy Accept>
+
+	Persona
+	requires <*BattleChallenge "PRIVA">
+	start <EndChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <Would you look at this. I've been authorized by the L5 Council to pillage any unauthorized meks I come across... I couldn't say for sure, but I'm guessing that includes you.>
+	Msg%id%01_1 <Well, look what we have here... That's a nice mecha you have. I think I'll take it.>
+	CMsg%id%01_1 <ifG PCScale 0 Accept>
+	Msg%id%01_2 <I'm \ChatNPC of the Privateers. This letter of marque I've been given entitles me to fight the enemies of the L5 Alliance anywhere I find them. In short, I challenge you to battle.>
+	CMsg%id%01_2 <ifNPCSociable Accept>
+	Msg%id%01_3 <For the L5 Alliance, I lay claim to your gear!>
+	CMsg%id%01_3 <ifNPCShy Accept>
+	Msg%id%01_4 <Do you have anything worth looting? Ah, who cares, I'm gonna fight you anyways.>
+	CMsg%id%01_4 <ifNPCCheerful Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCMelancholy Accept>
+	Msg%id%01_6 <Locate the targets, fight them, then take their stuff... This is how it's been since the beginning of time.>
+	CMsg%id%01_6 <ifNPCEasygoing Accept>
+	Msg%id%01_7 <Yo ho ho, prepare to be boarded!>
+	CMsg%id%01_7 <ifNPCPassionate Accept>
+	Prompt%id%01 <Don't even thing about it, pirate.>
+
+
+	Persona
+	requires <*BattleChallenge "SILKN">
+	start <EndChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <For the sake of the colonies, I challenge you!>
+	Msg%id%01_1 <I am \ChatNPC of the Silver Knights, and I challenge you to honorable combat.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <For great justice, I will defeat you.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <All I do is for the survival of my people. I, \ChatNPC of the Silver Knights, challenge you to battle.>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <Are you an honorable fighter? In the name of the Silver Knights, I challenge you to battle!>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+	Msg%id%01_7 <You have been deemed an enemy of the L5 alliance. I have been sent to defeat you.>
+	CMsg%id%01_7 <ifFactionEnemy 1 Accept>
+	Msg%id%01_8 <It will be my pleasure to dispatch your worthless life, villain. Prepare yourself for combat.>
+	CMsg%id%01_8 <ifPCVillainous Accept>
+	Prompt%id%01 <You're going to lose.>
+
+	Persona
+	requires <*BattleChallenge "AEGIS">
+	start <EndChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <In the name of Aegis Overlord Luna, I challenge you to battle!>
+	Msg%id%01_1 <If you think you can oppose the will of Aegis Overlord, you are merely denying the obvious. Come, I'll show you how futile your struggle is.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Don't even try to oppose Aegis.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing ifPCRenowned Accept>
+	Msg%id%01_30 <It's too bad you insist on opposing Aegis. If we were on the same side, just imagine what we could do.>
+	CMsg%id%01_30 <ifNPCEasygoing ifPCRenowned Accept>
+	Msg%id%01_4 <Aegis Overlord will guide humanity into the new age! If you oppose us, you will be destroyed!>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <Death to those who oppose Aegis!>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%01_7 <There is no escape for the enemies of Aegis. In the name of Luna, I will punish you!>
+	CMsg%id%01_7 <ifFactionEnemy 4 Accept>
+	Prompt%id%01 <I will defeat you.>
+
+	Persona
+	requires <*BattleChallenge &Avoid Cheerful>
+	start <EndChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03 if# ChatNPCFac 0 ifFactionEnemy ChatNPCFac else .%id%_GoNoEnemy>
+	.%id%_GoNoEnemy <AddChat %id%07>
+	result%id%01 <Goto %1%>
+	result%id%02 <AddCheerful d8   Goto %1%>
+	result%id%03 <EndChat Say %id%03   AddChat %id%04  AddChat %id%05  AddChat %id%06>
+	result%id%04 <ifIntimidation NPCEgo ChatNPCID else .%id%_Go4Fail  EndChat Say %id%04   XPV 150   Goto %2%>
+	.%id%_Go4Fail <Goto %1%>
+	result%id%05 <AddRenown -1  ifNPCHeroic else .%id%_Go4Fail EndChat Say %id%05 Goto %2%>
+	result%id%06 <AddEasyGoing d10  Goto %1%>
+	result%id%07 <EndChat Say %id%06 AddSociable d7  AddChat %id%08>
+	result%id%08 <Goto %1%>
+	Msg%id%01 <So good of you to join me, \PC ... I was hoping for some fun today. Shall we duel?>
+	Msg%id%01_1 <What a boring mission this has been... I guess you know all about that sort of thing, \PC . But now that you're here I'll actually get some combat action. Come on, let's fight... It'll be fun.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Ah, finally an opponent. Shall we duel? It'll be fun.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Just when I was starting to get bored, an easy target falls right into my lap. Let's fight!>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <I've been waiting all day for a target to show up. This will make a fun diversion, at least until I've finished demolishing you. Let's duel!>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_100 <I've been searching for someone to challenge. I was starting to get bored, but now I've found you... My bosses at \FACTION ChatNPCFac will be happy that I've found such valuable prey. Shall we get started?>
+	CMsg%id%01_100 <ifFactionExists ChatNPCFac Accept>
+	Msg%id%01_101 <When \FACTION ChatNPCFac sent me here on this boring mission, I was told to eliminate priority targets. I haven't found any of those so you'll have to do. Fighting should be fun for a while, at least.>
+	CMsg%id%01_101 <ifNPCSociable ifFactionExists ChatNPCFac Accept>
+	Msg%id%01_104 <Man, this mission \FACTION ChatNPCFac has me on sucks... At least it did, until you showed up. Let's fight!>
+	CMsg%id%01_104 <ifNPCPassionate ifFactionExists ChatNPCFac Accept>
+	Msg%id%03 <Who says you get any choice in the matter? What do you think you're gonna do?>
+	Msg%id%03_1 <You think you have a say in the matter? What are you planning to do about it, then?>
+	Msg%id%03_2 <What do you think you're going to do about it?>
+	Msg%id%04 <You're not joking, are you..? Um, I just remembered, I have something else to do right now...>
+	Msg%id%04_1 <Woah, you don't sound like you're joking... Let's not fight until later, when you're in a better mood...>
+	Msg%id%04_2 <Er... On second thought, I don't want to challenge you. I'm out of here.>
+	Msg%id%05 <You're serious about not fighting? It wouldn't be sporting to challenge you now... We'll meet again.>
+	Msg%id%05_1 <If you're not going to get into it, it'll be no fun fighting you. I'll challenge you again when you're in a better mood.>
+	Msg%id%05_2 <If you're really not going to fight, it wouldn't be sporting to pursue you. We'll meet again.>
+	Msg%id%06_100 <Do I really need a reason? I just thought it would be fun. Let's go!>
+	CMsg%id%06_100 <if= ChatNPCFac 0 Accept>
+	Msg%id%06_200 <That's what \FACTION ChatNPCFac sent me here for. Of course, the exact reason behind the order doesn't matter so much... I'm just looking for something to do.>
+	CMsg%id%06_200 <if# ChatNPCFac 0 Accept>
+	Msg%id%06_201 <Why don't you ask \FACTION ChatNPCFac ? They're the ones who sent me here.>
+	CMsg%id%06_201 <if# ChatNPCFac 0 Accept>
+	Prompt%id%01 <Let's just get this over with.>
+	Prompt%id%01_1 <Alright, I'll fight you.>
+	Prompt%id%01_2 <Why not. Let's go.>
+	Prompt%id%02 <You're right, that does sound like fun!>
+	Prompt%id%02_1 <I was feeling bored myself. Let's go!>
+	Prompt%id%02_2 <Great idea! I'll kick your ass...>
+	Prompt%id%03 <Look, I don't have time for this.>
+	Prompt%id%03_1 <Buzz off, \ChatNPC . I'm not interested.>
+	Prompt%id%03_2 <I'm not in the mood for you right now.>
+	CPrompt%id%03 <ifPCMelancholy Accept>
+	Prompt%id%04 <Kill you. Quickly. Without mercy.>
+	Prompt%id%04_1 <Kill you. Then mutilate your corpse.>
+	Prompt%id%04_2 <I'll eat your liver. While you watch.>
+	CPrompt%id%04_2 <ifPCPassionate Accept>
+	Prompt%id%04_3 <I'll start with dismemberment, then get worse...>
+	Prompt%id%04_4 <You don't want to know.>
+	CPrompt%id%04_4 <ifPCShy Accept>
+	Prompt%id%05 <I guess I'll have to run, then...>
+	Prompt%id%05_1 <I'll run before you reach me.>
+	Prompt%id%05_2 <I can run away from you, dumbass.>
+	Prompt%id%06 <Not much I can do, other than fight.>
+	Prompt%id%06_1 <I hadn't thought that far ahead...>
+	Prompt%id%07 <Why do you want to fight me?>
+	Prompt%id%08 <I see...>
+
+	Persona
+	requires <*BattleChallenge &Avoid>
+	start <EndChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+	Result%id%01 <Goto %1%>
+	Result%id%02 <EndChat AddEasygoing -d8   ifIntimidation NPCEgo ChatNPCID else .%id%_Go2Fail Say %id%03 SkillXP 20 50   XPV 100   Goto %2%>
+	.%id%_Go2Fail <Goto %1%>
+	Result%id%03 <EndChat AddRenown -5 ifNPCPassionate else .%id%_Go3Work Say %id%06 AddChat %id%04>
+	.%id%_Go3Work <Say %id%05 Goto %2%>
+	result%id%04 <Goto %1%>
+	Msg%id%01 <You should not be here, \PC . I'm going to have to fight you now.>
+	Msg%id%01_1 <What are you doing here? Not that it matters, of course... Now that you are here, you can't be permitted to leave.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <I challenge you.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Ah, a challenger. It will be fun defeating you.>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <I will destroy you, \PC ...>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <You're in the wrong place at the wrong time, \PC ... I'm afraid I have no choice but to challenge you.>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <I found you at last! Prepare to defend yourself, \PC ...>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+	Msg%id%01_7 <This is \ChatNPC of \FACTION ChatNPCFac . I challenge you to battle.>
+	CMsg%id%01_7 <ifFactionExists ChatNPCFac ifNPCSociable Accept>
+	Msg%id%03 <Fighting you right now wouldn't be in my own best interest... You can go, but we'll meet again.>
+	Msg%id%03_1 <Er... I don't really want to fight... You win.>
+	Msg%id%03_2 <I can see that this was a bad idea... Let's just go our separate ways, alright?>
+	Msg%id%04 <You have a lot of confidence... let's see if you can back it up!>
+	Msg%id%04_1 <I don't frighten so easily. Prepare to defend yourself.>
+	Msg%id%04_2 <Are you trying to intimidate me?>
+	Msg%id%05 <You can go this time... Don't let me catch you here again.>
+	Msg%id%05_1 <Alright, I have more important things to deal with right now than you... I'll let you go this time.>
+	Msg%id%05_2 <Feel lucky that I've decided to spare your life. You may go.>
+	Msg%id%06 <You expect to just run away like a dog!? I won't allow it... You'll fight me here and now!>
+	Msg%id%06_1 <Do you really think I'll just let you run away like that? There'll be no coward's way out for you!>
+	Prompt%id%01 <I'm ready to fight you.>
+	Prompt%id%01_1 <Let's do this.>
+	Prompt%id%01_2 <Alright, let's do battle.>
+	Prompt%id%02 <It's you who will be destroyed.>
+	Prompt%id%02_1 <You'll regret you ever challenged me.>
+	Prompt%id%02_2 <This may be the last mistake you'll ever make.>
+	Prompt%id%03 <Sorry, I'll go away...>
+	Prompt%id%03_1 <I'll be leaving now...>
+	Prompt%id%03_2 <Look, I don't want to fight...>
+	Prompt%id%04 <[More]>
+
+	Persona
+	requires <*BattleChallenge ~Shy>
+	Start <EndChat   Say %id%01   AddChat %id%01>
+	Result%id%01 <Goto %1%>
+	Msg%id%01 <I don't care what you're doing here, but you will now feel my wrath.>
+	Msg%id%01_100 <You shouldn't be here; now you will feel the full wrath of \FACTION ChatNPCFac .>
+	CMsg%id%01_100 <ifFactionExists ChatNPCFac Accept>
+	Msg%id%01_101 <I don't know if anyone told you, but this area is now under the control of \FACTION ChatNPCFac . I'm afraid I have no choice but to challenge you...>
+	CMsg%id%01_101 <ifNPCSociable ifFactionExists ChatNPCFac Accept>
+	Msg%id%01_102 <You shouldn't be fighting \FACTION ChatNPCFac ; now I'll have to destroy you.>
+	CMsg%id%01_102 <ifNPCShy ifFactionExists ChatNPCFac Accept>
+	Msg%id%01_103 <Didn't you know that I was in the area? Prepare to see the full power of \FACTION ChatNPCFac !>
+	CMsg%id%01_103 <ifNPCCheerful ifFactionExists ChatNPCFac Accept>
+	Msg%id%01_104 <You are interfering in the plans of \FACTION ChatNPCFac . Because of this, you must die.>
+	CMsg%id%01_104 <ifNPCMelancholy ifFactionExists ChatNPCFac Accept>
+	Msg%id%01_105 <What do you think you're doing here? I have no choice but to challenge you, in the name of \FACTION ChatNPCFac .>
+	CMsg%id%01_105 <ifNPCEasygoing ifFactionExists ChatNPCFac Accept>
+	Msg%id%01_106 <You dare to think that you can challenge \FACTION ChatNPCFac !? I'll show you how wrong you are!>
+	CMsg%id%01_106 <ifNPCPassionate ifFactionExists ChatNPCFac Accept>
+	Prompt%id%01 <I can take you.>
+
+	Persona
+	requires <*BattleChallenge>
+	Start <EndChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <AddEasygoing d8     Goto %1%>
+	result%id%02 <AddCheerful -d8     Goto %1%>
+	Msg%id%01 <Ah, \PC . So good of you to join me. Shall we battle?>
+	Msg%id%01_1 <\PC , I've heard tell of your piloting skills. Now I'll get the chance to see if you live up to your reputation.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Shall we battle?>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Just when I thought this was going to be an easy day, you had to show up and make me fight you. Let's get this over with.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <I've been looking for someone to battle, \PC ... Let's fight!>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <I was hoping that today would be interesting, and now here you are... Let's fight! This should be fun.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <I'm afraid it's time for you to die... I'll try to make it painless. Let's do battle.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <Sure, I have nothing better to do.>
+	Prompt%id%01_1 <Why not.>
+	Prompt%id%01_2 <I guess we could do that.>
+	Prompt%id%02 <It's not going to be so good for you.>
+	Prompt%id%02_1 <Don't challenge me unless you want to die.>
+	Prompt%id%02_2 <It will be my pleasure to end your life.>
+
+
+
+% TYPE: *YouLose
+%		&DontComeBack	PC will be told to never return here
+%	The PC has lost a battle to the NPC.
+	Persona
+	requires <*YouLose>
+	Start <EndChat Say %id%01>
+	Msg%id%01 <Was that the best you could do?>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <That was fun... a bit easy, but fun none the less.>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <Wow. Beating you was easy... Let's do this again sometime.>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <Defeating you wasn't even a challenge.>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+
+	Persona
+	requires <*YouLose &DontComeBack>
+	Start <EndChat Say %id%01>
+	Msg%id%01 <And if you know what's good for you, don't come back!>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Don't come back.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <The next time we meet, you will die. Don't come here again.>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <I warned you. Don't come back, unless you want more of the same.>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+
+
+% TYPE: *YouWonFair
+%		   &MeetAgain	The NPC expresses a desire to meet again
+%	The NPC has lost a battle to the PC. Unlike *GetYouNextTime, the NPC is gracious
+%	in his defeat.
+
+	Persona
+	requires <*YouWonFair>
+	Start <EndChat Say %id%01>
+	Msg%id%01 <Alright, I concede... You've won.>
+	Msg%id%01_1 <You're an amazing fighter... It's clear to me now that you're destined for greatness.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Congratulations, victory is yours.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <Hmmm. I could have won, but you got lucky.>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <And here I was thinking you were going to be a pushover... Well done, \PC .>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <What power! I concede to your incredible skills, \PC .>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+
+
+% TYPE: *GetYouNextTime
+%	The NPC has lost a battle to the PC.
+	Persona
+	requires <*GetYouNextTime "PRIVA">
+	Start <EndChat Say %id%01>
+	Msg%id%01 <You're better than you look. Next time, I won't fight fair.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+
+	Persona
+	requires <*GetYouNextTime Wangtta>
+	Start <EndChat Say %id%01>
+	Msg%id%01 <Aw, crap! I lost again!>
+	Msg%id%01_1 <How come I keep losing in these fights? I'll practice hard, and we'll meet again, \PC !>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <I'll do better next time.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Maybe some day I'll win one of these things... I'm almost certain of it.>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <You win some, you lose some. I only seem to lose some.>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <Don't you dare think that your win today is any reflection of my piloting skills! You just got lucky, that's all.>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+
+	Persona
+	requires <*GetYouNextTime "AEGIS">
+	Start <EndChat Say %id%01>
+	Msg%id%01 <Aegis Overlord will not be defeated so easily.>
+	Msg%id%01_1 <Don't think you've won. Aegis is the only power fit to guide the human race into the future. At most, all you've managed here today is to delay our manifest destiny.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Aegis cannot be defeated.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <How nice, I've finally met an opponent worthy of my skill. We'll fight again, \PC .>
+	CMsg%id%01_3 <ifNPCCheerful ifNPCRenowned Accept>
+	Msg%id%01_4 <I have failed Luna... But you will learn that Aegis has many agents far more powerful than me.>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <You've one once, you may even win twice, but in the end it's Aegis who will be victorious.>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <You made a grave error today. Luna will call down such retribution that you'll wish you had never been born.>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+
+	Persona
+	requires <*GetYouNextTime "SILKN">
+	Start <EndChat Say %id%01>
+	Msg%id%01 <You have defeated me once, but I'll never give up!>
+	Msg%id%01_1 <You've defeated one of the Silver Knights, but my comrades will avenge this loss!>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Great justice cannot be denied.>
+	CMsg%id%01_2 <ifPCVillainous Accept>
+	Msg%id%01_3 <That was a great display of piloting, \PC . I commend you on your fine skills.>
+	CMsg%id%01_3 <ifNPCCheerful ifG PCRep 1 -1 Accept>
+	Msg%id%01_4 <I have brought shame upon the Knights... I won't forget this day, \PC !>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <I concede victory to you, \PC . We'll fight again another day.>
+	CMsg%id%01_5 <ifNPCEasygoing ifG PCRep 1 -1 Accept>
+	Msg%id%01_6 <So, you've battled one of the Silver Knights and lived... I admire your skill, \PC .>
+	CMsg%id%01_6 <ifNPCPassionate ifG PCRep 1 -1 Accept>
+	Msg%id%01_7 <I concede this battle to you.>
+	CMsg%id%01_7 <ifNPCShy Accept>
+	Msg%id%01_8 <It's a shame we have to fight on opposite sides of this battle, \PC . I salute the victory of my noble adversary.>
+	CMsg%id%01_8 <ifNPCHeroic ifPCHeroic Accept>
+
+	Persona
+	requires <*GetYouNextTime>
+	Start <EndChat Say %id%01>
+	Msg%id%01 <You've won this time. Next time we meet, you won't be so lucky...>
+	Msg%id%01_1 <How could I lose to a talentless upstart like you!? This makes no sense... Everybody knows that I'm a superior pilot!>
+	CMsg%id%01_1 <ifNPCSociable ifG ChatNPCRep 6 PCRep 6  Accept>
+	Msg%id%01_2 <You won... How is that possible?>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <That wasn't any fun!>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <How interesting. Next time we meet, I'll have to stop holding back.>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <You win some, you lose some... This time it's your game, but next time it'll be mine.>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <I'll get you next time, \PC ! Next time!!!>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+	Msg%id%01_7 <Given your reputation, I should have expected to lose. Someday, though, I'll finally be good enough to take you down!>
+	CMsg%id%01_7 <ifNPCSociable ifG PCRep 6 ChatNPCRep 6  Accept>
+

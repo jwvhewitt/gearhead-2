@@ -1,0 +1,356 @@
+Battroid 5
+Name <Vadel>
+Desig <AD26c>
+type <GROUND SPACE INSIDE>
+factions <GENERAL>
+SDL_Sprite <btr_vadel.png>
+SDL_PORTRAIT <item_vadel.png>
+desc <Fast and well-armed, the Vadel is the high end battroid against which all others are measured.>
+
+ROLE_MAQUI <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_SILKN <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_AEGIS <ASSAULT:COMMAND>
+ROLE_CRIHN <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_L5LAW <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_FCOMS <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_RISHI <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_BOHEM <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_ROCKE <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_REDMA <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_AEGSF <ASSAULT:COMMAND>
+
+sub
+
+Head
+	Size 3
+	Armor 4
+	mass -4
+	sub
+		Sensor 5
+	end
+
+torso
+	Armor 4
+	mass -6
+	sub
+		CPit
+		Armor 2
+		Mass -1
+
+		Sensor 1
+
+		Computer 2
+		mass -3
+		sub
+			Software 1
+			name <Vadel Inc Target System>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 1
+			name <Vadel Inc Maneuver System>
+			S_MVBoost
+			S_BoostScale 2
+		end
+
+		Overcharger 6
+
+		STC VC-5
+		mass -11
+		STC VC-5
+		mass -11
+	end
+	inv
+		BodyArmor 4
+		Mass -4
+		sub
+			HoverJet 2
+		end
+	end
+
+Arm
+	Name <Right Arm>
+	Size 4
+	Armor 4
+	Mass -5
+	sub
+		Hand
+		inv
+			BeamGun 7
+			name <Plasma Cannon>
+			type <BRUTAL>
+			Range 5
+			Acc 1
+		end
+		HoverJet 3
+	end
+	inv
+		ArmArmor 3
+		Mass -3
+		sub
+			MLauncher 4
+			Name <Heavy Rocket Pod>
+			Integral
+			sub
+				STC AAM-8
+				Magazine 5
+			end
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	Size 4
+	Armor 4
+	Mass -5
+	sub
+		Hand
+		inv
+			Melee 7
+			Name <Sword>
+			mass -3
+		end
+		HoverJet 3
+	end
+	inv
+		ArmArmor 3
+		Mass -3
+		sub
+			MLauncher 4
+			Name <Heavy Rocket Pod>
+			Integral
+			sub
+				STC AAM-8
+				Magazine 5
+			end
+		end
+
+		Shield 3
+		DefBonus -1
+		Mass -1
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 4
+	Mass -5
+	sub
+		Mount
+		Name <Right Leg Mount>
+		inv
+			MLauncher 8
+			sub
+				STC SWM-5
+				Magazine 16
+			end
+		end
+
+		HoverJet 5
+	end
+	inv
+		LegArmor 3
+		Mass -3
+		sub
+			Overcharger 2
+		end
+	end
+
+Leg
+	Name <Left Leg>
+	Armor 4
+	Mass -5
+	sub
+		Mount
+		Name <Left Leg Mount>
+		inv
+			MLauncher 8
+			sub
+				STC SWM-5
+				Magazine 16
+			end
+		end
+
+		HoverJet 5
+	end
+	inv
+		LegArmor 3
+		Mass -3
+		sub
+			Overcharger 2
+		end
+	end
+end
+
+Battroid 5
+Name <Vadel>
+Desig <AD26 Custom>
+type <GROUND SPACE INSIDE>
+factions <PDASS>
+SDL_Sprite <btr_vadel.png>
+SDL_PORTRAIT <item_vadel.png>
+desc <This variant has been modified for use in the arena. Its engine has been tuned for maximum performance.>
+
+sub
+
+Head
+	Size 3
+	Armor 4
+	mass -4
+	sub
+		Sensor 5
+
+		ECM 4
+	end
+
+torso
+	Armor 4
+	mass -6
+	sub
+		CPit
+		Armor 2
+		Mass -1
+
+		Sensor 1
+
+		Engine 5
+		HighPerformance
+
+		Computer 2
+		mass -3
+		sub
+			Software 1
+			name <Vadel Inc Target System>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 1
+			name <Vadel Inc Maneuver System>
+			S_MVBoost
+			S_BoostScale 2
+		end
+
+		Overcharger 6
+
+		STC VC-5
+		mass -11
+		STC VC-5
+		mass -11
+	end
+	inv
+		BodyArmor 4
+		Mass -4
+		sub
+			HoverJet 2
+		end
+	end
+
+Arm
+	Name <Right Arm>
+	Size 4
+	Armor 4
+	Mass -5
+	sub
+		Hand
+		inv
+			STC RG-8
+		end
+		HoverJet 3
+	end
+	inv
+		ArmArmor 3
+		Mass -3
+		sub
+			MLauncher 4
+			Name <Heavy Rocket Pod>
+			Integral
+			sub
+				STC AAM-8
+				Magazine 5
+			end
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	Size 4
+	Armor 4
+	Mass -5
+	sub
+		Hand
+		inv
+			Melee 8
+			Name <Dueling Sabre>
+			type <ARMORPIERCING>
+			mass -4
+		end
+		HoverJet 3
+	end
+	inv
+		ArmArmor 3
+		Mass -3
+		sub
+			MLauncher 4
+			Name <Heavy Rocket Pod>
+			Integral
+			sub
+				STC AAM-8
+				Magazine 5
+			end
+		end
+
+		Shield 3
+		DefBonus -1
+		Mass -1
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 4
+	Mass -5
+	sub
+		Mount
+		Name <Right Leg Mount>
+		inv
+			MLauncher 8
+			sub
+				STC SWM-5
+				Magazine 16
+			end
+		end
+
+		HoverJet 5
+	end
+	inv
+		LegArmor 3
+		Mass -3
+		sub
+			Overcharger 2
+		end
+	end
+
+Leg
+	Name <Left Leg>
+	Armor 4
+	Mass -5
+	sub
+		Mount
+		Name <Left Leg Mount>
+		inv
+			MLauncher 8
+			sub
+				STC SWM-5
+				Magazine 16
+			end
+		end
+
+		HoverJet 5
+	end
+	inv
+		LegArmor 3
+		Mass -3
+		sub
+			Overcharger 2
+		end
+	end
+end
+

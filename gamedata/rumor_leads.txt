@@ -1,0 +1,124 @@
+%%
+%% ************************
+%% ***   RUMOR  LEADS   ***
+%% ************************
+%%
+%%  In order to find rumors, the PC is going to have to put some skills
+%%  to work. However, not all skills work on all NPCs.
+%%
+
+Persona 0
+	%% If no appropriate skill is known, revert to a
+	%% basic CHARM roll.
+	START <PCMonologue 1 Say 2>
+
+	Msg1 <Have you heard any interesting rumors lately?>
+	Msg2 <I'll tell you what I know.>
+
+
+Persona 10
+	%% Awareness
+	requires <Shy>
+	START <PCMonologue 1 Say 2>
+
+	Msg1 <You look like there's something on your mind.>
+	Msg2 <Well, it's not much of anything...>
+
+Persona 12
+	%% Survival
+	requires <ADVEN>
+	START <PCMonologue 1 Say 2>
+
+	Msg1 <You must have seen a lot of interesting things in your travels.>
+	Msg2 <Yeah, I've seen things.>
+
+Persona 14
+	%% Medicine
+	requires <MEDIC>
+	START <PCMonologue 1 Say 2>
+
+	Msg1 <You wouldn't believe some of the things I've heard from my patients.>
+	Msg2 <Tell me about it.>
+
+Persona 17
+	%% Conversation
+	requires <Easygoing>
+	START <PCMonologue 1 Say 2>
+
+	Msg1 <I was wondering if you've heard any good rumors.>
+	Msg2 <I don't know if they're any good, but I'll tell you what I know.>
+
+Persona 18
+	%% Shopping
+	requires <Cheerful>
+	START <PCMonologue 1 Say 2 ifG PC$ 100000 Cash+ -100 SkillXP 18 1>
+
+	Msg1_10 <Tell me some decent rumors, and it could be worth $100 to you.>
+	CMsg1_10 <ifG PC$ 100000 Accept>
+	Msg1_20 <Why don't you tell me what you know, and I'll include your name in my book when I'm rich and famous.>
+	CMsg1_20 <ifG 100001 PC$ Accept>
+	Msg2 <Wow! Alright, here's what I've heard...>
+
+Persona 20
+	%% Intimidation
+	requires <(Criminal|THIEF|Villainous)>
+	START <Monologue ChatNPCID 1 PCMonologue 2 Say 3>
+
+	Msg1 <What are you looking at me like that for? I don't know anything...>
+	Msg2 <Don't hold out on me, you know I don't like it.>
+	Msg3 <Alright, I may know a few things...>
+
+Persona 21
+	%% Science
+	requires <(ACADE|Knowledge)>
+	START <PCMonologue 1 Say 2>
+
+	Msg1 <Maybe you could help me with some research I've been doing.>
+	Msg2 <This may not apply to your research, but I know some things that may be of use to you.>
+
+Persona 22
+	%% Mecha Engineering
+	requires <CRAFT Sociable>
+	START <PCMonologue 1 Say 2>
+
+	Msg1 <So, did you hear about the new model Vadel coming out?>
+	Msg2 <I've heard about all kinds of things.>
+
+Persona 24
+	%% Mysticism
+	requires <Spiritual>
+	START <PCMonologue 1 Say 2>
+
+	Msg1 <Confession is good for the soul.>
+	Msg2 <How very true.>
+
+Persona 25
+	%% Performance
+	requires <(MEDIA|Charm)>
+	START <PCMonologue 1 Say 2>
+
+	Msg1 <So, have you heard the latest juicy gossip?>
+	Msg2 <Of course! Just wait until you've heard this...>
+
+Persona 27
+	%% Insight
+	requires <Sociable>
+	START <PCMonologue 1 Say 2>
+
+	Msg1 <Would you mind if I asked you a few questions?>
+	Msg2 <Not at all.>
+
+Persona 28
+	%% Taunt
+	requires <Passionate>
+	START <PCMonologue 1 Say 2>
+
+	Msg1 <I was going to ask you about rumors, but then I figured I should probably ask someone with a social life.>
+	Msg2 <Why you...! I know rumors! I've got plenty of 'em!>
+
+
+
+
+
+
+

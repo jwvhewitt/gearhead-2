@@ -1,0 +1,916 @@
+%%
+%% *:CS_PeacefulEntry_Location Content
+%%		&Ship	The location is a ship.
+%%
+%% The PC will be able to gain peaceful entry to an otherwise hostile location.
+%%
+%% Upon completing this task, the following trigger will be set:
+%%       .%id%_%plotid%_GoPeacefulEntry
+%%
+%% PARAM1: The base in question
+%%
+
+Content
+	name <You can buy anything these days.>
+	desc <An NPC will sell the PC the passcode for the base.>
+	requires <*:CS_PeacefulEntry_Location>
+
+	% E1 is the location in question
+	% E2 is a local public scene
+	% E3 is the info merchant
+	% E4 is a datakey that can be stolen from the merchant
+	Element2 <Scene Public !Near -7>
+	Element3 <Character Criminal -NEMESIS !Xclude -2 !Near 3 NeverFail>
+	NeverFail3 <Thief>
+	Place3 <2 (Citizens) pass ally>
+	Element4 <Prefab>
+	Place4 <3>
+
+	% This subplot will fail if E4 is destroyed
+	start <ifItemDestroyed %4% LoseSubPlot %plotid%>
+
+	Get%4% <Alert %id%01 History %id%02 DeleteItem %4% XPV 100 Trigger0 .%id%_%plotid%_GoPeacefulEntry WinSubPlot %plotid%>
+
+	Msg%id%01 <The codes on this key will allow you to enter %name1%.>
+	Msg%id%02 <You found the passkey to %name1%.>
+
+	sub
+		Persona 3
+		rumor%id% <%name3% knows how to get into dangerous places.>
+		%% V%id%01 = Asking Price
+		%% V%id%02 = Stupid Question Counter
+		greeting <if= PlotStatus %plotid% %id% else %pop% Goto .%id%_GoGreet>
+		*.%id%_GoGreet <*IHaveInformation&AboutScene .%id%_GoOffer %1%>
+		.%id%_GoOffer <V= %id%01 Threat StoryDL 7 NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+		result%id%01 <EndChat Say %id%02 History %id%03 Cash+ -V%id%01 DeleteItem %4% Trigger0 .%id%_%plotid%_GoPeacefulEntry WinSubPlot %plotid%>
+		*result%id%02 <*HurryBackWithMoney>
+		result%id%03 <NewChat Say %id%04 AddChat %id%01 AddChat %id%02 V= %id%02 1>
+		Msg%id%01 <You see this data key right here? It contains the security code for %name1%, and it can be yours for the low low price of $ \VAL V%id%01 .>
+		Msg%id%01_1 <>
+		CMsg%id%01_1 <ifNPCSociable Accept>
+		Msg%id%01_2 <This data key I'm holding contains the security code for %name1%. It can be yours for $ \VAL V%id%01 .>
+		CMsg%id%01_2 <ifNPCShy Accept>
+		Msg%id%01_3 <If you're planning to storm %name1%, this security key will make things much easier. I'm willing to part with it for $ \VAL V%id%01 .>
+		CMsg%id%01_3 <ifNPCEasygoing Accept>
+		Msg%id%01_4 <If you want to get into %name1%, there's only one way you're gonna do it- this security key. I'll sell it to you for $ \VAL V%id%01 .>
+		CMsg%id%01_4 <ifNPCPassionate Accept>
+		Msg%id%01_5 <I've got something here that you're just going to love- the security key for %name1%. If you want to have it, it's going to be $ \VAL V%id%01 .>
+		CMsg%id%01_5 <ifNPCCheerful Accept>
+		Msg%id%01_6 <You already know that %name1% is heavily guarded, and they don't take prisoners... unless, of course, you have the codes on this key. I'll sell it to you for $ \VAL V%id%01 .>
+		CMsg%id%01_6 <ifNPCMelancholy Accept>
+		Msg%id%02 <Here you go. This should give you free access to %name1%... just don't do anything stupid while you're in there and everything should be okay.>
+		Msg%id%02_1 <It's been a pleasure doing business with you. This code will get you into %name1% safely, but I make no promises about what happens after that.>
+		Msg%id%02_2 <Thank you very much. The code should allow you to enter %name1%, but it's up to you what happens inside.>
+		Msg%id%03 <You bought the security codes to %name1%.>
+		Msg%id%04 <No way. If you're willing to duel for this info then you apparently don't need it too badly.>
+		Msg%id%04_1 <No deal. The only way you're getting this key is by paying for it.>
+		Prompt%id%01 <It's a deal. [Give Money]>
+		CPrompt%id%01 <ifG PC$ V%id%01 Accept>
+		Prompt%id%01_1 <This better be worth it. [Give Money]>
+		Prompt%id%02 <I'll think about your offer.>
+		Prompt%id%02_1 <Maybe I'll come back for that later.>
+		Prompt%id%03 <Why don't we duel for the key?>
+		CPrompt%id%03 <if= V%id%02 0 Accept>
+		Prompt%id%03_1 <I tell you what- I'll duel you for it!>
+	end
+	inv
+		Treasure
+		name <Datakey>
+	end
+
+
+%%
+%% *:CS_PeacefulEntry_NPCBase Content
+%%		&PirateShip	The base is a pirate ship. Arr!
+%%
+%% The PC will be able to gain peaceful entry to an otherwise hostile location.
+%%
+%% Upon completing this task, the following trigger will be set:
+%%       .%id%_%plotid%_GoPeacefulEntry
+%%
+%% PARAM1: The base in question
+%% PARAM2: The NPC in charge
+%%
+
+Content
+	name <You can buy anything these days.>
+	desc <An NPC will sell the PC the passcode for the base.>
+	requires <*:CS_PeacefulEntry_NPCBase>
+
+	% E1 is the location in question
+	% E2 is the NPC in charge of the base
+	% E3 is a local public scene
+	% E4 is the info merchant
+	% E5 is a datakey that can be stolen from the merchant
+	Element3 <Scene Public !Near -7>
+	Element4 <Character Criminal -NEMESIS !Xclude -2 !Near 3 NeverFail>
+	NeverFail4 <Thief>
+	Place4 <3 (Citizens) pass ally>
+	Element5 <Prefab>
+	Place5 <4>
+
+	% This subplot will fail if E5 is destroyed
+	start <ifItemDestroyed %5% LoseSubPlot %plotid%>
+
+	Get%5% <Alert %id%01 History %id%02 DeleteItem %5% XPV 100 Trigger0 .%id%_%plotid%_GoPeacefulEntry WinSubPlot %plotid%>
+
+	Msg%id%01 <The codes on this key will allow you to enter %name2%'s %name1%.>
+	Msg%id%02 <You found the key to %name2%'s %name1%.>
+
+	sub
+		Persona 4
+		rumor%id% <%name4% has been to %name2%'s %name1%.>
+		%% V%id%01 = Asking Price
+		%% V%id%02 = Stupid Question Counter
+		greeting <if= PlotStatus %plotid% %id% else %pop% Goto .%id%_GoGreet>
+		*.%id%_GoGreet <*IHearYouAreFightingNPC %2% .%id%_GoOffer>
+		.%id%_GoOffer <V= %id%01 Threat StoryDL 7 NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+		result%id%01 <EndChat Say %id%02 History %id%03 Cash+ -V%id%01 DeleteItem %5% Trigger0 .%id%_%plotid%_GoPeacefulEntry WinSubPlot %plotid%>
+		*result%id%02 <*HurryBackWithMoney>
+		result%id%03 <NewChat Say %id%04 AddChat %id%01 AddChat %id%02 V= %id%02 1>
+		Msg%id%01 <You see this data key right here? It contains the security code for %name2%'s %name1%, and it can be yours for the low low price of $ \VAL V%id%01 .>
+		Msg%id%01_1 <%name2% is paranoid about security, but \PPR %2% %name1% has a fatal flaw- this key, which contains all of its security codes. If you want it I can sell it to you for a mere $ \VAL V%id%01 .>
+		CMsg%id%01_1 <ifNPCSociable Accept>
+		Msg%id%01_2 <This data key I'm holding contains the security code for %name2%'s %name1%. It can be yours for $ \VAL V%id%01 .>
+		CMsg%id%01_2 <ifNPCShy Accept>
+		Msg%id%01_3 <If you're planning to storm %name2%'s %name1%, this security key will make things much easier. If you're interested I'm willing to part with it for $ \VAL V%id%01 .>
+		CMsg%id%01_3 <ifNPCEasygoing Accept>
+		Msg%id%01_4 <If you want to get into %name2%'s %name1%, there's only one way you're gonna do it- this security key. I'll sell it to you for $ \VAL V%id%01 .>
+		CMsg%id%01_4 <ifNPCPassionate Accept>
+		Msg%id%01_5 <I've got something here that you're just going to love- the security key for %name2%'s %name1%. If you want to have it, it's going to be $ \VAL V%id%01 .>
+		CMsg%id%01_5 <ifNPCCheerful Accept>
+		Msg%id%01_6 <%name2%'s %name1% is heavily guarded, and they don't take prisoners... unless, of course, you have the codes on this key. I'll sell it to you for $ \VAL V%id%01 .>
+		CMsg%id%01_6 <ifNPCMelancholy Accept>
+		Msg%id%02 <Here you go. This should give you free access to the %name1%... just don't do anything stupid while you're in there and everything should be okay.>
+		Msg%id%02_1 <It's been a pleasure doing business with you. This code will get you into the %name1% safely, but I make no promises about what happens after that.>
+		Msg%id%02_2 <Thank you very much. The code will allow you to enter the %name1%, but it's up to you what happens inside.>
+		Msg%id%03 <You bought the security codes to %name2%'s %name1%.>
+		Msg%id%04 <No way. If you're willing to duel for this info then you apparently don't need it too badly.>
+		Msg%id%04_1 <No deal. The only way you're getting this key is by paying for it.>
+		Prompt%id%01 <It's a deal. [Give Money]>
+		CPrompt%id%01 <ifG PC$ V%id%01 Accept>
+		Prompt%id%01_1 <This better be worth it. [Give Money]>
+		Prompt%id%02 <I'll think about your offer.>
+		Prompt%id%02_1 <Maybe I'll come back for that later.>
+		Prompt%id%03 <Why don't we duel for the key?>
+		CPrompt%id%03 <if= V%id%02 0 Accept>
+		Prompt%id%03_1 <I tell you what- I'll duel you for it!>
+	end
+	inv
+		Treasure
+		name <Datakey>
+	end
+
+Content
+	name <Do What You Want Cause A Pirate Is Free>
+	desc <The PC can gain entry by posing as a pirate.>
+	requires <*:CS_PeacefulEntry_NPCBase &PirateShip>
+
+	% E1 is the pirate ship
+	% E2 is the pirate captain
+	% E3 is a local public scene
+	% E4 is a pirate recruiter
+	% E5 is a scene for the duel
+	Element3 <Scene Public -Legit !Near -7>
+	Element4 <Prefab>
+	Place4 <3 SD Ally>
+	Element5 <Scene Environs !Near -7>
+
+	% P%id%01 = Initialization Counter
+
+	% This subplot will fail if E4 dies
+	start <ifNPCDead %4% LoseSubPlot %plotid%>
+	update <if= p%id%01 0 p= %id%01 1 NPCLevel %4% StoryDL>
+
+	.%id1%_%plotid1%_GoWin <WinSubPlot %plotid% Trigger0 .%id%_%plotid%_GoPeacefulEntry  History %id%01  ifNPCOK %4% Monologue %4% %id%02>
+	.%id1%_%plotid1%_GoLose <LoseSubPlot %plotid% Monologue %4% %id%03>
+
+	Msg%id%01 <You earned a meeting with %name2% by defeating %name4%.>
+	Msg%id%02 <Well, I guess you've earned that meeting. All you have to do is find %name2%'s ship... Sorry I can't help you with that, but it's hard to keep track of where \SPR %2% is.>
+	Msg%id%03 <I'm afraid that you're not quite up to the standard that we're looking for. Don't call us, we'll call you.>
+
+	% SubPlot1 is a duel with E4
+	SubPlot1 <*CS_Duel&NoDerailment 4 3 5>
+
+	sub
+		Persona 4
+		rumor%id% <%name2% has been recruiting for new pirates at %name3%.>
+		&Bribe <Threat StoryDL 5>
+		greeting <if= PlotStatus %plotid% %id% else GoChat Goto GoIntro>
+		GoChat <NewChat SayAnything>
+		*GoIntro <*IWantToTalkAboutNPC %2% GoExplain>
+		GoExplain <NewChat Say 1 AddChat 1 AddChat 2 AddChat 3>
+		GoMakeOffer <NewChat Say 2 AddChat 4 AddChat 5 AddChat 6>
+		result1 <ifPCCriminal else GoR1Fail Goto GoMakeOffer>
+		GoR1Fail <NewChat Say 3 AddChat 7 AddChat 8>
+		result2 <NewChat Say 4 AddChat 9 AddChat 10>
+		result3 <AddLawful 1   EndChat Say 5   LoseSubPlot %plotid%>
+		result4 <EndCHat Say 6 SetPlotStatus %plotid1% %id1%>
+		result5 <NewChat Say 7 LoseSubPlot %plotid%>
+		result6 <NewChat Say 8 History 9 WinSubPlot %plotid% Trigger0 .%id%_%plotid%_GoPeacefulEntry XPV 100 cash+ -&Bribe>
+		result7 <ifConversation SkillTar StoryDL else GoR7Fail AddLawful -1 Goto GoMakeOffer>
+		GoR7Fail <NewChat Say 10 LoseSubPlot %plotid%>
+		result8 <Goto result5>
+		result9 <Goto result1>
+		result10 <Goto result3>
+		Msg1 <Ah, you must be here about the job. It is true that %name2% is looking for some new shipmates.>
+		Msg2 <You should know that before you can even get an interview, you're going to have to prove your combat skills.>
+		Msg3 <I don't know... You don't seem to be the kind of person we're looking for. Are you sure that you're really interested in this position?>
+		Msg4 <Why do you want to know?>
+		Msg5 <Look, I don't want to get involved in any feud between you and %name2%, I'm just working under contract here. Leave me out of it.>
+		Msg6 <Great! Meet me in %name5% and I'll see how you measure up.>
+		Msg7 <That's too bad. Well, I better get back to work. I'll see you around.>
+		Msg8 <Why yes, I believe we can do that... I mean, you've got to be a good pilot to get your hands on this kind of money, right? I'll tell %name2% that you're coming in for an interview... well, if I can figure out where \SPR %2% is now, that is.>
+		Msg9 <You bribed %name4% to arrange a meeting with %name2%.>
+		Msg10 <Well, I'm not. Try gaining a bit more criminal experience before applying for this kind of job again.>
+		Prompt1 <Tell me more about joining \PPR %2% crew.>
+		Prompt2 <Do you know where I can find \OPR %2% ?>
+		Prompt3 <I'm not here to join; I plan to destroy %name2%!>
+		Prompt4 <No problem. Let's get this test started.>
+		Prompt5 <On second thought, maybe I don't want to join.>
+		Prompt6 <How about we skip the test? [Offer $ \VAL &Bribe ]>
+		CPrompt6 <ifG PC$ &Bribe ifShopping SkillTar StoryDL Accept>
+		Prompt7 <I'm certain.>
+		Prompt8 <I don't know...>
+		Prompt9 <I'm hoping to get a job, of course.>
+		Prompt10 <I'm going to fight \OPR %2% , of course.>
+	end
+	inv
+		NPC Pirate
+		chardesc young sociable
+	end
+
+%%
+%% *:CS_GainAdvantageVsNPC Content
+%%
+%%  &Reinforcements	The advantage may take the form of reinforcements
+%%		.%id%_%plotid%_GoReinforcements
+%%  &Decimation		The advantage may take the form of reducing enemy forces
+%%		.%id%_%plotid%_GoDecimation
+%%  &Delay		The advantage may take the form of delaying the enemy
+%%		.%id%_%plotid%_GoDelay
+%%
+%% The PC may seek advantage against a certain NPC.
+%%
+%%  If this subplot is won, a trigger associated with the exact advantage
+%%  gained should be called. If a nonstandard advantage is gained, no such
+%%  trigger need be called.
+%%
+%% PARAM1: The NPC being opposed
+%%
+
+Content
+	name <Enemy's Enemy's Gift>
+	desc <Someone else in town is fighting the same enemy.>
+	requires <*:CS_GainAdvantageVsNPC>
+
+	start <ifNPCDead %2% LoseSubPlot %plotid%>
+
+	% E1 is the NPC being sought
+	% E2 is a local public scene
+	% E3 is an enemy of E1
+	Element2 <Scene Public !Near -7>
+	Element3 <Character HasMecha -ArchEnemy !Enemy 1 !Okay -7 !Global NeverFail>
+	NeverFail3 <Bounty Hunter>
+	Place3 <2 SD Ally (Guards)>
+
+	% SubPlot1 is the PC's task
+	% SubPlot2 is the PC's reward
+	SubPlot1 <*:CS_MinorMission 3>
+	SubPlot2 <*UTIL_GiveEquipment 3>
+
+	sub
+		Persona 3
+		rumor%id% <%name3% has also been fighting %name1%.>
+		greeting <if= PlotStatus %plotid% %id% else %pop% ifSubPlotWon %plotid1% else GoCheckLoss EndChat Say 1 AddChat 1>
+		GoCheckLoss <ifSubPlotLost %plotid1% else GoCheckProgress LoseSubPlot %plotid% Goto GoLoseMission>
+		*GoLoseMission <*MissionWasFailure na na na>
+		GoCheckProgress <if# PlotStatus %plotid1% 0 else GoGreet Goto GoRemind>
+		*GoRemind <*GenericMissionReminder>
+		*GoGreet <*IHearYouAreFightingNPC %1% GoExplain>
+		GoExplain <NewChat Say 2 AddChat 2 AddChat 3>
+		result1 <WinSubPlot %plotid% History 4 Goto .%id2%_GoGiveEquipment>
+		result2 <Goto .%id1%_GoInit>
+		result3 <NewChat Say 3 AddChat 4 AddChat 5>
+		*Result4 <*RejectMission .%id%_GoR4Exit>
+		.%id%_GoR4Exit <AddSociable -d6   LoseSubPlot %plotid%>
+		result5 <Goto .%id1%_GoInit>
+		Msg1 <You did a good job out there, \PC . Now it's time for your reward...>
+		Msg2 <%name1% is my enemy as well; if you were to prove yourself worthy, I could aid you in the fight against \OPR %1% .>
+		Msg3 <I'm not about to give my help to anybody who comes along. I just want to make sure you stand a fighting chance against %name1% is all.>
+		Msg4 <%name3% gave you some new equipment to use against %name1%.>
+		Prompt1 <[Continue]>
+		Prompt2 <How would I go about doing that?>
+		Prompt3 <I've got nothing to prove to you.>
+		Prompt4 <Forget it, I don't need any help.>
+		Prompt5 <Sounds reasonable. What do you want me to do?>
+	end
+
+Content
+	name <Mechanic's Gift>
+	desc <The PC may be given an experimental weapon. Or something.>
+	requires <*:CS_GainAdvantageVsNPC>
+
+	% E1 is the NPC being sought
+	% E2 is a local mechanic
+	Element2 <Character Mechanic -ArchEnemy !Xclude 1 !Near -7>
+
+	start <ifNPCDead %2% LoseSubPlot %plotid%>
+
+	% SubPlot1 is the PC's task
+	% SubPlot2 is the PC's reward
+	SubPlot1 <*:CS_MinorMission 2>
+	SubPlot2 <*UTIL_GiveEquipment 2>
+
+	sub
+		Persona 2
+		rumor%id% <%name2% might be able to help you against %name1%.>
+		greeting <if= PlotStatus %plotid% %id% else GoOpenShop ifSubPlotWon %plotid1% else GoCheckLoss NewChat Say 1 AddChat 1>
+		GoCheckLoss <ifSubPlotLost %plotid1% else GoCheckProgress LoseSubPlot %plotid% Goto GoLoseMission>
+		*GoLoseMission <*MissionWasFailure na na na>
+		GoCheckProgress <if# PlotStatus %plotid1% 0 else GoGreet Goto GoRemind>
+		*GoRemind <*GenericMissionReminder>
+		*GoGreet <*IHearYouAreFightingNPC %1% GoExplain>
+		*GoOpenShop <*SERVICE_MECHANIC GoBye>
+		*GoBye <*GOODBYE>
+		GoExplain <NewChat Say 2 AddChat 2 AddChat 3>
+		result1 <WinSubPlot %plotid% History 3 Goto .%id2%_GoGiveEquipment>
+		result2 <Goto .%id1%_GoInit>
+		*Result3 <*RejectMission .%id%_GoR3Exit>
+		.%id%_GoR3Exit <LoseSubPlot %plotid%>
+		Msg1 <I see that you've completed my task. Well done.>
+		Msg2 <I'd like to help you out against \OPR %1% , but before giving my help I need to make sure you actually stand a fighting chance. If you could do a small favor for me that would verify things nicely.>
+		Msg3 <%name2% gave you some new equipment to use against %name1%.>
+		Prompt1 <Now, about that reward..?>
+		Prompt2 <Alright. What do you need done?>
+		Prompt3 <Sorry. I've got no time for this.>
+	end
+
+
+Content
+	name <The lance is elsewhere>
+	desc <The PC can fight the NPC's lance separately.>
+	requires <*:CS_GainAdvantageVsNPC &Decimation>
+
+	% E1 is the NPC being sought
+	% E2 is a public scene, needed for NEVERFAIL
+	% E3 is a mechanic
+	% E4 is an outdoors scene
+	% E5 is an encounter where the PC can fight the lance
+	Element2 <Scene Public (Garage|Spaceport) !Near -7>
+	Element3 <Character Mechanic !Near 2 Neverfail>
+	NeverFail3 <Mechanic>
+	Element4 <Scene Outdoors !Near -7>
+	Element5 <Prefab>
+	Place5 <4>
+
+	% P%id%01 = Have revealed encounter
+
+	start <if= p%id%01 0 ifNPCDead %3% LoseSubPlot %plotid%>
+
+	sub
+		Persona 3
+		rumor%id% <%name3% serviced %name1%'s mecha.>
+		% V1 = Info Price
+		greeting <if= PlotStatus %plotid% %id% else GoRepair if= p%id%01 0 else GoRepair Goto GoIntro>
+		*GoIntro <*IHearYouAreFightingNPC %1% GoExplain>
+		GoExplain <v= 1 Threat StoryDL 1 NewChat Say 1 AddChat 1 AddChat 2 AddChat 3>
+		*GoRepair <*SERVICE_MECHANIC GoBye>
+		*GoBye <*GoodBye>
+		result1 <NewChat Say 2 History 3 Cash+ -v1 p= %id%01 1 SetEncounterActive %5%>
+		result2 <NewChat Say 4>
+		result3 <NewChat Say 5 AddChat 1 AddChat 2 AddChat 4>
+		result4 <NewChat Say 6 History 3 p= %id%01 1 SetEncounterActive %5%>
+		Msg1 <It just so happens that I know where %name1%'s lancemates are right now. I don't know where \SPR %1% is, but surely fighting \PPR %1% allies separately is worth something. If you want the info it's going to cost $ \VAL v1 .>
+		Msg2 <You'll be able to find them in \EXACT_SCENE %4%. It's been a pleasure doing business with you.>
+		Msg3 <You learned from %name3% that %name1%'s allies could be found in \EXACT_SCENE %4% .>
+		Msg4 <Don't think too long; I can't say how much longer my info is going to be current.>
+		Msg5 <If you must know, it's because I repaired their mecha and %name1% ran off without paying the bill. I've got a bit of a score to settle.>
+		Msg6 <Good question. I'll get far more satisfaction from seeing %name1% defeated than by recouping my losses... \PPR %1% mecha are supposed to be hanging out in \EXACT_SCENE %4% . Go get them.>
+		Prompt1 <It's a deal. [Give money]>
+		CPrompt1 <ifG PC$ v1 Accept>
+		Prompt2 <I'll think about it.>
+		Prompt3 <Why are you telling me this?>
+		CPrompt3 <ifInsight SkillTar StoryDL Accept>
+		Prompt4 <In that case, why are you keeping it a secret?>
+		CPrompt4 <ifConversation SkillTar StoryDL Accept>
+
+		MetaScene 5 2
+		% This encounter will only be available once; if the PC fails to defeat the
+		% henchmen the first time, there will be no second chance.
+		MapWidth 30
+		MapHeight 30
+
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+
+		Start <if= L2 0 L= 2 1   L= 1 0   Alert 1>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1   AddRenown -1  LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   Alert 2  History 3     XPV 100   WinSubPlot %plotid%   Trigger0 .%id%_%plotid%_GoDecimation>
+		end <SetEncounterInactive %5%>
+
+		Msg1 <You locate some of %name1%'s henchmen.>
+		Msg2 <You have defeated the henchmen. %name1%'s forces must now be considerably weakened.>
+		Msg3 <You defeated a group of %name1%'s henchmen, weakening \PPR %1% forces.>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			SetEnemy 1
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   WMecha 2 StoryDL 100>
+			ParaX 25
+			ParaY 25
+		end
+
+	end
+	inv
+		stc CORE-ACTIVATABLE
+		name <%name1%'s Henchmen>
+	end
+
+%%
+%% *:CS_GainAdvantageVsMecha Content
+%%
+%%  &Decimation		The advantage may take the form of reducing enemy forces
+%%		.%id%_%plotid%_GoDecimation
+%%  &Reinforcements	The advantage may take the form of reinforcements
+%%		.%id%_%plotid%_GoReinforcements
+%%  &Delay		The advantage may take the form of delaying the enemy
+%%		.%id%_%plotid%_GoDelay
+%%
+%%  Before a combat encounter, the PC may be able to gain an advantage
+%%  over his enemies. Note that this advantage can be as capricious as you
+%%  like- it's not guaranteed to any PC, and may be dependant upon special
+%%  skills or reputations.
+%%
+%%  If this subplot is won, a trigger associated with the exact advantage
+%%  gained should be called. If a nonstandard advantage is gained, no such
+%%  trigger need be called.
+
+Content
+	name <Lover's Gift>
+	desc <The love interest will give the PC a gift to help out.>
+	requires <*:CS_GainAdvantageVsMecha>
+
+	% E1 is a public scene
+	% E2 is the lover
+	Element1 <Scene Public (Building|Meeting) !Okay -9>
+	Element2 <Character Lover !Global @:A.tha>
+	Place2 <1 (Citizens) pass ally>
+
+	% P%id%01 = Email Indicator
+
+	% FAIL CONDITIONS:
+	% - E2 dies
+	end <ifNPCDead %2% LoseSubPlot %plotid%>
+
+	5min <if= P%id%01 0 if= d10 1 P= %id%01 1 email %id%01>
+
+	Msg%id%01_1 <%name2%@%name1%:// I never got the chance to thank you properly. Why don't you stop by today?>
+	Msg%id%01_2 <%name2%@%name1%:// I've been waiting to hear from you. Come on over and see me.>
+	Msg%id%01_3 <%name2%@%name1%:// I know you're really busy, but if you drop by to see me you won't regret it.>
+
+	% SubPlot1 = The gift
+	SubPlot1 <*CS_LoversGift 2>
+
+	sub
+		Persona 2
+		rumor%id% <%name2% has been waiting for you at %name1%.>
+		% V%id%01 = Reputation Counter
+		greeting <if= PlotStatus %plotid% %id% else %pop% Goto .%id%_GoGreet>
+		*.%id%_GoGreet <*ThanksForRescue .%id%_GoReveal>
+		.%id%_GoReveal <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03 SetXXRAttitude %2% XXR_A_IsEqual>
+		result%id%01 <Goto .%id1%_GoLoversGift>
+		result%id%02 <Goto .%id1%_GoLoversGift>
+		result%id%03 <EndChat Say %id%02 AddChat %id%04 if= V%id%01 0 V= %id%01 1 AddPragmatic -15>
+		result%id%04 <Goto .%id1%_GoLoversGift>
+		Msg%id%01 <It's about time I thanked you for rescuing me. I've got something right here, and I'd like for you to have it...>
+		Msg%id%01_1 <>
+		CMsg%id%01_1 <ifNPCSociable Accept>
+		Msg%id%01_2 <>
+		CMsg%id%01_2 <ifNPCShy Accept>
+		Msg%id%01_3 <>
+		CMsg%id%01_3 <ifNPCEasygoing Accept>
+		Msg%id%01_4 <>
+		CMsg%id%01_4 <ifNPCPassionate Accept>
+		Msg%id%01_5 <>
+		CMsg%id%01_5 <ifNPCCheerful Accept>
+		Msg%id%01_6 <>
+		CMsg%id%01_6 <ifNPCMelancholy Accept>
+		Msg%id%02 <>
+		Prompt%id%01 <Wow, thanks, you didn't have to do that...>
+		Prompt%id%01_1 <Your gratitude is thanks enough.>
+		Prompt%id%02 <A gift? Let me see it!>
+		Prompt%id%02_1 <Oh yeah, I've been waiting for this...>
+		Prompt%id%03 <But... But... Shouldn't we wait until we're married!?>
+		Prompt%id%03_1 <Sorry, \ChatNPC , but I want to save myself for marriage...>
+		Prompt%id%04 <[Continue]>
+	end
+
+Content
+	name <Let's Join Together>
+	desc <If the PC proves themself, an NPC will offer to join forces.>
+	requires <*:CS_GainAdvantageVsMecha F:++ -!Ne>
+	Size 4
+
+	% E1 is an outdoors scene
+	% E2 is an encounter for this battle
+	% E3 is an enemy of your enemy
+	Element1 <Scene Outdoors !Near -7>
+	Element2 <Prefab>
+	Place2 <1>
+	Element3 <Character HasMecha -ArchEnemy !Enemy -2 !Near -7>
+	Place3 <2 (Allies) sd ally>
+
+	% P%id%01 = Initialization Counter
+	% P%id%03 = Join Offer
+
+	update <if= P%id%01 0 P= %id%01 1 NPCLevel %3% StoryDL>
+
+	sub
+		MetaScene 2 2
+		rumor%id% <%name3% hasn't returned from patrolling %name1%.>
+
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1         History 1  LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   SALVAGE   Alert 3   WinSubPlot %plotid%   ifNPCInPlay %3% History 2 XPV 100 P= %id%03 1 ForceChat %3%>
+
+		Msg1 <You tried to help %name3% fight \FACTION &EnemyFac , but failed.>
+		Msg2 <You helped %name3% to fight \FACTION &EnemyFac .>
+		Msg3 <You have defeated the mecha.>
+
+		sub
+			team 1
+			setally 3
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   WMecha 2 StoryDL 150>
+			GoSmallDeploy <WMecha 2 StoryDL 90>
+			ParaX 25
+			ParaY 45
+
+			team 3
+			name <Allies>
+			setally 1
+			setenemy 2
+			ParaX 45
+			ParaY 5
+		end
+
+		Persona 3
+		special <UNLISTED>
+		% V1 = Have offered help
+		greeting <if# P%id%03 1 else GoOfferJoin if= PlotStatus %plotid% %id% else %pop%  if= V1 0 else GoBeenBefore Goto GoGreet>
+		*GoGreet <*HelpMeVsMecha GoWillHelp GoWontHelp>
+		*GoBeenBefore <*LetsDefeatThem>
+		GoWillHelp <V= 1 1 Exit %2% Goto GoBeenBefore>
+		GoWontHelp <EndChat Say 1 AddReact -25 LoseSubPlot %plotid%>
+		GoOfferJoin <EndChat Say 2 AddChat 1 AddChat 2>
+		result1 <History 3 P= %id%03 2 PCAlly %3% AddLancemate %3% SetXXRAttitude %3% XXR_A_Thankful Goto GoR1End>
+		*GoR1End <*WelcomeToLance>
+		result2 <EndChat Say 4 P= %id%03 2 ifG React d100 else GoR2Minor PCAlly %3%>
+		GoR2Minor <ifG React d50 PCFriend %3%>
+		Msg1 <Thanks for nothing!>
+		Msg2 <Wow, you're really good. How would you like to join forces? Together, I'm sure that \FACTION &EnemyFac wouldn't stand a chance!>
+		Msg3 <In thanks, %name3% joined your lance.>
+		Msg4 <That's too bad. Maybe we'll be able to work together again, someday.>
+		Prompt1_1 <Alright, I could use the help.>
+		Prompt1_2 <It would be an honor to fight at your side.>
+		Prompt2_1 <Sorry, I don't need a partner.>
+		Prompt2_2 <No thanks, I do better by myself.>
+	end
+	inv
+		STC CORE-INVISIBLEENCOUNTER
+		name <%name3%'s Mecha>
+		use <ifG StatVal STAT_MetaVisibility -1  Alert 101 ForceChat %3%>
+		ATTACK <ifG StatVal STAT_MetaVisibility -1   ifG PCScale 0    Alert 101 ForceChat %3%>
+		Msg101 <Suddenly, you receive a distress call.>
+	end
+
+Content
+	name <I Got Better>
+	desc <A NPC will offer the PC some help.>
+	requires <*:CS_GainAdvantageVsMecha &Reinforcements (!Ne|!Lo)>
+
+	% E1 is a hospital
+	% E2 is a mercenary
+	% E3 is the doctor
+	Element1 <Scene Hospital !Near -7>
+	Element2 <Character (Mercenary|ADVEN|MILIT) !XClude -2 !Okay -3 -ENEMY !Near 1 NeverFail>
+	NeverFail2 <Mercenary>
+	Place2 <1 SD ally>
+	Element3 <Character MEDIC !Near 1 NeverFail>
+	NeverFail3 <Doctor>
+	Place3 <1 pass ally>
+
+	% P%id%01 = Have spoken to E2
+
+	% If either E2 or E3 dies, this subplot concludes
+	start <ifNPCOK %2% else .%id%_GoLoseAdvantage ifNPCOK %3% else .%id%_GoLoseAdvantage>
+	.%id%_GoLoseAdvantage <LoseSubPlot %plotid%>
+
+	sub
+		Persona 2
+		rumor%id% <%name2% is resting in the hospital after a nasty fight.>
+		% V1 = Have revealed solution to E2
+		greeting <if= V1 1 else GoCheckQuest NewChat Say 5>
+		GoCheckQuest <ifG p%id%01 0 else GoCheckChat NewChat Say 6 AddChat 3>
+		GoCheckChat <if# PlotStatus %plotid% %id% else GoFirstTime NewChat SayAnything>
+		*GoFirstTime <*YouCouldUseHelp GoMakeOffer>
+		GoMakeOffer <NewChat Say 1 AddChat 1 AddChat 2>
+		result1 <NewChat Say 2 PMemo %plotid% 3 P= %id%01 1 >
+		result2 <NewChat Say 4>
+		result3 <NewChat Say 7 V= 1 1>
+		Msg1 <Well, I wish I could help you, since it's those raiders you're after who put me in the hospital.>
+		Msg2 <I'm not allowed to leave the hospital until I'm better... That's what %name3% says, anyways. The doctors have even locked up my mecha so I can't try to escape!>
+		Msg3 <%name2% would like to help you against the raiders, but can't leave the hospital until %name3% says \SPR %2% 's better.>
+		Msg4 <Yeah, me too... I've got to get back to work so I can start paying off my hospital bills.>
+		Msg5 <Good luck against the raiders! I'll be rooting for you from my hospital bed.>
+		Msg6 <I wish I could help you, but it looks like I'll be stuck here for a while.>
+		Msg7 <Really? That's great! When you find those raiders, give them an extra kick for me!>
+		Prompt1 <Why can't you help me?>
+		Prompt2 <Well, I hope you feel better soon.>
+		Prompt3 <%name3% says \SPR %3% can find me some reinforcements.>
+		CPrompt3 <if= P%id%01 2 Accept>
+
+		Persona 3
+		% V4 = Have tried Prompt4
+		% V6 = Have tried Prompt6
+		greeting <if= p%id%01 1 else GoOpenShop if= PlotStatus %plotid% %id% else GoOpenShop  NewChat Say 1 AddChat 1 AddChat 2 AddCHat 3>
+		GoOpenShop <RevertPersona>
+		result1 <ifConversation SkillTar StoryDL else GoR1Fail NewChat Say 2 AddChat 4 AddChat 5 AddChat 6>
+		GoR1Fail <NewChat Say 3>
+		result2 <NewChat Say 4 AddCHat 7>
+		result3 <EndChat Say 5 shop .%id%_wares Goto GoBye>
+		.%id%_wares <MEDICINE>
+		result4 <NewChat Say 6 V= 4 1 AddChat 5 AddChat 6>
+		result5 <NewChat Say 7 AddChat 8>
+		result6 <NewChat Say 8 V= 6 1 AddChat 4 AddChat 5>
+		result7 <NewChat Say 9 History 10 PMemo %plotid% 0 P= %id%01 2 WinSubPlot %plotid% Trigger0 .%id%_%plotid%_GoReinforcements>
+		result8 <Goto result7>
+		Msg1 <Hello, welcome to %name1% . How may I be of assistance?>
+		Msg2 <Oh no, \SPR %2% hasn't recruited you the cause as well, has \SPR %2% ? %name2% needs some rest, and \SPR %2% 's not going to get it out there running around in a giant robot.>
+		Msg3 <%name2%? I don't want to hear it! All week \SPR %2% 's had people in here bugging me to let \OPR %2% go. It didn't work then and it's not going to work now!>
+		Msg4 <Why, yes, we have been treating a lot of pilots... There's a gang of raiders in town and they've defeated everyone they've met so far.>
+		Msg5 <Tell me where it hurts, and I'll tell you if we can fix it.>
+		Msg6 <%name2% is covered by insurance; \SPR %2% can stay here for as long as we think it's necessary.>
+		Msg7 <Aha, I think I know the raiders you're talking about. We've had a lot of pilots come in who got beaten by them. If I got in contact with some of them, I'm sure they'd be more than willing to help you out.>
+		Msg8 <Because \SPR %2% won't take a rest at home, \SPR %2% 'll be out there looking for fights instead! I wouldn't have locked up %name2%'s equipment if I thought I could trust \OPR %2% .>
+		Msg9 <Just leave everything to me. When you finally track down those raiders, you'll have a bunch of pilots hungry for revenge on your side.>
+		Msg10 <You obtained help from some pilots previously defeated by the raiders.>
+		Prompt1 <I'd like to talk about %name2%'s release.>
+		CPrompt1 <ifNPCOK %2% Accept>
+		Prompt2 <Tell me, have you had a lot of pilots in recently?>
+		CPrompt2 <ifInsight SkillTar StoryDL Accept>
+		Prompt3 <I need some medical help.>
+		Prompt4 <%name2% needs to earn money to pay \PPR %2% bills.>
+		CPrompt4 <if= V4 0 Accept>
+		Prompt5 <I need \PPR %2% help to fight some raiders.>
+		Prompt6 <Why can't \SPR %2% take a rest at home?>
+		CPrompt6 <if= V6 0 Accept>
+		Prompt7 <Think you could put me in contact with some of these pilots?>
+		Prompt8 <That'd be great!>
+	end
+
+Content
+	name <Mercenary Fighters>
+	desc <A NPC can be hired to help the PC>
+	requires <*:CS_GainAdvantageVsMecha &Reinforcements -!Ne>
+
+	% E1 is a public scene
+	% E2 is a mercenary
+	Element1 <Scene Public !Near -7>
+	Element2 <Character (Mercenary|ADVEN) !XClude -2 !Okay -3 -ENEMY !Near 1 NeverFail>
+	NeverFail2 <Mercenary>
+
+	% If E2 dies, this subplot concludes
+	start <ifNPCDead %2% LoseSubPlot %plotid%>
+
+	sub
+		Persona 2
+		rumor%id% <%name2% is willing to help you, for the right price.>
+		% V1 = Asking Price
+		% V2 = Sale Price
+		greeting <if= PlotStatus %plotid% %id% else %pop% if= V1 0 else GoMakeOffer V= 1 Threat StoryDL 2 V= 2 Threat StoryDL 1 Goto GoGreet>
+		*GoGreet <*YouCouldUseHelp GoMakeOffer>
+		GoMakeOffer <NewChat Say 1 AddChat 1 AddChat 2 AddChat 3 AddChat 4>
+		result1 <NewChat Say 2 History 3 Cash+ -V1 WinSubPlot %plotid% Trigger0 .%id%_%plotid%_GoReinforcements>
+		*result2 <*HurryBackWithMoney>
+		result3 <NewChat Say 4 AddChat 5 AddChat 6>
+		result4 <NewChat Say 5 AddChat 5 AddChat 6>
+		result5 <NewChat Say 2 History 3 Cash+ -V2 WinSubPlot %plotid% Trigger0 .%id%_%plotid%_GoReinforcements>
+		result6 <Goto result2>
+		Msg1 <I can arrange some support for you in the upcoming battle, but you'll have to cover expenses. It's going to cost $ \VAL V1 if you want it.>
+		Msg2 <Thanks. Your reinforcements will meet you at the battlefield.>
+		Msg3 <You hired some reinforcements from %name2%.>
+		Msg4 <You really know how to drive a hard bargain. Alright, I'll provide support for just $ \VAL V2 .>
+		Msg5 <Geez, \PC , us mercenaries have to eat too, you know. Still, I guess that's not too bad... I'll provide support for just $ \VAL V2 , but you owe me one.>
+		Prompt1 <That sounds fair. [Give Money]>
+		CPrompt1 <ifG PC$ V1 Accept>
+		Prompt2 <I'll think about it.>
+		Prompt3 <I won't pay more than $ \VAL V2 .>
+		CPrompt3 <ifShopping SkillTar StoryDL ifG PC$ V2 Accept>
+		Prompt4 <Come on %name2%, you know I can't afford that.>
+		CPrompt4 <ifG ChatNPCRelationship 0 Accept>
+		Prompt5 <Here you go. [Give Money]>
+		CPrompt5 <ifG PC$ V2 Accept>
+		Prompt6 <I'll be back later.>
+	end
+
+Content
+	name <Corporate Sponsorship>
+	desc <A corporation will offer to sponsor the PC.>
+	requires <*:CS_GainAdvantageVsMecha (F:--|F:CRIME|F:CORPO) (P:--|P:PDASS)>
+	changes <P:++>
+
+	% E1 is a public scene
+	% E2 is the corporate character to make the offer
+	% E3 is the faction involved
+	Element1 <Scene Public (Meeting|Mall|Garage) !Near -7 !XClude -2>
+	Element2 <Character Corporate !XClude -2 -ENEMY !Near -7>
+	Place2 <1 (Citizens) pass ally>
+	Element3 <Faction Corporate !Comrade 2>
+
+	% P%id%01 = email indicator
+
+	% If E2 dies, this subplot concludes
+	start <ifNPCDead %2% LoseSubPlot %plotid%>
+	5min <if= p%id%01 0 if= d4 1 email %id%01 p= %id%01 1>
+
+	Msg%id%01_1 <%name2%@ \NARRATIVE 7 :// How would you like to earn more? Of course, we all do.>
+	Msg%id%01_2 <%name2%@ \NARRATIVE 7 :// I have an offer for you from %name3%. Come see me at %name1%.>
+	Msg%id%01_3 <%name2%@ \NARRATIVE 7 :// My employer wishes to offer you a sponsorship deal. Come visit me at %name1%.>
+
+	sub
+		Persona 2
+		rumor%id% <%name3% has also been vexed by the raiders you're fighting.>
+		% V1 = Custom Mecha
+		greeting <if# plotstatus %plotid% %id% else GoGreet NewChat SayAnything>
+		*GoGreet <*DidYouGetEmail GoBriefing>
+		GoBriefing <P= %id%01 1 NewChat Say 1 AddCHat 1 AddChat 2 pmemo %plotid% 2>
+		result1 <NewChat Say 3 AddChat 3 AddChat 4 AddChat 5 AddChat 6>
+		result2 <NewChat Say 3 AddChat 3 AddChat 4 AddChat 5 AddChat 6>
+		result3 <NewChat Say 5 History 6 pmemo %plotid% 0  &SetAllyFac %3% CashPrize 100000 RandomMecha .mek StoryDL WinSubPlot %plotid%>
+		.mek <GENERAL \FACTION_DESIG %3%>
+		result4 <NewChat Say 7 pmemo %plotid% 0 LoseSubPlot %plotid%>
+		result5 <NewChat Say 8 History 6 pmemo %plotid% 0  &SetAllyFac %3% CashPrize 100000 CustomMecha .mek StoryDL WinSubPlot %plotid%>
+		result6 <NewChat Say 9>
+		Msg1 <We at %name3% would like to sponsor your adventure. You will be provided with funds and equipment; in exchange, all we ask is that you display our company logo and take part in a few promotional events.>
+		Msg2 <%name2% offered you a sponsorship deal with %name3%. You have not yet given \OPR %2% an answer.>
+		Msg3 <To start with, how about $100,000 and a brand new mecha? As I said, you are under no obligation except to display our logo.>
+		Msg4 <You would not technically be working for us. We merely want to purchase the right to use your image in our marketing. Sign on now, and I can offer you $100,000 plus a brand new mecha.>
+		Msg5 <You've made a good decision. Welcome to the team, \PC .>
+		Msg6 <You accepted a sponsorship deal from %name3%.>
+		Msg7 <That's too bad. Still, the next time you're looking for a new mecha, remember %name3%.>
+		Msg8 <You're a shrewd negotiator... I think you'll fit in here just fine. Welcome to the team, \PC .>
+		Msg9 <Don't think too much. I can't say how long this offer will remain open.>
+		Prompt1 <What kind of funds and equipment are we talking about?>
+		Prompt2 <I don't want to work for a corporation.>
+		Prompt3 <Sounds good to me. I'll do it!>
+		Prompt4 <Thanks, but no thanks.>
+		Prompt5 <Make it a custom mecha and you have a deal.>
+		CPrompt5 <ifShopping SkillTar StoryDL Accept>
+		Prompt6 <I'll think about it.>
+	end
+
+Content
+	name <Divided they fall>
+	desc <The PC can fight the NPC's lance separately.>
+	requires <*:CS_GainAdvantageVsMecha &Decimation>
+
+	% E1 is an outdoors scene
+	% E2 is an encounter where the PC can fight the lance
+	Element1 <Scene Outdoors !Near -7>
+	Element2 <Prefab>
+	Place2 <1>
+
+	sub
+		MetaScene 2 2
+		rumor%id% <the raiders are conducting patrols of %name1%.>
+		% This encounter will only be available once; if the PC fails to defeat the
+		% henchmen the first time, there will be no second chance.
+		MapWidth 30
+		MapHeight 30
+
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+
+		Start <if= L2 0 L= 2 1   L= 1 0   Alert 1>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1   AddRenown -1  LoseSubPlot %plotid%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   Alert 2  History 3     XPV 100   WinSubPlot %plotid%   Trigger0 .%id%_%plotid%_GoDecimation>
+		end <SetEncounterInactive %5%>
+
+		Msg1 <You face some of the raiders.>
+		Msg2 <You have defeated the raiders. Their main force must now be considerably weakened.>
+		Msg3 <You defeated a group of raiders, weakening their forces.>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			SetEnemy 1
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   WMecha 2 StoryDL 100>
+			ParaX 25
+			ParaY 25
+		end
+	end
+	inv
+		stc CORE-INVISIBLEENCOUNTER
+		name <Raider Patrol>
+	end
+
+Content
+	name <Beaten Gladiator>
+	requires <*:CS_GainAdvantageVsMecha &Reinforcements>
+	desc <Meet a mercenary who lost to the raiders; may be able to gain his support.>
+
+	% E1 is a garage
+	% E2 is the mercenary you can find there
+	% E3 is a location for the duel
+	Element1 <Scene Public (Garage|Spaceport|Residence) !Near -7>
+	Element2 <Prefab>
+	Place2 <1 SD ally>
+	Element3 <Scene Environs !Near -7>
+
+	% P%id%01 = Initialization Counter
+	start <ifNPCDead %2% LoseSubPlot %plotid%>
+	update <if= p%id%01 0 p= %id%01 1 NPCLevel %2% StoryDL>
+
+	.%id1%_%plotid1%_GoWin <ifNPCOK %2% else .%id1%_%plotid1%_GoLose  Monologue %2% %id%01  History %id%02  Trigger0 .%id%_%plotid%_GoReinforcements  WinSubPlot %plotid%>
+	.%id1%_%plotid1%_GoLose <LoseSubPlot %plotid%>
+
+	Msg%id%01 <You sure showed me. My lancemates will be there to help you fight the raiders.>
+	Msg%id%02 <You convinced %name2% to help in the upcoming battle.>
+
+	% SubPlot1 is the duel
+	SubPlot1 <*CS_Duel&NoDerailment 2 1 3>
+
+	sub
+		Persona 2
+		rumor%id% <%name2% was recently defeated by the raiders.>
+		greeting <ifSubPlotWon %plotid% else GoCheckOffer NewChat Say %id%01>
+		GoCheckOffer <if= PlotStatus %plotid% %id% else GoChat Goto GoGreet>
+		*GoGreet <*YouCouldUseHelp GoMakeOffer>
+		GoMakeOffer <NewChat Say %id%02 AddCHat %id%01 AddChat %id%02 AddChat %id%03 AddCHat %id%09>
+		GoChat <NewChat SayAnything>
+		result%id%01 <NewChat Say %id%03 LoseSubPlot %plotid%>
+		result%id%02 <NewChat Say %id%04 AddChat %id%01 AddChat %id%03 AddChat %id%10>
+		result%id%03 <NewChat Say %id%05 AddChat %id%04 AddChat %id%05 AddChat %id%06 AddChat %id%11>
+		result%id%04 <NewChat Say %id%06 LoseSubPlot %plotid%>
+		result%id%05 <NewChat Say %id%07 AddChat %id%07 AddChat %id%08>
+		result%id%06 <NewChat Say %id%08 History %id%09  XPV 100  Trigger0 .%id%_%plotid%_GoReinforcements  WinSubPlot %plotid%>
+		result%id%07 <SetPlotStatus %plotid% %id1% Goto .%id%_GoAcceptChallenge>
+		*.%id%_GoAcceptChallenge <*IAcceptYourChallenge %3%>
+		result%id%08 <NewChat Say %id%10 LoseSubPlot %plotid%>
+		result%id%09 <EndChat AddCheerful -d10  Say %id%11 SkillXP NAS_Taunt 100  LoseSubPlot %plotid%  AddReact -d30  ifG -20 React PCEnemy %2%>
+		result%id%10 <Goto result%id%09>
+		result%id%11 <Goto result%id%09>
+		Msg%id%01 <My lance will be there to help you out. Me, I gotta buy a new mek.>
+		Msg%id%02 <Those raiders you're going up against? I fought them myself a while back, but didn't do so well. Take my advice and stay well clear of them. You'll live longer.>
+		Msg%id%03 <You're welcome... though somehow I don't think you're going to be following it.>
+		Msg%id%04 <Well, I don't know where you can find them now, if that's what you're talking about...>
+		Msg%id%05 <Hold on there. You have no idea how tough these guys are. I seriously doubt that you're strong enough to tip the balance in favor of me and my lance.>
+		Msg%id%06 <Good luck with that. If you survive, I'll buy you a drink.>
+		Msg%id%07 <You're really serious about this, huh? Well, I'm willing to beat you if you're fool enough to meet me...>
+		Msg%id%08 <Yes, I guess it would be... Look, my mecha's still being repaired, but my lancemates are ready to go. When you face the raiders they'll be there at your side.>
+		Msg%id%09 <You convinced %name2% to help in the upcoming battle.>
+		Msg%id%10 <Good... you're finally learning. Personally, I think I'm going to quit this mercenary racket and get into something safe like accounting or lion taming.>
+		Msg%id%11 <I can see you aren't taking me seriously... Mark my words, you'll be sorry for not listening when you get your arse kicked!>
+		Prompt%id%01 <Thanks for the advice.>
+		Prompt%id%02 <Do you know where I can find them?>
+		Prompt%id%03 <Why don't we team up and defeat them together?>
+		Prompt%id%04 <Fine. I'll defeat them by myself.>
+		Prompt%id%05 <I'll prove it to you... in a duel!>
+		Prompt%id%06 <Maybe not, but wouldn't it be fun to try?>
+		CPrompt%id%06 <ifChatNPCSexy ifConversation HardSkillTar StoryDL Accept>
+		Prompt%id%07 <Let's do it.>
+		Prompt%id%08 <Sorry, on second thought it's not such a good idea.>
+		Prompt%id%09 <Take my advice and stop giving advice, loser.>
+		CPrompt%id%09 <ifTaunt SkillTar StoryDL Accept>
+		Prompt%id%10 <Wow, with useful tips like that I'll be nowhere fast!>
+		CPrompt%id%10 <ifTaunt SkillTar StoryDL Accept>
+		Prompt%id%11 <I doubt you're strong enough to tip much of anything.>
+		CPrompt%id%11 <ifTaunt SkillTar StoryDL Accept>
+	end
+	inv
+		NPC Mercenary
+	end
+
+

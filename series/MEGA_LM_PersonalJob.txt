@@ -1,0 +1,148 @@
+%%
+%%  Lancemate Personal Jobs
+%%
+%%	The lancemate has something personal to do. The PC can either go along
+%%	with it, send the lancemate to do it themselves, or try to talk the
+%%	lancemate into giving up on the idea.
+%%
+
+%%
+%%  *LM_PersonalJob Content
+%%%%  The Lancemate has something personal to deal with. This subplot should
+%%  include a hint so the LM can tell the PC what they have to do.
+%%
+%%  Persona 1 requires the following script:
+%%	.%id%_GoInit <>
+%%  This script should tell the PC what happens next, set the memo, and set
+%%  the PlotID.
+%%
+%%  PARAM1: The lancemate in question
+%%  PARAM2: The city in which this job will happen
+%%
+
+Content
+	name <Monster From The Past>
+	desc <The LM is confronting an old boss, now enemy.>
+	requires <*LM_PersonalJob 1:M.see 1:evil_ (1:A.---|1:A.jr_|1:A.equ|1:A.adm) 1:TRAIN>
+
+	% E1 is the lancemate
+	% E2 is the city in which this job will happen
+	% E3 is an outdoors scene for the combat encounter
+	% E4 is the metascene for combat
+	% E5 is the NPC to fight
+	Element3 <Scene Outdoors !Near 2>
+	Element4 <Prefab>
+	Place4 <3>
+	Element5 <Prefab>
+	Place5 <4 (Enemies) sd enemy>
+
+	% P%id%01 = Have entered combat
+
+	%% FAIL CONDITIONS:
+	%% - E1 dies before combat is entered
+
+	end <if= P%id%01 0  ifNPCDead %1%  EndPlot>
+
+	sub
+		Persona 1
+		.%id%_GoInit <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 PMemo %plotid% %id%02 SetPlotStatus %plotid% %id% NPCLevel %5% %threat%>
+		rumor%id% <%name1% did some terrible things in the employ of %name5%.>
+		Greeting <if= PlotStatus %plotid% %id% else %pop%  NewChat Say %id%03>
+		result%id%01 <EndChat Say %id%04>
+		result%id%02 <EndChat Say %id%05 AddReact d10>
+		Msg%id%01 <I've got some demons from my past that I need to confront... an old acquaintance is running a mission in \EXACT_SCENE %3% . I can't allow \OPR %3% to succeed.>
+		Msg%id%02 <%name1% asked you to accompany \OPR %1% on a mission to "confront some demons" in \EXACT_SCENE %3% .>
+		Msg%id%03 <Let's get this business with %name5% over with as quickly as possible.>
+		Msg%id%04 <%name5% was my mentor first when I became a cavalier... You know, you can make a lot of money if you're willing to break every principle you've ever had. %name5% didn't care about who got hurt, but I thought \SPR %5% cared about me.>
+		Msg%id%05 <Thanks. Let's hurry up and get this over with.>
+		Msg%id%05_1 <Thanks, \PC ... it feels strange but I'm glad to have you helping me with this.>
+		CMsg%id%05_1 <ifG React 50 Accept>
+		Msg%id%05_2 <Yeah, just stay out of my way and try not to get us killed...>
+		CMsg%id%05_2 <ifG 20 React Accept>
+		Prompt%id%01 <What can you tell me about this acquaintance?>
+		Prompt%id%02 <Don't worry, we'll stop \OPR %5% .>
+
+		MetaScene 4 2
+		% L1 = Encounter Over Counter
+		% L2 = E5 died counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <ifNPCInPlay %1% else GoNotHere if= P%id%02 0  P= %id%02 1  Alert 2 Monologue %5% 3 Monologue %1% 4 ifPCHeroic else GoChangeRevenge Goto GoChangeChange>
+		GoChangeChange  <Monologue %1% 5  SetXXRMotivation %1% XXR_M_Change   Goto GoFinishMonologues>
+		GoChangeRevenge <Monologue %1% 6  SetXXRMotivation %1% XXR_M_Revenge  Goto GoFinishMonologues>
+		GoFinishMonologues <Monologue %5% 7>
+
+		Faint%5% <if= L2 0 L= 2 1 Alert 11 Retreat 2>
+
+		GoNotHere <if= P%id%02 0  Alert 1 Return>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1   LoseRenown                     Alert 8   LoseTrainingChance %1%  EndPlot>
+		nu2 <if= T2 0   if= V1 0 V= 1 1            Alert 9  CashPrize Reward %threat% 500 XPV 200   AddRenown 1  Salvage   ifNPCOK %1% else GoJustEnd Monologue %1% 10   TrainNPC %1% .skills EndPlot>
+		GoJustEnd <EndPlot>
+		.skills <NAS_Awareness NAS_Initiative NAS_SpotWeakness NAS_Stealth NAS_Intimidation NAS_Toughness -NAS_HardAsNails -NAS_Polymath -NAS_HullDown>
+		end <if= v1 1 ifNPCOK %5% PCEnemy %5% FreezeNPC %5%>
+
+		Msg1 <Without %name1%, you don't manage to find %name5%'s lance.>
+		Msg2 <You face a ragtag team of mecha. Their leader contacts you.>
+		Msg3 <%name1%, it's been a long time. I see that you're still selling your gun to the highest bidder.>
+		Msg4 <A lot has changed since I worked for you, %name5%. I'm stronger than I used to be... I'm getting my head in order.>
+		Msg5 <That's why I had to come here... I know what you're up to, and I'm not willing to let you do it to anyone else. There's a better way. \PC showed me that.>
+		Msg6 <That's why I came here, to show you how strong I am... and to show you what kind of a monster you created!!!>
+		Msg7 <Not everything has changed. You're still afraid of me... my \CHATNPCMECHA will destroy you.>
+		Msg8 <You were defeated by %name5%'s lance.>
+		Msg9 <You have defeated %name5%'s lance. Searching \PPR %5% base, you find $ \VAL Reward %threat% 500 .>
+		Msg10_1 <%name5% got away... but at least we stopped \OPR %5% for now.>
+		CMsg10_1 <ifNPCOK %5% Accept>
+		Msg10_2 <%name5%'s legacy of evil stops here...>
+		CMsg10_2 <ifNPCDead %5% Accept>
+		Msg11 <With %name5% dead, \PPR %5% henchmen make a hasty retreat.>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1
+			Deploy <ifNPCInPlay %1% WMecha 2 %threat% 100>
+			ParaX 45
+			ParaY 45
+		end
+	end
+	inv
+		STC PLOT-LMPERSONALJOB
+
+		NPC Mecha Pilot
+		chardesc Old Villainous
+		bio <%name5% was %name1%'s employer a long time ago. There's a lot of bad blood between the two.>
+	end
+
+
+%%
+%%  *LM_GoSolo Content
+%%%%  The Lancemate is doing something for a day or two, after which they'll
+%%  probably reappear in the city someplace.
+%%
+%%  PARAM1: The lancemate in question
+%%  PARAM2: The city in which this job will happen
+%%
+
+Content
+	name <Default Solo>
+	requires <*LM_GoSolo>
+
+	% E1 is the LM
+	% E2 is the town
+	% E3 is a local meeting scene, for afterwards
+	Element3 <Scene Public (meeting|garage|spaceport|cavclub) !Near 2 !Okay 1>
+
+	% P%id%01 = timer
+	update <if= P%id%01 0 P= %id%01 ComTime P+ %id%01 86400 P+ %id%01 d86400 P+ %id%01 d86400 FreezeNPC %1%  PMemo %plotid% 0>
+	start <if# P%id%01 0 ifG ComTime P%id%01  MoveNPC %1% %3%  EndPlot>
+
+
+
+
+

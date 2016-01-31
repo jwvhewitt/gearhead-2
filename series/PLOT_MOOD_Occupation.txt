@@ -1,0 +1,12 @@
+%%
+%% *Occupation Plots
+%%
+%%  Mecha from a foreign power are in town to resist the actions of some other
+%%  local faction. This is going to be unpopular with the locals.
+%%
+%% Mood Spec:
+%%  E1 = The city itself
+%%  E2 = The occupying power
+%%  E3 = The local faction
+%%
+

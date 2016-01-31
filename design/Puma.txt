@@ -1,0 +1,74 @@
+Battroid 4
+Name <Puma>
+Desig <LCA-1S>
+type <GROUND SPACE INSIDE>
+factions <SOLAR MAQUI>
+SDL_PORTRAIT <item_puma.png>
+desc <This is the basic space battroid used by the Solar Navy.>
+
+
+sub
+Head
+	Size 2
+	Armor 3
+	sub
+		Sensor 6
+		mass -1
+	end
+
+torso
+	Armor 4
+	sub
+		CPit
+
+		MLauncher 4
+		sub
+			STC SWM-2
+			name <Claw Missiles>
+			Magazine 20
+		end
+
+		ECM 2
+	end
+
+Arm
+	Name <Right Arm>
+	Armor 3
+	sub
+		Hand
+
+		Mount
+		Name <Right Weapon Mount>
+		inv
+			STC LAS-10
+			Recharge 2
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	Armor 3
+	sub
+		Hand
+
+		Mount
+		Name <Left Weapon Mount>
+		inv
+			STC LAS-5
+		end
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 3
+	sub
+		Flight 4
+	end
+
+Leg
+	Name <Left Leg>
+	Armor 3
+	sub
+		Flight 4
+	end
+end

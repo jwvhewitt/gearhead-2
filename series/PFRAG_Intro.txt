@@ -1,0 +1,148 @@
+% Persona Fragment File
+
+% All the persona fragments in this file deal with the beginning of the game.
+% There are two primary characters to be concerned with: the INTRO and the MENTOR.
+
+% The INTRO is the character who speaks to the PC first, and usually explains
+% the core story.
+
+% TYPE: *SHOP_INTRO
+
+	Persona
+	requires <*SHOP_INTRO>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <ESSENTIAL>
+	KEYWORDS <WEAPON CLOTHING FOOD ELECTRONICS ESSENTIAL>
+	Msg%id%01 <This shop has a good selection of essential adventuring equipment.>
+	Msg%id%02 <Here's what I have in stock. My inventory changes all the time so you'll want to check back often.>
+	Prompt%id%01 <Let me see what you've got.>
+	Prompt%id%02 <Sorry, I don't need anything right now.>
+
+
+% TYPE: *INTRO_Introduction
+%        The INTRO will greet the PC
+%    Param1: Exit script label
+
+Persona
+requires <*INTRO_Introduction>
+START <if= V%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+result%id%01 <AddCheerful  10   Goto %1%>
+result%id%02 <AddCheerful -10   Goto %1%>
+Msg%id%01 <Hi, \PC . How's it going?>
+Prompt%id%01 <Pretty good, I guess.>
+Prompt%id%01_1 <I'm doing okay.>
+Prompt%id%01_2 <Everything's great!>
+Prompt%id%02 <Not so hot.>
+Prompt%id%02_1 <I've been better.>
+Prompt%id%02_2 <Things aren't going so well.>
+
+Persona
+requires <*INTRO_Introduction>
+START <if= V%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+result%id%01 <AddSociable  10   Goto %1%>
+result%id%02 <AddSociable -10   Goto %1%>
+Msg%id%01 <So there you are. I've been looking all over... You really are a difficult person to find!>
+Prompt%id%01 <Me? I'm not so hard to find.>
+Prompt%id%01_1 <Sorry, I've been too busy lately.>
+Prompt%id%01_2 <That's the price of my popularity, I'm afraid.>
+Prompt%id%02 <I haven't felt like talking lately.>
+Prompt%id%02_1 <You can only find me when I want to be found.>
+Prompt%id%02_2 <Sorry, I like to keep to myself most times.>
+
+Persona
+requires <*INTRO_Introduction>
+START <if= V%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+result%id%01 <AddEasygoing  10   Goto %1%>
+result%id%02 <AddEasygoing -10   Goto %1%>
+Msg%id%01 <Hey \PC ! I wanted to talk with you. What have you been doing lately?>
+Prompt%id%01 <Not much, just hanging around.>
+Prompt%id%01_1 <Same as usual... playing games and watching vidnet.>
+Prompt%id%01_2 <Actually, nothing.>
+Prompt%id%02 <I've been training.>
+Prompt%id%02_1 <I've been working out.>
+Prompt%id%02_2 <Nothing special, just training and working out like always.>
+
+
+% TYPE: *INTRO_Question
+%        The Intro will ask a question of the PC, setting some initial traits
+%    Param1: Exit script label
+
+
+% TYPE: *INTRO_Advice
+%	The Intro character will provide the PC with some basic advice. Usually this
+%	will just consist of "Talk to the other people around here before heading out".
+
+Persona
+requires <*INTRO_Advice>
+START <NewChat say %id%01>
+Msg%id%01 <Before heading out, you'll probably want to speak to some of the other people around here.>
+Msg%id%01_1 <Make sure that you talk to some of the other people here before starting your adventure. They're likely to have some good advice for you. Also, pick up some equipment, and definitely a mobile phone.>
+CMsg%id%01_1 <ifNPCSociable Accept>
+Msg%id%01_2 <Make sure you pick up some equipment before heading out. There's a store in the back.>
+CMsg%id%01_2 <ifNPCShy Accept>
+Msg%id%01_3 <I don't really have any useful advice... some of the professional cavaliers around here might, though. You should probably speak to them before heading out.>
+CMsg%id%01_3 <ifNPCEasygoing Accept>
+Msg%id%01_4 <Keep working on your skills and never ever quit. Right now you're an amateur. There are some experienced duelists here who might have more advice for you. Talk to them before heading out.>
+CMsg%id%01_4 <ifNPCPassionate Accept>
+Msg%id%01_5 <A whole world of adventure is waiting for you. Before you start, you might want to speak with some of the people here and grab some equipment at the store.>
+CMsg%id%01_5 <ifNPCCheerful Accept>
+Msg%id%01_6 <It's a dangerous world out there. Before starting your adventure, you might want to buy some armor. There's a store right here so you can do that right away.>
+CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+
+% TYPE: *MENTOR_WhatDoFirst
+%        The mentor will tell the PC what he should do first.
+%    Param1,2,3: Exit prompt numbers
+
+Persona
+requires <*MENTOR_WhatDoFirst>
+start <NewChat Say %id%01 AddChat %1% AddChat %2% AddChat %3%>
+Msg%id%01 <Right now you should buy some equipment and try to find some job contacts.>
+Msg%id%01_1 <>
+CMsg%id%01_1 <ifNPCSociable Accept>
+Msg%id%01_2 <>
+CMsg%id%01_2 <ifNPCShy Accept>
+Msg%id%01_3 <Well, that depends. What do you want to do? I suppose you're going to have to go looking for missions sooner or later. Talk to the people around, see if you can hear any rumors.>
+CMsg%id%01_3 <ifNPCEasygoing Accept>
+Msg%id%01_4 <>
+CMsg%id%01_4 <ifNPCPassionate Accept>
+Msg%id%01_5 <>
+CMsg%id%01_5 <ifNPCCheerful Accept>
+Msg%id%01_6 <>
+CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+
+
+% TYPE: *MENTOR_WhatEquipment
+%        The mentor will tell the PC to buy a handphone.
+%    Param1,2,3: Exit prompt numbers
+
+Persona
+requires <*MENTOR_WhatEquipment>
+start <NewChat Say %id%01 AddChat %1% AddChat %2% AddChat %3%>
+Msg%id%01 <Your most important piece of equipment is your mecha. Beyond that, you'll also want some armor and a personal communications device.>
+Msg%id%01_1 <The most important thing you can buy is a mobile phone. Make sure it's got email and memo support, as well. This will be your most important tool for finding and completing jobs.>
+CMsg%id%01_1 <ifNPCSociable Accept>
+Msg%id%01_2 <You'll need some armor, a personal weapon, and a communication system. Make sure you have access to email and memos at least.>
+CMsg%id%01_2 <ifNPCShy Accept>
+Msg%id%01_3 <>
+CMsg%id%01_3 <ifNPCEasygoing Accept>
+Msg%id%01_4 <I guess you have a mecha already? That's going to be your most important piece of equipment... Take good care of it. You should also buy some weapons, armor, and a mobile phone.>
+CMsg%id%01_4 <ifNPCPassionate Accept>
+Msg%id%01_5 <Where to start... There's all kind of gadgets you can buy but most of it can safely be ignored for now. Get a communicator, definitely, and also some armor. Also pick up a weapon if you think you'll be fighting outside of your mecha.>
+CMsg%id%01_5 <ifNPCCheerful Accept>
+Msg%id%01_6 <It's a dangerous world, so your first investment should be in armor and weapons. Even if you're not planning on looking for trouble there's no telling when trouble will come looking for you. Also, a phone would be useful.>
+CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+
+
+
+
+
+
+
+
+
+

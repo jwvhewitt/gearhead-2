@@ -1,0 +1,178 @@
+%%
+%% *CSPAWN_ Plots
+%%
+%%  A core story event has just caused something to happen in the game world.
+%%  Each subclass of this plot type is gonna need its own specification.
+%%
+
+
+%%
+%% *CSPAWN_Def5 Plots
+%%
+%%  The PC has just completed the fifth defense mission. This will spawn a new
+%%  event in which the PC's allies (or someone) will launch a morally dubious
+%%  counterattack. The PC can either aid the attack (gaining a bonus in the
+%%  final battle) or somehow find the moral high ground (needed for the Peace
+%%  And Love special ending).
+%%
+%% PARAM1: The Enemy Faction
+%% PARAM2: The Allied Faction
+%%
+
+
+Content
+	name <Orbital Imperialism>
+	requires <*CSPAWN_Def5 (1:REDMA|1:CRIHN) (2:L5LAW|2:MAQUI|2:FCOMS|2:RISHI|2:ROCKE|2:SILKN|2:AEGSF|2:COMET|2:MUGLE|2:HOELL)>
+	desc <To combat the pirate threat, an asteroid colony will be occupied by L5 troops.>
+	%
+	%  ACT ONE: The PC can intervene in a fight between E2 and E1. If the E2 commander
+	%    is killed, all hell breaks loose and no chance of a peaceful resolution.
+	%
+	%  ACT TWO: The occupation proper starts. Activate the mood and the subplot.
+	%
+
+	% E1 is the enemy faction
+	% E2 is the allied faction
+	% E3 is the occupying faction
+	% E4 is the place to be occupied
+	% E5 is the commanding officer
+	% E6 is the Occupation mood
+	% E7 is the Skirmishing mood
+	% E8 is an outdoors scene for the opening battle
+	% E9 is the encounter for the opening battle
+	% E10 is the scene for E5 after the battle
+	Element3 <Faction (SILKN|AEGSF) !Okay 2>
+	Element4 <Scene Town BOHEM !Global>
+	Element5 <Prefab>
+	Place5 <9 (Allies) sd ally>
+	Element6 <Prefab>
+	Element7 <Prefab>
+	Element8 <Scene !Near 4 Environs>
+	Element9 <Prefab>
+	Place9 <8>
+	Element10 <Scene Public Building (Garage|Hospital|Government) !Near 4>
+
+
+	update <if= PlotStatus %plotid% 0 SetPlotStatus %plotid% %id%  NPCLevel %5% %threat%  SetNPCFaction %5% %3%  News %id%01>
+
+	Msg%id%01 <Commander %name5% of %name3% to lead peacekeeping mission against %name1% in %name4%.>
+
+	% SubPlot1 is the occupation itself.
+	SubPlot1 <*CSE_DEF5_Occupation 3 1 4 5 6 10>
+
+	sub
+		Persona 5
+		rumor%id% <%name5%'s scouting out %name8%.>
+		greeting <if= PlotStatus %plotid% %id% else .%id%_GoChat EndChat Say %id%01 AddChat %id%01 AddChat %id%02>
+		.%id%_GoChat <NewChat SayAnything>
+		*result%id%01 <*THEME_EXPO&Ally na>
+		result%id%02 <EndChat  Say %id%02  AddReact -d20  Retreat 1>
+		Msg%id%01 <This is %name5% of %name3% peacekeeping team. We're being attacked by %name1%; some backup would be helpful.>
+		Msg%id%02 <Acknowledged. We'll cover your retreat.>
+		Prompt%id%01 <I'm on the way!>
+		Prompt%id%02 <Um... I'd rather just get out of here.>
+
+		MetaScene 9 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 1  ForceChat %5%>
+
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1   Alert 2   ifNPCOK %5% else GoStartSkirmishing  Goto GoStartActTwo>
+		nu2 <if= T2 0            if= V1 0 V= 1 1   Alert 3   XPV 100  AddRenown 1   SALVAGE   ifNPCOK %5% else GoStartSkirmishing  Monologue %5% 4  History 5  Goto GoStartActTwo>
+
+		GoStartActTwo <MoveAndPacifyNPC %5% %10%  SetMood %6% %4%  SetPlotStatus %plotid1% %id1%>
+		GoStartSkirmishing <SetMood %7% %4%  EndPlot>
+
+		Msg1 <You find a mecha force from %name3% being attacked by %name1%.>
+		Msg2_1 <You don't stick around to see how the battle turns out.>
+		CMsg2_1 <ifG T3 0 Accept>
+		Msg2_2 <You have lost the battle.>
+		CMsg2_2 <if= T3 0 Accept>
+		Msg3 <You have defeated %name1%.>
+		Msg4 <Thanks for that... If you'd like to help us take this city back from %name1%, come talk with me at \EXACT_SCENE %10% later on.>
+		Msg5 <You helped %name5% fight a lance from %name1%.>
+
+		sub
+			team 1
+			setally 3
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 2
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction %1%   WMecha 2 %threat% 100>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			name <Allies>
+			SetEnemy 2
+			SetAlly 1
+			Deploy <if= PlotStatus %plotid% %id%  SetSelfFaction %3%  WMecha 3 %threat% 50>
+			ParaX 10
+			ParaY 10
+		end
+	end
+	inv
+		NPC Mecha Pilot
+		chardesc old old heroic
+		job <Commander>
+		Conversation
+
+		Mood 3
+		name <"Peacekeepers" Mood>
+		plot_type <*Occupation>
+		Element1 <Grab 4>
+		Element2 <Grab 3>
+		Element3 <Grab 1>
+
+		Mood 5
+		name <"Spinners Go Home" Mood>
+		plot_type <*Skirmishing>
+		Element1 <Grab 4>
+		Element2 <Grab 3>
+		MoodTimeLimit 259200
+		Update <if= v1 0 V= 1 1   News 1>
+		Msg1 <Violence erupts in %name4% as pilots from %name3% try to avenge %name5%'s death.>
+		%% Meme Messages
+		Msg_1 <Fighting between %name3% and %name1% has been pretty fierce.>
+		Msg_2 <I'll be glad when this occupation is over and %name3% can go home.>
+		Msg_3 <So far, things haven't gotten out of hand... nobody wants a repeat of Crihna Rock.>
+		Msg_10 <In my opinion %name3% should just go home... don't tell them I said that.>
+		CMsg_10 <if= ChatNPCFac 0 Accept>
+		Msg_11 <Why did %name3% even come here? We don't want them, and we don't need them.>
+		CMsg_11 <if# ChatNPCFac %3% Accept>
+		Msg_100 <Our mission is to protect %name4% from pirates... but just try telling that to the locals.>
+		CMsg_100 <if= ChatNPCFac %3% Accept>
+		Msg_101 <We're just trying to help. Why won't anybody cooperate?>
+		CMsg_101 <if= ChatNPCFac %3% Accept>
+		Msg_110 <We're supposed to be protecting the citizens of %name4%, but I get the feeling we were really sent here to protect corporate profits.>
+		CMsg_110 <if= ChatNPCFac %3% if= %3% SILKN Accept>
+		Msg_120 <Honestly, if I wanted to be occupying a city and putting down insurrection I could've just stayed home on Luna.>
+		CMsg_120 <if= ChatNPCFac %3% if= %3% AEGSF Accept>
+		Msg_200 <We just have to wait this invasion out... %name3% will go home eventually.>
+		CMsg_200 <if= ChatNPCFac %1% Accept>
+		Msg_201 <The spinners don't care about the people of the ring. They're worse crooks than the blades and the masks combined.>
+		CMsg_201 <if= ChatNPCFac %1% Accept>
+		Msg_210 <When Crihna Rock was destroyed we said never again... yet here the spinners are, treating us like property in our own station.>
+		CMsg_210 <if= ChatNPCFac %1% if= %1% CRIHN Accept>
+		Msg_220 <I don't really mind %name3% being here. I could always use some more target practice!>
+		CMsg_220 <if= ChatNPCFac REDMA Accept>
+
+		STC CORE-INVISIBLEENCOUNTER
+		name <%name5%'s patrol>
+	end
+
+
+
+
+
+
+
+
+

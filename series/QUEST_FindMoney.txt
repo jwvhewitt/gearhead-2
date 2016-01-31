@@ -1,0 +1,623 @@
+%%
+%%   *:Q_FindMoney Contents
+%%		.Investor = The NPC needs the money to invest in a new product
+%%		.Charity = The NPC needs the money to save an orphanage or whatever
+%%
+%%	The PC is sent by someone to scrounge funds for some project or another.
+%%
+%%  Set the requires attribute to *:Q_DFindMoney for testing
+%%
+%%	Param1: The character who needs the money
+%%
+
+Content
+	name <Mechanic Mission>
+	desc <A mechanic may provide funding, if the PC does something for him.>
+	requires <*:Q_FindMoney>
+
+	% E1 is the character who needs the money
+	% E2 is the character who can give the money
+	% E3 is a scene for E2
+	Element2 <Prefab>
+	Place2 <3 (Citizens) Pass>
+	Element3 <Scene Building Public Garage>
+
+	%% FAIL CONDITIONS:
+	%% - E2 dies
+	end <ifNPCDead %2% LoseSubPlot %plotid%>
+
+	% Quest1 is the mission offered by the shopkeeper.
+	SubPlot1 <*:Q_MinorMission 2>
+
+	sub
+		Persona 2
+		rumor%id% <%name2% is known as a great philanthropist.>
+		greeting <if= PlotStatus %plotid% %id% else GoGreet if= PlotStatus %plotid1% -1 else GoCheckLoss NewChat Say 1 WinSubPlot %plotid%>
+		GoCheckLoss <if= PlotStatus %plotid1% -2 else GoCheckQuest NewChat Say 3 SetPlotStatus %plotid% -2>
+		GoCheckQuest <NewChat Say 4 AddChat 1 AddChat 2>
+		*GoGreet <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_MECHA GoBye>
+		*GoBye <*GoodBye>
+		result1 <EndChat Say 5 AddChat 3>
+		result2 <Goto GoShop>
+		result3 <Goto .%id1%_GoInit>
+		Msg1 <You really came through; thanks. Go let %name1% know that I'm willing to back \PPR %1% project.>
+		Msg3 <You failed to complete the task I asked of you. I'm afraid that I won't be able to help %name1%.>
+		Msg4 <Yes? You look like there's something you want.>
+		Msg5 <Interesting. Well, before I can help %name1%, I need some help myself. If you could do one small thing for me I'd be more than willing to provide funding.>
+		Prompt1 <%name1% needs your help.>
+		Prompt2 <Right now, I just need repairs.>
+		Prompt3 <[Continue]>
+
+		MetaScene 2
+		sub
+			room
+			minimap <....1...............&---&>
+			special <SHAREDPALETTE>
+			desig <HOME>
+		end
+	end
+	inv
+		NPC Mechanic
+		chardesc heroic
+	end
+
+Content
+	name <Shopkeeper Mission>
+	desc <A shopkeeper may provide funding, if the PC does something for him.>
+	requires <*:Q_FindMoney>
+
+	% E1 is the character who needs the money
+	% E2 is the character who can give the money
+	% E3 is a scene for E2
+	Element2 <Prefab>
+	Place2 <3 (Citizens) Pass>
+	Element3 <Scene Building Public Mall>
+
+	%% FAIL CONDITIONS:
+	%% - E2 dies
+	end <ifNPCDead %2% LoseSubPlot %plotid%>
+
+	% Quest1 is the mission offered by the shopkeeper.
+	SubPlot1 <*:Q_MinorMission 2>
+
+	sub
+		Persona 2
+		rumor%id% <%name2% has been known to donate money to a variety of causes.>
+		greeting <if= PlotStatus %plotid% %id% else GoGreet if= PlotStatus %plotid1% -1 else GoCheckLoss NewChat Say 1  WinSubPlot %plotid%>
+		GoCheckLoss <if= PlotStatus %plotid1% -2 else GoCheckQuest NewChat Say 3 SetPlotStatus %plotid% -2>
+		GoCheckQuest <NewChat Say 4 AddChat 1 AddChat 2>
+		*GoGreet <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_ARMOR GoBye>
+		*GoBye <*GoodBye>
+		result1 <EndChat Say 5 AddChat 3>
+		result2 <Goto GoShop>
+		result3 <Goto .%id1%_GoInit>
+		Msg1 <Thanks for your help. I'll send that money to %name1% right away.>
+		Msg3 <Things are looking grim. Under these circumstances, I can't afford to give any money to %name1%.>
+		Msg4 <May I help you?>
+		Msg5 <I'd like to help %name1%, but before I can do that there's a little something I need you to do for me.>
+		Prompt1 <I'm soliciting donations for %name1%.>
+		Prompt2 <I'd like to buy something.>
+		Prompt3 <[Continue]>
+
+		MetaScene 2
+		sub
+			room
+			minimap <....1..........2...3&---&>
+			special <SHAREDPALETTE>
+			desig <HOME>
+			inv
+				STC MANNEKIN-M
+				PDir 1
+				MiniMapComponent 2
+
+				STC MANNEKIN-F
+				PDir 3
+				MiniMapComponent 3
+			end
+		end
+	end
+	inv
+		NPC Shopkeeper
+		Chardesc Shy
+	end
+
+
+Content
+	name <Charity Mecha Tournament>
+	desc <The PC can enter and maybe even win a charity mecha tournament.>
+	requires <*:Q_FindMoney .Charity>
+
+	% E1 is the character who needs the money
+	% E2 is the organizer of the tournament
+	% E3 is the tournament encounter
+	% E4 is a scene for E2
+	% E5 is an environs scene for E3
+	Element2 <Prefab>
+	Place2 <4 (Citizens) Pass>
+	Element3 <Prefab>
+	Place3 <5>
+	Element4 <Scene Building Public -Sleazy>
+	Element5 <Scene Environs>
+
+	sub
+		Persona 2
+		rumor%id% <%name2% has organized a charity mecha tournament.>
+		% NPCVar %2% 1 = Have won the fight
+		% V1 = Match recharge timer
+		% V2 = Registration counter
+		greeting <if= PlotStatus %plotid% %id% else GoGreet if= NPCVar %2% 1 1 else GoCheckStatus NewChat Say 9 WinSubPlot %plotid% History 10>
+		GoCheckStatus <if= ItemVar %3% 11 1 else GoCheckRecharge NewChat Say 7 AddChat 3>
+		GoCheckRecharge <ifG V1 ComTime else GoCheckFirst NewChat Say 6>
+		GoCheckFirst <if= V2 1 else GoRegister NewChat Say 4 AddChat 2>
+		GoRegister <NewChat Say 1 AddChat 1>
+		GoSetCombat <ItemVar= %3% 11 1 V= 1 ComTime V+ 1 86400>
+		*GoGreet <*NiceToMeetYou GoChat>
+		*GoChat <*MISC_CHATTER>
+		result1 <NewChat Say 2 QMemo %plotid% 3 V= 2 1 Goto GoSetCombat>
+		result2 <NewChat Say 5 Goto GoSetCombat>
+		result3 <NewChat Say 8>
+		Msg1 <This is the \SCENE RootSceneID Charity Mecha Spectacular. Pilots from across the solar system have come to compete for their favorite charities. Would you like to register?>
+		Msg2 <Very good. There's a match coming up soon. Go to the arena in %name5% and do your best.>
+		Msg3 <You joined %name2%'s charity mecha tournament to earn money for %name1%.>
+		Msg4 <Welcome to the \SCENE RootSceneID Charity Mecha Spectacular. Are you ready to fight?>
+		Msg5 <There's another match coming up shortly. I trust you remember where to find the arena.>
+		Msg6 <You lost the match, but you aren't out of the running yet... You can try in a different heat tomorrow.>
+		Msg7 <What are you doing here? You're supposed to be in the arena!>
+		Msg8 <You can find the arena entrance in %name5% . It should be pretty obvious.>
+		msg9 <You did it! You've won the \SCENE RootSceneID Charity Mecha Spectacular. I've arranged for the prize money to be sent to %name1%... you must be very proud.>
+		Msg10 <You won the \SCENE RootSceneID Charity Mecha Spectacular.>
+		Prompt1 <I'm here to help %name1%.>
+		Prompt2 <I'm ready.>
+		Prompt3 <Where was that again?>
+
+		% Death check
+		Metascene 2
+		start <if= PlotStatus %plotid% %id% else %pop% ifNPCDead %2% else %pop% SetPlotStatus %plotid% -2 DeleteItem %3% Goto %pop%>
+	end
+	inv
+		NPC Arena Pilot
+		chardesc Heroic Sociable
+
+		STC QUEST-MAPMARKER-STATIONARY
+		name <Charity Arena>
+		%% V11 = Primed for combat
+		update <if# V11 0 else GoHide  SetStat STAT_MetaVisibility 0  ShowEncounter  Goto GoSetOrders>
+		use <ifG StatVal STAT_MetaVisibility -1  Print 1  Goto GoStartCombat>
+		GoStartCombat <V= 11 0  SavePos Dynamic 2 V2 100 .nu1 .nu2 ComposeD Msg1 .Msg1 DynaFaction 5>
+		.nu1 <if= T1 0  Return   if= L1 0  L= 1 1  LoseRenown>
+		.nu2 <if= T2 0           if= L1 0  L= 1 1  XPV 100  AddRenown 1   NPCVar= %2% 1 1  QMemo %plotid% 1  DeleteItem %3%>
+		.msg1 <You have won the charity mecha tournament, and should inform %name2% in %name4% .>
+		Msg1 <You enter the arena.>
+	end
+
+
+Content
+	name <Banking: The Boring Way>
+	desc <The PC can gain the loan by talking to a banker.>
+	requires <*:Q_FindMoney .Investor ~"safe" ~"financial" ~"lawful">
+
+	% E1 is the character who needs the money
+	% E2 is a banker who the PC can argue with
+	% E3 is the scene for the bank
+	Element2 <Prefab>
+	Place2 <3 (Citizens) Pass>
+	Element3 <Scene Building Public Legit Mall>
+
+	%% FAIL CONDITIONS:
+	%% - E2 dies
+	end <ifNPCDead %2% LoseSubPlot %plotid%>
+
+	sub
+		Persona 2
+		rumor%id% <%name2% offers business loans at reasonable rates.>
+		% V1 = Stupid question counter
+		Greeting <Goto GoGreet>
+		*GoGreet <*NiceToMeetYou GoChat>
+		GoChat <NewChat Say 1 AddChat 1 AddCHat 2>
+		Result1 <NewChat Say 2 AddChat 2 V= 1 1>
+		Result2 <NewChat Say 3 AddChat 3 AddChat 4 AddChat 5>
+		Result3 <ifG PCLaw %threat% else GoR3Fail NewChat Say 4 AddChat 6 AddChat 7>
+		GoR3Fail <NewChat Say 5 AddChat 7>
+		result4 <ifConversation Skilltar %threat% else GoR4Fail NewChat say 6 AddChat 8>
+		GoR4Fail <NewChat Say 7 AddChat 7>
+		result5 <NewChat Say 8 AddChat 9 AddChat 10 AddChat 11>
+		% Vouching for a criminal character will result in a reputation hit
+		result6 <NewChat Say 9 WinSubPlot %plotid% XPV 50 AddSociable d6 ifG -10 NPCLaw %1% AddLawful -1 AddRenown -5>
+		result7 <NewChat Say 10 AddChat 3 AddChat 4 AddChat 5 AddChat 12>
+		result8 <NewChat Say 9 WinSubPlot %plotid% XPV 50>
+		result9 <NewChat Say 11 WinSubPlot %plotid% XPV 50  AddEasygoing -d8  AddReact d10>
+		result10 <NewChat Say 12 WinSubPlot %plotid% XPV 50  AddHeroic -1  AddEasygoing -d10  AddReact -d10>
+		result11 <Goto result7>
+		*result12 <*GoodBye>
+		Msg1 <This is %name2%'s Financial Services. We provide loans to small and medium sized businesses.>
+		Msg2 <Sorry, but adventurers are a bad investment risk. They tend to either die or disappear before paying off what they owe.>
+		Msg3 <Ah, %name1%; \SPR %1% came to see me earlier. Unfortunately, \SPR %1% doesn't have any collatoral. I can't very well risk giving \OPR %1% a loan without a guarantee that I'll be paid back.>
+		Msg4 <Are you certain you want to do that? Your own reputation is beyond reproach; were %name1% to default on the loan, it could be severely tarnished.>
+		Msg5 <You're not exactly a reliable person to be making a character reference, now are you? I'm afraid I'm going to need something better than that.>
+		Msg5_1 <If you were to give a character reference for %name1%, don't you think it would be in my best interest to stay as far away from \OPR %1% as possible?>
+		CMsg5_1 <ifPCCriminal Accept>
+		Msg6 <You sound pretty sure of that. I've looked over %name1%'s proposal and it's certainly possible. You really think that there's a profit to be made here?>
+		Msg7 <It's easy to say that, but without numbers to back it up it's all quite meaningless. I'm going to need something more before I agree to invest my money.>
+		Msg8 <Really? And why is that?>
+		Msg9 <Alright, then. You can go tell %name1% that \PPR %1% loan is approved.>
+		Msg10 <Do you have any other reason why I should give a loan to %name1%?>
+		Msg11 <So I see... Very well, then. You can go tell %name1% that \PPR %1% loan has been approved.>
+		Msg12 <Um, you don't sound like the kind of person who jokes about grievous bodily harm... You can go tell %name1% that I've approved \PPR %1% loan.>
+		Prompt1 <Can I get a loan for myself?>
+		CPrompt1 <if= V1 0 Accept>
+		Prompt2 <%name1% needs a business loan.>
+		CPrompt2 <if= PlotStatus %plotid% %id% ifNPCOK %1% Accept>
+		Prompt3 <How about if I vouch for %name1%'s character?>
+		Prompt4 <I think %name1%'s business is bound to succeed.>
+		CPrompt4 <ifShopping SkillTar %threat% Accept>
+		Prompt5 <It'd be in your best interest to give \OPR %1% that loan...>
+		Prompt6 <Yes, I want to vouch for %name1%.>
+		Prompt7 <Let's see what else I can try...>
+		Prompt7_1 <Let me try something else...>
+		Prompt7_2 <I've got another idea, then...>
+		Prompt8 <Yes I do.>
+		Prompt9 <I could make it completely worth your while.>
+		CPrompt9 <ifChatNPCSexy ifConversation Skilltar %threat% Accept>
+		Prompt10 <It might be intensely painful to refuse.>
+		CPrompt10 <ifIntimidation SkillTar %threat% Accept>
+		Prompt11 <I have no idea.>
+		Prompt12 <Not right now, no.>
+
+		MetaScene 2
+		sub
+			room
+			% The bank itself. Can't add a bank without adding a safe to rob, can you?
+			name <%name2% Financial Services>
+			minimap <2.......1...........#&+&#>
+			special <SHAREDPALETTE>
+			desig <HOME>
+			inv
+				STC Safe
+				% V1 = Have robbed safe
+				% V2 = Have triggered alarm
+				MiniMapComponent 2
+				PDir 2
+				Use <if= V1 0 else GoAlreadyRobbed Print 1>
+				GoAlreadyRobbed <Print 2>
+				CLUE_CODEBREAKING <if= V1 0 else GoAlreadyRobbed if= V2 0 else GoSafeOpen ifNPCOK %2% else GoSafeOpen ifNPCCanSeePC %2% else GoSafeOpen Goto GoRiskyOpen>
+				GoRiskyOpen <ifStealth HardSkillTar %threat% else GoDiscovered Goto GoSafeOpen>
+				GoSafeOpen <Mental ifCodeBreaking HardSkillTar %threat% else GoCantOpen Goto GoOpen>
+				GoDiscovered <Alert 3 Alarm AddLawful -10 PCEnemy %2% if= PlotStatus %plotid% %id% LoseSubPlot %plotid% V= 2 1>
+				GoCantOpen <Print 4>
+				GoOpen <Print 5 AddLawful -5 CashPrize Threat %threat% 20 V= 1 1>
+				Msg1_1 <This safe contains all the bank's money. %name2% keeps a close eye on it.>
+				CMsg1_1 <ifNPCOK %2% ifNPCCanSeePC %2% Accept>
+				Msg1_2 <This safe contains all the bank's money.>
+				CMsg1_3 <ifNPCOK %2% else GoAccept ifNPCCanSeePC %2% else GoAccept>
+				GoAccept <ACCEPT>
+				Msg2 <You've already stolen the money from this safe.>
+				Msg3 <You are spotted trying to open the safe!>
+				Msg4 <You can't open this safe at your current skill level.>
+				Msg5 <You open the safe and quickly grab the money.>
+			end
+		end
+	end
+	inv
+		NPC Corporate Executive
+		job <Banker>
+	end
+
+
+Content
+	name <Tycoon Party>
+	desc <If the PC can crash a party of the station's wealthiest residents, maybe he can get funding.>
+	requires <*:Q_FindMoney SPINNER>
+
+	% Element 1 will be the NPC who needs some money
+	% Element 2 will be the tycoon who can maybe provide the money
+	% E3 is the yacht scene
+	% E4 is the outdoors scene where it will be placed.
+	element2 <Prefab>
+	Place2 <3 (Citizens) pass>
+	Element3 <QuestScene>
+	Place3 <4>
+	Element4 <Scene Outdoors>
+
+	% P%id%01 = Initialization Counter
+
+	%% FAIL CONDITIONS:
+	%% - E2 dies
+	end <ifNPCDead %2% LoseSubPlot %plotid%>
+
+	update <if= P%id%01 0 P= %id%01 1 SetPlotStatus %plotid1% %id1%>
+
+	SubPlot1 <*:Q_RevealEncounter 3 4>
+
+	sub
+		Persona 2
+		special <Unlisted>
+		% V1 = Have applied reaction boost.
+		greeting <if= PlotStatus %plotid% %id% else GoChat ifG PartyScore 2 else GoBadParty NewChat Say 1 AddChat 1 AddChat 2 if= V1 0 V= 1 1 AddReact 20>
+		GoBadParty <NewChat Say 2 QMemo %plotid% 6>
+		*GoChat <*MISC_CHATTER>
+		result1 <NewChat Say 3 AddChat 3>
+		result2 <NewChat Say 4>
+		result3 <NewChat Say 5  WinSubPlot %plotid%>
+		Msg1 <Ah, \PC ! I've heard that you're the life of the party. It's such a pleasure to see you here at my little event!>
+		Msg2 <How disappointing... So far, this party has been one colossal bore.>
+		Msg3 <For you, \PC , anything... as long as it isn't too expensive, or too perverted.>
+		Msg4 <You're very welcome. Please, stay as long as you'd like.>
+		Msg5 <So, not only a pretty face, you also have business sense... I respect that. Alright, I'll help %name1% .>
+		Msg6 <%name2% isn't enjoying \PPR %2% yacht party in \SCENE RootSceneID very much.>
+		Prompt1 <%name2%, I need to ask you a favor.>
+		Prompt2 <I'm glad to hear that.>
+		Prompt3 <I want you to finance %name1%.>
+		CPrompt3 <ifNPCOK %1% Accept>
+
+		MetaScene 3
+		name <%name2%'s Yacht>
+		rumor%id% <%name2% is hosting a fancy yacht party for all the spinner's richest inhabitants.>
+		entrance <*QUEST-INACTIVE>
+		type <Yacht>
+		mapwidth 21
+		mapheight 21
+		ClubMap
+		special <NOEXIT>
+		NeededCells 5
+		Content1 <Some 5 25 Sub *CLUB_X>
+		Content2 <Some 1 100 Here *ANTI_ATTACK_SECURITY 2>
+		sub
+			team 1
+
+			team 2
+			name <Citizens>
+			SetAlly 1
+			Passive
+
+			team 3
+			name <Guards>
+			SetAlly 2
+
+			room
+			name <Foyer>
+			desig <EntranceGrid>
+			Content1 <Variety 3 5 Here *PartyGames %threat%>
+			Content3 <Some 3  55 Here *URBAN_X na>
+
+			room
+			minimap <#######1###...##...###+##>
+			inv
+				Elevator
+				name <Exit>
+				MiniMapComponent 1
+				Destination -1
+			end
+		end
+	end
+	inv
+		NPC Corporate Executive
+		job <Tycoon>
+		chardesc Renowned Renowned Old Sociable Cheerful
+	end
+
+
+Content
+	name <Insane Venture Capitalist>
+	% The PC needs a few million dollars to help a friend. This rich shopkeeper will
+	% give him the money if the PC will clear the rats out of his basement. Fairly
+	% standard RPG plot, except the PC will be able to call the NPC on his clear insanity.
+	requires <*:Q_FindMoney>
+
+	% E1 is the character who needs the money
+	% E2 is the shopkeeper who might be able to provide it
+	% E3 is the basement full of rats
+	% E4 is the scene for the office
+	element2 <Prefab>
+	Place2 <4 (Citizens) pass ally>
+	Element3 <QuestScene>
+	Place3 <4>
+	Element4 <Scene Mall Public>
+
+	%% FAIL CONDITIONS:
+	%% - E2 dies
+	end <ifNPCDead %2% LoseSubPlot %plotid%>
+
+	sub
+		Persona 2
+		rumor%id% <%name2% is very rich, but doesn't seem to be all that bright.>
+		% V1 = Have accepted quest
+		greeting <if= PlotStatus %plotid% %id% else GoFirstTime if= V1 1 else GoQuestIntro NewChat Say 14 AddChat 14 AddChat 15>
+		GoQuestIntro <ifNPCOK %1% else GoCancel NewChat Say 1 AddChat 1 AddChat 2>
+		GoCancel <SetPlotStatus %plotid% -2 goto GoFirstTime>
+		*GoFirstTime <*NiceToMeetYou GoOpenShop>
+		*GoOpenShop <*SHOP_ARMOR GoGoodbye>
+		*GoGoodbye <*GOODBYE>
+		result1 <NewChat Say 2 V= 1 1 AddChat 3 AddChat 4>
+		result2 <Goto GoOpenShop>
+		result3 <ifChatNPCInPlay else GoR3NotHere NewChat Say 3 QMemo %plotid% 5 AddChat 13>
+		GoR3NotHere <NewChat Say 4 QMemo %plotid% 5 AddChat 13>
+		result4 <NewChat Say 6 AddChat 5 AddChat 6>
+		result5 <Goto result3>
+		result6 <NewChat Say 7 AddChat 5 AddChat 7>
+		result7 <NewChat Say 8 AddChat 5 AddChat 8>
+		result8 <NewChat Say 9 AddChat 5 AddChat 9>
+		result9 <NewChat Say 10 AddChat 5 AddChat 10>
+		result10 <NewChat Say 11 AddChat 5 AddChat 11>
+		result11 <NewChat Say 12 AddChat 5 AddChat 12>
+		result12 <NewChat Say 13 AddChat 5>
+		result13 <AddRenown 1 AddReact -10 Goto result14>
+		result14 <NewChat Say 15 AddReact 10 WinSubPlot %plotid%>
+		result15 <Goto GoOpenShop>
+		Msg1 <Yes, may I help you with something?>
+		Msg1_1 <You look like you want to ask something... Hurry up and spit it out, I don't have all day.>
+		Msg2 <Donations, huh? Well, it sounds like a worthwhile cause... I may be able to help %name1%, if you do me a little favor. My storage room has been infested with rats. If you can get rid of them, then I'll agree to help your friend.>
+		Msg3 <The way down to the storage room is right behind this door. Come back when you've cleared out all the mice.>
+		Msg4 <You'll have to come to \SCENE NPCScene %2% to exterminate the mice- I know technology is great but I don't think you can do that over the phone just yet.>
+		Msg5 <%name2% in %name4% agreed to fund %name1% if you clear the vermin out of \PPR %2% storage room.>
+		Msg6 <Yes, that's the deal. Take it or leave it.>
+		Msg7 <Why should I hire an exterminator when I have you right here? And you have to do what I say, or else %name1% won't get the money!>
+		Msg8 <A million dollars isn't a lot when you have as much money as I do. That's why I can afford to help people like %name1%... plus I can use it as a tax write-off.>
+		Msg9 <Careful! Don't upset me, or I'll make you clean the storage room with no donation for %name1%!>
+		Msg10 <I see what you mean... So, it seems we have a bit of a standoff here, neither one of us are capable of breaking our original agreement.>
+		Msg11 <When I was younger I used to play adventure games, and there was always a rich king or a merchant who would give the adventurer some fantastic treasure in exchange for killing rats. I've always wanted that...>
+		Msg12 <Oh hell no. I was crap at those games... my adventurer always died. I wanted to be the king-merchant character... Imagine, being able to send people on any mundane yet dangerous assignments that strike my fancy...>
+		Msg13 <That may well be... but, I'm your only chance to help %name1%, short of becoming a millionaire yourself... or finding someone else to help... or winning a lottery...>
+		Msg14 <How goes the progress on your mouse-killing, adventurer?>
+		Msg14_1 <Any progress in cleaning out my storage room, yet?>
+		Msg14_2 <Have you cleared the mice, or whatever they are, from the storage room yet?>
+		Msg15 <Thanks! You can tell %name1% that the money's on the way.>
+		Prompt1 <I'm soliciting donations for %name1%.>
+		Prompt2 <I'd like to see what you have for sale.>
+		Prompt3 <It's a deal.>
+		Prompt4 <You'll give the money if I clean downstairs...?>
+		Prompt5 <Well, I've heard enough.>
+		Prompt5_1 <That's enough rambling.>
+		Prompt5_2 <Well, that's enough for me.>
+		Prompt5_3 <That's all I needed to hear.>
+		Prompt6 <But you can hire an exterminator for $200, $300 tops...>
+		Prompt7 <We're talking millions of dollars here...>
+		Prompt8 <You're completely blazing insane.>
+		Prompt9 <I'm not going to clean there for free.>
+		Prompt10 <Why are you doing this, anyhow?>
+		Prompt11 <So you want to be a cavalier?>
+		Prompt12 <I said it before, you're out of your mind.>
+		Prompt13 <I think you'll find the mice are gone already.>
+		CPrompt13 <if= SceneVar %3% 1 1 Accept>
+		Prompt14 <The mice are all dead.>
+		Prompt14_1 <They won't be bothering you again.>
+		CPrompt14 <if= SceneVar %3% 1 1 Accept>
+		Prompt15 <I need some supplies for my adventure.>
+
+		MetaScene 2
+		sub
+			room
+			minimap <2#...+#.......1.....&---&>
+			special <SHAREDPALETTE>
+			desig <HOME>
+			sub
+				Door
+				update <if= V1 0 else GoCheckQuest V= 1 1 SetStat STAT_Lock HardSkillTar %threat%>
+				GoCheckQuest <ifG PlotStatus %plotid% 0 SetStat STAT_Lock 0>
+			end
+			inv
+				TrapDoor
+				MiniMapComponent 2
+				desig <ENTRANCE %3%>
+			end
+		end
+
+		STC QS_ExterminationBasement
+		name <%name2%'s Basement>
+		SetID 3
+	end
+	inv
+		NPC Shopkeeper
+		Knowledge 8
+		Ego 14
+	end
+
+Content
+	name <The Prodigal Son/Daughter>
+	desc <A rich investor will give the PC some money, if the PC can redeem his son/daughter>
+	requires <*:Q_FindMoney ~.Investor>
+
+	% E1 is the character who needs the money
+	% E2 is the character who can give the money
+	% E3 is the city scene; no money involved
+	% E4 is the child who squandered the money
+	% E5 is a local public scene
+	Element2 <Prefab>
+	Place2 <5 (Citizens) pass ally>
+	Element3 <.>
+	Element4 <NewNPC 0 3 Young>
+	Element5 <Scene Building Public Legit>
+
+	%% FAIL CONDITIONS:
+	%% - E2 dies
+	end <ifNPCDead %2% LoseSubPlot %plotid%>
+
+	% SubQuest1 is the intervention for the target
+	SubPlot1 <*:Q_PersonalIntervention 4 2>
+
+	sub
+		Persona 2
+		rumor%id% <%name2% has been known to donate money to businesses and charities.>
+		% V1 = Have accepted quest
+		greeting <if= PlotStatus %plotid% %id% else GoNoQuest if= PlotStatus %plotid1% -1 else GoCheckStatus NewChat Say 1 WinSubPlot %plotid%>
+		GoCheckStatus <if= V1 1 else GoFirstTime NewChat Say 3 AddChat 1 AddChat 2 AddChat 3>
+		GoFirstTime <NewChat Say 4 AddChat 4>
+		GoNoQuest <NewChat SayAnything>
+		result1 <NewChat Say 5>
+		result2 <NewChat Say 6 SetPlotStatus %plotid% -2>
+		result3 <NewChat Say 6 AddCheerful -d10 SetPlotStatus %plotid% -2>
+		result4 <ifNPCOK %4% else GoR4Trivial NewChat Say 9 AddChat 5>
+		% If the prodigal sondaughter is already dead at the start of this
+		% subquest, the investment will be decided by a single conversation roll.
+		GoR4Trivial <ifConversation SkillTar %threat% else GoR4Fail NewChat Say 7 WinSubPlot %plotid%>
+		GoR4Fail <NewChat Say 8 SetPlotStatus %plotid% -2>
+		Result5 <NewChat Say 10 QMemo %plotid% 11 AddChat 6 SetPlotStatus %plotid1% %id1% V= 1 1>
+		result6 <NewChat Say 12 QMemo %plotid% 13>
+		Msg1 <You've brought %name4% back to me! I've approved the donation for %name1%; you can go tell \OPR %1% the good news.>
+		Msg3 <Do you have any news from %name4% yet?>
+		Msg4 <What's this, a cavalier with a business proposal? I can tell that you're after something and it more than likely has to do with money.>
+		Msg5 <Well, keep trying.>
+		Msg6 <That is... most upsetting. Considering your failure in this matter I think I will decline to invest with %name1%.>
+		Msg7 <You seem like an earnest young person. Alright, you can tell %name1% that I'll support \PPR %1% endeavor.>
+		Msg8 <I'm sorry, but there's been a loss in my family and I've been taking a break from investing. Keep looking and maybe you can find the money somewhere else.>
+		Msg9 <I try to invest in things which will improve our world, since the most anyone can hope for is to leave a great legacy to future generations. Unfortunately I've had better luck with money than I have with my own children.>
+		Msg10 <%name4% left home some years ago and fell in with a bad crowd. Since then I've had very little contact with \OPR %4% . If you could find \OPR %4% and convince \OPR %4% to come back, I would agree to finance %name1%.>
+		Msg11 <%name2% will agree to finance %name1% if you convince %name4% to return home.>
+		Msg12 <As far as I know, \SPR %4% can often be found at \SCENE NPCScene %4% . There's really no way of telling where \SPR %4% is exactly.>
+		Msg13 <%name2% will agree to finance %name1% if you convince %name4%, who may or may not be at \SCENE NPCScene %4% , to return home.>
+		Prompt1 <Nothing yet.>
+		Prompt2 <I'm afraid %name4% won't be coming back.>
+		CPrompt2 <ifSubPlotLost %plotid1% Accept>
+		Prompt3 <%name4% has died.>
+		CPrompt3 <ifNPCDead %4% Accept>
+		Prompt4 <I'd like for you to contribute to %name1%.>
+		Prompt5 <What do you mean?>
+		Prompt6 <Any idea where I might find %name4%?>
+	end
+	inv
+		NPC Corporate Executive
+		job <Investor>
+		Age 30
+	end
+
+%%
+%% Debugging Frame
+%%
+%% Loads a mission into the Cavalier's Club for easy debugging.
+%%
+
+Content
+	requires <*:Q_Debug>
+	desc <The NPC will give the PC a mission, to be handled by a "GiveMission" subquest.>
+
+	% E1 is the person who will be giving the mission.
+	% E2 is the CavClub
+	Element1 <NewNPC 0 0>
+	Place1 <2 (Citizens) ally pass>
+	Element2 <Scene CavClub>
+
+	% SubQuest1 is the mission.
+	SubPlot1 <*:Q_DFindMoney 1>
+
+	sub
+		Persona 1
+		rumor0 <%name1% needs a cavalier for a mission of some kind.>
+		greeting <if= PlotStatus %plotid1% -1 else GoCheckLoss NewChat Say 1 SetPlotStatus %plotid% -1>
+		GoCheckLoss <if= PlotStatus %plotid1% -2 else GoCheckFirst SetPlotStatus %plotid% -2 Goto GoEndInLoss>
+		*GoEndInLoss <*MissionWasFailure na na na>
+		GoCheckFirst <if= PlotStatus %plotid1% 0 else GoChat Goto GoOfferQuest>
+		*GoOfferQuest <*DoYouWantAJob GoStartQuest>
+		GoStartQuest <SetPlotStatus %plotid1% %id1% NewChat Say 2>
+		GoChat <NewChat SayAnything>
+		Msg1 <I hear that you succeeded. The debugging of the mission is now over.>
+		Msg2 <Give me my money!!!>
+
+		MetaScene 1
+		sub
+			room
+			desig <HOME>
+			minimap <#&&&#&...&&.1.&&...&&&-&&>
+		end
+	end
+

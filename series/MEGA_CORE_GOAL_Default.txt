@@ -1,0 +1,644 @@
+%%
+%% *CS_WinFetchItem Content
+%%
+%%  The PC was sent to fetch an item and has apparently gotten it.
+%%  Note that between getting the item and returning to the mission
+%%  giver the PC might have lost the item, destroyed the item, sold
+%%  the item, eaten the item, abused the item, or otherwise decided
+%%  to keep the item. If the PC gives the item to the NPC, a reward
+%%  is in order.
+%%
+%% Param1: The Mission-Giver
+%% Param2: The Item
+%%
+
+Content
+	name <Trade Item For Reward>
+	desc <The Mission-Giver will pay the PC for the item.>
+	requires <*CS_WinFetchItem>
+
+	% E1 is the NPC
+	% E2 is the item
+
+	start <ifNPCDead %1% SMemo 0 PyrrhicWinEpisode>
+
+	HINT_%id% <:%id1%>
+
+	% SubPlot1 transfers to the actual reward...
+	SubPlot1 <*CS_WinGoal 1>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% ifChatNPCInPlay else .%id%_GoComeHere Debrief NewChat Say %id%01 AddChat %id%01 AddCHat %id%02 AddChat %id%03>
+		*.%id%_GoComeHere <*NotByPhone>
+		result%id%01 <NewChat Say %id%02>
+		% Success: Delete the item, activate the WINGOAL subplot, and go back to the GREETING.
+		result%id%02 <DeleteItem %2%  AddReact d10  SetPlotStatus %plotid1% %id1% Goto GREETING>
+		result%id%03 <EndChat Say %id%03 AddReact -10 LoseEpisode>
+		Msg%id%01 <Have you found the %name2% yet?>
+		Msg%id%02 <Then come back here when you've found it!>
+		Msg%id%03 <You lost it!? Then everything we've done has been for nothing...>
+		Prompt%id%01 <I'm still working on it.>
+		Prompt%id%02 <I have it right here. [Give item]>
+		CPrompt%id%02 <ifKeyItem %2% Accept>
+		Prompt%id%03 <I sort of lost the %name2%...>
+		CPrompt%id%03 <ifItemDestroyed %2% Accept>
+	end
+
+%%
+%% *CS_WinGoal Content
+%%	&NoCash		The PC will not get any cash for this mission
+%%			NOTE: Don't assign this type for CORE_R_ missions!!!
+%%
+%%  The PC has completed the MAIN course of this episode and is about to be
+%%  rewarded. The exact reward is, of course, going to depend upon the current
+%%  goal.
+%%
+%%  Remember to include a HINT_%id% and to debrief the PC.
+%%
+%%  PARAM1: The NPC giving the reward
+%%
+
+Content
+	name <S_PEA  It's a Trap!>
+	desc <The diplomat you've been negotiating with isn't really interested in peace.>
+	requires <*CS_WinGoal *CORE_S_PEA E:good_ (1:evil_|F:REDMA|F:AEGIS) -E:FAMILY -E:LOVER -E:A.hat -E:A.pch -E:A.mut -E:M.nih>
+
+	% E1 is the NPC
+	% E2 is the Enemy NPC
+	Element2 <Grab 1>
+	Place2 </>
+
+	HINT_%id% <You'll earn $ \VAL Reward StoryDL 500 .>
+
+	start <ifNPCDead %1% SMemo 0 PyrrhicWinEpisode>
+
+	.%id%_%plotid%_GoEnd <Alert %id%01  Monologue %2% %id%02 Monologue %1% %id%03 Monologue %2% %id%04 PCFriend %2% CashPrize Reward StoryDL 500 History %id%05 AddHeroic 1 FreezeNPC %1%  PCEnemy %1%  WinEpisode>
+
+	Msg%id%01 <%name1%'s guards move to surround you. Before they can act, %name2% steps forward.>
+	Msg%id%02 <Hold your fire, %name1%. \PC is right... This fighting is getting out of control. Peace is the right answer for all of us.>
+	Msg%id%03 <I can't believe that you're taking \PPR 0 side... the glory of \FACTION &EnemyFac will not be held back by the likes of you! We will destroy \FACTION &AllyFac , and all who serve them!>
+	Msg%id%04 <Here's the money you were promised, \PC ; I'll deal with %name1%. Maybe together we'll be able to make something of this peace thing.>
+	Msg%id%05 <%name1% tried to double cross you, but you were saved by %name2%.>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% Debrief  ifChatNPCInPlay else .%id%_NotHere  EndChat Say %id%01 Trigger0 .%id%_%plotid%_GoEnd>
+		*.%id%_NotHere <*NotByPhone>
+		.%id%_GoEnd <History %id%02  CashPrize Reward StoryDL 500  SMemo 0  WinEpisode>
+		Msg%id%01 <You fool! Did you really believe we were interested in peace? You've done my bidding like an obedient dog, and now you're going to die!>
+	end
+
+Content
+	name <S_PEA  No Peace Yet>
+	desc <Despite your best efforts, winning peace will be difficult.>
+	requires <*CS_WinGoal *CORE_S_PEA>
+
+	% E1 is the NPC
+	start <ifNPCDead %1% SMemo 0 PyrrhicWinEpisode>
+
+	HINT_%id% <You'll earn $ \VAL Reward StoryDL 500 .>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% Debrief  NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+		.%id%_GoEnd <History %id%02  AddHeroic 1  CashPrize Reward StoryDL 500  SMemo 0  WinEpisode>
+		result%id%01 <NewChat Say %id%03   AddCheerful  d8   Goto .%id%_GoEnd>
+		result%id%02 <NewChat Say %id%04   AddCheerful -d8   Goto .%id%_GoEnd>
+		Msg%id%01 <Thank you for your help, \PC . I regret to inform you that despite this, my superiors have rejected your offer of peace...>
+		Msg%id%02 <Your offer of peace was rejected by \FACTION &EnemyFac .>
+		Msg%id%03 <Don't worry, I'm not about to give up. You keep working on your side and I'll keep working on mine. Together, maybe we can stop this before any more lives are lost.>
+		Msg%id%03_1 <Why should we? In my opinion, \FACTION &EnemyFac is operating from a position of strength. We'd be fools to negotiate for peace at this time.>
+		CMsg%id%03_1 <ifNPCVillainous Accept>
+		Msg%id%04 <They have their reasons... as for me, I will try to convince them that peace is the answer. If you do the same for your side then maybe we can prevent this from getting out of hand.>
+		Msg%id%04_1 <I don't think so. It is you who will bring destruction upon yourself if you continue in this manner...>
+		CMsg%id%04_1 <ifNPCVillainous Accept>
+		Prompt%id%01 <Don't give up, we can still do this.>
+		Prompt%id%02 <Screw them! Do they want to be destroyed!?>
+	end
+
+
+Content
+	name <S_PCF  Let's sign you up>
+	desc <The NPC will pay the PC for the job, and offer a job.>
+	requires <*CS_WinGoal *CORE_S_PCF -&NoCash>
+	changes <P:++>
+
+	% E1 is the NPC.
+
+	start <ifNPCDead %1% SMemo 0 WinEpisode>
+
+	HINT_%id% <You'll earn $ \VAL Reward StoryDL 500 .>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% Debrief  if# PCFac &AllyFac else .%id%_DefaultWin gOTO .%id%_GoReportSuccess>
+		.%id%_GoReportSuccess <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+		*.%id%_DefaultWin <*MissionWasSuccess&Reward .%id%_GoEnd &AllyFac &EnemyFac>
+		.%id%_GoEnd <CashPrize Reward StoryDL 1000 SMemo 0  AddReact d30  &SetAllyFac PCFac  WinEpisode>
+		result%id%01 <NewChat Say %id%02 CashPrize Reward StoryDL 500 SMemo 0  AddReact d10  WinEpisode>
+		result%id%02 <NewChat Say %id%03 CashPrize Reward StoryDL 1000 History %id%04  SetPCFac &AllyFac  AddReact d10  CustomMecha .%id%_fac StoryDL  WinEpisode>
+		.%id%_fac <GENERAL \FACTION_DESIG RootSceneFac \FACTION_DESIG &AllyFac>
+		Msg%id%01 <Good work, \PC . You know that \FACTION &AllyFac could use someone with your talents. I'm authorized to offer you a position right now.>
+		Msg%id%02 <I understand. Well, perhaps we can work together some time again in the future.>
+		Msg%id%03 <Welcome to the team, \PC . Here's your starting equipment bonus and a new mecha.>
+		Msg%id%04 <You accepted %name1%'s offer to join \FACTION &AllyFac .>
+		Prompt%id%01 <Thanks, but no thanks.>
+		Prompt%id%01_1 <I'd like to stay a free agent for now.>
+		Prompt%id%01_2 <No thanks, I just want to get paid.>
+		Prompt%id%02 <I'd like that. I'll do it.>
+		Prompt%id%02_1 <It would be an honor to work with you.>
+		Prompt%id%02_2 <Alright, I'll sign up.>
+	end
+
+Content
+	name <OFF_5 That's gotta hurt>
+	desc <The NPC will pay the PC for the job.>
+	requires <*CS_WinGoal *CORE_OFF_5 -&NoCash>
+
+	% E1 is the NPC.
+
+	start <ifNPCDead %1% SMemo 0 WinEpisode>
+	HINT_%id% <You'll earn $ \VAL Reward StoryDL 1000 .>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% Debrief  NewChat Say %id%01 CashPrize Reward StoryDL 1000 AddReact d10  WinEpisode>
+		Msg%id%01 <You did it! That's really going to hurt them, hopefully permanently.>
+		Msg%id%01_1 <You've dealt a crushing blow to \PERSONA &EnemyNPC ... of course they say that an animal is most dangerous when it's been wounded, but let's not worry about that for now.>
+		CMsg%id%01_1 <ifNPCOK &EnemyNPC Accept>
+		Msg%id%01_2 <Congratulations! \FACTION &EnemyFac will be feeling the hurt from that for a nice long while. They must be running out of mecha soon, right?>
+		CMsg%id%01_2 <ifFactionExists &EnemyFac Accept>
+		Msg%id%01_3 <The mission was a success. Because of your tireless work \PERSONA &EnemyNPC and \FACTION &EnemyFac have suffered defeat after defeat. I don't think they're capable of launching a revenge attack... not right away, anyhow.>
+		CMsg%id%01_3 <ifNPCOK &EnemyNPC ifFactionExists &EnemyFac Accept>
+	end
+
+Content
+	name <DEF_5 You will be repaid>
+	desc <The NPC will pay the PC for the job.>
+	requires <*CS_WinGoal *CORE_DEF_5 -&NoCash>
+
+	% E1 is the NPC.
+	% E2 is the Enemy Faction
+	% E3 is the Allied Faction
+	Element2 <Grab 2>
+	Element3 <Grab 3>
+
+	start <ifNPCDead %1% SMemo 0 WinEpisode>
+
+	HINT_%id% <You'll earn $ \VAL Reward StoryDL 1000 .>
+
+	sub
+		Persona 1
+		%% Winning the DEF_5 episode will start a side story, probably.
+		greeting <if= PlotStatus %plotid% %id% else %pop% Debrief  NewChat Say %id%01 CashPrize Reward StoryDL 1000 AddReact d10  WinEpisode StartPlot .%id%_sidestory 65>
+		.%id%_sidestory <*CSPAWN_Def5 %e2% %e3%>
+		Msg%id%01 <You did it! I hope that someday I can repay the help that you've given to us.>
+		Msg%id%01_1 <That was a complete success. Thanks to you, when the time comes to face down \PERSONA &EnemyNPC we'll be in a stronger position than otherwise.>
+		CMsg%id%01_1 <ifNPCOK &EnemyNPC Accept>
+		Msg%id%01_2 <You did it! Thanks to your brave work, the damage done by \FACTION &EnemyFac has been minimized. We're in a good position to prepare for a counterattack.>
+		CMsg%id%01_2 <ifFactionExists &EnemyFac Accept>
+		Msg%id%01_3 <The mission was a success. Because of you, our defenses against \PERSONA &EnemyNPC and \FACTION &EnemyFac remain strong. It's time to bring the fight to them.>
+		CMsg%id%01_3 <ifNPCOK &EnemyNPC ifFactionExists &EnemyFac Accept>
+		Msg%id%01_4 <You did well on that mission, \RANK \PC . Thanks to you \FACTION &AllyFac has emerged from this conflict stronger than ever... though I can't be sure we've seen the full extent of our enemy's power, yet.>
+		CMsg%id%01_4 <ifFactionExists &AllyFac if= PCFac &AllyFac Accept>
+	end
+
+Content
+	name <R_LAN I have a friend>
+	desc <The NPC's friend will offer to join, becoming either an ally or the partner.>
+	requires <*CS_WinGoal *CORE_R_LAN>
+
+	% E1 is the NPC
+	% E2 is a local public scene
+	% E3 is the new NPC
+	Element2 <Scene Public !Near -7 !Okay 1>
+	Element3 <NewNPC NewNPC 1 2 Friend>
+	Place3 </>
+
+	start <ifNPCDead %1% SMemo 0 DeleteNPC %3% WinEpisode>
+
+	HINT_%id% <You'll earn $ \VAL Reward StoryDL 200 and I'll see about finding you a new ally.>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% Debrief  NewChat Say %id%01 NPCLevel %3% StoryDL PCAlly %3% AddChat %id%01 AddChat %id%02>
+		result%id%01 <Monologue %3% %id%02 AddLancemate %3% NewChat Say %id%03 History %id%04 CashPrize Reward StoryDL 200 SMemo 0  AddReact d10   WinEpisode>
+		result%id%02 <NewChat Say %id%05 History %id%06 MoveNPC %3% %2% CashPrize Reward StoryDL 200 SMemo 0   WinEpisode>
+		Msg%id%01 <Ah, just like you promised... Say, if you're looking for some extra help, my friend %name3% has just started out as a cavalier.>
+		Msg%id%02 <Nice to meet you, \PC . I'll do my best to help you out.>
+		Msg%id%03 <Try to keep \OPR %3% from getting killed, okay? Thanks again for your help.>
+		Msg%id%04 <%name1%'s friend %name3% joined your lance.>
+		Msg%id%05 <Well if you ever have need of \OPR %3% , %name3% will be waiting at %name2%. Thanks aga‌in for your help.>
+		Msg%id%06 <%name3% at %name2% offered to join your lance.>
+		Prompt%id%01 <Alright, I could use an extra hand.>
+		Prompt%id%02 <Sorry, I have everyone I need right now.>
+	end
+
+
+Content
+	name <R_EQP Buy It Yourself>
+	desc <The PC will be given some cash and told to buy the equipment themself.>
+	requires <*CS_WinGoal *CORE_R_EQP>
+
+	% E1 is the NPC
+
+	start <ifNPCDead %1% SMemo 0 PyrrhicWinEpisode>
+
+	HINT_%id% <You'll earn $ \VAL Reward StoryDL 5000 .>
+
+	sub
+		Persona 1
+		% V%id%01 = Mecha Renown, StoryDL+20
+		greeting <if= PlotStatus %plotid% %id% else %pop% Debrief  NewChat Say %id%01   CashPrize Reward StoryDL 5000 SMemo 0  AddReact d10   WinEpisode>
+		Msg%id%01 <You really came through. Here, this money should be enough to let you upgrade your equipment... things only get harder from this point on.>
+	end
+
+
+Content
+	name <R_MON Here, have a whole lot of money>
+	desc <The NPC will pay the PC for the job.>
+	requires <*CS_WinGoal *CORE_R_MON>
+
+	% E1 is the NPC.
+
+	start <ifNPCDead %1% SMemo 0 PyrrhicWinEpisode>
+
+	HINT_%id% <For this mission, you'll earn $ \VAL Reward StoryDL 5000 .>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% Debrief  gOTO .%id%_GoReportSuccess>
+		*.%id%_GoReportSuccess <*MissionWasSuccess&Reward .%id%_GoEnd &AllyFac &EnemyFac>
+		.%id%_GoEnd <CashPrize Reward StoryDL 5000 SMemo 0  AddReact d10  WinEpisode>
+	end
+
+
+Content
+	name <R_MEK Custom Mecha>
+	desc <The NPC will give the PC a custom mecha.>
+	requires <*CS_WinGoal *CORE_R_MEK>
+
+	% E1 is the NPC
+
+	start <ifNPCDead %1% SMemo 0 PyrrhicWinEpisode>
+
+	HINT_%id% <You'll earn a new custom mecha.>
+
+	sub
+		Persona 1
+		% V%id%01 = Mecha Renown, StoryDL+20
+		greeting <if= PlotStatus %plotid% %id% else %pop% Debrief  NewChat Say %id%01 V= %id%01 StoryDL V+ %id%01 20 CustomMecha .%id%_fac v%id%01  WinEpisode>
+		.%id%_fac <GENERAL \FACTION_DESIG RootSceneFac \FACTION_DESIG ChatNPCFac>
+		Msg%id%01 <You did it! As promised, here's a custom mecha built specifically for you.>
+	end
+
+
+Content
+	name <R_EXP Training Together>
+	desc <The NPC will train with you.>
+	requires <*CS_WinGoal *CORE_R_EXP (1:MILIT|1:ADVEN)>
+
+	% E1 is the NPC.
+
+	start <ifNPCDead %1% SMemo 0 PyrrhicWinEpisode>
+
+	HINT_%id% <Succeed, and I'll help you with your skills.>
+
+	sub
+		Persona 1
+		% V%id%01 = XP Award
+		greeting <if= PlotStatus %plotid% %id% else %pop% Debrief  NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+		result%id%01 <Alert %id%02 V= %id%01 * 7 StoryDL V+ %id%01 50 SkillXP 1 %id%01 SkillXP 2 %id%01 SkillXP 3 %id%01 SkillXP 4 %id%01 SkillXP 5 %id%01 SkillXP 6 %id%01 NewChat Say %id%03 History %id%04 WinEpisode>
+		result%id%02 <NewChat Say %id%05 History %id%06 CashPrize Reward StoryDL 500 AddReact -d10  WinEpisode>
+		Msg%id%01 <So you did it... You are truly on the path to becoming a great cavalier. Now, I'll teach you what I know...>
+		Msg%id%02 <You train with \CHATNPC .>
+		Msg%id%03 <There. I've shown you everything I can; the rest is up to you.>
+		Msg%id%04 <You trained with \CHATNPC .>
+		Msg%id%05 <Is that so? It seems a rather short-sighted decision... but if that's what you want, it's what you will receive.>
+		Msg%id%06 <You refused \CHATNPC 's offer of training.>
+		Prompt%id%01 <Alright, let's do that.>
+		Prompt%id%02 <On second thought, I'd rather just get paid.>
+	end
+
+Content
+	name <R_EXP Book Learnin'>
+	desc <You wanted experience? Here, go study.>
+	requires <*CS_WinGoal *CORE_R_EXP -1:MILIT -1:ADVEN ~1:ACADE ~1:TRADE>
+
+	% E1 is the NPC
+	% E2 is the book
+	Element2 <Prefab>
+
+	start <ifNPCDead %1% SMemo 0 PyrrhicWinEpisode>
+
+	HINT_%id% <Win and I'll give you some very valuable advice.>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% Debrief  NewChat Say %id%01 AddReact d10 GiveItem %2% WinEpisode>
+		Msg%id%01 <You did well, \PC . In thanks I'll let you have this book... I know it doesn't look like much, but that's only because you haven't read it yet.>
+	end
+	inv
+		Treasure
+		name <Kroper's Guide to Mecha Piloting>
+		desc <An old and well-work book. The blurb on the cover promises that it can teach you some new tricks.>
+		Fudge 450000
+		% V1 = Have read book already
+		use <if= V1 0 else GoAlreadyRead ifYesNo 1 2 3 else GoReadLater Alert 4 History 5 V= 1 1 Mental XPV 100 PCSkill+ NAS_MechaPiloting 1>
+		GoReadLater <Print 6>
+		GoAlreadyRead <Print 7>
+
+		Msg1 <Kroper's Guide to Mecha Piloting! No matter who you are or your level of experience, this book is guaranteed to teach you some new tricks. Do you want to read it now?>
+		Msg2 <Yes, please.>
+		Msg3 <No, I'll save it for later.>
+		Msg4 <You read the book. Wow, the blurb on the cover wasn't kidding! You feel like a better mecha pilot than before.>
+		Msg5 <You read Kroper's Guide to Mecha Piloting.>
+		Msg6 <You put away the book for later.>
+		Msg7 <You've already read the book.>
+	end
+
+Content
+	name <Simple Thanks>
+	desc <The PC will be thanked for helping. That's it, I'm afraid.>
+	requires <*CS_WinGoal &NoCash>
+
+	% E1 is the NPC
+
+	start <ifNPCDead %1% SMemo 0 WinEpisode>
+
+	HINT_%id% <You'll get my deepest gratitude.>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% Debrief  NewChat Say %id%01 AddReact 25 AddHeroic 1 WinEpisode>
+		Msg%id%01 <Thank you, \PC . You did everything you said you would.>
+	end
+
+Content
+	name <I'll Help You Out>
+	desc <The PC's friend will offer to join him, becoming either an ally or the partner.>
+	requires <*CS_WinGoal 1:FRIEND &NoCash>
+
+	% E1 is the NPC
+
+	start <ifNPCDead %1% SMemo 0 WinEpisode>
+
+	HINT_%id% <You'll get my eternal gratitude.>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% ifChatNPCInPlay else .%id%_GoComeHere Debrief  NewChat Say %id%01 AddChat %id%01 AddCHat %id%02 AddChat %id%03>
+		.%id%_GoComeHere <NewChat Say %id%07>
+		.%id%_GoBecomeAlly <PCAlly %1% NPCLevel %1% StoryDL History %id%05 SMemo 0 WinEpisode>
+		result%id%01 <History %id%02 NPCLevel %1% StoryDL PCAlly %1% AddLancemate %1% SMemo 0 AddReact d10  WinEpisode Goto .%id%_GoJoinLance>
+		*.%id%_GoJoinLance <*WelcomeToLance>
+		result%id%02 <ifG T-3 0 else .%id%_GoEndR2 TeamMonologue -3 %id%03 Goto .%id%_GoEndR2>
+		.%id%_GoEndR2 <NewChat Say %id%04 Goto .%id%_GoBecomeAlly>
+		result%id%03 <NewChat Say %id%06 Goto .%id%_GoBecomeAlly>
+		Msg%id%01 <Thanks for helping me out, \PC ! I don't know how I'll ever repay you... say, you don't happen to need a partner, do you?>
+		Msg%id%02 <In thanks for your help, %name1% joined your lance.>
+		Msg%id%03 <What, am I invisible or something?>
+		Msg%id%04 <I see. Well, if you ever need me, you know where you can find me.>
+		Msg%id%05 <In thanks for your help, %name1% offered to join your lance.>
+		Msg%id%06 <OK. I'll be waiting.>
+		Msg%id%07 <Come see me at \SCENE NPCScene %1% .>
+		Prompt%id%01 <Sure, I'd love to have you as part of the lance.>
+		Prompt%id%02 <Sorry, but I've already got a partner.>
+		CPrompt%id%02 <ifG T-3 0 Accept>
+		Prompt%id%03 <Not right now, but if I need help I'll let you know.>
+	end
+
+Content
+	name <Money and a Job Offer>
+	desc <The NPC will pay the PC for the job, and offer a job.>
+	requires <*CS_WinGoal ~P:-- -P:PCFAC -1:NOFAC (*CORE_Intro|*CORE_DEF_|*CORE_OFF_) -&NoCash>
+	changes <P:++>
+
+	% E1 is the NPC.
+
+	start <ifNPCDead %1% SMemo 0 WinEpisode>
+
+	HINT_%id% <You'll earn $ \VAL Reward StoryDL 500 and maybe a little something extra.>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% Debrief  if# PCFac ChatNPCFac else .%id%_DefaultWin gOTO .%id%_GoReportSuccess>
+		.%id%_GoReportSuccess <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+		*.%id%_DefaultWin <*MissionWasSuccess&Reward .%id%_GoEnd &AllyFac &EnemyFac>
+		.%id%_GoEnd <CashPrize Reward StoryDL 1000 SMemo 0  AddReact d30  &SetAllyFac PCFac  WinEpisode>
+		result%id%01 <NewChat Say %id%02 CashPrize Reward StoryDL 500 SMemo 0  AddReact d10  WinEpisode>
+		result%id%02 <NewChat Say %id%03 CashPrize Reward StoryDL 1000 History %id%04  SetPCFac ChatNPCFac &SetAllyFac ChatNPCFac AddReact d10  CustomMecha .%id%_fac StoryDL  WinEpisode>
+		.%id%_fac <GENERAL \FACTION_DESIG RootSceneFac \FACTION_DESIG ChatNPCFac>
+		Msg%id%01 <Good work, \PC . You know that \FACTION ChatNPCFac could use someone with your talents. I'm authorized to offer you a position right now.>
+		Msg%id%02 <I understand. Well, perhaps we can work together some time again in the future.>
+		Msg%id%03 <Welcome to the team, \PC . Here's your starting equipment bonus and a new mecha.>
+		Msg%id%04 <You accepted %name1%'s offer to join \FACTION ChatNPCFac .>
+		Prompt%id%01 <Thanks, but no thanks.>
+		Prompt%id%01_1 <I'd like to stay a free agent for now.>
+		Prompt%id%01_2 <No thanks, I just want to get paid.>
+		Prompt%id%02 <I'd like that. I'll do it.>
+		Prompt%id%02_1 <It would be an honor to work with you.>
+		Prompt%id%02_2 <Alright, I'll sign up.>
+	end
+
+
+Content
+	name <Here, have some money>
+	desc <The NPC will pay the PC for the job.>
+	requires <*CS_WinGoal (*CORE_Intro|*CORE_DEF_1|*CORE_DEF_2|*CORE_DEF_3|*CORE_DEF_4|*CORE_OFF_1|*CORE_OFF_2|*CORE_OFF_3|*CORE_OFF_4) -&NoCash>
+
+	% E1 is the NPC.
+
+	start <ifNPCDead %1% SMemo 0 WinEpisode>
+
+	HINT_%id% <You'll earn $ \VAL Reward StoryDL 500 .>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% Debrief  gOTO .%id%_GoReportSuccess>
+		*.%id%_GoReportSuccess <*MissionWasSuccess&Reward .%id%_GoEnd &AllyFac &EnemyFac>
+		.%id%_GoEnd <CashPrize Reward StoryDL 500 SMemo 0  AddReact d10  WinEpisode>
+	end
+
+%%
+%% *CS_LoseGoal Content
+%%
+%% The PC  has failed. Bummer. Remember to DEBRIEF the PC.
+%%
+%% Param1: The Task-giver.
+%%
+
+Content
+	name <You're a loser, but we like you anyhow>
+	desc <The NPC will debrief the PC on the loss.>
+	requires <*CS_LoseGoal *CORE_S_PCF P:++ -P:PCFAC Common ~1:HERO_>
+
+	% E1 is the NPC.
+
+	start <ifNPCDead %1% LoseEpisode>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% Debrief if# PCFac &AllyFac else .%id%_GoReportLoss ifG React d20 else .%id%_GoReportLoss Goto .%id%_GoMakeOffer>
+		.%id%_GoMakeOffer <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+		*.%id%_GoReportLoss <*MissionWasFailure .%id%_GoEnd &AllyFac &EnemyFac>
+		.%id%_GoEnd <LoseEpisode>
+		result%id%01 <NewChat SetPCFac &AllyFac Say %id%02 AddReact d8 History %id%03 CashPrize Reward StoryDL 500  RandomMecha .%id%_facs StoryDL   WinDramaticGoal LoseEpisode>
+		.%id%_facs <GENERAL \FACTION_DESIG &AllyFac \FACTION_DESIG RootSceneFac>
+		result%id%02 <NewChat Say %id%04 LoseEpisode>
+		result%id%03 <NewChat Say %id%05 AddChat %id%04 AddChat %id%05>
+		result%id%04 <Goto result%id%01>
+		result%id%05 <Goto result%id%02>
+		Msg%id%01 <The mission was a failure, but on behaf of \FACTION &AllyFac I'd still like to offer you a position with us.>
+		Msg%id%02 <Welcome to the team, \RANK \PC . Hopefully your next mission will go a little better.>
+		Msg%id%03 <Despite your loss, you were inducted into \FACTION &AllyFac .>
+		Msg%id%04 <Understood. Perhaps some time later you'd like to reconsider.>
+		Msg%id%05 <A temporary setback. I should mention that this job offer comes with the standard mecha and equipment bonus.>
+		prompt%id%01 <Really? I'll take it!>
+		prompt%id%02 <Sorry, I'd prefer to stay a free agent.>
+		prompt%id%03 <What!? Why? I sucked out there!>
+		prompt%id%04 <Alright, I'll join.>
+		prompt%id%05 <Nope, I still don't want to.>
+	end
+
+Content
+	name <Default Lose Task>
+	desc <The NPC will debrief the PC on the loss.>
+	requires <*CS_LoseGoal ~1:FRIEND ~1:LOVER>
+
+	% E1 is the NPC.
+
+	start <ifNPCDead %1% LoseEpisode>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% Debrief NewChat Say %id%01 SMemo 0 AddReact -d4  LoseEpisode>
+		Msg%id%01 <That didn't go so well.>
+		Msg%id%01_1 <>
+		CMsg%id%01_1 <ifNPCSociable Accept>
+		Msg%id%01_2 <You failed.>
+		CMsg%id%01_2 <ifNPCShy Accept>
+		Msg%id%01_3 <>
+		CMsg%id%01_3 <ifNPCEasygoing Accept>
+		Msg%id%01_4 <>
+		CMsg%id%01_4 <ifNPCPassionate Accept>
+		Msg%id%01_5 <That didn't go so well... but, at least you did your best.>
+		CMsg%id%01_5 <ifNPCCheerful Accept>
+		Msg%id%01_6 <You failed. What am I going to do now...?>
+		CMsg%id%01_6 <ifNPCMelancholy Accept>
+	end
+
+Content
+	name <Default Lose Mission>
+	desc <The NPC will debrief the PC on the loss.>
+	requires <*CS_LoseGoal>
+
+	% E1 is the NPC.
+
+	start <ifNPCDead %1% LoseEpisode>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% Debrief gOTO .%id%_GoReportLoss>
+		*.%id%_GoReportLoss <*MissionWasFailure .%id%_GoEnd &AllyFac &EnemyFac>
+		.%id%_GoEnd <SMemo 0  AddReact -d6  LoseEpisode>
+	end
+
+
+%%
+%% *CS_MootGoal Content
+%%
+%% The mission has become unwinnable, somehow. This counts as a loss, but at least
+%% the NPC involved will be kind enough to explain what's happening.
+%%
+%% Param1: The Mission-giver
+%%
+
+Content
+	name <Default Moot>
+	desc <The NPC will debrief the PC on the loss.>
+	requires <*CS_MootGoal>
+
+	% E1 is the NPC.
+
+	% p%id%01 = Email Counter
+	start <ifNPCDead %1% SMemo 0 LoseEpisode>
+	update <if= p%id%01 0 P= %id%01 1 EMail %id%01>
+
+	Msg%id%01_1 <%name1% @ \SCENE NPCScene %1% :// Your mission has been cancelled.>
+	Msg%id%01_2 <%name1% @ \SCENE NPCScene %1% :// Your mission has been aborted.>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% NewChat Say %id%01 SMemo 0 LoseEpisode>
+		Msg%id%01 <I'm afraid that you took too long on that mission. It's over now.>
+	end
+
+
+%%
+%% *CS_FriendFired_Win Content
+%%
+%% The PC's friend has just been fired from a faction, and for whatever reason this
+%% is a win for the PC.
+%%
+%% The parent plot sets the plot status to this layer's ID when ready.
+%%
+%% Param1: The NPC who has been fired
+%% Param2: The faction he's been fired from
+%%
+
+Content
+	name <What did I do?>
+	desc <The friend wonders what he did wrong.>
+	requires <*CS_FriendFired_Win>
+
+	% E1 is the friend
+	% E2 is the faction he's been fired from
+	% E3 is a public scene for the meeting
+	Element3 <Scene Building Public !NEar -7>
+
+	% p%id%01 = Initialization Counter
+	start <if= PlotStatus %plotid% %id% else %pop% ifNPCDead %1% LoseEpisode>
+	update <if= PlotStatus %plotid% %id% else %pop% if= P%id%01 0 P= %id%01 1 MoveAndPacifyNPC %1% %3% SetNPCFaction %1% 0 Email %id%01>
+
+	Msg%id%01_1 <%name1%@ \NARRATIVE 7 :// I've received bad news from %name2%... come meet me in %name3%.>
+	Msg%id%01_2 <%name1%@ \NARRATIVE 7 :// I've got some bad news. Come see me in %name3%.>
+	Msg%id%01_3 <%name1%@ \NARRATIVE 7 :// This has been a terrible day... I'd like to talk with you in %name3%.>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% NewChat Say %id%01 StoryNote %id%03 AddChat %id%01 AddChat %id%02>
+		result%id%01 <NewChat Say %id%02  AddCheerful d6 WinEpisode>
+		result%id%02 <NewChat Say %id%02 WinEpisode>
+		Msg%id%01 <I don't understand what happened; I've been fired from %name2%.>
+		Msg%id%01_1 <I have some terrible news... I've been fired from %name2%. I don't know why, but they told me to go and never come back.>
+		Msg%id%01_2 <I've been fired from %name2%. It was really a shock... I thought I was doing so well.>
+		Msg%id%02 <I know I'll find something else in time, but for right now I'm feeling very disappointed.>
+		Msg%id%02_1 <The worst part is, I made a lot of new friends while at %name2%. I guess maybe I'll see them again, but I don't know...>
+		CMsg%id%02_1 <ifNPCSociable Accept>
+		Msg%id%02_2 <I think I probably will do better by myself. I was never much of a joiner, anyhow.>
+		CMsg%id%02_2 <ifNPCShy Accept>
+		Msg%id%02_3 <Eh, it's not that bad. I'll find something else, or I won't... either way is fine.>
+		CMsg%id%02_3 <ifNPCEasygoing Accept>
+		Msg%id%02_4 <Those idiots at %name2% don't know what they're doing! I don't need them! I can do better by myself!>
+		CMsg%id%02_4 <ifNPCPassionate Accept>
+		Msg%id%02_5 <You know, I had been looking at this like an ending, but instead I think it's a beginning. Now that I'm free from %name2% I can choose my own destiny, wherever that may lead.>
+		CMsg%id%02_5 <ifNPCCheerful Accept>
+		Msg%id%02_6 <I guess I'm just not good enough to make it as a member of %name2%... I'll have to learn to accept that.>
+		CMsg%id%02_6 <ifNPCMelancholy Accept>
+		Msg%id%03 <%name1% was fired from %name2%, much to your relief.>
+		Prompt%id%01 <It's probably for the best.>
+		Prompt%id%01_1 <You're better off without them.>
+		Prompt%id%01_2 <You're too good to work for them, anyhow.>
+		Prompt%id%02 <Oh, that's too bad... I wonder what happened.>
+		Prompt%id%02_1 <How surprising... I wonder what happened.>
+		Prompt%id%02_2 <That's a shame... I wonder what happened.>
+	end
+
+
+
+
+
+
+

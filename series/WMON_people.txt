@@ -1,0 +1,494 @@
+%  *******************************
+%  ***  PEOPLE  MONSTER  LIST  ***
+%  *******************************
+
+% These are humans who will show up as wandering monsters.
+% There are two broad types- CRIMINALs and GUARDs.
+
+%  STATS  REF BOD SPD PER CFT EGO KNO CHA
+
+Arch HW Soldier
+statline 11 11 11 11 9 9 9 9
+MonsterTV 70
+roguechar <G>
+sdl_sprite <cha_m_soldier.png>
+sdl_colors <120 90 90 255 212 195 244 216 28>
+type <Guard>
+habitat <>
+RangedCombat 7
+CloseCombat 7
+Dodge 10
+Sealed
+sub
+head
+armor 3
+torso
+armor 3
+arm
+armor 3
+sub
+	hand
+	inv
+		item Raketen Mk6 Bazooka
+	end
+end
+arm
+armor 3
+sub
+	hand
+end
+inv
+	item Riot Shield
+end
+leg
+armor 3
+leg
+armor 3
+end
+
+Arch Soldier
+statline 11 11 11 11 9 9 9 9
+MonsterTV 62
+roguechar <G>
+sdl_sprite <cha_m_soldier.png>
+sdl_colors <90 120 90 255 212 195 244 216 28>
+type <Guard>
+habitat <>
+RangedCombat 5
+CloseCombat 5
+Dodge 9
+Sealed
+sub
+head
+armor 3
+torso
+armor 3
+arm
+armor 3
+sub
+	hand
+	inv
+		item FS Vaken Assault Rifle
+	end
+end
+arm
+armor 3
+sub
+	hand
+end
+inv
+	item Riot Shield
+end
+leg
+armor 3
+leg
+armor 3
+end
+
+Arch Security Guard
+statline 9 9 9 9 9 9 9 9
+MonsterTV 48
+roguechar <G>
+sdl_sprite <cha_m_polic.png>
+sdl_colors <90 90 100 255 212 195 244 216 28>
+type <Guard>
+habitat <>
+CHAT_ATTACK1 <What's all this about!?>
+CHAT_ATTACK2 <Halt!>
+RangedCombat 3
+CloseCombat 3
+Dodge 6
+Sealed
+sub
+head
+torso
+arm
+sub
+	hand
+	inv
+		item Laver-2 Combat Rifle
+	end
+end
+arm
+sub
+	hand
+end
+inv
+	item Riot Shield
+end
+leg
+leg
+end
+
+Arch Watchman
+statline 9 9 9 9 9 9 9 9
+MonsterTV 21
+roguechar <G>
+sdl_sprite <cha_m_polic.png>
+sdl_colors <90 90 90 255 212 195 150 120 90>
+type <Guard>
+habitat <>
+CHAT_ATTACK1 <What's all this about!?>
+CHAT_ATTACK2 <Halt!>
+CHAT_ATTACK3 <Just wait while I call my supervisor!>
+RangedCombat 2
+CloseCombat 2
+Dodge 3
+Sealed
+sub
+head
+torso
+arm
+sub
+	hand
+	inv
+		item Brash G1 Light Laser Pistol
+	end
+end
+arm
+sub
+	hand
+end
+leg
+leg
+end
+
+
+ARCH Assassin Lord
+roguechar <N>
+MonsterTV 105
+NoCorpse
+type <CRIMINAL CITY>
+habitat <>
+statline 15 14 14 15 11 13 12 10
+SDL_SPRITE <cha_m_assassin.png>
+SDL_COLORS <36 46 30 200 159 180 70 30 81>
+explosion <10 CREATESTC GAS-1 Blast 1>
+explosion_desc <# dissolves in a cloud of toxic gas!>
+RangedCombat 6
+CloseCombat 9
+Dodge 15
+Vitality 2
+SpotWeakness 7
+Sealed
+Talent 16
+sub
+head
+armor 3
+torso
+armor 3
+arm
+armor 3
+	sub
+		hand
+		inv
+			gun 5
+			name <Headhunter Pistol>
+			type <ARMORPIERCING>
+			range 4
+			mass -3
+			recharge 6
+			caliber <8mm pistol>
+			sub
+				ammo 5
+				magazine 10
+				caliber <8mm pistol>
+			end
+		end
+	end
+arm
+armor 3
+	sub
+		hand
+		inv
+			melee 22
+			name <Night Scythe>
+			type <Extend ArmorPiercing POISON>
+			scale 0
+			mass -15
+		end
+	end
+leg
+armor 3
+leg
+armor 3
+end
+
+ARCH Assassin
+roguechar <N>
+MonsterTV 80
+NoCorpse
+type <CRIMINAL CITY>
+habitat <>
+SDL_SPRITE <cha_m_assassin.png>
+SDL_COLORS <34 37 30 200 159 180 80 28 28>
+statline 14 13 13 14 10 11 11 7
+explosion <10 CREATESTC GAS-1 Blast 1>
+explosion_desc <# dissolves in a cloud of toxic gas!>
+RangedCombat 6
+CloseCombat 8
+Dodge 11
+SpotWeakness 4
+Talent 16
+Sealed
+sub
+head
+armor 3
+torso
+armor 3
+arm
+armor 3
+	sub
+		hand
+		inv
+			Gun 5
+			Name <Long Rifle>
+			desig <L60>
+			desc <The long rifled barrel of this firearm can increase the spin of its bullets, thus increasing its range without decreasing the gun's durability.>
+			category <WEAPON MISSILE>
+			factions <GENERAL>
+			caliber <5mm rifle>
+			Mass -1
+			Range 10
+			Acc 1
+			Speed 3
+			sub
+				Ammo 8
+				name <5mm Rifle Clip [Killer]>
+				caliber <5mm rifle>
+				type <ARMORPIERCING>
+				magazine 30
+			end
+		end
+	end
+arm
+armor 3
+	sub
+		hand
+		inv
+			Melee 6
+			name <Deathwing>
+			type <Thrown Return Poison>
+			scale 0
+			mass -5
+			recharge 1
+		end
+	end
+leg
+armor 3
+leg
+armor 3
+end
+
+ARCH Ravager
+statline 12 14 10 12 7 9 8 8
+MonsterTV 52
+roguechar <R>
+type <Criminal Devo Wasteland>
+habitat <>
+CHAT_ATTACK <Any shiny bits I can take from your corpse?>
+RangedCombat 4
+CloseCombat 6
+Dodge 7
+Vitality 2
+sealed
+sub
+head
+armor 2
+inv
+	item Steel Mask
+end
+torso
+armor 2
+arm
+armor 1
+sub
+	Hand
+	inv
+		item Shotgun
+	end
+end
+arm
+armor 1
+sub
+	Hand
+end
+leg
+armor 1
+leg
+armor 1
+end
+
+Arch Street Punk
+statline 9 9 9 9 8 8 8 8
+MonsterTV 41
+roguechar <P>
+type <Criminal Devo>
+habitat <>
+SDL_SPRITE <cha_m_thief.png>
+SDL_COLORS <56 26 81 170 112 90 168 133 230>
+CHAT_ATTACK1 <Gabba gabba hey!>
+CHAT_ATTACK2 <Hey ho, let's go!>
+CHAT_ATTACK3 <I wanna be... anarchy!>
+RangedCombat 1
+CloseCombat 1
+Dodge 4
+sub
+head
+torso
+arm
+sub
+	hand
+	inv
+		item Shotgun
+	end
+end
+arm
+sub
+	hand
+end
+leg
+leg
+end
+
+Arch Street Punk
+statline 9 9 9 9 8 8 8 8
+MonsterTV 25
+roguechar <P>
+SDL_SPRITE <cha_m_thief.png>
+SDL_COLORS <56 26 81 170 112 90 66 121 80>
+type <Criminal Devo>
+habitat <>
+CHAT_ATTACK1 <Gabba gabba hey!>
+CHAT_ATTACK2 <Hey ho, let's go!>
+CHAT_ATTACK3 <I wanna be... anarchy!>
+RangedCombat 1
+CloseCombat 1
+Dodge 2
+sub
+head
+torso
+arm
+sub
+	hand
+	inv
+		Item Steel Pipe
+	end
+end
+arm
+sub
+	hand
+end
+leg
+leg
+end
+
+Arch Street Punk
+statline 9 9 9 9 8 8 8 8
+MonsterTV 21
+roguechar <P>
+type <Criminal Devo>
+habitat <>
+SDL_SPRITE <cha_m_thief.png>
+SDL_COLORS <56 26 81 170 112 90 123 63 0>
+CHAT_ATTACK1 <Gabba gabba hey!>
+CHAT_ATTACK2 <Hey ho, let's go!>
+CHAT_ATTACK3 <I wanna be... anarchy!>
+RangedCombat 1
+CloseCombat 1
+Dodge 1
+sub
+head
+torso
+arm
+sub
+	hand
+end
+arm
+sub
+	hand
+end
+leg
+leg
+end
+
+Arch Bandit
+statline 10 10 10 10 9 9 9 9
+MonsterTV 68
+roguechar <B>
+type <Criminal>
+habitat <>
+SDL_SPRITE <cha_m_thief.png>
+SDL_COLORS <112 28 28 150 112 89 136 151 50>
+CHAT_ATTACK1 <Lookie here, some fresh meat!>
+CHAT_ATTACK2 <I'll cut you up real good.>
+CHAT_ATTACK3 <You're gonna die!>
+RangedCombat 5
+CloseCombat 6
+Dodge 8
+sub
+head
+	armor 1
+torso
+	armor 1
+arm
+	armor 1
+	sub
+		Hand
+		inv
+			item Shotgun
+		end
+	end
+arm
+	armor 1
+	sub
+		Hand
+	end
+leg
+	armor 1
+leg
+	armor 1
+end
+
+Arch Bandit
+statline 10 10 10 10 9 9 9 9
+MonsterTV 42
+roguechar <B>
+type <Criminal>
+habitat <>
+SDL_SPRITE <cha_m_thief.png>
+SDL_COLORS <112 28 28 150 112 89 56 26 81>
+CHAT_ATTACK1 <Lookie here, some fresh meat!>
+CHAT_ATTACK2 <I'll cut you up real good.>
+CHAT_ATTACK3 <You're gonna die!>
+RangedCombat 5
+CloseCombat 6
+Dodge 8
+sub
+head
+	armor 1
+torso
+	armor 1
+arm
+	armor 1
+	sub
+		% Hand
+		Hand
+	end
+arm
+	armor 1
+	sub
+		Hand
+		inv
+			item Hand Axe
+			desig <Bandit>
+			type <>
+		end
+	end
+leg
+	armor 1
+leg
+	armor 1
+end
+
+

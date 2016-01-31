@@ -1,0 +1,105 @@
+%%  **************************************
+%%  ***   [!Ne+]  BEGINNER  MISSIONS   ***
+%%  **************************************
+
+%%  ****************************************
+%%  ***   [!Lo+]  LOW  LEVEL  MISSIONS   ***
+%%  ****************************************
+
+	ArenaMission
+	name <Destroy Factory>
+	requires <*MISSION -!Ne CORPORATE>
+	desc <A factory belonging to %name1% has been discovered. Destroy it completely.>
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 1000
+
+	WildMap
+	terrain <GROUND>
+
+	Element1 <Faction Corporate Enemy>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	% L3 = Destroy Base Counter
+	Start <if= L1 0 CommanderSays 1 L= 1 1>
+	nu1 <if= T1 0 Return if= L2 0 L= 2 1 if= L3 1 else GoLoseMission Goto GoWinMission>
+	nu2 <if= T2 0 if= L3 1 if= L2 0 L= 2 1 Return Goto GoWinMission>
+	nu3 <if= T3 0 else GoN3SomeLeft if= L3 0 L= 3 1 Print 5 XPV 200 if= T2 0 Return L= 2 1 Goto GoWinMission>
+	GoN3SomeLeft <ifG T3 0 Print 4>
+
+	GoWinMission <Salvage Alert 3 WinArenaMission>
+	GoLoseMission <Alert 2 LoseArenaMission>
+
+	5Min <if= d2 1  WMecha 3 ArenaRenown 100>
+
+	Msg1 <Locate and destroy the enemy base.>
+	Msg2 <The mission is a failure.>
+	Msg3 <The mission is a success.>
+	Msg4_1 <There are \VAL T3 buildings left to destroy.>
+	CMsg4_1 <ifG T3 1 Accept>
+	Msg4_2 <There is one building left to destroy.>
+	CMsg4_2 <ifG 2 T3 Accept>
+	Msg5 <The base has been destroyed.>
+
+	sub
+		Team 1
+		SetEnemy 2 3 4
+		ParaX 5
+		ParaY 5
+
+		Team 2
+		SetEnemy 1
+		SetAlly 3 4
+		Deploy <SetSelfFaction M1 WMecha 2 ArenaRenown 450>
+		home <The Fortress>
+
+		Team 3
+		SetEnemy 1
+		SetAlly 2 4
+		home <The Fortress>
+
+		Team 4
+		SetEnemy 1
+		SetAlly 2 3
+		home <Entry 2>
+		Deploy <SetSelfFaction M1>
+
+		rect
+		width 5
+		height 5
+		name <Entry 2>
+
+		rect
+		name <The Fortress>
+		MFX 35
+		MFY 35
+		width 10
+		height 10
+		sub
+			SuperProp
+			requires <*Fortress>
+			SetTeam 3
+		end
+	end
+
+
+%%  *******************************************
+%%  ***   [!Md+]  MEDIUM  LEVEL  MISSIONS   ***
+%%  *******************************************
+
+
+%%  *****************************************
+%%  ***   [!Hi+]  HIGH  LEVEL  MISSIONS   ***
+%%  *****************************************
+
+
+%%  ***************************************
+%%  ***   [!Ex]  ACE  LEVEL  MISSIONS   ***
+%%  ***************************************
+
+
+
+

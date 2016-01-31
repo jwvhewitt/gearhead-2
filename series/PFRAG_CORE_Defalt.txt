@@ -1,0 +1,222 @@
+%%
+%% CORE STORY PERSONA FRAGMENTS
+%%
+%% These fragments are used by the core story. Therefore, they can use all the story
+%% context descriptors in their REQUIRES blocks, and can access the XRan palette freely.
+%%
+%% In addition, some of these fragments are tied to specific components, and may not
+%% be readily reusable in other components.
+
+% TYPE: *CS_PEA_DiscussTerms
+%	The PC has come to negotiate a peace agreement. To do so they need to
+%	get past a little bit of negotiation. There will usually be a way for
+%	the PC to grease the wheels a little bit if the skill rolls don't work
+%	out. This conversation snippet will lead into the NPC asking to perform
+%	some task as a show of good faith.
+%   PARAM1: Difficulty Rating
+%   PARAM2: Success Exit Label
+%   PARAM3: Give Up Exit Label
+
+	Persona
+	requires <*CS_PEA_DiscussTerms>
+	% V%id%01 = Have gotten through the diplomacy
+	START <if= v%id%01 0 else %2%  NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03 AddChat %id%04>
+	.%id%_GoFailRoll <NewChat Say %id%02 AddChat %id%05 AddChat %id%06 AddChat %id%07 AddChat %id%08>
+	result%id%01 <ifConversation SkillTar %1% else .%id%_GoFailRoll V= %id%01 1  AddReact d10  Goto %2%>
+	result%id%02 <ifIntimidation SkillTar %1% else .%id%_GoFailRoll V= %id%01 1  AddReact d10  Goto %2%>
+	result%id%03 <V= %id%01 1  Goto %2%>
+	result%id%04 <V= %id%01 1  Goto %2%>
+	result%id%05 <NewChat Say %id%03>
+	result%id%06 <Goto %3%>
+	result%id%07 <V= %id%01 1  Cash+ -100  Goto %2%>
+	result%id%08 <V= %id%01 1  Goto %2%>
+	Msg%id%01 <So you've come here to negotiate for peace... Why should we bother to listen to you?>
+	Msg%id%02 <Is that all you can say? I'm afraid my time is too valuable to waste it on this...>
+	Msg%id%03 <Think about it for as long as you need.>
+	Prompt%id%01 <Peace is in all of our interests.>
+	Prompt%id%02 <Because if you don't, you'll be destroyed.>
+	Prompt%id%03 <This fighting hasn't been easy on your side, either.>
+	CPrompt%id%03 <ifInsight SkillTar %1% Accept>
+	Prompt%id%04 <You know that it's the right thing to do.>
+	CPrompt%id%04 <ifG PCHeroism %1% Accept>
+	Prompt%id%05 <Let me think about this for a bit.>
+	Prompt%id%06 <Fine. I didn't want to negotiate peace anyhow.>
+	Prompt%id%07 <I offer you $100 in tribute to your peaceful nature.>
+	CPrompt%id%07 <ifG PC$ 99 ifShopping SkillTar %1% Accept>
+	Prompt%id%08 <Come on, just give me a chance.>
+	CPrompt%id%08 <ifG React %1% Acccept>
+
+% TYPE: *CS_BASEPS_CaptainSurrenders
+%	The captain of the ship which the PC is plundering has just surrendered.
+%	Give a comment, and maybe alter the captain's attitude.
+%    PARAM1: Exit Label
+
+Persona
+	requires <*CS_BASEPS_CaptainSurrenders>
+	START <EndCHat Say %id%01 Goto %1%>
+	Msg%id%01 <Stop, stop, we surrender! Take whatever you're looking for!>
+
+% TYPE: *CS_BASEPS_CaptainNegotiates
+%	The PC has just struck up a coversation with the captain of the ship
+%	which they are currently plundering. Maybe a surrender can be forced
+%	without actually doing anything.
+%    PARAM1: Captain surrenders exit label
+%    PARAM2: Captain attacks exit label
+%    PARAM3: Nothing much happens exit label
+
+Persona
+	requires <*CS_BASEPS_CaptainNegotiates>
+	START <EndCHat Say %id%01 AddCHat %id%01 AddChat %id%02>
+	.%id%_GoAttack <EndChat Say %id%02 Goto %2%>
+	result%id%01 <ifIntimidation HardSkillTar StoryDL else .%id%_GoAttack EndChat Say %id%03 Goto %1%>
+	result%id%02 <ifStealth 3 else .%id%_GoR2Fail EndChat Say %id%04 Goto %3%>
+	.%id%_GoR2Fail <EndChat Say %id%05 Goto %2%>
+	Msg%id%01 <Yes, what do you want? I've got a ship to run.>
+	Msg%id%02 <I thought you looked suspicious... No matter though, I won't be handing this ship over to the likes of you.>
+	Msg%id%03 <Alright, I'll surrender, just calm down...>
+	Msg%id%04 <Alright. Get back to work, then...>
+	Msg%id%05 <Hey, you're not part of the crew... We've got an intruder on board!>
+	Prompt%id%01 <Surrender now, or face my wrath!>
+	Prompt%id%02 <Never mind me, just passing through...>
+
+
+% TYPE: *CS_WarZone_Greeting
+%	The PC has just entered a warzone. This NPC will brief the PC on what
+%	happened. The PC can either sound concerned or shrug it off.
+%    PARAM1: Offer help label
+%    PARAM2: Noncommital label
+
+	Persona
+	requires <*CS_WarZone_Greeting>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <Goto %2%>
+	Msg%id%01 <The fighting appears to be over, for now... It's going to take a while to repair this damage though.>
+	Msg%id%01_1 <Many lives were lost here today. Now it's time for the rest of us to repair the damage, and start preparing for the next attack...>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <The battle's over, for now. Time to start cleaning up.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <It's going to take the rescue squad another couple of hours to count up all the casulties. Good thing this was just a minor skirmish, eh \PC ?>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <What can I do to help?>
+	Prompt%id%01_1 <Is there anything I can do?>
+	Prompt%id%02 <No kidding.>
+	Prompt%id%02_1 <Yeah.>
+
+
+
+% TYPE: *CS_ForcedInduction_Greeting
+%	The PC has just been shangheid into joining a faction.
+%   PARAM1: Exit label (no message printed here)
+%   PARAM2: Faction that's been joined
+
+	Persona
+	requires <*CS_ForcedInduction_Greeting>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <AddReact d10 Goto %1%>
+	result%id%02 <AddEasygoing -d10 Goto %1%>
+	Msg%id%01 <You are now in the employ of \FACTION %2% ; I will expect you to act accordingly.>
+	Msg%id%01_1 <Congratulations, you're one of us now. Know that as long as you're loyal to \FACTION %2% we'll be looking out for you as well.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <You're now in the employ of \FACTION %2% . I trust you can figure out the details on your own.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <So, you are the latest addition to the \FACTION %2% team. It's not a bad job once you get the hang of it.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <You don't know how lucky you are to be granted membership in \FACTION %2% , \PC , but you'll learn soon enough...>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <It's so much better to join forces than to fight. I know that you'll enjoy being a member of \FACTION %2% , at least once you get used to it.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <I hope I'm not going to regret bringing you here. It's true that \FACTION %2% needs help, but I'm not convinced that you're up to our standards.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <I'll do my best.>
+	Prompt%id%01_1 <You can count on me.>
+	Prompt%id%02 <As soon as I can find a way out, I'm gone.>
+	Prompt%id%02_1 <I'll do the job, but I don't like it.>
+
+
+% TYPE: *COMP_Pme_MFH_Greeting
+%	The PC has just run into his friend and a bunch of hostile mecha.
+%	Friend runs off, leaving PC to fight the mecha.
+%   PARAM1: Exit label (no message printed here)
+
+	Persona
+	requires <*COMP_Pme_MFH_Greeting>
+	START <NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <What are you doing here!?>
+	Msg%id%01_1 <\PC , what in the world are you doing here!? How much do you know?>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Why did you come here?>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Oh, it's you. What are you doing here?>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <I can't believe it! What are you doing here?>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Well, this is a surprise. What are you doing here?>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <Oh no... What are you doing in this place!?>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	prompt%id%01 <I could ask you the same question.>
+	prompt%id%01_1 <What are YOU doing here?>
+	prompt%id%01_2 <The bigger question is, why are you here?>
+
+
+% TYPE: *COMP_Pun_MAE_Greeting
+%	The PC is meeting his new arch-enemy for the first time. Yay!
+%   PARAM1: Exit label (no message printed here)
+
+	Persona
+	requires <*COMP_Pun_MAE_Greeting E:Friend>
+	start <EndChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <\PC ! What are you doing here? You shouldn't be in this place... you shouldn't even be in \SCENE &EpisodeScene . I don't want to fight you but I will if I have to.>
+	Prompt%id%01 <It's you who shouldn't have come here.>
+	Prompt%id%01_1 <Sorry, my friend, but I won't back down either.>
+
+	Persona
+	requires <*COMP_Pun_MAE_Greeting F:++>
+	start <EndChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <You, there! Leave this area at once or suffer the full wrath of \FACTION &EnemyFac !>
+	Prompt%id%01 <I'm not afraid of \FACTION &EnemyFac .>
+
+	Persona
+	requires <*COMP_Pun_MAE_Greeting>
+	start <EndChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <EndChat Say %id%02 AddChat %id%03>
+	result%id%03 <Goto %1%>
+	Msg%id%01 <What do you think you're doing here? Anyone who gets in our way is going to get killed.>
+	Msg%id%02 <I have no time to waste explaining things to you. The only thing you need to know is that you have no chance of defeating me.>
+	Prompt%id%01 <I'm here to stop you.>
+	Prompt%id%02 <Wait! I just want to know what you're doing.>
+	Prompt%id%03 <I intend to prove you wrong about that.>
+
+
+% TYPE: *CORE_Pme_MEIB_Greeting
+%	The PC is meeting someone he's met before, but this time in battle.
+%   PARAM1: Exit label (no message printed here)
+
+	Persona
+	requires <*CORE_Pme_MEIB_Greeting E:Friend>
+	start <EndChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <What are you doing here, \PC ? I've got a job to do... if you get in my way, I won't hold back just because we're friends.>
+	Prompt%id%01 <Neither will I.>
+	Prompt%id%01_1 <I wouldn't expect you to.>
+
+	Persona
+	requires <*CORE_Pme_MEIB_Greeting -E:Friend>
+	start <EndChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <Hello again \PC . We seem to keep bumping into each other... This time, though, will most probably be our last meeting.>
+	Prompt%id%01 <You think you can take me? Come on.>
+
+
+

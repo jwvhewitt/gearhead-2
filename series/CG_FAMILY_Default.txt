@@ -1,0 +1,109 @@
+% FAMILY HISTORY FILE
+
+%  The "V" of a family gear tells how many "Jobs" it contributes to the
+%  PC's creation. Each job should be indicated in the family desc as a #.
+%  It will be replaced with the job name at runtime.
+
+% The family context is applied first, so even if no changes are intended
+% it includes a "blank" personal context.
+
+Family 1
+desc <Your father was a %job1% and your mother was a %job2%.>
+requires <GENERAL>
+context <+B-- +G-->
+inv
+	Chara
+	PCMentor
+	PCFamily
+	role <FATHER>
+	chardesc male
+	Renown 50
+	Quest <*EGG_Primary>
+	Age 25
+
+	Chara
+	PCMentor
+	PCFamily
+	role <MOTHER>
+	chardesc female
+	Renown 50
+	Quest <*EGG_Secondary>
+	Age 25
+end
+
+Family 1
+desc <Your mother was a %job1% and your father was a %job2%.>
+requires <GENERAL>
+context <+B-- +G-->
+inv
+	Chara
+	PCMentor
+	PCFamily
+	role <MOTHER>
+	chardesc female
+	Renown 50
+	Quest <*EGG_Primary>
+	Age 25
+
+	Chara
+	PCMentor
+	PCFamily
+	role <FATHER>
+	chardesc male
+	Renown 50
+	Quest <*EGG_Secondary>
+	Age 25
+end
+
+
+Family 1
+desc <You were raised by your mother, who was a famous %job1%.>
+requires <GENERAL>
+context <+B-- +G-->
+inv
+	Chara
+	PCMentor
+	PCFamily
+	role <MOTHER>
+	chardesc female
+	Renown 50
+	Quest <*EGG_Primary>
+	Age 25
+end
+
+Family 1
+desc <You were raised by your father, who was a famous %job1%.>
+requires <GENERAL>
+context <+B-- +G-->
+inv
+	Chara
+	PCMentor
+	PCFamily
+	role <FATHER>
+	chardesc male
+	Renown 50
+	Quest <*EGG_Primary>
+	Age 25
+end
+
+Family 0
+desc <You never knew your parents, and were raised in an orphanage.>
+requires <GENERAL>
+context <+Bor +G-->
+
+Family 0
+desc <Your parents were too poor to care for you, so they put you up for adoption.>
+requires <POOR>
+context <+Bor +G-->
+
+Family 0
+desc <Your parents died when you were very young.>
+requires <GENERAL>
+context <+Bpd +G-->
+
+Family 0
+desc <Your parents died in the disaster.>
+requires <DISASTER>
+context <+Bpd +G-->
+
+

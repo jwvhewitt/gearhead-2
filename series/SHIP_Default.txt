@@ -1,0 +1,10 @@
+%% This file will hold spaceship definitions.
+%% Level maps should be stored separately.
+
+%% A spaceship is constructed of scenes. The root scene is the basic one;
+%% any others must be added as subscenes.
+%% The root scene of a ship should feature an entrance, a designation, and
+%% a map name.
+
+Scene
+	desig <>

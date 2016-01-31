@@ -1,0 +1,102 @@
+AeroFighter 7
+Name <Gigas>
+Desig <AET-52>
+SDL_Sprite <aer_gigas.png>
+desc <Aegis Overlord's main bomber.>
+type <GROUND SPACE>
+factions <AEGIS AEGSF>
+ROLE_AEGIS <GENERAL:SUPPORT  ASSAULT:SUPPORT>
+ROLE_AEGSF <GENERAL:SUPPORT  ASSAULT:SUPPORT>
+
+sub
+Torso
+	Armor 7
+	Mass -9
+	sub
+		CPit
+		Armor 2
+		mass -1
+
+		Sensor 6
+		mass -1
+
+		Computer 2
+		mass -1
+		sub
+			Software 2
+			name <C2f5 Aero Targeting>
+			S_TRBoost
+			S_BoostScale 2
+		end
+
+		Mount
+		Name <Body Mount>
+		inv
+			MLauncher 12
+			sub
+				STC SWM-2
+				Magazine 60
+			end
+		end
+
+		STC LAS-5
+
+		Flight 8
+	end
+
+Wing
+	Name <Right Wing>
+	Armor 7
+	Mass -9
+	sub
+		Mount
+		Name <Right Wing Mount>
+		inv
+			MLauncher 2
+			sub
+				STC NUKE-20
+			end
+		end
+
+		Flight 7
+	end
+
+Wing
+	Name <Left Wing>
+	Armor 7
+	Mass -9
+	sub
+		Mount
+		Name <Left Wing Mount>
+		inv
+			MLauncher 2
+			sub
+				STC NUKE-20
+			end
+		end
+
+		Flight 7
+	end
+
+Storage
+	Name <Right Pod>
+	Size 3
+	Armor 6
+	Mass -3
+	sub
+		STC PAR-6
+
+		Flight 5
+	end
+
+Storage
+	Name <Left Pod>
+	Size 3
+	Armor 6
+	Mass -3
+	sub
+		STC PAR-6
+
+		Flight 5
+	end
+end

@@ -1,0 +1,327 @@
+Battroid 4
+Name <Galah>
+SDL_Sprite <btr_trailblazer.png>
+SDL_Portrait <item_galah.png>
+Desig <KOR-15>
+desc <A general purpose battroid from Comet Metalworks.>
+TYPE <GROUND SPACE INSIDE>
+FACTIONS <MAQUI L5LAW COMET FCOMS>
+
+ROLE_MAQUI <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_COMET <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_FCOMS <ASSAULT:TROOPER>
+
+sub
+Head
+	size 3
+	Armor 3
+	Mass -1
+	sub
+		Sensor 6
+		mass -1
+	end
+
+Torso
+	Armor 4
+	Mass -2
+	sub
+		CPit
+		Armor 1
+
+		Flight 6
+
+		Mount
+		name <Right Torso Mount>
+
+		Mount
+		name <Left Torso Mount>
+		inv
+			MLauncher 1
+			sub
+				STC HWM-4
+				Magazine 2
+			end
+		end
+
+		ECM 2
+	end
+
+Arm
+	name <Right Arm>
+	Armor 3
+	Mass -1
+	sub
+		Hand
+		name <Right Hand>
+		inv
+			Beamgun 4
+			name <Laser Rifle>
+			Acc 1
+			Range 6
+			Recharge 3
+		end
+
+		PowerSource 2
+		mass -2
+	end
+
+Arm
+	name <Left Arm>
+	Armor 3
+	Mass -1
+	sub
+		Hand
+		name <Left Hand>
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		Shield 2
+	end
+
+Leg
+	name <Right Leg>
+	Armor 4
+	Mass -1
+	sub
+		Mount
+		name <Right Leg Mount>
+
+		Flight 4
+	end
+
+Leg
+	name <Left Leg>
+	Armor 4
+	Mass -1
+	sub
+		Mount
+		name <Left Leg Mount>
+
+		Flight 4
+	end
+
+end
+
+Battroid 4
+Name <Galah>
+SDL_Sprite <btr_trailblazer.png>
+SDL_Portrait <item_galah.png>
+Desig <KOR-15a Elite>
+desc <A general purpose battroid from Comet Metalworks.>
+TYPE <GROUND SPACE INSIDE>
+FACTIONS <L5LAW COMET>
+
+ROLE_COMET <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_L5LAW <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+
+sub
+Head
+	size 3
+	Armor 3
+	Mass -1
+	sub
+		Sensor 6
+		mass -1
+	end
+
+Torso
+	Armor 4
+	Mass -2
+	sub
+		CPit
+		Armor 1
+
+		Flight 6
+
+		Mount
+		name <Right Torso Mount>
+
+		Mount
+		name <Left Torso Mount>
+		inv
+			MLauncher 1
+			sub
+				STC HWM-4
+				Magazine 2
+			end
+		end
+
+		ECM 2
+	end
+	inv
+		BodyArmor 2
+	end
+
+Arm
+	name <Right Arm>
+	Armor 3
+	Mass -1
+	sub
+		Hand
+		name <Right Hand>
+		inv
+			Beamgun 4
+			name <Laser Rifle>
+			Acc 1
+			Range 6
+			Recharge 3
+			sub
+				EMelee 6
+				name <Beam Bayonet>
+				Integral
+			end
+		end
+
+		PowerSource 2
+		mass -2
+	end
+
+Arm
+	name <Left Arm>
+	Armor 3
+	Mass -1
+	sub
+		Hand
+		name <Left Hand>
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		Shield 2
+		DefBonus 2
+	end
+
+Leg
+	name <Right Leg>
+	Armor 4
+	Mass -1
+	sub
+		Mount
+		name <Right Leg Mount>
+
+		Flight 4
+	end
+
+Leg
+	name <Left Leg>
+	Armor 4
+	Mass -1
+	sub
+		Mount
+		name <Left Leg Mount>
+
+		Flight 4
+	end
+
+end
+
+Battroid 4
+Name <Galah>
+SDL_Sprite <btr_trailblazer.png>
+SDL_Portrait <item_galah.png>
+Desig <KOR-15b Sheriff>
+desc <A law enforcement battroid produced by Comet Metalworks.>
+TYPE <GROUND SPACE INSIDE>
+FACTIONS <L5LAW>
+ROLE_L5LAW <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+
+sub
+Head
+	size 3
+	Armor 3
+	Mass -1
+	sub
+		Sensor 6
+		mass -1
+	end
+
+Torso
+	Armor 4
+	Mass -2
+	sub
+		CPit
+		Armor 1
+
+		Flight 6
+
+		Mount
+		name <Right Torso Mount>
+
+		Mount
+		name <Left Torso Mount>
+		inv
+			MLauncher 1
+			sub
+				STC HWM-4
+				Magazine 2
+			end
+		end
+
+		ECM 2
+	end
+
+Arm
+	name <Right Arm>
+	Armor 3
+	Mass -1
+	sub
+		Hand
+		name <Right Hand>
+		inv
+			STC PAR-2
+			name <Security Rifle>
+			sub
+				EMelee 6
+				name <Shock Baton>
+				type <OVERLOAD>
+				Integral
+			end
+		end
+
+		PowerSource 2
+		mass -2
+	end
+
+Arm
+	name <Left Arm>
+	Armor 3
+	Mass -1
+	sub
+		Hand
+		name <Left Hand>
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		Shield 3
+		name <Riot Shield>
+		DefBonus 2
+	end
+
+Leg
+	name <Right Leg>
+	Armor 4
+	Mass -1
+	sub
+		Mount
+		name <Right Leg Mount>
+
+		Flight 4
+	end
+
+Leg
+	name <Left Leg>
+	Armor 4
+	Mass -1
+	sub
+		Mount
+		name <Left Leg Mount>
+
+		Flight 4
+	end
+
+end

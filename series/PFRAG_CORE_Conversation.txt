@@ -1,0 +1,437 @@
+%%
+%%  *CS_C_Greeting Content
+%%
+%%  Core Story Conversation Greeting
+%%
+%% The PC has just entered a conversation which will lead to a main course
+%% subplot.
+%%
+%%  PARAM1: Exit label
+%%
+
+Persona
+	requires <*CS_C_Greeting *CORE_S_PCF ~"Ally">
+	% V%id%01 = One time use counter
+	START <if= v%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <goto %1%>
+	Msg%id%01 <Let's get straight to business... \FACTION &AllyFac has taken an interest in your adventures, \PC . It may be time for us to think about joining forces.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <So what do you want me to do?>
+	Prompt%id%01_1 <Are you offering me a mission?>
+
+
+Persona
+	requires <*CS_C_Greeting (*CORE_DEF_|*CORE_OFF_) ("POLIC"|"POLIT"|"CORPO") F:CRIME -"Friend" -"PCFAC">
+	% V%id%01 = One time use counter
+	START <if= v%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <goto %1%>
+	Msg%id%01 <You should know that \FACTION &EnemyFac is operating in \SCENE RootSceneID . We're attempting to keep the situation under control, but it's been hard...>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <That's what I heard.>
+	Prompt%id%01_1 <That's why I'm here.>
+
+
+Persona
+	%% Unknown Intro greeting- NonCom Job
+	requires <*CS_C_Greeting *CORE_Intro ~"MILIT" ~"ADVEN" (C:MEDIC|C:LABOR|C:MEDIA|C:TRADE|C:ACADE) -"FRIEND" -"FAMILY" -"ALLY" -"LOVER" -"PCFAC">
+	% V%id%01 = One time use counter
+	START <if= v%id%01 0 else %1% NewChat Say %id%01 AddChat %id%01 AddCHat %id%02 V= %id%01 1>
+	result%id%01 <AddEasygoing -d10  Goto %1%>
+	result%id%02 <Goto %1%>
+	Msg%id%01 <I guess you must be here about the mission. How did a \PCJOB like you end up becoming a cavalier?>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01_1 <Don't doubt my mad mecha skills.>
+	Prompt%id%01_2 <You doubt me? I'll show you my power!>
+	Prompt%id%01_3 <I was just born to pilot. The fire's in my blood!>
+	Prompt%id%02_1 <Well, it seemed like a good idea at the time.>
+	Prompt%id%02_2 <I just have a knack for adventure, I guess.>
+	Prompt%id%02_3 <Good question. Now, about that job?>
+
+Persona
+	%% Unknown Intro greeting
+	requires <*CS_C_Greeting *CORE_Intro ~"MILIT" ~"POLIT" -"FRIEND" -"FAMILY" -"ALLY" -"LOVER" -"PCFAC">
+	% V%id%01 = One time use counter
+	START <if= v%id%01 0 else %1% NewChat Say %id%01 AddChat %id%01 AddCHat %id%02 AddChat %id%03 V= %id%01 1>
+	result%id%01 <AddCheerful d10  Goto %1%>
+	result%id%02 <Goto %1%>
+	result%id%03 <AddCheerful -d10  Goto %1%>
+	Msg%id%01 <You must be here about the mission. Well, I'll be honest, I'm not real excited about hiring a complete unknown like you to do it...>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <You're not here about the mission, are you? This is just what I need... a complete nobody.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01_1 <I won't disappoint you.>
+	Prompt%id%01_2 <Let me show you what I can do.>
+	Prompt%id%01_3 <What I lack in experience I make up in enthusiasm!>
+	Prompt%id%02 <Unknown? Me? You must be joking.>
+	CPrompt%id%02 <ifG PCRenown 10 Accept>
+	Prompt%id%02_1 <I'm more experienced than you think.>
+	Prompt%id%03_1 <Yeah, I'm thrilled to work for you, too.>
+	Prompt%id%03_2 <Well I never heard of you, either.>
+	Prompt%id%03_3 <>
+
+Persona
+	requires <*CS_C_Greeting *CORE_INTRO ("FRIEND"|"FAMILY"|"LOVER")>
+	START <if= V%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <AddEasygoing -10   Goto %1%>
+	result%id%02 <AddEasygoing  10   Goto %1%>
+	Msg%id%01 <I hear you'll be leaving town soon. Everyone always figured that you'd end up as a cavalier. I wanted to wish you luck before you go.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <Yeah, I'm off to seek my fortune.>
+	Prompt%id%01_1 <A universe of adventure is waiting for me!>
+	Prompt%id%01_2 <This place is boring. There's a whole universe to see!>
+	Prompt%id%02 <I'll still be around for a while yet.>
+	Prompt%id%02_1 <I dunno. I'll be here for a while yet.>
+	Prompt%id%02_2 <My plans aren't final yet.>
+
+Persona
+	requires <*CS_C_Greeting *CORE_INTRO ~"Melancholy" ("FRIEND"|"FAMILY"|"LOVER")>
+	START <if= V%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <AddCheerful -10   Goto %1%>
+	result%id%02 <AddCheerful  10   Goto %1%>
+	Msg%id%01 <So you've finally decided to become a cavalier. Are you serious about this? I know it sounds like fun, but you could be hurt or even killed.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Prompt%id%01 <That's the chance I have to take.>
+	Prompt%id%01_1 <If that happens, then so be it.>
+	Prompt%id%01_2 <Death comes for us all, even those who risk nothing.>
+	Prompt%id%02 <Don't worry about it. I'll be fine.>
+	Prompt%id%02_1 <I'm way too good to get killed that easy.>
+	Prompt%id%02_2 <Hey, I'll be alright, I always succeed!>
+
+Persona
+	requires <*CS_C_Greeting *CORE_INTRO ("Cheerful"|"LABOR"|"TRADE"|"CRAFT"|"ACADE") ("FRIEND"|"FAMILY"|"LOVER")>
+	START <if= V%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <AddSociable -10   Goto %1%>
+	result%id%02 <AddSociable  10   NewChat  Say %id%02 AddChat %id%03>
+	result%id%03 <Goto %1%>
+	Msg%id%01 <Wow, look at you... you're a real cavalier now! It must be really exciting... I wish I could do that too.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%02 <I can't. There are too many responsibilities keeping me here... but still, it would be nice if I could.>
+	Prompt%id%01 <Sorry, this is a path I must walk alone.>
+	Prompt%id%01_1 <I think you're better off staying here.>
+	Prompt%id%01_2 <Adventuring is a lonely life.>
+	Prompt%id%02 <Why don't you come with me?>
+	Prompt%id%02_1 <I've got an idea... You should come with me!>
+	Prompt%id%02_2 <You could come with me, if you want.>
+	Prompt%id%03 <That's too bad.>
+	Prompt%id%03_1 <I understand.>
+
+
+Persona
+	requires <*CS_C_Greeting *CORE_R_MEK ~"LABOR" ~"CRAFT" ~"FRIEND">
+	% V%id%01 = One time use counter
+	START <if= v%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <goto %1%>
+	Msg%id%01 <I could use your help with something. Aid me in this, and I'll reward you with a brand new state of the art mecha.>
+	Msg%id%01_1 <Are you here about the mission? I'm afraid that I can't afford to pay you very much, just a customized mecha...>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <I like the sound of that.>
+	Prompt%id%01_1 <Sounds interesting.>
+
+Persona
+	requires <*CS_C_Greeting *CORE_R_EXP>
+	% V%id%01 = One time use counter
+	START <if= v%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <goto %1%>
+	result%id%02 <AddCheerful -d6  goto %1%>
+	Msg%id%01 <You seek to become a better fighter. If you prove to me that you're serious about improving, I can help you to reach your full potential.>
+	Prompt%id%01 <So what do you want me to do?>
+	Prompt%id%01_1 <Sounds interesting.>
+	Prompt%id%02 <I doubt you can teach me anything, but go on.>
+	CPrompt%id%02 <ifChatNPCNotCombatant Accept>
+
+Persona
+	requires <*CS_C_Greeting *CORE_R_LAN>
+	% V%id%01 = One time use counter
+	START <if= v%id%01 0 else %1% V= %id%01 1 if= T-3 0 else .%id%_GoExpound NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	.%id%_GoExpound <NewChat Say %id%02 AddChat %id%03>
+	result%id%01 <goto .%id%_GoExpound>
+	result%id%02 <AddSociable d10  goto .%id%_GoExpound>
+	result%id%03 <Goto %1%>
+	Msg%id%01 <I notice that you travel alone... That must be dangerous.>
+	Msg%id%02 <I could use your help with something. Aid me in this and I can find you some new muscle.>
+	Prompt%id%01 <I manage.>
+	Prompt%id%02 <Yeah, I'm hoping to find a new partner soon.>
+	Prompt%id%03 <Go on.>
+	Prompt%id%03_1 <What kind of aid do you need?>
+	Prompt%id%03_2 <That sounds like a good deal.>
+
+Persona
+	requires <*CS_C_Greeting *CORE_OFF_ E:++ ~E:ENEMY -E:A.nme>
+	% V%id%01 = One time counter
+	START <if= v%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <goto %1%>
+	result%id%02 <AddSociable -d10  goto %1%>
+	Msg%id%01 <\PERSONA &EnemyNPC has been causing lots of trouble around here. I could use your help to defeat \OPR &EnemyNPC .>
+	Msg%id%01_1 <People say that you're \PERSONA &EnemyNPC 's arch-enemy. I hope it's true because \SPR &EnemyNPC 's been causing lots of trouble, and we need someone to deal with \OPR &EnemyNPC .>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01_1 <Oh yeah, that's what I came for.>
+	Prompt%id%01_2 <I'm always ready to fight \PERSONA &EnemyNPC .>
+	Prompt%id%01_3 <I was hoping to face \OPR &EnemyNPC again...>
+	Prompt%id%02_1 <I don't care about \OPR &EnemyNPC , but as long as I'm paid well...>
+	Prompt%id%02_2 <Meh. I'm just doing my job.>
+	Prompt%id%02_3 <Keep paying me and I'll keep fighting \OPR &EnemyNPC .>
+
+Persona
+	requires <*CS_C_Greeting *CORE_OFF_ ~"MILIT" ~"ADVEN"  ~"PCFAC">
+	START <NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <goto %1%>
+	Msg%id%01 <There's been some intense fighting around these parts. If you're looking for action, you've come to the right place.>
+	Msg%id%01_1 <Things have been brutal lately. Most of the local cavaliers have been keeping their head down. If you're looking for work and have a complete disregard for personal safety this is a good time to be in \SCENE RootSceneID .>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Wow, this is my lucky day. After most of my regular cavaliers got permanently retired I figured I wouldn't be able to find anyone for this next job...>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <Work is always dangerous for a cavalier, but lately it's become downright lethal. I can tell from the look on your face that you're hoping for a piece of the action.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01_1 <Do you need anything blown up?>
+	Prompt%id%01_2 <That's what I came for.>
+	Prompt%id%01_3 <I go where the action is.>
+
+Persona
+	requires <*CS_C_Greeting *CORE_DEF_ E:++  ~"PCFAC" ~"FRIEND">
+	START <NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <goto %1%>
+	Msg%id%01 <Recently \PERSONA &EnemyNPC has been causing trouble in \SCENE RootSceneID . We need someone to protect us from \OPR &EnemyNPC .>
+	Msg%id%01_1 <Hello \PC . I know that you have faced \PERSONA &EnemyNPC before. We've been having some trouble with \OPR &EnemyNPC ourselves here in \SCENE RootSceneID . I was wondering if you could help us...>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <\PERSONA &EnemyNPC has been causing problems here. I could use your help to defeat \OPR &EnemyNPC .>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <That's why I came here.>
+	Prompt%id%01_1 <Tell me what you need.>
+	Prompt%id%01_2 <No kidding.>
+
+Persona
+	requires <*CS_C_Greeting *CORE_DEF_ ~"POLIT" ~"PCFAC" ~"FRIEND">
+	START <NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <goto %1%>
+	Msg%id%01 <There have been some troubles in \SCENE RootSceneID lately, I'm sure you're aware...>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <That's why I'm here.>
+	Prompt%id%01_1 <I know. That's why I came.>
+	Prompt%id%01_2 <No kidding.>
+
+
+Persona
+	%% Intro greeting (PCFAC)
+	requires <*CS_C_Greeting "PCFAC" -"PDASS" *CORE_Intro>
+	% V%id%01 = One time use counter
+	START <if= v%id%01 0 else %1% NewChat Say %id%01 AddChat %id%01 V= %id%01 1>
+	result%id%01 <Goto %1%>
+	%% Because we know that the PC has a faction, we can use the rank name.
+	Msg%id%01 <Hello, \RANK \PC . You've done well in training, but now it's time for you to perform a real mission. Succeed at this and you'll have a bright future as a cavalier.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01_1 <I'll do my best.>
+	Prompt%id%01_2 <I'm ready for it.>
+
+Persona
+	%% Default reward greeting
+	requires <*CS_C_Greeting *CORE_R_>
+	% V%id%01 = One time use counter
+	START <if= v%id%01 0 else %1% NewChat Say %id%01 AddChat %id%01 V= %id%01 1>
+	result%id%01 <Goto %1%>
+	Msg%id%01_10 <I could use your help with something, \PC , and from what I hear you could use my help as well...>
+	CMsg%id%01_10 <ifChatNPCKnown Accept>
+	Msg%id%01_20 <I've been searching for a cavalier. Do this one thing for me, and I guarantee to make it worth your while.>
+	CMsg%id%01_20 <ifChatNPCUnknown Accept>
+	Prompt%id%01_1 <I am intrigued by your offer.>
+	Prompt%id%01_2 <What sort of deal are you thinking about?>
+	Prompt%id%01_3 <What are you offering?>
+
+
+Persona
+	%% Unknown greeting (default)
+	requires <*CS_C_Greeting -"FRIEND" -"FAMILY" -"ALLY" -"LOVER" -"PCFAC" -*CORE_R_>
+	% V%id%01 = One time use counter
+	START <if= v%id%01 0 else %1% NewChat Say %id%01 AddChat %id%01 V= %id%01 1>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <Are you here about the mission? I've been waiting for a cavalier qualified for the job...>
+	Msg%id%01_1 <I guess you're here because you heard that I need someone for an upcoming mission. Well, you heard right, I do need a cavalier. Interested?>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <I need a cavalier for an upcoming job. Interested?>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <What luck, a wandering cavalier has just appeared before me! You must be here for the job, right?>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <Are you here about the mission? I've been waiting for a cavalier brave enough to face certain death...>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01_1 <That's what I'm here for.>
+	Prompt%id%01_2 <Give me the details first, then I'll decide.>
+	Prompt%id%01_3 <Tell me about this job.>
+
+
+Persona
+	%% Known greeting (PCFAC)
+	requires <*CS_C_Greeting "PCFAC">
+	% V%id%01 = One time use counter
+	START <if= v%id%01 0 else %1% NewChat Say %id%01 AddChat %id%01 V= %id%01 1>
+	result%id%01 <Goto %1%>
+	%% Because we know that the PC has a faction, we can use the rank name.
+	Msg%id%01 <Hello, \RANK \PC . Your services are required by \FACTION ChatNPCFac .>
+	Msg%id%01_1 <Hello \PC . \FACTION ChatNPCFac asked me to give you this briefing... this mission sounds like it's really worthy of a \RANK like you.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Hello, \RANK \PC . I've got a mission for you.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Hey \PC , I've been asked by \FACTION ChatNPCFac to brief you on this mission. From what I gather it's kind of important.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <Listen up \RANK , I've got a mission for you from \FACTION ChatNPCFac . This is of vital importance.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <It's good to see you, \PC . I've got a mission for you from \FACTION ChatNPCFac .>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <Hi \RANK \PC . I wish I could say that I'm happy to see you, but there's a big problem that you need to deal with...>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01_1 <Go on.>
+	Prompt%id%01_2 <Give me the details.>
+	Prompt%id%01_3 <What kind of mission are we talking about?>
+
+
+Persona
+	%% Known greeting (default)
+	requires <*CS_C_Greeting ("FRIEND"|"FAMILY"|"ALLY"|"LOVER")>
+	% V%id%01 = One time use counter
+	START <if= v%id%01 0 else %1% NewChat Say %id%01 AddChat %id%01 V= %id%01 1>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <Hey \PC , am I ever glad to see you. There's something I could use your help with...>
+	Msg%id%01_1 <You're just the person I wanted to see today, \PC . I've got a problem and could really use the help of someone with your unique talents to solve it.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Hi \PC . If you're not busy, I could use some help.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Hey \PC . Are you doing anything today? I could really use some help with something...>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <\PC , am I ever glad to see you! You've gotta help me...>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Hi \PC . I trust things are going well? It's lucky that you came here today, because I really need your help with something.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <This is terrible... \PC , you've got to help me.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01_1 <What is it?>
+	Prompt%id%01_2 <Okay. What's the problem?>
+	Prompt%id%01_3 <What kind of help are you talking about?>
+
+
+
+

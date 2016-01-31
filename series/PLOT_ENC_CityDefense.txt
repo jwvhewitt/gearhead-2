@@ -1,0 +1,116 @@
+Plot
+	name <Regular Defense Patrol>
+	requires <*GENERAL>
+
+	% E1 is the Town scene
+	% E2 is the outdoors scene for the patrol.
+	% E3 is the encounter for the patrol
+	% E4 is the pilot to be used
+	Element1 <Scene Town>
+	Element2 <Scene Outdoors>
+	Element3 <Prefab>
+	Place3 <2>
+	Element4 <Character HasMecha !Ally 1>
+	Place4 <3 (Guards) sd enemy>
+
+	% P1 = Timer
+	% P2 = Have entered combat
+
+	start <ifNPCOK %4% else GoDelete ifG V1 0 Goto GoCheckTime>
+	update <ifNPCOK %4% else GoDelete if= V1 0 else GoCheckTime V= 1 ComTime V+ 1 43200>
+	GoCheckTime <ifG ComTime V1  if= P2 0  EndPlot>
+	GoDelete <EndPlot>
+
+	sub
+		MetaScene 3 2
+		MapWidth 30
+		MapHeight 30
+
+		% L2 = Encounter Over Indicator
+
+		start <if= P2 0  P= 2 1  ForceChat %4%>
+		end <EndPlot>
+		5min <if= P2 1  WMecha 2 %threat% 30>
+
+		nu1 <if= T1 0 Return if= P2 1 P= 2 2  AddRenown -3             Goto GoLoss>
+		nu2 <if= T2 0        if= P2 1 P= 2 3  XPV 100  AddRenown 1     Goto GoVictory>
+
+		% The PC has won this encounter.
+		GoVictory <ifNPCOK %4% ForceChat %4%>
+
+		% The PC has lost this encounter...
+		GoLoss <ifNPCOK %4% ForceChat %4%>
+
+		sub
+			Team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			Team 2
+			name <Guards>
+			SetEnemy 1
+			Deploy <SetSelfFaction NPCFac %4%   WMecha 2 %threat% 80>
+			ParaX 25
+			ParaY 25
+		end
+
+		Persona 4
+		special <UNLISTED>
+		rumor <%name4% is out on patrol.>
+		% If the PC isn't of sufficient level to handle this NPC, the battle
+		% will be left up to the lancemates.
+		greeting <if= P2 3 else GoCheckLoss        Goto GoDoWin>
+		*GoDoWin <*GetYouNextTime>
+		GoCheckLoss <if= P2 2 else GoFightPC       Goto GoDoLoss>
+		*GoDoLoss <*YouLose>
+		*GoFightPC <*BattleChallenge&Avoid GoCheckRenown GoExit>
+		GoCheckRenown <ifG ChatNPCRenown PCRenown else GoThemeExpo  EndChat Say 1 RunAway %4% WMecha 2 %threat% 50>
+		*GoThemeExpo <*THEME_EXPO&Enemy GoStartCombat>
+		GoExit <P= 3 4  Return  EndPlot>
+		Msg1 <There's no reason for me to stay here. My lance can take you on their own.>
+		Msg1_1 <I have to continue on with the patrol. Men, make sure that \PC doesn't get away.>
+		Msg1_2 <It would hardly seem fair to beat you down myself... I'll just have my squad do it instead.>
+	end
+	inv
+		STC ENCOUNTER-WANDER
+		name <%name4%'s Patrol>
+		&ifShouldAttack <IFFACTIONENEMY RootSceneFac>
+		use <ifG StatVal STAT_MetaVisibility -1      ifG PCScale 0 else GoTooSmall   &ifShouldAttack else GoNoAttack  Print 7  Exit Destination>
+		GoTooSmall <Print 6>
+		GoNoAttack <Monologue %4% 5  EndPlot>
+		Attack <ifG StatVal STAT_MetaVisibility -1   ifG PCScale 0   &ifShouldAttack    ifUStealth HardSkillTar %threat% else GoAutoAttack Goto GoMakeChoice>
+		GoMakeChoice <ifYesNo 1 2 3 else GoAvoidAttack  Print 4 Exit Destination>
+		Msg1 <You spot a defense patrol led by %name4%.>
+		Msg2 <Confront them.>
+		Msg3 <Avoid them.>
+		Msg4 <You slip away unnoticed.>
+		Msg5 <I'm just doing a routine patrol of the city. Nothing to see here.>
+		Msg5_1 <Hello \PC ; I'm just doing a routine patrol of %name2%. This is something we have to do regularly. So far I haven't encountered any problems.>
+		CMsg5_1 <ifNPCSociable Accept>
+		Msg5_2 <I can't talk now; I'm on patrol.>
+		CMsg5_2 <ifNPCShy Accept>
+		Msg5_3 <I'm doing a patrol of %name1%. Everything looks OK from here.>
+		CMsg5_3 <ifNPCCheerful Accept>
+		Msg5_4 <There are a million forces out there who would love to destroy %name1%. It's our job to defend the city against them.>
+		CMsg5_4 <ifNPCMelancholy Accept>
+		Msg5_5 <This is %name4%; I have nothing to report from my city patrol.>
+		CMsg5_5 <ifNPCEasygoing Accept>
+		Msg5_6 <The enemies of %name1% never sleep, so neither shall I...>
+		CMsg5_6 <ifNPCPassionate Accept>
+		Msg5_7 <The streets are peaceful. I've found no trace of unlicensed mecha.>
+		CMsg5_7 <ifNPCLawful Accept>
+		Msg5_8 <I'm not looking for trouble, I'm doing a bona fide patrol!>
+		CMsg5_8 <ifNPCCriminal Accept>
+		Msg5_9 <Right now I'm patrolling %name2%. It's our job to keep the city safe.>
+		CMsg5_9 <ifNPCHeroic Accept>
+		Msg5_10 <I'm looking for someone to fight. Not you, not today...>
+		CMsg5_10 <ifNPCVillainous Accept>
+		Msg5_11 <I'm out patrolling the city. If I run into any problems, I'll give you a call.>
+		Msg6 <You fail to attract the attention of %name4%.>
+		Msg7 <You confront %name4%.>
+		ENCOUNTER_Defense
+	end
+
+
+

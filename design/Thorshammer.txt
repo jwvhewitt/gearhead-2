@@ -1,0 +1,111 @@
+Battroid 7
+Name <Thorshammer>
+Desig <THD-36>
+SDL_Sprite <btr_thorshammer.png>
+desc <This is RegEx corporation's most popular mecha design.>
+sdl_portrait <item_thorshammer.png>
+type <GROUND INSIDE>
+factions <REGEX PDASS BOHEM>
+
+ROLE_BOHEM <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+
+sub
+Torso
+	Armor 7
+	Mass -4
+	sub
+		CPit
+
+		Sensor 5
+
+		Computer 4
+		mass -4
+		sub
+			Software 2
+			name <X-Rank Maneuver Control>
+			S_MVBoost
+			S_BoostScale 2
+
+			Software 2
+			name <Next Wave Firecom>
+			S_TRBoost
+			S_BoostScale 2
+		end
+
+		Mount
+		Name <Top Weapon Mount>
+		inv
+			MLauncher 24
+			sub
+				STC SWM-2
+				Magazine 120
+			end
+		end
+
+		BeamGun 10
+		name <Triple Laser Cannon>
+		Range 6
+		Recharge 3
+	end
+
+Arm
+	Name <Right Arm>
+	Size 5
+	Armor 7
+	Mass -1
+	sub
+		Hand
+
+		Mount
+		Name <Right Arm Mount>
+		inv
+			Gun 16
+			name <Flame Cannon>
+			caliber <chemical>
+			range 6
+			Speed 3
+			Magazine 25
+			sub
+				Ammo 16
+				caliber <chemical>
+				type <LINE BURN>
+			end
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	Size 5
+	Armor 7
+	Mass -1
+	sub
+		Hand
+
+		Mount
+		Name <Left Arm Mount>
+		inv
+			STC SML-5
+		end
+	end
+
+Leg
+	Name <Right Leg>
+	Size 6
+	Armor 7
+	Mass -1
+	sub
+		HeavyActuator 4
+		mass -1
+	end
+
+Leg
+	Name <Left Leg>
+	Size 6
+	Armor 7
+	Mass -1
+	sub
+		HeavyActuator 4
+		mass -1
+	end
+
+end

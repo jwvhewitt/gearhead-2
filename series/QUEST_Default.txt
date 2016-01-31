@@ -1,0 +1,424 @@
+%%
+%%  *Q_LocalTough Content
+%%
+%% The PC has just met a tough guy (or gal); find out what makes him (or her)
+%% so tough.
+%%
+%%  PARAM1: The locale of the tough
+%%  PARAM2: The tough NPC
+%%
+%% NOTE: Persona 2 must include a .%id%_GoInit script to initialize this
+%%  subquest.
+%%
+
+Content
+	name <Looking for a challenge>
+	desc <The tough is just looking for a challenge; basically, you've found a new mecha arena.>
+	requires <*Q_LocalTough>
+
+	% E1 is the scene where the tough NPC is located
+	% E2 is the tough NPC
+	% E3 is an arena entrance
+	% E4 is the arena itself
+	% E5 is the reward, an artifact
+	Element3 <Prefab>
+	Place3 <1>
+	Element4 <QuestScene>
+	Place4 <1>
+	Element5 <Artifact>
+	Place5 </>
+
+	sub
+		Persona 2
+		% V%id%01 = Have accepted arena
+		% V%id%02 = Have accepted the initial duel
+		.%id%_GoInit <SetPlotStatus %plotid% %id% Goto .%id%_GoBriefing>
+		Greeting <if= PlotStatus %plotid% %id% else %pop% if= V%id%01 0 else .%id%_GoOpenArena Goto .%id%_GoPartOne>
+		.%id%_GoOpenArena <if= ArenaState %4% NAV_AS_Win else .%id%_GoCheckQ2Loss Goto .%id%_GoArenaWin>
+		.%id%_GoCheckQ2Loss <if= ArenaState %4% NAV_AS_Loss else .%id%_GoCheckQ2Ready Goto .%id%_GoArenaLoss>
+		.%id%_GoCheckQ2Ready <if= ArenaState %4% NAV_AS_Vacant else .%id%_GoArenaFull ifG ComTime ArenaRecharge %4% else .%id%_GoArenaBusy Goto .%id%_GoOfferFight>
+		.%id%_GoArenaWin <if= ArenaWins %4% 5 else .%id%_GoMinorWin Goto .%id%_GoBigWin>
+		*.%id%_GoMinorWin <*BasicArenaWin %4% .%id%_GoResetArena>
+		*.%id%_GoArenaLoss <*BasicArenaLoss %4% .%id%_GoResetArena>
+		.%id%_GoResetArena <ResetArena %4%>
+		*.%id%_GoArenaFull <*ArenaIsFull %4%>
+		*.%id%_GoArenaBusy <*ArenaIsBusy %4%>
+		.%id%_GoBigWin <NewChat Say %id%01 History %id%02 WinSubPlot %plotid% XPV 200 CashPrize Reward ArenaThreat %4% 500 GiveItem %5% Goto .%id%_GoResetArena>
+		.%id%_GoOfferFight <NewChat Say %id%03 AddChat %id%01 AddChat %id%02>
+		.%id%_GoPartOne <if= V%id%02 1 else .%id%_GoBriefing if= ArenaState %4% NAV_AS_Battle else .%id%_GoCheckStatus Goto .%id%_GoTrashTalk>
+		*.%id%_GoTrashTalk <*ArenaChallenge .%id%_GoThemeInfo>
+		*.%id%_GoThemeInfo <*THEME_EXPO&Enemy NA>
+		.%id%_GoCheckStatus <if= ArenaState %4% NAV_AS_Ready else .%id%_GoCheckWin Goto .%id%_GoWaiting>
+		*.%id%_GoWaiting <*WaitingForDuel %4%>
+		.%id%_GoCheckWin <if= ArenaState %4% NAV_AS_Win else .%id%_GoCheckChallenge NewChat Say %id%04 History %id%05 V= %id%01 1 Goto .%id%_GoResetArena>
+		.%id%_GoCheckChallenge <ResetArena %4% ifG ComTime ArenaRecharge %4% else .%id%_GoLater NewChat Say %id%06 AddChat %id%03 AddChat %id%02>
+		*.%id%_GoLater <*ChallengeMeLater>
+		.%id%_GoBriefing <NewChat Say %id%07 AddChat %id%04 AddChat %id%05>
+		.%id%_GoStartCombat <SetChallengerID %4% %2% SetChallengerHome %4% %1% MoveNPC %2% %4% PrepArena %4% 0 SetNPCTeam %2% 2>
+		*.%id%_GoChooseBattle <*StartArenaBattle %4% .%id%_GoStartFight>
+		.%id%_GoStartFight <SavePos PrepArena %4% 70 Jump %4%>
+		result%id%01 <Goto .%id%_GoChooseBattle>
+		*result%id%02 <*RejectChallenge>
+		*result%id%03 <*MeetMeAtArena %4% .%id%_GoStartCombat>
+		result%id%04 <NewChat Say %id%08 AddSociable -d10 CancelSubPlot %plotid%>
+		result%id%05 <NewChat Say %id%09 AddChat %id%02 AddCHat %id%03 V= %id%02 1>
+		Msg%id%01 <That was yoru fifth win; I guess that makes you the champion. Here, you can take this %name5% as a reward. I think you could put it to better use than I can.>
+		Msg%id%02 <You won the %name5% at %name2%'s homebrew arena.>
+		Msg%id%03 <Welcome back, \PC . Are you here for another go in the arena?>
+		Msg%id%04 <Wow, that was a challenge! Y'know, if you want to find out just how tough you really are, I know some other guys who wouldn't mind testing their skills... Come back tomorrow and we can have another match.>
+		Msg%id%05 <You defeated %name2% in \PPR %2% homebrew arena.>
+		Msg%id%06 <Ready to test your luck in the arena? Only one of us can be victorious!>
+		Msg%id%07 <I've been searching for a rival who can challenge my awesome skills. To that end I built a mecha arena in the basement, and have been facing pilots from all over. So far, though, I've only been disappointed...>
+		Msg%id%08 <If you are not interested then why did you come? Fine, if that's how you feel you can't see my rec room...>
+		Msg%id%09 <Words are cheap. You say that, but are you willing to prove it?>
+		Prompt%id%01 <But of course!>
+		Prompt%id%02 <No, not right now...>
+		Prompt%id%03 <I'm all set.>
+		Prompt%id%04 <Your megalomania does not interest me.>
+		Prompt%id%05 <I'll bet I can take you.>
+
+		MetaScene 4 2
+		name <%name2%'s Homebrew Arena>
+		BoxMap
+		RockyTiles
+		MapWidth 32
+		MapHeight 32
+		Ceiling
+		terrain <INSIDE>
+		special <SHOWALL SOLO ARENA NOPILLAGE>
+		start <if= SelfArenaState NAV_AS_Ready else GoCheckBattle          Alert 1   SetSelfArenaState NAV_AS_Battle SetSelfArenaRecharge if# SelfChallengerID 0 ForceChat SelfChallengerID>
+		GoCheckBattle <if= SelfArenaState NAV_AS_Battle else GoBoringStart Print 2>
+		GoBoringStart <Print 3 Return>
+		nu1 <if= T1 0 Return   if= SelfArenaState NAV_AS_Battle SetSelfArenaState NAV_AS_Loss  Alert 5 Print 5  LoseRenown  Goto GoEndBattle>
+		nu2 <if= T2 0 Return   if= SelfArenaState NAV_AS_Battle SetSelfArenaState NAV_AS_Win   Alert 6 Print 6  AddSelfArenaWin  AddSelfArenaThreat d10  XPV 100 FacXP+ 5 1 AddRenown 1 ifNPCOK SelfChallengerID else GoEndBattle ForceChat SelfChallengerID Goto GoEndBattle>
+		GoEndBattle <ifNPCOK SelfChallengerID MoveAndPacifyNPC SelfChallengerID SelfChallengerHome ClearSelfChallengerID>
+		Msg1 <You enter \SCENE SceneID . Prepare to battle.>
+		Msg2 <The arena battle rages on.>
+		Msg3 <You enter \SCENE sceneid . There's nothing interesting here.>
+		Msg5 <You have lost the battle.>
+		Msg6 <You have won the battle.>
+		Content3 <Fill Sub *RANDOM_SHAPES na>
+		sub
+			Team 1
+			name <Player Team>
+			SetEnemy 2
+			ParaX 4
+			ParaY 4
+
+			Team 2
+			name <Enemies>
+			SetEnemy 1
+			Deploy <if= SelfArenaState NAV_AS_Ready ifG SelfArenaForces 0 WMecha 2 SelfArenaThreat SelfArenaForces>
+			ParaX 29
+			ParaY 29
+		end
+
+		MetaScene 3
+		sub
+			room
+			desig <HOME>
+			minimap < ... .......1....... ... >
+		end
+	end
+	inv
+		Trapdoor
+		desig <ENTRANCE %4%>
+	end
+
+%%
+%%  *:Q_RevealEncounter Content
+%%
+%% There's an encounter. Reveal it.
+%%
+%%  PARAM1: The scene being sought
+%%  PARAM2: The outdoors scene where it is.
+%%
+
+Content
+	name <Basic Model>
+	%% Reveal the scene using a FindEncounter mood.
+	requires <*:Q_RevealEncounter>
+	special <REUSABLE>
+
+	% E1 is the scene being sought
+	% E2 is the outdoors scene
+	% E3 is a mood to be deployed to locate the hideout
+	Element3 <Prefab>
+
+	% P%id%01 = Initialization Counter
+	update <if= P%id%01 0 P= %id%01 1 SetMood %3% RootSceneID>
+
+	inv
+		MinorMood 1
+		name <Quest Encounter Search %plotid% %id%>
+		plot_type <*FindEncounter>
+		Element1 <Grab 2>
+		Element2 <Grab 1>
+	end
+
+
+%%
+%%  *:Q_ENT_BlackMarket Content
+%%
+%% There's a black market in town and the PC needs to find it.
+%%
+%% This subplot should set a PLACE string for the black market
+%% in question.
+%%
+%%  PARAM1: The scene being sought
+%%
+
+Content
+	name <Worst Kept Secret>
+	%% Reveal the scene using a FindEncounter mood.
+	requires <*:Q_ENT_BlackMarket>
+	special <REUSABLE>
+
+	% E1 is the black market being sought
+	% E2 is a local urban scene
+	% E3 is a mood to be deployed to locate the hideout
+	% E4 is the encounter to be used as the entrance
+	Place1 <2>
+	Element2 <Scene Urban>
+	Element3 <Prefab>
+	Element4 <Prefab>
+	Place4 <2>
+
+	% P%id%01 = Initialization Counter
+	update <if= P%id%01 0 P= %id%01 1 SetMood %3% RootSceneID>
+
+	inv
+		MinorMood 1
+		name <Black Market Search>
+		plot_type <*FindEncounter>
+		Element1 <Grab 2>
+		Element2 <Grab 1>
+
+		STC QUEST-MAPMARKER-STATIONARY
+		name <Black Market>
+		desig <ENTRANCE %1%>
+	end
+
+
+%%
+%%  *:Q_NPCHideout Content
+%%
+%% An NPC has a hideout, somewhere in town. The PC has to go find it.
+%%
+%% This subplot should set a PLACE string for the NPC in question.
+%%
+%% PARAM1: The NPC who needs a hideout.
+%%
+
+Content
+	name <Urban Hideout>
+	%% The NPC has a hideout in the urban scene of this location.
+	%% Reveal the hideout using a FindEncounter mood.
+	requires <*:Q_NPCHideout>
+	special <REUSABLE>
+
+	% E1 is the NPC being sought
+	% E2 is a local urban scene
+	% E3 is the hideout proper
+	% E4 is a mood to be deployed to locate the hideout
+	Place1 <3 (Guards) sd ally>
+	Element2 <Scene Urban>
+	Element3 <QuestScene>
+	Place3 <2>
+	Element4 <Prefab>
+
+	% P%id%01 = Initialization Counter
+	update <if= P%id%01 0 P= %id%01 1 SetMood %4% RootSceneID>
+
+	sub
+		MetaScene 3
+		name <%name1%'s Hideout>
+		type <Private Complex>
+		special <NOEXIT>
+		BoxMap
+		entrance <*QUEST-INACTIVE>
+		MapWidth 12
+		MapHeight 17
+		NeededCells 2
+		content <Fill Sub *HIDEOUT_X na>
+		Start <Print 1>
+		Msg1 <You enter \SCENE SceneID .>
+		sub
+			Team 1
+
+			Team 2
+			name <Citizens>
+
+			Team 3
+			name <Guards>
+			SetAlly 2
+
+			Room
+			minimap <......###..#1#...........>
+			sub
+				Elevator
+				Destination -1
+				MiniMapComponent 1
+			end
+		end
+	end
+	inv
+		MinorMood 1
+		name <Hideout Search>
+		plot_type <*FindEncounter>
+		Element1 <Grab 2>
+		Element2 <Grab 3>
+	end
+
+%%
+%% *Q_ProveMyself Content
+%%
+%% The key NPC needs to prove himself, somehow. This may be to make up for
+%% some past deed, as a rite of passage, or whatever. In any case the deed
+%% done will be risky.
+%%
+%% At the first UPDATE, move the NPC to the proving ground.
+%%
+%% PARAM1: The NPC who will be doing the proving.
+%%
+
+Content
+	name <Prove Myself vs Derelict Spaceship>
+	% A derelict spaceship has been found. A local professor has offered a reward
+	% for the first person to locate its cargo hold. The PC can take part in the mission,
+	% but will be beaten there by E1... at which point in time the PC can allow him to
+	% claim the prize, or fight him and take the prize himself.
+	requires <*Q_ProveMyself L5PAT ~"Safe">
+
+	% E1 is the character who must prove himself
+	% E2 is the professor offering the quest
+	% E3 is the environs scene
+	% E4 is the spaceship dungeon
+	% E5 is the final goal room
+	% E6 is the professor's home
+	Element2 <Prefab>
+	Place2 <6 (Citizens) Pass Ally>
+	Element3 <Scene Environs>
+	Element4 <QuestScene>
+	Place4 <3>
+	Element5 <QuestScene>
+	Place5 <4>
+	Element6 <Scene (Building|Meeting) Public>
+
+	%% FAIL CONDITIONS:
+	%% - E2 dies
+
+	start <ifNPCDead %2%  MoveAndPacifyNPC %1% P%id%02  CancelSubPlot %plotid%>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Original Home of E1
+	Update <if= P%id%01 0 P= %id%01 1  P= %id%02 NPCScene %1% MoveNPC %1% %5%  SetNPCTeam %1% 2>
+
+	sub
+		Persona 1
+		% v%id%01 = Have gotten win speech already
+		greeting <if# PlotStatus %plotid% -1 else .%id%_GoWinQuest if= PlotStatus %plotid% %id% else %pop%  ifChatNPCInPlay else .%id%_GoBusy Goto .%id%_GoInDungeon>
+		.%id%_GoWinQuest <if= v%id%01 0 else .%id%_GoChat NewChat Say %id%01 v= %id%01 1>
+		.%id%_GoInDungeon <IfChatNPCSurrendered else .%id%_GoFirstDungeon AddHeroic 2 Goto .%id%_GoSurrender>
+		.%id%_GoFirstDungeon <NewChat Say %id%03 AddChat %id%01 AddChat %id%02>
+		*.%id%_GoBusy <*IAmBusy&OnPhone>
+		*.%id%_GoChat <*MISC_CHATTER>
+		result%id%01 <NewChat Say %id%04   Print %id%07  AddLawful 1 AddRenown -1 WinSubPlot %plotid%  MoveAndPacifyNPC %1% P%id%02  PCAlly %1%>
+		result%id%02 <AddLawful -5 ifIntimidation HardSkillTar %threat% else .%id%_GoStartFight Goto .%id%_GoSurrender>
+		.%id%_GoSurrender <EndChat Say %id%05   Print %id%07  LoseSubPlot %plotid%  MoveAndPacifyNPC %1% P%id%02  PCEnemy %1%  L= 13 1  UnSurrender %1%>
+		.%id%_GoStartFight <AddHeroic -3 TeamAttack 2 EndChat  Say %id%06  LoseSubPlot %plotid%  PCEnemy %1%>
+		Msg%id%01 <Now that I've completed my first real mission, I feel that I'm ready to be a cavalier!>
+		Msg%id%02 <What I really need to prove myself is a real mission. The trouble is, until I've completed a real mission, nobody's willing to hire me...>
+		Msg%id%03 <I did it! I found the cargo hold of this spaceship for Professor %name2%, and it seems like I'm the first person here! I can't wait to get back to town and collect my reward.>
+		Msg%id%04 <Thanks, \PC . I'll see you back in town.>
+		Msg%id%05 <Alright, I see how this is going... I'll let you claim you were here first. The reward's not worth dying over.>
+		Msg%id%06 <Do you expect me to give up on this without a fight? I think I can take you...>
+		Msg%id%07 <%name1% leaves the area.>
+		Prompt%id%01 <Congratulations, I concede victory to you.>
+		Prompt%id%01_1 <Congratulations, you earned it.>
+		Prompt%id%02 <Too bad you aren't getting out alive.>
+
+		Persona 2
+		rumor%id% <%name2% has discovered an old wrecked spaceship, and is offering a reward to whoever explores it.>
+		% V1 = Have collected reward
+		% V2 = Have initialized quest
+		% V3 = E1 dead at start of mission
+		greeting <if# SceneVar %5% 13 0 else GoCheckQuest if= V1 0 else GoChat NewChat Say 1 AddChat 1 AddChat 2>
+		GoCheckQuest <if= PlotStatus %plotid% -1 else GoCheckBegin if= V1 0 else GoChat NewChat Say 4 v= 1 1>
+		GoCheckBegin <if= PlotStatus %plotid% %id% else GoNoQuest if= V2 0 else GoRemindQuest NewChat Say 5 QMemo %plotid% 6  V= 2 1 Goto GoStartQuest>
+		GoRemindQuest <NewChat say 7>
+		GoStartQuest <SceneVar= %5% 12 1    SetEncounterActive %4%  ifNPCDead %1% V= 3 1>
+		*GoNoQuest <*NiceToMeetYou GoChat>
+		*GoChat <*MISC_CHATTER>
+		result1 <NewChat Say 2 CashPrize Reward %threat% 100 V= 1 1>
+		result2 <NewChat Say 3  AddHeroic 1 AddRenown -5   V= 1 1>
+		Msg1 <Welcome back. Have you discovered anything of interest?>
+		Msg2 <Ah, that's good to hear. Now I have a good place to begin my expedition. Here's a small reward for your trouble.>
+		Msg3 <Is that so? In that case, I'll have to prepare a reward.>
+		Msg4 <Did you hear? A young adventurer named %name1% has located the cargo hold. My expedition can start soon.>
+		Msg5 <I've discovered an old space wreck not far from here. To find out about it, I really need to have a look at its cargo hold. I'm offering a reward for the first person to explore this spaceship and tell me exactly where it is.>
+		Msg6 <Professor %name2% is offering a prize for the first person to locate the cargo hold of an old wreck \SPR %2% discovered.>
+		Msg7 <I'm still waiting for someone to locate the cargo hold of that derelict spaceship I discovered.>
+		Prompt1 <I've located the cargo hold.>
+		Prompt2 <%name1% found the cargo hold.>
+		CPrompt2 <if= V3 0 Accept>
+
+		STC QS_Dungeon_TreasureWreck
+		SetID 4
+		entrance <*QUEST-INACTIVE>
+
+		MetaScene 5
+		name <# Hold>
+		type <Private>
+		special <NOEXIT>
+		BoxMap
+		IndustrialTiles
+		entrance <*GoDown>
+
+		MapWidth 22
+		MapHeight 32
+
+		NeededCells 2
+		content <Fill Sub *STORAGE_X na>
+
+		% V11 = Quest initialization counter
+		% V12 = SubQuest Status; if V12=1, quest has been initialized.
+		% V13 = If nonzero, PC counts as first to cargo hold
+		start <if= v11 0 else GoEntry  V= 11 1  ifNPCOK %1% else GoStartNPCDead ForceChat %1% Goto GoEntry>
+		GoEntry <Print 1>
+		GoStartNPCDead <Print 11  V= 13 1  LoseSubPlot %plotid%>
+		SURRENDER%1% <if= V11 1 SetPlotStatus %plotid% %id% Forcechat %1%>
+		FAINT%1% <if= V11 1 V= 13 1 LoseSubPlot %plotid%>
+		% If the quest status hasn't been set by the time the scene is exited, do it then.
+		End <if= V11 1   V= 11 2   ifNPCOK %1% else GoNPCDead  ifTeamHostile 2 else GoNoHostile  MoveAndPacifyNPC %1% P%id%02  LoseSubPlot %plotid%>
+		GoNoHostile <if= PlotStatus %plotid% %id%  MoveAndPacifyNPC %1% P%id%02  WinSubPlot %plotid%>
+		GoNPCDead <if= PlotStatus %plotid% %id%  LoseSubPlot %plotid% V= 13 1>
+
+		Msg1 <You enter the cargo hold.>
+		Msg11 <You enter the cargo hold. This must be the place that %name2% was searching for.>
+
+		sub
+			Team 1
+
+			Team 2
+			name <Citizens>
+			SetAlly 1
+
+			Team 3
+			name <Guards>
+			SetAlly 2
+
+			Room
+			minimap <......###..#1#...........>
+			sub
+				Elevator
+				Destination -1
+				MiniMapComponent 1
+			end
+		end
+	end
+	inv
+		NPC Professor
+	end
+
+

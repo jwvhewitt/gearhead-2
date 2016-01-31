@@ -1,0 +1,92 @@
+%%
+%%  Lead-ins for *CORE_DEF_ missions.
+%%
+
+Plot
+	name <Battlefield Cleanup>
+	desc <The PC will arrive at the site of a battle, and be asked to do a mission.>
+	requires <*CORE_DEF_ ~C:MEDIC (L:ALLY|P:--) -L:ENEMY>
+
+	% E1 is the metascene where this will take place
+	% E2 is the character who recommends the PC for the mission
+	% E3 is the scene for the real mission-giver
+	% E4 is the real mission-giver
+	Element1 <MetaScene !Near -7 Neverfail>
+	Element2 <Character HasMecha !Near -7 !Ally -7 !Okay -3 !XClude -2 -Enemy>
+	Place2 <1 (Guards) SD ally>
+	element3 <Scene Building Public !Okay -3 !Near -7>
+	element4 <Character !Near -7 !Okay -3 !XClude -2 !Ally 2 -Enemy>
+	Place4 </>
+
+	% If E2 dies before giving the mission, just move straight on to the
+	% conversation.
+	end <if= PlotStatus %plotid% 0 ifNPCDead %2% email 1 MoveNPC %4% %3% SetPlotStatus %plotid% %id1%>
+
+	Msg1 <%name4%@ \SCENE &EpisodeScene :// I have some work for you. Come see me at %name3%.>
+
+	% SubPlot1 is the conversation with E4
+	SubPlot1 <*CS_Conversation 4>
+
+	sub
+		MetaScene 1
+		WarzoneMap
+		MapWidth 50
+		MapHeight 50
+		special <SHOWALL>
+
+		start <if= L1 0 else GoBeenBefore L= 1 1 Alert 1 ForceChat %2% History 3>
+		GoBeenBefore <Print 2>
+
+		Msg1 <You enter the battlezone. There was apparently a big mecha battle here recently.>
+		Msg2 <You enter the %name1% battlezone.>
+		Msg3 <You met %name2% clearing the wreckage from a battle at %name1%.>
+
+		content <Some 3 75 Sub *WARZONE_CLEANUP  na>
+
+		sub
+			Team 1
+			SetAlly 2 3
+			ParaX 5
+			ParaY 5
+
+			Team 2
+			name <Citizens>
+			SetAlly 1 3
+			Passive
+
+			Team 3
+			name <Guards>
+			home <PC Deploy Spot>
+			SetAlly 1 2
+
+			Team 4
+			name <Monsters>
+			SetEnemy 1
+
+			rect
+			name <PC Deploy Spot>
+			desig <NW>
+		end
+
+		Persona 2
+		rumor0 <%name2% is leading the relief efforts at %name1%.>
+		special <UNLISTED>
+		greeting <if= plotStatus %plotid% 0 else GoChat Goto GoGreet>
+		GoChat <NewChat SayAnything>
+		*GoGreet <*CS_WarZone_Greeting GoOfferHelp GoNoOffer>
+		GoOfferHelp <NewChat Say 1 SMemo 2 History 3 MoveNPC %4% %3% SetPlotStatus %plotid1% %id1%>
+		GoNoOffer <NewChat Say 4 SMemo 2 History 3 MoveNPC %4% %3% SetPlotStatus %plotid1% %id1%>
+		Msg1 <Take a look around the cleanup zone, you may find someone in need of help. Afterwards you can head over to %name3% and talk with %name4%. The people responsible for this have to be stopped.>
+		Msg1_10 <>
+		CMsg1_10 <ifNPCOK &EnemyNPC Accept>
+		Msg1_20 <>
+		CMsg1_20 <ifFactionExists &EnemyFac Accept>
+		Msg2 <%name2% at the %name1% cleanup zone suggested that you go to %name3% and ask %name4% about a mission.>
+		Msg3 <%name2% suggested that you ask %name4% for a mission.>
+		Msg4 <The people responsible for this must be stopped. If you're looking for work, %name4% at %name3% may have a mission for you.>
+		Msg4_10 <>
+		CMsg4_10 <ifNPCOK &EnemyNPC Accept>
+		Msg4_20 <>
+		CMsg4_20 <ifFactionExists &EnemyFac Accept>
+	end
+

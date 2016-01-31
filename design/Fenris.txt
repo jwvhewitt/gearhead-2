@@ -1,0 +1,107 @@
+Zoanoid 4
+Name <Fenris>
+Desig <TSD-1078>
+factions <BIOCO PDASS>
+SDL_Sprite <zoa_fenris.png>
+%%SDL_PORTRAIT <item_fenris.png>
+type <GROUND INSIDE>
+desc <One of BioCorp's "Biometrics" line. The structure of this mecha is based partially upon fossils of Tyrranosaurus Rex.>
+sub
+
+Head
+	Size 5
+	Armor 4
+	Mass -3
+	sub
+		CPit
+		Armor 1
+
+		Sensor 4
+
+		Melee 9
+		Name <Jaws>
+		type <BRUTAL>
+		Acc 1
+		Speed 1
+		Integral
+		mass -4
+	end
+
+Torso
+	Armor 4
+	Mass -6
+	sub
+		MLauncher 3
+		sub
+			STC LR-1
+			name <Thorn Missiles>
+			Acc 0
+			Magazine 30
+		end
+
+		Computer 1
+		sub
+			Software 1
+			name <Bio Aim Software>
+			S_TRBoost
+			S_BoostScale 2
+		end
+
+		Overcharger 4
+	end
+
+Leg
+	Name <Right Leg>
+	Size 5
+	Armor 4
+	Mass -5
+	sub
+		Mount
+		Name <Right Weapon Mount>
+		inv
+			STC MAC-4
+		end
+
+		Melee 5
+		Acc 2
+		Speed 3
+		Name <Claw>
+		mass -2
+		Integral
+
+		HeavyActuator 4
+	end
+
+Leg
+	Name <Left Leg>
+	Size 5
+	Armor 4
+	Mass -5
+	sub
+		Mount
+		Name <Left Weapon Mount>
+		inv
+			STC MAC-4
+		end
+
+		Melee 5
+		Acc 2
+		Speed 3
+		Name <Claw>
+		mass -2
+		Integral
+
+		HeavyActuator 4
+	end
+
+Tail
+	Size 3
+	Armor 4
+	Mass -3
+	Integral
+
+	sub
+		HeavyActuator 4
+		Integral
+	end
+end

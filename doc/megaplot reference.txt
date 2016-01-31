@@ -1,0 +1,188 @@
+A megaplot is a plot with extras. Actually, it's a plot constructed from
+multiple components.
+
+****************************
+***   PLOT  COMPONENTS   ***
+****************************
+
+Plots are constructed from components. The root component will be a plot file;
+from here, additional components can be recursively requested to build a tree
+structure of narrative nodes. Each node should represent a state that the plot
+can be in.
+
+Each node is given its own LayerID. This ID is used for the node's message
+and variable namespace.
+
+The standard triggers of a subplot (START, UPDATE, etc) will only be called
+when the subplot is active. This doesn't apply to the base plot, only the
+subplots.
+
+
+**********************
+***   METASCENES   ***
+**********************
+
+A MetaScene is a temporary scene used in a plot. It exists for as long as it is
+needed, and is deleted when the plot ends.
+
+You can define a faction for a MetaScene using SetFaction [ElementID]; to do this,
+the faction you want must be an element of the controlling subplot. If you use
+an ElementID which does not correspond to a faction unpredictable behavior may
+result.
+
+
+******************************
+***   NARRATIVE  THREADS   ***
+******************************
+
+A narrative thread is a series of events constructed from plot components.
+Only one node in a thread should be active at any given time.
+
+Each narrative thread has its own PlotID.
+
+NPCs are attached to the thread which first defines a persona for them; personal
+rumors can only be keyed to LayerIDs belonging to this thread.
+
+
+******************
+***   QUESTS   ***
+******************
+
+A Quest is a special case of a megaplot. Quests are created at the start of
+an RPG campaign and permanently incorporated into the adventure. Quests may
+not use regular metascenes, but may define Quest Scenes which get added as
+new permanent scenes.
+
+Quests should not perform a Character search, but should instead create any
+NPCs they need using either PREFAB or NEWNPC. Combatants created by a quest
+are scaled to the difficulty level of the quest.
+
+If "." is requested as an element, it will be the city where this story takes place.
+
+Artifacts requested by a quest will be of the same challenge rating as the
+quest itself. This may be overridden by including a difficulty tag in the
+element search.
+
+*************************
+***   QUEST  SCENES   ***
+*************************
+
+If a quest scene's HABITAT isn't defined, it will be inherited from the city.
+
+If a dungeon is added as a quest scene, its ElementID will point to the goal
+level rather than the entry level.
+
+Quest dungeons may override the normal quest difficulty rating by defining
+a nonzero DifficultyLevel in their definition.
+
+An entrance for a quest scene may be added by attaching the designation
+"ENTRANCE %n%", where N is the index of the scene.
+
+
+********************************
+***   REQUESTING  SUBPLOTS   ***
+********************************
+
+A subplot may be requested by adding a string describing the subplot.
+
+SUBPLOT[n] <[*SubPlot Type] ([#threat]) Param1 Param2 ...>
+
+Basically it's the same as adding subquests. Up to 8 subplots may
+be defined, and they all must be numbered.
+
+If this plot is based on a story, the story context will be used.
+The element context for all parameters will be used.
+
+If the second character of the SubPlot Type is a colon, this subplot
+will be a side plot with its own PlotID. In this way it's possible for a
+single plot to have multiple narrative threads running at once.
+
+Threat is an optional value which, if added, will determine the threat
+rating of the subplot being generated. Normally the threat rating is
+automatically determined.
+
+
+********************************
+***   REPLACEMENT  STRINGS   ***
+********************************
+
+%plotid%	The Plot ID
+%id%		The individual layer ID of this component.
+%threat%	The difficulcy rating of this plot, measured as Renown
+%1%..%10%	The element IDs
+%name1%..%name10%	The element names
+%id1%..%id8%	Layer IDs of subplots
+%plotid1%..%plotid8%	Plot IDs of subplots
+%e1%..%e10%	Element Index of subplot element
+
+
+***************************
+***   SUBPLOT  CHANGES  ***
+***************************
+
+Each subplot may have a CHANGES attribute defined. The megaplot structure may not
+include two components which have any change tags in common. Change tags include:
+
+  XXRan Plot Descriptors: +P, +C, +H, +B, +G
+  Element Existence: [Element Code]:++, i.e. E:++, R:++
+  NPC Motivation/Attitude: [Element Code]:M or [Element Code]:A, i.e. E:A, R:M
+
+The +T and +F plot descriptors are set by the component which ends the plot, so
+these don't need to be included in the CHANGES list. Likewise, the Target NPC
+is associated with the +T task, so T:++ doesn't need to be specified either.
+
+Use CHANGES tags to prevent two parts of the same plot from changing the same
+story element. For instance, you wouldn't want two parts of the same plot to
+assign two completely different Enemy NPCs, or to change the Propp state in
+one direction somewhere and in a completely unrelated direction somewhere else.
+
+
+******************************
+***   ELEMENT  PLACEMENT   ***
+******************************
+
+You can move elements automatically by defining a "PLACE[n]" string for them.
+
+Place[n] <[~](Destination Index)  ((Team Name)) (team data)>
+
+The destination index is the element number where where the gear should be moved.
+
+If a team name is indicated in parenthesis (), this will be used.
+
+If the first character in the place attribute is a ~, the gear will be placed
+in the scene of the requested element rather than the element itself.
+
+If being moved to a metascene, if there's a map feature with the designation
+"HOME [index]", where [index] is the Element Index of this element, it will be placed
+there as mini map component 1. Note that the Index here refers to the master plot
+index, not the subplot index; use %e1%..%e10% to set it.
+
+Also if being moved to a metascene, at the conclusion of the plot the gear will
+be moved back to its original home.
+
+Note that elements moved in this way are moved when the plot is initialized,
+not when the appropriate node is triggered. If you want to move a NPC at a specific
+point during the plot you'll need to do this manually.
+
+
+
+Design Flow
+
+- Add extension
+  - Assign layer ID
+  - Select candidate
+    - Copy Elements, Match to adventure
+    - Add sub-extensions
+    - Repeat until everything initialized OK
+  - Delink candidate from adventure and return - leave stub in place to defend NPC selections
+- Remove the stubs
+- Assemble the plot
+
+Assembly Flow
+
+- Do all replacement strings %1%..%10% etc
+- Merge element lists
+- Merge personas
+- Merge plot scripts
+- Merge Metascenes
+- Move gears as required

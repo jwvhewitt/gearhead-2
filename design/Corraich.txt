@@ -1,0 +1,152 @@
+AeroFighter 6
+Name <Corraich>
+Desig <ZLK-3>
+SDL_Sprite <>
+SDL_Portrait <>
+type <SPACE GROUND>
+desc <A starfighter fit for a pirate king, the Corraich is as much a status symbol as it is a mecha.>
+
+FACTIONS <PRIVA PDASS CRIHN REDMA>
+ROLE_PRIVA <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_CRIHN <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_REDMA <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+
+
+sub
+torso
+	Armor 6
+	mass -4
+	antibeam
+	sub
+		CPit
+		Armor 1
+
+		Gyro
+		Armor 1
+
+		Engine
+		Armor 1
+		HighPerformance
+
+		Sensor 6
+		ECM 5
+
+		Mount
+		Name <Right Body Mount>
+		inv
+			STC RG-16
+			name <Reaver Railgun>
+			Speed 3
+			mass -7
+		end
+
+		Mount
+		Name <Left Body Mount>
+		inv
+			Gun 8
+			name <Bomb Launcher>
+			range 6
+			Speed 3
+			mass -3
+			caliber <30cm explosive cannister>
+			Magazine 12
+			sub
+				Ammo 8
+				caliber <30cm explosive cannister>
+				type <BLAST 2 BRUTAL>
+			end
+
+		end
+
+		Computer 4
+		% Salvaged from a Thorshammer. Really, that's the main reason they can sell
+		% those mecha in the dusty ring.
+		mass -4
+		sub
+			Software 2
+			name <X-Rank Maneuver Control>
+			S_MVBoost
+			S_BoostScale 2
+
+			Software 2
+			name <Next Wave Firecom>
+			S_TRBoost
+			S_BoostScale 2
+		end
+
+		Flight 4
+	end
+
+Storage
+	name <Right Pod>
+	size 4
+	Armor 4
+	antibeam
+	mass -3
+	Integral
+	sub
+		STC VC-5
+		name <Super Vulcan>
+		range 4
+		OverCharger 9
+	end
+
+Storage
+	name <Left Pod>
+	size 4
+	Armor 4
+	antibeam
+	mass -3
+	Integral
+	sub
+		STC VC-5
+		name <Super Vulcan>
+		range 4
+		OverCharger 9
+	end
+
+Wing
+	Name <Right Wing>
+	Armor 5
+	antibeam
+	mass -3
+	sub
+		Mount
+		Name <Right Wing Mount>
+		inv
+			MLauncher 16
+			sub
+				STC SWM-5
+				name <Lucky Jack Missiles>
+				magazine 32
+				type <ARMORPIERCING SWARM HAYWIRE>
+			end
+		end
+
+		Flight 6
+	end
+
+Wing
+	Name <Left Wing>
+	Armor 5
+	antibeam
+	mass -3
+	sub
+		Mount
+		Name <Left Wing Mount>
+		inv
+			MLauncher 16
+			sub
+				STC SWM-5
+				name <Lucky Jack Missiles>
+				magazine 32
+				type <ARMORPIERCING SWARM HAYWIRE>
+			end
+		end
+
+		Flight 6
+	end
+end
+
+
+

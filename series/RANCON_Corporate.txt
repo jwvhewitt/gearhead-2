@@ -1,0 +1,408 @@
+%  Corporate Scene Content
+
+% *CORP_EMPLOYEE content
+%   Just some employees of the corporation.
+Content
+	requires <*CORP_EMPLOYEE Public>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	element2 <.>
+	element3 <Faction Corporate !Comrade 2>
+	inv
+		NPC Corporate Executive
+		update <if= V1 0 V= 1 1 SetSelfFaction %3%>
+	end
+
+Content
+	requires <*CORP_EMPLOYEE Public>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	element2 <.>
+	element3 <Faction Corporate !Comrade 2>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_GENERAL GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		update <if= V1 0 V= 1 1 SetSelfFaction %3%>
+	end
+
+Content
+	requires <*CORP_EMPLOYEE Public Comet>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoChat>
+		*GoChat <*MISC_CHATTER>
+	end
+	inv
+		NPC Corporate Executive
+		SetFaction 2
+	end
+
+Content
+	requires <*CORP_EMPLOYEE Public Comet>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_MECHA GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		SetFaction 2
+	end
+
+
+Content
+	requires <*CORP_EMPLOYEE>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	element2 <.>
+	element3 <Faction Corporate !Comrade 2>
+	inv
+		NPC Scientist
+		update <if= V1 0 V= 1 1 SetSelfFaction %3%>
+	end
+
+Content
+	requires <*CORP_EMPLOYEE>
+	element1 <Prefab>
+	team1 <guards>
+	teamdata1 <SD>
+	element2 <.>
+	element3 <Faction Corporate !Comrade 2>
+	inv
+		NPC Mecha Pilot
+		job <Corporate Pilot>
+		update <if= V1 0 V= 1 1 SetSelfFaction %3%>
+	end
+
+Content
+	requires <*CORP_EMPLOYEE ~Private>
+	content <Required *NPC_GUARD - Local>
+
+Content
+	requires <*CORP_EMPLOYEE Public HOELL>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoChat>
+		*GoChat <*MISC_CHATTER>
+	end
+	inv
+		NPC Corporate Executive
+		SetFaction 7
+	end
+
+Content
+	requires <*CORP_EMPLOYEE Public HOELL>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_WEAPON GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		SetFaction 7
+	end
+
+Content
+	requires <*CORP_EMPLOYEE Public MUGLE>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoChat>
+		*GoChat <*MISC_CHATTER>
+	end
+	inv
+		NPC Corporate Executive
+		SetFaction 13
+	end
+
+Content
+	requires <*CORP_EMPLOYEE Public MUGLE>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_ARMOR GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		SetFaction 13
+	end
+
+
+% *CORP_RND content
+%   Something the corporation has been working on. A PC who belongs to the corp and
+%   advances far enough may be given permission to enter the R&D section and take
+%   everything. Otherwise, this content exists to give enterprising Criminal PCs
+%   something to steal.
+% PARAM: Number of local variable set when alarm deactivated
+Content
+	requires <*CORP_RND>
+	element1 <Prefab>
+	Get%1% <ifNotAccessArmory if= L%id%01 0 L= %id%01 1 SetItemStolen %1% AddLawful -5 if= L%param% 0  Alert %id%01>
+	Msg%id%01 <Suddenly an alarm sounds!>
+	inv
+		Treasure
+		name <MegaMem Cartridge>
+		Fudge 500000
+		desc <An experimental new memory cartridge, which should store ten times as much data as the nearest competitor.>
+	end
+
+Content
+	requires <*CORP_RND>
+	element1 <Prefab>
+	Get%1% <ifNotAccessArmory if= L%id%01 0 L= %id%01 1 SetItemStolen %1% AddLawful -5 if= L%param% 0  Alert %id%01>
+	Msg%id%01 <Suddenly an alarm sounds!>
+	inv
+		Treasure
+		name <Twitch Processor>
+		Fudge 350000
+		desc <A new type of computer processor based on cutting edge physics. There are maybe five people in the solar system who can even understand how it works.>
+		CLUE_SCIENCE <if= V1 0 else GoFail V= 1 1 ifScience 10 else GoFail Print 1 XPV 100>
+		GoFail <Print 2>
+		Msg1 <You examine the processor and learn some things.>
+		Msg2 <You examine the processor, but don't learn anything.>
+	end
+
+Content
+	requires <*CORP_RND>
+	element1 <Prefab>
+	Get%1% <ifNotAccessArmory if= L%id%01 0 L= %id%01 1 SetItemStolen %1% AddLawful -5 if= L%param% 0  Alert %id%01>
+	Msg%id%01 <Suddenly an alarm sounds!>
+	inv
+		HeadArmor 6
+		name <Kumi Helmet>
+		desc <Experimental armor made from a superlight biotech protein.>
+		mass -11
+	end
+
+Content
+	requires <*CORP_RND>
+	element1 <Prefab>
+	Get%1% <ifNotAccessArmory if= L%id%01 0 L= %id%01 1 SetItemStolen %1% AddLawful -5 if= L%param% 0  Alert %id%01>
+	Msg%id%01 <Suddenly an alarm sounds!>
+	inv
+		BodyArmor 7
+		name <Kumi Armor>
+		desc <Experimental armor made from a superlight biotech protein.>
+		mass -11
+	end
+
+Content
+	requires <*CORP_RND>
+	element1 <Prefab>
+	Get%1% <ifNotAccessArmory if= L%id%01 0 L= %id%01 1 SetItemStolen %1% AddLawful -5 if= L%param% 0  Alert %id%01>
+	Msg%id%01 <Suddenly an alarm sounds!>
+	inv
+		ArmArmor 7
+		name <Kumi Sleeve>
+		desc <Experimental armor made from a superlight biotech protein.>
+		mass -12
+	end
+
+Content
+	requires <*CORP_RND>
+	element1 <Prefab>
+	Get%1% <ifNotAccessArmory if= L%id%01 0 L= %id%01 1 SetItemStolen %1% AddLawful -5 if= L%param% 0  Alert %id%01>
+	Msg%id%01 <Suddenly an alarm sounds!>
+	inv
+		LegArmor 7
+		name <Kumi Legging>
+		desc <Experimental armor made from a superlight biotech protein.>
+		mass -12
+	end
+
+
+
+% *CORP_PUBLIC content
+%   The stuff that everyone can visit. Low level offices, shops selling
+%   the corporation's stuff, and so on.
+
+Content
+	requires <*CORP_PUBLIC>
+	content <Required *CORP_EMPLOYEE - Local>
+	minimap <............1.......##+##>
+
+Content
+	requires <*CORP_PUBLIC>
+	name <Corporate Shop>
+	minimap <............1.......&---&>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	element2 <.>
+	element3 <Faction Corporate !Comrade 2>
+
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_GENERAL GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		update <if= V1 0 V= 1 1 SetSelfFaction %3%>
+		Shopping 12
+		NonMissionGiver
+	end
+
+Content
+	requires <*CORP_PUBLIC Comet>
+	name <Corporate Shop>
+	minimap <............1.......&---&>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_GENERAL GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		SetFaction 2
+		Shopping 12
+		NonMissionGiver
+	end
+
+Content
+	requires <*CORP_PUBLIC HOELL>
+	name <Corporate Shop>
+	minimap <............1.......&---&>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_MECHA GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		SetFaction 7
+		Shopping 12
+		NonMissionGiver
+	end
+
+Content
+	requires <*CORP_PUBLIC MUGLE>
+	name <Corporate Shop>
+	minimap <............1.......&---&>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_GENERAL GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		SetFaction 13
+		Shopping 12
+		NonMissionGiver
+	end
+
+Content
+	requires <*CORP_PUBLIC>
+	name <Corporate Office>
+	minimap <............1.......##+##>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	element2 <.>
+	element3 <Faction Corporate !Comrade 2>
+
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoChat>
+		*GoChat <*MISC_CHATTER>
+	end
+	inv
+		NPC Corporate Executive
+		update <if= V1 0 V= 1 1 SetSelfFaction %3%>
+	end
+
+Content
+	requires <*CORP_PUBLIC>
+	name <Corporate Mecha Shop>
+	minimap <............1.......&---&>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	element2 <.>
+	element3 <Faction Corporate !Comrade 2>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_MECHA GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		update <if= V1 0 V= 1 1 SetSelfFaction %3%>
+		Shopping 12
+		NonMissionGiver
+	end
+
+
+% *CORP_Recruiter Content
+%   Someone to recruit the PC into this corporation, if appropriate.
+
+Content
+	requires <*CORP_RECRUITER>
+	minimap <............1.......##+##>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	element2 <.>
+	element3 <Faction Corporate !Comrade 2>
+
+	sub
+		Persona 1
+		greeting <if# ChatNPCFac 0 else GoChat if= PCFac ChatNPCFac else GoCheckEligibility Goto GoTrain>
+		*GoTrain <*SKILL_TRAINING GoGoodbye>
+		*GoCheckEligibility <*ENEMY_CHECK GoCheckFaction ChatNPCFac GoNil>
+		GoCheckFaction <if= PCFac 0 else GoChat Goto GoCheckSkills>
+		*GoCheckSkills <*FACTION_ENTRANCE_EXAM GoJobOffer ChatNPCFac>
+		*GoChat <*MISC_CHATTER>
+		*GoGoodbye <*GOODBYE>
+		*GoJobOffer <*FACTION_JOIN_OFFER ChatNPCFac GoJoin>
+		*GoJoin <*FACTION_JOIN_ACCEPT ChatNPCFac>
+
+	end
+	inv
+		NPC Corporate Executive
+		update <if= V1 0 V= 1 1 SetSelfFaction %3%>
+		job <Recruiter>
+	end
+

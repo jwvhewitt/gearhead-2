@@ -1,0 +1,217 @@
+Battroid 5
+Name <Eyre>
+Desig <SAN-H2b>
+type <SPACE>
+factions <HOELL L5LAW FCOMS BOHEM>
+ROLE_HOELL <GENERAL:TROOPER  DEFENSE:TROOPER>
+ROLE_FCOMS <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_BOHEM <GENERAL:COMMAND  ASSAULT:COMMAND>
+
+
+SDL_Sprite <btr_eyre.png>
+SDL_PORTRAIT <item_eyre.png>
+
+desc <A derivative of the Buru Buru designed for working in space.>
+Legality -10
+
+sub
+Head
+	Armor 4
+	mass 2
+	mass -1
+	sub
+		Sensor 5
+
+		STC LAS-3
+		type <INTERCEPT>
+	end
+
+Torso
+	Armor 4
+	mass 3
+	sub
+		CPit
+		Armor 1
+
+		ECM 2
+
+		HoverJet 2
+	end
+
+Arm
+	Name <Right Arm>
+	mass 3
+	Armor 4
+	sub
+		Hand
+		inv
+			STC SC-6
+		end
+
+		Mount
+		name <Right Arm Mount>
+		inv
+			EMelee 6
+			name <Plasma Blade>
+			Acc -1
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	mass 3
+	Armor 4
+	sub
+		Hand
+		Mount
+		name <Left Arm Mount>
+	end
+	inv
+		Shield 4
+		DefBonus 1
+	end
+
+Storage
+	Name <Right Pod>
+	size 2
+	Armor 4
+	sub
+		Mount
+		name <Right Pod Mount>
+		inv
+			MLauncher 6
+			sub
+				STC LR-1
+				magazine 60
+			end
+		end
+
+		HoverJet 5
+	end
+
+Storage
+	Name <Left Pod>
+	size 2
+	Armor 4
+	sub
+		Mount
+		name <Left Pod Mount>
+		inv
+			MLauncher 6
+			sub
+				STC LR-1
+				magazine 60
+			end
+		end
+
+		HoverJet 5
+	end
+end
+
+Battroid 5
+Name <Eyre>
+Desig <SAN-H2c King>
+type <GROUND INSIDE SPACE>
+factions <HOELL BOHEM>
+ROLE_HOELL <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_BOHEM <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+
+SDL_Sprite <btr_eyre.png>
+SDL_PORTRAIT <item_eyre.png>
+
+desc <A derivative of the Buru Buru designed for working in space.>
+Legality -10
+
+sub
+Head
+	Armor 4
+	mass 2
+	mass -1
+	sub
+		Sensor 5
+
+		STC LAS-3
+		type <INTERCEPT>
+	end
+
+Torso
+	Armor 4
+	mass 3
+	sub
+		CPit
+		Armor 1
+
+		ECM 2
+
+		HoverJet 2
+	end
+
+Arm
+	Name <Right Arm>
+	mass 3
+	Armor 4
+	sub
+		Hand
+		inv
+			STC RG-8
+		end
+
+		Mount
+		name <Right Arm Mount>
+		inv
+			EMelee 6
+			name <Plasma Sword>
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	mass 3
+	Armor 4
+	sub
+		Hand
+		Mount
+		name <Left Arm Mount>
+	end
+	inv
+		Shield 4
+		DefBonus 1
+	end
+
+Storage
+	Name <Right Pod>
+	size 2
+	Armor 4
+	sub
+		Mount
+		name <Right Pod Mount>
+		inv
+			MLauncher 4
+			sub
+				STC SWM-2
+				magazine 20
+			end
+		end
+
+		HoverJet 5
+	end
+
+Storage
+	Name <Left Pod>
+	size 2
+	Armor 4
+	sub
+		Mount
+		name <Left Pod Mount>
+		inv
+			MLauncher 4
+			sub
+				STC SWM-2
+				magazine 20
+			end
+		end
+
+		HoverJet 5
+	end
+end
+

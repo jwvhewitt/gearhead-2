@@ -1,0 +1,22 @@
+% Standard messages for the INTERACT.PP unit.
+FACTION_IS_INACTIVE < has been disbanded.>
+RUMOR_Membership1 <I am a member of >
+RUMOR_Membership2 <.>
+TRAITCHAT_Like1 <I really like>
+TRAITCHAT_Like2 <I'm a big fan of>
+TRAITCHAT_Like3 <I love>
+TRAITCHAT_Hate1 <I don't like>
+TRAITCHAT_Hate2 <I can't stand>
+TRAITCHAT_Hate3 <I'm not a fan of>
+TRAITCHAT_Ehhh1 <I don't often think about>
+TRAITCHAT_Ehhh2 <I'm ambivalent towards>
+TRAITCHAT_Ehhh3 <I have no opinion about>
+TRAITCHAT_Lead1 <I'd like to tell you that>
+TRAITCHAT_Lead2 <One thing you should know about me is that>
+TRAITCHAT_Lead3 <I want you to know that>
+TRAITCHAT_Lead4 <You should know that>
+TRAITCHAT_Lead5 <You may have noticed that>
+TRAITCHAT_Lead6 <I should tell you that>
+TRAITCHAT_Lead7 <Everyone can tell that>
+
+

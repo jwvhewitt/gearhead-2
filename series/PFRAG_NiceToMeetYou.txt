@@ -1,0 +1,607 @@
+% TYPE: *NiceToMeetYou
+%	&NoTrivial - A conversation must be involved, don't just jump to %1%
+%  The PC is meeting someone presumably for the first time.
+%  PARAM1: Exit script label
+
+	Persona
+	requires <*NiceToMeetYou>
+	%% The absolute default NiceToMeetYou. One message, one reply, based on traits.
+	Start <ifCHatNPCUnknown else %1% NewChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <Hi, I'm \ChatNPC .>
+	Msg%id%01_1 <Hello, my name is \ChatNPC . It's nice to meet you. What's your name?>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Hey. Who are you?>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Hi, my name is \ChatNPC . It's a real pleasure to meet you!>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <Yes, who are you? This has been a terrible enough day already...>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <I don't believe we've met. My name's \ChatNPC .>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <I've never seen you before. The name's \ChatNPC ; what's yours?>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+	Prompt%id%01 <My name is \PC .>
+	Prompt%id%01_1 <I'm \PC of \SCENE PCHomeTown .>
+	CPrompt%id%01_1 <ifPCSociable Accept>
+	Prompt%id%01_2 <You don't need to know my name.>
+	CPrompt%id%01_2 <ifPCShy Accept>
+	Prompt%id%01_3 <I'm \PC . Glad to meet you.>
+	CPrompt%id%01_3 <ifPCCheerful Accept>
+	Prompt%id%01_4 <If you must know, I'm \PC .>
+	CPrompt%id%01_4 <ifPCMelancholy Accept>
+	Prompt%id%01_5 <I'm \PC .>
+	CPrompt%id%01_5 <ifPCEasygoing Accept>
+	Prompt%id%01_6 <My name's \PC ... don't forget it.>
+	CPrompt%id%01_6 <ifPCPassionate Accept>
+
+	Persona
+	requires <*NiceToMeetYou LABOR>
+	Start <ifChatNPCUnknown else %1% NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03 AddChat %id%04 AddChat %id%05>
+	result%id%01 <AddEasygoing -d8  Goto %1%>
+	result%id%02 <AddEasygoing  d8  Goto %1%>
+	result%id%03 <AddPragmatic -d10 Goto %1%>
+	result%id%04 <AddCheerful  -d10 Goto %1%>
+	result%id%05 <Goto %1%>
+	Msg%id%01 <Hi. My name's \ChatNPC . I work around here. What is it that you do?>
+	Msg%id%01_1 <Hello. The name's \ChatNPC ... nice to meet you. I haven't seen you before. Did you just get hired here, or do you do something else?>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Hey, I haven't seen you around before. What is it that you do?>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <I don't believe I've seen you around. Are you working here now, or do you do something else?>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <You're new around here. What is it that you do for a living?>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Hey, look, a new face... My name's \ChatNPC . I work around here. What is it that you do?>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <You don't look tired enough to be one of the regulars. The name's \ChatNPC ; I work here. What brings you here?>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <I'm an adventurer!>
+	Prompt%id%01_1 <I'm an ace mecha pilot!>
+	Prompt%id%02 <I do whatever comes along.>
+	Prompt%id%02_1 <This and that, you know.>
+	Prompt%id%03 <I'm on a mission from god.>
+	Prompt%id%03_1 <I'm on a vision quest.>
+	Prompt%id%04 <Really, it's not interesting...>
+	Prompt%id%04_1 <I do what I have to. That's all.>
+	Prompt%id%05 <I'm a cavalier.>
+
+	Persona
+	requires <*NiceToMeetYou HasMecha>
+	Start <ifChatNPCUnknown else %1% NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+	result%id%01 <AddSociable d10 Goto %1%>
+	result%id%02 <ifG PCRenown ChatNPCRenown else .%id%_GoR2TryCon ifG PCRenown d50 else .%id%_GoR2TryCon AddReact d10 NewChat Say %id%02 AddChat %id%04 AddChat %id%05>
+	.%id%_GoR2TryCon <ifConversation ChatNPCEgo else .%id%_GoR2Fail NewChat Say %id%04  AddRenown 1 AddReact d10 AddChat %id%04 AddChat %id%05>
+	.%id%_GoR2Fail <AddEasygoing -d10 NewChat Say %id%03  AddChat %id%04 AddChat %id%05>
+	result%id%03 <AddSociable -d10 Goto %1%>
+	result%id%04 <Goto %1%>
+	result%id%05 <AddCheerful -d20 AddReact -d5 Goto %1%>
+	Msg%id%01 <Hi there. You're a fellow mecha pilot, aren't you? I can tell from the look in your eyes.>
+	Msg%id%01_1 <Hey, I don't think we've met before. My name's \ChatNPC . I'm a mecha pilot. From the look of your stuff, I'd guess that you're one, too.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <You there... You're a pilot, aren't you?>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Hey, my name's \ChatNPC . You look like you're a fellow mecha pilot; am I right?>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <You! You're a pilot, right? So am I! I can tell just from looking.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Nice gear. You must be a mecha pilot to be walking around with that kind of kit, right?>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <I can tell from your eyes that you've seen a lot of death. My name's \ChatNPC ... You're a mecha pilot too, right?>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%01_7 <I deduce from your appearance that you must be a cavalier. Isn't that correct?>
+	CMsg%id%01_7 <ifNPCPragmatic Accept>
+	Msg%id%01_8 <You have the feeling of a warrior... You must be another mecha pilot, am I right?>
+	CMsg%id%01_8 <ifNPCSpiritual Accept>
+	Msg%id%02 <Wait, you're \PC ? It's an honor to meet such a famous pilot!>
+	Msg%id%02_1 <You mean... I'm speaking to \PC ? Wow... It's a pleasure to meet you.>
+	Msg%id%02_2 <Really? Wow... It's an honor to be speaking with such a renowned pilot.>
+	Msg%id%03 <\PC ? No, that doesn't ring any bells... It's nice to meet you, anyhow.>
+	Msg%id%03_1 <Hm? I haven't heard of you before... still, it's nice to make your acquentance.>
+	Msg%id%03_2 <I don't think I've heard of you before. Anyhow, it's nice to meet you.>
+	Msg%id%04 <\PC ? I think I've heard that name before... they say you're really good. It's nice to meet you.>
+	Msg%id%04_1 <Oh, I think I heard about you... they say you're dangerous. It's nice to meet you.>
+	Msg%id%04_2 <So you're \PC . I'm glad that we're meeting here, and not on the battlefield. It's a pleasure to meet you.>
+	Prompt%id%01 <That's right. My name's \PC .>
+	Prompt%id%01_1 <Absolutely right. My name's \PC .>
+	Prompt%id%02 <You've probably heard of me; the name's \PC .>
+	Prompt%id%02_1 <I'm \PC , famous pilot from \SCENE PCHomeTown .>
+	Prompt%id%03 <That's none of your business, thanks.>
+	Prompt%id%03_1 <I'd rather not talk about it.>
+	Prompt%id%04 <Nice to meet you too.>
+	Prompt%id%05 <It's not all that nice.>
+	CPrompt%id%05 <IfPCMelancholy Accept>
+
+	Persona
+	requires <*NiceToMeetYou Shy>
+	Start <ifCHatNPCUnknown else %1% NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <AddSociable d4   NewChat Say %id%02 AddChat %id%03 AddChat %id%04>
+	result%id%02 <Goto %1%>
+	result%id%03 <AddSociable d8 AddReact -d8  NewChat Say %id%03 AddChat %id%05>
+	result%id%04 <Goto %1%>
+	result%id%05 <Goto %1%>
+	Msg%id%01 <Hi.>
+	Msg%id%01_1 <Hey.>
+	Msg%id%02 <My name isn't important.>
+	Msg%id%02_1 <You don't need to know my name.>
+	Msg%id%02_2 <I don't tell my name to just anyone who asks.>
+	Msg%id%03 <If you absolutely must know, my name is \ChatNPC .>
+	Msg%id%03_1 <You can call me \ChatNPC . Happy now?>
+	Prompt%id%01 <I'm \PC . What's your name?>
+	Prompt%id%01_1 <My name is \PC . Who are you?>
+	Prompt%id%02 <Hi.>
+	Prompt%id%02_1 <Hey.>
+	Prompt%id%03 <Come on, tell me your name!>
+	Prompt%id%04 <I see...>
+	Prompt%id%04_1 <Alright...>
+	Prompt%id%05 <Thanks.>
+
+
+	Persona
+	requires <*NiceToMeetYou Village>
+	Start <if= V%id%01 0 else %1% V= %id%01 1 if= PCHomeTown RootSceneID else .%id%_GoOutsider NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	.%id%_GoOutsider <NewChat Say %id%02 AddChat %id%03 AddChat %id%04 AddChat %id%05>
+	result%id%01 <AddCheerful  d2   Goto %1%>
+	result%id%02 <AddCheerful -d6   Goto %1%>
+	result%id%03 <Goto %1%>
+	result%id%04 <NewChat AddLawful -1  AddSociable -d4  ifConversation ChatNPCPerception else .%id%_GoLieFailed AddReact d4 Say %id%05 AddChat %id%07 AddChat %id%08>
+	.%id%_GoLieFailed <AddReact -d10 Say %id%06 AddChat %id%06>
+	result%id%05 <NewChat AddSociable d8  ifG React d30 else .%id%_GoFail Say %id%03 AddReact d10 AddChat %id%06>
+	.%id%_GoFail <Say %id%04  AddReact -d4  AddChat %id%06>
+	result%id%06 <Goto %1%>
+	result%id%07 <NewChat Say %id%07 AddChat %id%06>
+	result%id%08 <NewChat Say %id%08  AddCheerful d8  AddChat %id%06>
+	Msg%id%01 <Hi, \PC . How are things with you?>
+	Msg%id%01_1 <How's it going, \PC ?>
+	Msg%id%02 <You're not from these parts, are you?>
+	Msg%id%02_1 <You're not from here... I can tell...>
+	Msg%id%03 <Well, I'd like to welcome you to our town. We don't get many visitors from away.>
+	Msg%id%04 <I don't trust people from \SCENE PCHomeTown . I'll be keeping an eye on you, stranger.>
+	Msg%id%05 <Strange, I don't recall every having seen you around... I thought I knew everyone who lived in \SCENE RootSceneID .>
+	Msg%id%06 <Don't think you can fool someone who's lived here \PPR ChatNPCID entire life... And don't think that I won't be keeping an eye on you, stranger.>
+	Msg%id%07 <That must be it, I suppose.>
+	Msg%id%08 <Is that a fact? You really had me going there... Hah, that's a good one.>
+	Prompt%id%01 <Everything's going fine.>
+	Prompt%id%01_1 <I'm doing well, thanks.>
+	Prompt%id%01_2 <Not bad at all, \ChatNPC .>
+	Prompt%id%02 <Things aren't so good.>
+	Prompt%id%02_1 <Honstly speaking, it's been a rough week.>
+	Prompt%id%02_2 <Well, I really wish things were better...>
+	Prompt%id%03 <No, I'm not.>
+	Prompt%id%04 <Actually, I am.>
+	Prompt%id%04_1 <I'm from around here. Don't you recognize me?>
+	Prompt%id%04_2 <Nonsense. I was born and raised in \SCENE RootSceneID .>
+	Prompt%id%05 <No. My name is \PC , and I'm from \SCENE PCHomeTown .>
+	Prompt%id%06 <Continue>
+	Prompt%id%07 <Well, I don't remember seeing you around either.>
+	Prompt%id%07_1 <I guess you just didn't look hard enough.>
+	Prompt%id%08 <I'm just kidding, I'm actually from \SCENE PCHomeTown .>
+	Prompt%id%08_1 <No, just kidding. Really I'm from somewhere else.>
+
+
+	Persona
+	requires <*NiceToMeetYou ~Shy -&NoTrivial>
+	START <Goto %1%>
+
+	Persona
+	requires <*NiceToMeetYou Shopkeeper Heroic Ego -&NoTrivial>
+	Start <if= V%id%01 0 else %1% ifG 0 PCRep 1 else %1% NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <ifIntimidation NPCEgo ChatNPCID else .%id%_GoFail NewChat Say %id%04 AddChat %id%03>
+	.%id%_GoFail <NewChat Say %id%03>
+	result%id%02 <NewChat Say %id%02>
+	result%id%03 <V= %id%01 1 SkillXP 20 250 Goto %1%>
+	Msg%id%01 <Sorry, my shop is closed.>
+	Msg%id%02 <I wouldn't expect it to open again any time soon.>
+	Msg%id%03 <Like I said, we're closed. There's nothing I can do about it.>
+	Msg%id%04 <Erm... On second thought, I think we can open for a special customer like yourself.>
+	Prompt%id%01 <You'll open it if you know what's good for you.>
+	Prompt%id%01_1 <My fist says you'll open it now...>
+	Prompt%id%02 <Sorry, I'll come back later.>
+	Prompt%id%02_1 <Alright. I'll come back later then.>
+	Prompt%id%03 <I knew you'd hear the voice of reason.>
+	Prompt%id%03_1 <I'm glad I didn't have to kill you.>
+
+	Persona
+	requires <*NiceToMeetYou Doctor>
+	Start <ifCHatNPCUnknown else %1% NewChat Say %id%01 AddChat %ID%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <AddCheerful -d10  Goto %1%>
+	Msg%ID%01 <Good health is the most important thing a person can have. It's important to look after yourself.>
+	Prompt%id%01 <Well, that's why I'm here.>
+	Prompt%id%01_1 <That's true.>
+	Prompt%id%02 <Why? Do you expect to live forever?>
+	Prompt%id%02_1 <Everybody dies sometime.>
+
+	Persona
+	requires <*NiceToMeetYou Executive -&NoTrivial>
+	Start <ifCHatNPCUnknown else %1% if# 0 ChatNPCFac else %1% NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+	result%id%01 <Goto %1%>
+	result%id%02 <AddSociable -d6  Goto %1%>
+	result%id%03 <NewChat Say %id%02 AddChat %id%04>
+	result%id%04 <Goto %1%>
+	Msg%id%01 <I work for \FACTIOn ChatNPCFac . It's one of the largest and most important corporation in the world.>
+	Msg%id%01_1 <The best part of working at \FACTIOn ChatNPCFac is being part of the team. My co-workers are the best group of professionals you're ever likely to meet, and I'm sure they feel the same about me.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <I work for \FACTIOn ChatNPCFac .>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <I just love working for \FACTIOn ChatNPCFac ! The environment here is really great, you know? The pay is pretty good as well.>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <Working here at \FACTIOn ChatNPCFac is really dull, and the pay isn't the greatest, but at least we have job security...>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <Working at \FACTIOn ChatNPCFac isn't so bad. The hours are a bit long for my taste, but the pay is good and there are plenty of benefits.>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <Did you know that \FACTIOn ChatNPCFac is the most powerful corporation in all of space? I'm going to work hard to keep us at number one!>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+	Msg%id%02 <Really? I haven't seen you around... Well, it's nice to meet you.>
+	Msg%id%02_1 <In that case, you must be \PC ! Am I right? Well, it's nice to meet you.>
+	CMsg%id%02_1 <ifG PCRep 6 25 Accept>
+	Msg%id%02_2 <You are also an employee of \FACTION ChatNPCFac ? How very interesting... Well, I am pleased to make your acquaintance.>
+	CMsg%id%02_2 <ifNPCVillainous Accept>
+	Prompt%id%01 <Good for you.>
+	Prompt%id%01_1 <How interesting.>
+	Prompt%id%02 <I don't really care about that.>
+	CPrompt%id%02 <if# PCFac ChatNPCFac Accept>
+	Prompt%id%02_1 <That doesn't concern me.>
+	Prompt%id%03 <I know, I work here myself.>
+	CPrompt%id%03 <if= PCFac ChatNPCFac Accept>
+	Prompt%id%04 <Nice to meet you too.>
+
+	Persona
+	requires <*NiceToMeetYou Charm ~Renowned>
+	Start <ifCHatNPCUnknown else %1% NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <AddEasygoing -d4  ifConversation 5 else .%id%_GoFail ifG React 0 else .%id%_GoFail AddReact 10 SkillXP 17 100  NewChat Say %id%03 AddChat %id%04>
+	.%id%_GoFail <NewChat AddReact -5 Say %id%02 AddChat %id%03 PCMoraleDmg 10 ifG PCRenown 0 AddRenown -1>
+	result%id%03 <Goto %1%>
+	result%id%04 <Goto %1%>
+	Msg%id%01 <Hello there... I haven't seen you around before. My name's \ChatNPC .>
+	Msg%id%01_1 <Hello. My name is \ChatNPC . It's nice to meet you.>
+	Msg%id%01_2 <My name is \ChatNPC . It's a pleasure to meet you.>
+	Msg%id%02 <Cut the lines, creep. I'm not interested.>
+	Msg%id%02_1 <Don't even think about it. You are so not my type.>
+	Msg%id%03 <Hey, maybe the two of us could meet some time later. I'd like to get to know you better.>
+	Msg%id%03_1 <I've got a great idea. How about the two of us hook up later? I'd love to spend some time with you.>
+	Prompt%id%01 <Nice to meet you.>
+	Prompt%id%01_1 <I'm glad to meet you.>
+	Prompt%id%01_2 <It's nice to meet you.>
+	Prompt%id%02 <What's a beautiful person like you doing here?>
+	CPrompt%id%02 <ifNPCSexy ChatNPCID Accept>
+	Prompt%id%02_1 <It's a great pleasure to meet someone so attractive.>
+	Prompt%id%02_2 <And it's VERY nice to meet you!>
+	Prompt%id%03 <I see...>
+	Prompt%id%03_1 <Ah...>
+	Prompt%id%04 <I look forward to it.>
+	Prompt%id%04_1 <I'd like that a lot.>
+
+	Persona
+	requires <*NiceToMeetYou "Comet" ~Shopkeeper ~Passionate>
+	Start <ifCHatNPCUnknown else %1% NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+	result%id%01 <AddReact d3       Goto %1%>
+	result%id%02 <AddCheerful -d6   Goto %1%>
+	result%id%03 <AddEasygoing d3   Goto %1%>
+	Msg%id%01 <You should know that Comet Metalworks produces the best mecha in the solar system! It's a great honor for me to work at this company.>
+	Msg%id%01_1 <Comet Metalworks produces the highest quality electronics and mecha available. Our zero-G production facilities use technology years ahead of anything posessed by any other corporation.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Comet Metalworks is simply the best producer of advanced technology in the solar system.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <I'm proud to be employed at Comet because of our commitment to technology and research. In all honesty, no other corporation can compete.>
+	CMsg%id%01_3 <ifNPCPragmatic Accept>
+	Msg%id%01_4 <Comet Metalworks is the shining star of L5's industry! From the central office in Maquise Spinner to all our factories and distributors throughout the region, we bring progress to our customers.>
+	CMsg%id%01_4 <ifNPCCheerful Accept>
+	Prompt%id%01 <I'm hoping to buy a "Savin" some day.>
+	Prompt%id%01_1 <Yes, I know.>
+	Prompt%id%02 <Buzz off, you corporate wage-slave.>
+	CPrompt%id%02 <if# PCFac 2 ifPCPassionate Accept>
+	Prompt%id%02_1 <What are you, some kind of walking advertisement?>
+	Prompt%id%03 <I don't know much about that.>
+	Prompt%id%03_1 <Er... yeah.>
+	Prompt%id%03_2 <Um... whatever.>
+
+	Persona
+	requires <*NiceToMeetYou "PDASS">
+	Start <ifCHatNPCUnknown else %1% NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <NewChat Say %id%02 AddChat %id%03 AddEasygoing -d4 FacXP+ 5 1>
+	result%id%02 <NewChat Say %id%03 AddChat %id%03 AddEasygoing d10>
+	result%id%03 <Goto %1%>
+	Msg%id%01 <You look like a cavalier. Are you here to challenge me?>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Did you come here to challenge me?>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%02 <That's too bad, my mecha's in the shop. Maybe we can try that later, though.>
+	Msg%id%03 <That's too bad, I could use some target practice. Maybe later.>
+	Prompt%id%01 <Yes, I am.>
+	Prompt%id%02 <Uh, no, I'm not...>
+	Prompt%id%03 <Uh-huh.>
+
+	Persona
+	requires <*NiceToMeetYou "PDASS" ~Ego>
+	Start <ifCHatNPCUnknown else %1% V= %id%01 10 V+ %id%01 d8 NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <NewChat Say %id%02   AddReact d10   SkillXP 10 100   AddChat %id%03  AddChat %id%04  AddChat %id%05>
+	result%id%03 <NewChat Say %id%03   AddChat %id%06>
+	result%id%04 <NewChat Say %id%03   AddChat %id%06>
+	result%id%05 <Goto %1%>
+	result%id%06 <Goto %1%>
+	Msg%id%01 <Hello, I'm \ChatNPC . It's nice to meet you.>
+	Msg%id%01_1 <Hi, my name is \ChatNPC . I'm glad to meet you.>
+	Msg%id%01_2 <My name is \ChatNPC . It's a pleasure to meet you.>
+	Msg%id%02 <Yes, it is. I've been a duelist for a while now... I'm hoping to qualify for the championship soon.>
+	Msg%id%02_1 <Ah, so you must be a fan of the Pro Duelist League then! Yes, I'm a member.>
+	CMsg%id%02_1 <ifNPCSociable Accept>
+	Msg%id%02_2 <Yes, it is. I've been a member of the league for a while.>
+	CMsg%id%02_2 <ifNPCShy Accept>
+	Msg%id%02_3 <Yeah, most of us in the league wear these. I've been playing for a while but haven't scored that one big match yet.>
+	CMsg%id%02_3 <ifNPCEasygoing Accept>
+	Msg%id%02_4 <So, you know your stuff... I'll bet you must be quite the mecha pilot too.>
+	CMsg%id%02_4 <ifNPCPassionate Accept>
+	Msg%id%02_5 <I take it you're interested in mecha, then? As you can tell, so am I.>
+	CMsg%id%02_5 <ifNPCCheerful Accept>
+	Msg%id%02_6 <Yes, that's right. I am a member of the Duelist's League.>
+	CMsg%id%02_6 <ifNPCMelancholy Accept>
+	Msg%id%03 <It's a dangerous but exciting life. I wouldn't want to be doing anything else. Someday, maybe we'll get a chance to test each other's skill in the arena.>
+	Msg%id%03_1 <We should get together sometime and swap stories. I could tell you so much about all the top players... You wouldn't believe what goes on behind the scenes at the arena.>
+	CMsg%id%03_1 <ifNPCSociable Accept>
+	Msg%id%03_2 <In that case, maybe someday we can face each other in the arena.>
+	CMsg%id%03_2 <ifNPCShy Accept>
+	Msg%id%03_3 <The sport's a lot safer than it used to be back in the day, but arena pilots still get killed every year. I've been lucky so far I guess. If you want, we can get together and swap stories later.>
+	CMsg%id%03_3 <ifNPCEasygoing Accept>
+	Msg%id%03_4 <It's a dangerous life in the arena, but it's only through challenges that we truly feel alive. If you're up for it maybe we can try our luck against each other in the arena sometime.>
+	CMsg%id%03_4 <ifNPCPassionate Accept>
+	Msg%id%03_5 <This is the best job in the world. I get paid to pilot the coolest and fastest mecha, meet all the top pilots, and win the adoration of League fans everywhere. Maybe someday we can face each other in the arena. That'd be cool.>
+	CMsg%id%03_5 <ifNPCCheerful Accept>
+	Msg%id%03_6 <I know every time I enter the arena it could be my last. Some things are more important than life itself. If you're interested, maybe we can spar with one another later.>
+	CMsg%id%03_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <Nice to meet you too.>
+	Prompt%id%01_1 <Glad to meet you.>
+	Prompt%id%01_2 <I'm glad to meet you, too.>
+	Prompt%id%02 <Say, is that a Pro Duelist Association badge?>
+	CPrompt%id%02 <ifG PCPerception V%id%01 Accept>
+	Prompt%id%03 <I'm a member of the league myself.>
+	CPrompt%id%03 <if= PCFac 5 Accept>
+	Prompt%id%04 <I'd like to join the league some day.>
+	CPrompt%id%04 <if= PCFac 0 Accept>
+	Prompt%id%05 <Well, it's nice to meet you.>
+	Prompt%id%06 <I look forward to it.>
+	Prompt%id%06_1 <Sounds like fun.>
+
+
+	Persona
+	requires <*NiceToMeetYou Cheerful>
+	Start <ifCHatNPCUnknown else %1% NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <AddReact d3       Goto %1%>
+	result%id%02 <AddCheerful -d6   Goto %1%>
+	Msg%id%01 <Hello, my name is \ChatNPC . It's nice to meet you.>
+	Msg%id%01_1 <Hi! My name's \ChatNPC . It's nice to meet you.>
+	CMsg%id%01_1 <ifNPCPassionate Accept>
+	Msg%id%01_2 <Hi there. I'm \ChatNPC . It's nice to meet you.>
+	CMsg%id%01_2 <ifNPCEasygoing Accept>
+	Msg%id%01_3 <I'm \ChatNPC . Nice to meet you.>
+	CMsg%id%01_3 <ifNPCShy Accept>
+	Prompt%id%01 <Nice to meet you too.>
+	Prompt%id%01_1 <Glad to meet you.>
+	Prompt%id%02 <That remains to be seen.>
+	Prompt%id%02_1 <What's so nice about it?>
+
+	Persona
+	requires <*NiceToMeetYou Wangtta Easygoing ~Student>
+	Start <ifCHatNPCUnknown else %1% NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <NewChat Say %id%02 AddChat %id%03>
+	result%id%02 <NewChat Say %id%03 AddChat %id%03>
+	result%id%03 <Goto %1%>
+	Msg%id%01 <Hey, you there, are you looking for a job?>
+	Msg%id%02 <Independantly wealthy, huh? That must be nice. My name's \ChatNPC . I'm just hanging out, you know.>
+	Msg%id%03 <Yeah, me too. If I earn some cash maybe I can get my own apartment. Living with my parents sucks. By the way,  I'm \ChatNPC . I'm just hanging out, you know.>
+	Prompt%id%01 <No, not at the moment.>
+	Prompt%id%02 <Yes, I am.>
+	Prompt%id%03 <Uh-huh.>
+	Prompt%id%03_1 <Whatever.>
+
+	Persona
+	requires <*NiceToMeetYou Passionate NoMecha ~Citizen ~Young ~Sociable>
+	START <ifCHatNPCUnknown else %1% ifG PCRep 6 d30 else .%id%_NoRenown NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	.%id%_NoRenown <NewChat Say %id%04 AddChat %id%03 AddChat %id%04>
+	result%id%01 <NewChat  AddEasygoing  d6  Say %id%02  AddChat %id%03 AddChat %id%04>
+	result%id%02 <NewChat  AddEasygoing -d6  Say %id%03  AddChat %id%03 AddChat %id%04>
+	result%id%03 <Goto %1%>
+	result%id%04 <AddSociable -d8 AddReact -d4 Goto %1%>
+	Msg%id%01 <Wow! You must be some kind of cavalier or something, right? How exciting!>
+	Msg%id%02 <I'm sure you're just saying that. Oh, I guess I got a bit too excited there, I didn't even introduce myself... My name's \ChatNPC . Nice to meet you.>
+	Msg%id%03 <I'd like to be a mecha pilot myself some day. It's so great getting to meet an honest to goodness adventurer! Oh, I forgot, I haven't even introduced myself yet... My name's \ChatNPC . Nice to meet you.>
+	Msg%id%04 <My name is \ChatNPC . It's nice to meet you.>
+	Prompt%id%01 <It's not that great.>
+	Prompt%id%02 <Why yes, I am!>
+	Prompt%id%03 <Nice to meet you too.>
+	Prompt%id%04 <Yeah, whatever.>
+	Prompt%id%04_1 <Wish I could say the same...>
+
+	Persona
+	requires <*NiceToMeetYou Villainous -&NoTrivial>
+	START <ifChatNPCInPlay else %1% if= V%id%01 0 else .%id%_GoSecond V= %id%01 1 EndChat Say %id%01>
+	.%id%_GoSecond <if= V%id%01 1 else %1% V= %id%01 2 EndChat Say %id%02 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <Can't you see I'm talking on my mobile? Go away.>
+	Msg%id%02 <Alright, now that I've finished talking, I can see what you want...>
+	Prompt%id%01 <[more]>
+
+	Persona
+	requires <*NiceToMeetYou ShopKeeper Young -&NoTrivial>
+	START <if= V%id%01 0 else %1% V= %id%01 1 EndChat Say %id%01 AddChat %ID%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <Welcome to my store. Sorry about the mess... We're just moving in, so things are a bit cluttered.>
+	Prompt%id%01 <[more]>
+
+	Persona
+	requires <*NiceToMeetYou ShopKeeper Shy ~Old ~Ego>
+	START <if= V%id%01 0 else %1% V= %id%01 1 NewChat Say %id%01 AddChat %ID%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <Welcome to my shop. I don't have time for a big sales pitch, the products speak for themselves. Shall we have a look?>
+	Msg%id%01_1 <I could tell you right now how good my merchandise is, but you've heard that a million times before from everyone out there. Just take a look and see for yourself. Shall we get down to business?>
+	CMsg%id%01_1 <ifNPCEasygoing Accept>
+	Msg%id%01_2 <Look, I know you've had enough of stupid sales pitches. Let's cut the crap and just look at what I've got for sale.>
+	CMsg%id%01_2 <ifNPCPassionate Accept>
+	Prompt%id%01 <Let's get to it.>
+	Prompt%id%01_1 <Yes, let's.>
+	Prompt%id%01_2 <Good idea.>
+
+	Persona
+	requires <*NiceToMeetYou ShopKeeper>
+	START <ifCHatNPCUnknown else %1% NewChat Say %id%01 AddChat %ID%01 AddChat %id%02>
+	result%id%01 <AddSociable  d4    Goto %1%>
+	result%id%02 <AddSociable -d8    Goto %1%>
+	Msg%id%01 <Welcome to my shop. My name is \ChatNPC ; it's nice to meet you.>
+	Msg%id%01_1 <Hi, my name is \ChatNPC . Welcome to my shop. It's a pleasure to meet you.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Welcome to my shop. Nice to meet you.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Hello, my name is \ChatNPC and this is my shop. It will be my pleasure serving you today.>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <Sorry about the mess, it's been chaos around here recently. Welcome to my shop. I'm glad to meet you.>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <Hey, welcome to my shop. It's nice to meet you. My name's \ChatNPC .>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <This is the best place in town for adventuring gear. The name's \ChatNPC , and I run the joint. Nice to meet you.>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+	Prompt%id%01 <Nice to meet you too.>
+	Prompt%id%01_1 <I'm glad to meet you too.>
+	Prompt%id%02 <What do you sell here?>
+	Prompt%id%02_1 <Show me what you have for sale.>
+
+
+	Persona
+	requires <*NiceToMeetYou ShopKeeper Renowned ~Charm>
+	START <ifCHatNPCUnknown else %1% NewChat Say %id%01 AddChat %ID%01 AddChat %id%02>
+	result%id%01 <AddReact d4       Goto %1%>
+	result%id%02 <Reputation 4 d4   Goto %1%>
+	Msg%id%01 <Ah, I can tell you're looking for the very latest in adventuring equipment. Am I right or am I right?>
+	Msg%id%01_1 <Hello, I don't think we've been introduced. You look like the sort who's seen all kinds of adventure. I'm sure you know the benefits of using top of the line equipment, am I right?>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Are you looking for great deals on adventuring equipment?>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <If you're looking for great deals on adventuring equipment, you've come to the right place. I can tell you're a real high-end consumer, right?>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <It seems like every shopkeeper in town is just trying to rip people off... Wouldn't you like to find one who offers both good service and good prices?>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <You look like you're in the mood for shopping. Am I right or am I right?>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <They say a good worker never blames his tools... Malarkey! Cavaliers need the best and newest equipment in order to remain competitive! I can tell you're the sort who appreciates quality products... Am I right?>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+	Prompt%id%01 <You're right.>
+	Prompt%id%01_1 <Absolutely right.>
+	Prompt%id%02 <No, not really. I have everything I need.>
+	Prompt%id%02_1 <Are you trying to sell me something?>
+
+	Persona
+	requires <*NiceToMeetYou Sociable Passionate>
+	START <ifCHatNPCUnknown else %1% NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+	result%id%01 <Reputation 4 -d8  NewChat Say %id%02 AddChat %id%04>
+	result%id%02 <Reputation 3 -d8  NewChat Say %id%02 AddChat %id%04>
+	result%id%03 <Reputation 4  d8  NewChat Say %id%02 AddChat %id%04>
+	result%id%04 <Goto %1%>
+	Msg%id%01 <I haven't seen you around before. My name's \ChatNPC . What brings you around here?>
+	Msg%id%02 <Interesting. Well, I've got my own reasons for being here, too.>
+	Prompt%id%01 <I'm looking for adventure.>
+	Prompt%id%01_1 <I'm seeking adventure and treasure!>
+	Prompt%id%02 <That's none of your business.>
+	Prompt%id%02_1 <None of your business.>
+	Prompt%id%03 <You know, just hanging out.>
+	Prompt%id%03_1 <Not much.>
+	Prompt%id%04 <Uh-huh.>
+	Prompt%id%04_1 <Okay.>
+
+	Persona
+	requires <*NiceToMeetYou Sociable>
+	START <ifCHatNPCUnknown else %1% NewChat Say %id%01 AddChat %ID%01 AddChat %id%02>
+	result%id%01 <AddSociable  d3   Goto %1%>
+	result%id%02 <AddSociable -d3   Goto %1%>
+	Msg%ID%01 <I don't think we've met before. I'm \ChatNPC .>
+	Msg%ID%01_1 <Hello, my name is \ChatNPC .>
+	Prompt%id%01 <I'm \PC .>
+	Prompt%id%01_1 <My name is \PC .>
+	Prompt%id%01_2 <I am the ace pilot \PC !>
+	CPrompt%id%01_2 <ifPCPassionate Accept>
+	Prompt%id%02 <Hi.>
+
+	Persona
+	requires <*NiceToMeetYou Spiritual ~Wangtta>
+	START <ifCHatNPCUnknown else %1% NewChat Say %id%01 AddChat %ID%01 AddChat %id%02>
+	result%id%01 <AddSociable d4   Goto %1%>
+	result%id%02 <NewChat Say %id%02 AddChat %id%03 AddChat %id%04>
+	result%id%03 <AddPragmatic   d8   Goto %1%>
+	result%id%04 <AddPragmatic -d12   Goto %1%>
+	Msg%ID%01 <Hello, my name is \ChatNPC . You look very familiar... Do we know each other?>
+	Msg%ID%01_1 <You look familiar... Do we know each other?>
+	CMsg%ID%01_1 <ifNPCShy Accept>
+	Msg%ID%01_2 <Hi, it's good to see you again! Um... we do know each other, don't we?>
+	CMsg%ID%01_2 <ifNPCCheerful Accept>
+	Msg%ID%02 <That's odd, I'm quite sure we've met before. Maybe we knew each other in a past life, then...>
+	Msg%ID%02_1 <In that case, it's probably just that we met in a past life.>
+	CMsg%ID%02_1 <ifNPCEasygoing Accept>
+	Msg%ID%02_2 <No, I'm never wrong about these things... It must be that we met in a past life!>
+	CMsg%ID%02_2 <ifNPCPassionate Accept>
+	Prompt%id%01 <It's possible.>
+	Prompt%id%01_1 <Maybe you saw me on vidnet.>
+	CPrompt%id%01_1 <ifG PCRep 6 25 Accept>
+	Prompt%id%01_2 <Maybe... I don't know.>
+	Prompt%id%02 <No, I don't think so.>
+	Prompt%id%02_1 <I'm pretty sure we don't.>
+	Prompt%id%03 <What, are you on drugs!?>
+	Prompt%id%03_1 <Look, I'm not into that hokum.>
+	Prompt%id%04 <It could be so...>
+	Prompt%id%04_1 <Yes! I feel the connection too!>
+
+	Persona
+	requires <*NiceToMeetYou>
+	START <ifCHatNPCUnknown else %1% NewChat Say %id%01 AddChat %ID%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <NewChat AddEasygoing -d6 Say %id%02 AddChat %id%03 AddChat %id%04>
+	result%id%03 <AddEasygoing d6 Reputation 3 d8 Goto %1%>
+	result%id%04 <AddSociable -d4 Goto %1%>
+	Msg%ID%01 <My name is \ChatNPC . Who are you?>
+	Msg%ID%01_1 <Hello, I don't believe we've been introduced. My name is \ChatNPC . What's your name?>
+	CMsg%ID%01_1 <ifNPCSociable Accept>
+	Msg%ID%01_2 <Huh, who are you?>
+	CMsg%ID%01_2 <ifNPCShy Accept>
+	Msg%ID%01_3 <Hey there! My name's \ChatNPC ; what's yours?>
+	CMsg%ID%01_3 <ifNPCCheerful Accept>
+	Msg%ID%01_4 <Oh, hello... I am \ChatNPC . Who might you be?>
+	CMsg%ID%01_4 <ifNPCMelancholy Accept>
+	Msg%ID%01_5 <I haven't seen you here before. What's your name?>
+	CMsg%ID%01_5 <ifNPCEasygoing Accept>
+	Msg%ID%01_6 <Look at this... Obviously a person of some ambition. May I ask what you call yourself?>
+	CMsg%ID%01_6 <ifNPCPassionate Accept>
+	Msg%ID%02 <It was only a simple question, no reason to be so hostile... unless you've got something to hide.>
+	Msg%ID%02_1 <No answer? Could it be that you've got some reason to keep your identity a secret?>
+	CMsg%ID%02_1 <ifNPCLawful Accept>
+	Msg%ID%02_2 <You don't want to answer? What, are you a narc or something?>
+	CMsg%ID%02_2 <ifNPCCriminal Accept>
+	Msg%ID%02_3 <No name, huh? Interesting. I guess this means you've got something to hide...>
+	CMsg%ID%02_3 <ifNPCEasygoing Accept>
+	Msg%ID%02_4 <So, you're a person with dark secrets... I wonder what those could be.>
+	CMsg%ID%02_4 <ifNPCMelancholy Accept>
+	Msg%ID%02_5 <That's very strange. I just asked what your name is... I can't see any reason why you wouldn't want to tell me that.>
+	CMsg%ID%02_5 <ifNPCSociable Accept>
+	Msg%ID%02_6 <You've got secrets? I can respect that.>
+	CMsg%ID%02_6 <ifNPCShy Accept>
+	Msg%ID%02_7 <What's your problem? Do you have something to hide?>
+	CMsg%ID%02_7 <ifNPCPassionate Accept>
+	Prompt%id%01 <I'm \PC .>
+	Prompt%id%01_1 <My name is \PC .>
+	Prompt%id%01_2 <They call me... \PC !>
+	CPrompt%id%01_2 <ifPCPassionate Accept>
+	Prompt%id%02 <What's it to you?>
+	Prompt%id%02_1 <None of your business.>
+	Prompt%id%03 <I'm sorry, my name is \PC .>
+	Prompt%id%03_1 <Sorry, I'm a bit defensive.>
+	Prompt%id%04 <I don't give my name to just anybody.>
+	Prompt%id%04_1 <My name isn't important.>
+	Prompt%id%04_2 <Look, just forget about it.>
+

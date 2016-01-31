@@ -1,0 +1,253 @@
+Battroid 4
+Name <Luna II>
+Desig <AEF>
+desc <This is Aegis Overlord's elite commando mecha.>
+type <SPACE GROUND INSIDE>
+factions <AEGIS AEGSF RISHI>
+ROLE_AEGIS <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_AEGSF <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_RISHI <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+
+sdl_portrait <item_luna2.png>
+
+sub
+Head
+	Size 3
+	Armor 3
+	mass -2
+	sub
+		Sensor 7
+		mass -2
+	end
+
+torso
+	Armor 4
+	mass -2
+	sub
+		CPit
+
+		Sensor 5
+
+		Computer 4
+		mass -6
+		sub
+			Software 3
+			name <C233 Advanced Targeting>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 1
+			name <C132 Reflex Control>
+			S_MVBoost
+			S_BoostScale 2
+		end
+
+		HoverJet 2
+	end
+
+Arm
+	Name <Right Arm>
+	Size 5
+	Armor 4
+	mass -2
+	sub
+		mount
+		NAme <Right Arm Mount>
+		inv
+			MLauncher 10
+			sub
+				STC HR-10
+				Magazine 10
+			end
+		end
+
+		Hand
+		inv
+			BeamGun 7
+			Name <Starburst Rifle>
+			Range 7
+			Acc 3
+		end
+
+		Melee 10
+		name <Chain Claw>
+		type <EXTEND BRUTAL>
+		mass -6
+		Integral
+	end
+
+Arm
+	Name <Left Arm>
+	Size 5
+	Armor 4
+	mass -2
+	sub
+		mount
+		name <Left Arm Mount>
+		inv
+			MLauncher 10
+			sub
+				STC HR-10
+				Magazine 10
+			end
+		end
+
+		Hand
+		inv
+
+		end
+
+		Melee 10
+		name <Chain Claw>
+		type <EXTEND BRUTAL>
+		mass -6
+		Integral
+	end
+
+Leg
+	Name <Right Leg>
+	Size 4
+	Armor 3
+	mass -2
+	sub
+		HoverJet 5
+	end
+
+Leg
+	Name <Left Leg>
+	Size 4
+	Armor 3
+	mass -2
+	sub
+		HoverJet 5
+	end
+end
+Battroid 4
+Name <Luna II>
+Desig <AEF Command>
+desc <This is Aegis Overlord's elite commando mecha.>
+type <SPACE GROUND INSIDE>
+factions <AEGIS AEGSF>
+ROLE_AEGIS <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_AEGSF <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+
+sdl_portrait <item_luna2.png>
+
+sub
+Head
+	Size 3
+	Armor 3
+	mass -2
+	sub
+		Sensor 7
+		mass -2
+	end
+
+torso
+	Armor 4
+	mass -3
+	sub
+		CPit
+
+		Sensor 5
+
+		ECM 3
+
+		Computer 4
+		mass -6
+		sub
+			Software 3
+			name <C233 Advanced Targeting>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 1
+			name <C132 Reflex Control>
+			S_MVBoost
+			S_BoostScale 2
+		end
+
+		HoverJet 2
+	end
+
+Arm
+	Name <Right Arm>
+	Size 5
+	Armor 4
+	mass -2
+	sub
+		mount
+		NAme <Right Arm Mount>
+		inv
+			MLauncher 9
+			sub
+				STC GHM-15
+				Magazine 6
+			end
+		end
+
+		Hand
+		inv
+			BeamGun 7
+			Name <Starburst Rifle>
+			Range 7
+			Acc 3
+		end
+
+		Melee 10
+		name <Chain Claw>
+		type <EXTEND BRUTAL>
+		mass -6
+		Integral
+	end
+
+Arm
+	Name <Left Arm>
+	Size 5
+	Armor 4
+	mass -2
+	sub
+		mount
+		name <Left Arm Mount>
+		inv
+			MLauncher 8
+			sub
+				STC AAM-8
+				Magazine 10
+			end
+		end
+
+		Hand
+		inv
+
+		end
+
+		Melee 10
+		name <Chain Claw>
+		type <EXTEND BRUTAL>
+		mass -6
+		Integral
+	end
+	inv
+		Shield 2
+		DefBonus 1
+	end
+
+Leg
+	Name <Right Leg>
+	Size 4
+	Armor 3
+	mass -2
+	sub
+		HoverJet 5
+	end
+
+Leg
+	Name <Left Leg>
+	Size 4
+	Armor 3
+	mass -2
+	sub
+		HoverJet 5
+	end
+end

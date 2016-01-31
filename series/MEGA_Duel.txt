@@ -1,0 +1,272 @@
+%%
+%% *NC_Duel Content
+%%
+%%  The PC is about to duel someone. This component will move the opponent from
+%%  their current location to the duel scene, then move the opponent back to
+%%  the original scene at the end of the battle.
+%%
+%%  Unlike the Core Story duel, this one will only level the NPC if they are
+%%  currently lower than the PC.
+%%
+%% Param1: The Challenger
+%% Param2: The Challenger's home scene, for the purpose of this component
+%% Param3: The outdoor scene where the duel will take place
+%%
+%% NEEDED SCRIPTS: To deal with the ending, the parent plot must define two
+%% scripts:
+%% 	.%id%_%plotid%_GoWin
+%% 	.%id%_%plotid%_GoLose
+%% These scripts should set story memos.
+%% %id% is the ID of the duel layer; so, if it was generated as subplot 1,
+%% the calling plot would use %id1%.
+
+Content
+	name <Regular Duel>
+	desc <The PC and the NPC will fight. Nothing special happens.>
+	requires <*NC_Duel>
+	Size 5
+
+	% E1 is the challenger
+	% E2 is the challenger's home scene
+	% E3 is the outdoor scene where the duel will take place
+	% E4 is the duel encounter
+	Element4 <Prefab>
+	Place4 <3>
+
+	% P%id%01 = Initialization Counter
+	update <if= P%id%01 0 MoveNPC %1% %4% SetNPCTeam %1% 2 P= %id%01 1  ifG %threat% NPCRenown %1% NPCLevel %1% %threat%>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop%  ifChatNPCInPlay else .%id%_GoNotInPlay Goto .%id%_GoChallenge>
+		*.%id%_GoChallenge <*ArenaChallenge .%id%_GoThemeInfo>
+		*.%id%_GoThemeInfo <*THEME_EXPO&Enemy NA>
+		*.%id%_GoNotInPlay <*WaitingForDuel %3%>
+
+		MetaScene 4 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		% L4 = Identity of enemy NPC
+		MapWidth 30
+		MapHeight 30
+
+		special <ARENA SOLO>
+
+		Start <if= L2 0 L= 2 1   ForceChat %1%>
+		nu1 <if= T1 0  Return   if= L1 0 L= 1 1   MoveNPC %1% %2%  Print 2 LoseRenown  Trigger0 .%id%_%plotid%_GoLose>
+		nu2 <if= T2 0           if= L1 0 L= 1 2   MoveNPC %1% %2%  Print 2 AddRenown 1   XPV 100   Trigger0 .%id%_%plotid%_GoWin>
+
+		Msg2 <%name1% returns to %name2%.>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			SetEnemy 1
+			ParaX 25
+			ParaY 25
+		end
+	end
+	inv
+		STC ENCOUNTER-DUEL
+		name <%name1%'s Mecha>
+		update <if= PlotStatus %plotid% %id% else GoHide ShowEncounter SetStat STAT_MetaVisibility 0  Goto GoSetOrders>
+	end
+
+%%
+%% *:NC_TournamentMatch Content
+%%
+%%  Non-Core Tournament Match
+%%  There's apparently a tournament going on. The PC will be able to challenge a NPC
+%%  to a duel, which will be handled by the above subplot type.
+%%
+%% NEEDED SCRIPTS: To deal with the ending, the parent plot must define two
+%% scripts:
+%% 	.%id%_%plotid%_GoWin
+%% 	.%id%_%plotid%_GoLose
+%%
+%% PARAM1: The NPC to be challenged
+%% PARAM2: The home scene for this NPC
+
+Content
+	name <Basic Non-Core Tournament Match>
+	desc <You're going to challenge some guy.>
+	requires <*:NC_TournamentMatch>
+
+	% E1 is the NPC to be challenged
+	% E2 is the home scene for the NPC
+	% E3 is a location for the duel.
+	Element3 <Scene Environs>
+
+	% As long as we're still at the first phase, the NPC's death will end the plot.
+	start <ifNPCDead %1% Goto .%id1%_%plotid%_GoLose>
+
+	% Resolution Scripts
+	.%id1%_%plotid%_GoWin  <WinSubPlot %plotid%   Trigger0 .%id%_%plotid%_GoWin>
+	.%id1%_%plotid%_GoLose <LoseSubPlot %plotid%  Trigger0 .%id%_%plotid%_GoLose>
+
+	% SubPlot1 is the duel itself
+	SubPlot1 <*NC_Duel 1 2 3>
+
+	sub
+		Persona 1
+		% v%id%01 = Renown Counter
+		greeting <if= PlotStatus %plotid% %id% else %pop% Goto .%id%_GoFirstTime>
+		*.%id%_GoFirstTime <*PCChallengeNPC .%id%_GoAttemptChallenge .%id%_GoWussOut>
+		.%id%_GoAttemptChallenge <v= %id%01 PCRenown V+ %id%01 PCRenown ifG ChatNPCRenown v%id%01 else .%id%_GoMakeChallenge Goto .%id%_GoQuestionChallenge>
+		*.%id%_GoQuestionChallenge <*SmallFryChallenge .%id%_GoMakeChallenge .%id%_GoGiveUp .%id%_GoGiveUp>
+		.%id%_GoGiveUp <LoseSubPlot %plotid%  Trigger0 .%id%_%plotid%_GoLose  Goto .%id%_GoWussOut>
+		.%id%_GoMakeChallenge <PMemo %plotid% %id%01 SetPlotStatus %plotid1% %id1% Goto .%id%_GoAcceptChallenge>
+		*.%id%_GoAcceptChallenge <*IAcceptYourChallenge %3%>
+		*.%id%_GoWussOut <*GodImBored>
+		Msg%id%01 <You challenged %name1% to a duel in \EXACT_SCENE %3% .>
+	end
+
+
+%%
+%% *InformalChallenge Content
+%%
+%%  The PC will challenge an NPC to a duel.
+%%
+%% PARAM1: The NPC to be challenged
+%% PARAM2: The home scene for this NPC
+%%
+
+Content
+	name <Basic Informal Challenge>
+	desc <You're going to challenge some guy.>
+	requires <*InformalChallenge>
+
+	% E1 is the NPC to be challenged
+	% E2 is the home scene for the NPC
+	% E3 is a location for the duel.
+	Element3 <Scene Environs !Near 2>
+
+	% P%id%01 = The Pot. Earn double this on a win.
+	% P%id%02 = Time Limit
+ 
+	% As long as we're still at the first phase, the NPC's death will end the plot.
+	end <ifNPCDead %1% Goto .%id1%_%plotid%_GoLose>
+	update <if= P%id%02 0 P= %id%02 ComTime P+ %id%02 86400>
+	start <if# P%id%02 0 ifG ComTime P%id%02 EndPlot>
+
+	% Resolution Scripts
+	.%id1%_%plotid1%_GoWin  <CashPrize * 2 p%id%01 EndPlot ifNPCOK %1% Monologue %1% %id%01>
+	.%id1%_%plotid1%_GoLose <EndPlot ifNPCOK %1% ifPCOK Monologue %1% %id%02>
+
+	Msg%id%01 <I concede defeat... Here's your take.>
+	Msg%id%02 <Thanks for the money, \PC ... I'll be happy to take it from you anytime.>
+
+	% SubPlot1 is the duel itself
+	SubPlot1 <*NC_Duel 1 2 3>
+
+	sub
+		Persona 1
+		% v%id%01 = Renown Counter
+		% v%id%02 = Made it through renown check
+		&%id%_BigAmount <Reward %threat% 350>
+		&%id%_MediumAmount <Reward %threat% 150>
+		&%id%_SmallAmount <Reward %threat% 75>
+		greeting <if= PlotStatus %plotid% %id% else %pop% Goto .%id%_GoFirstTime>
+		*.%id%_GoFirstTime <*PCChallengeNPC .%id%_GoAttemptChallenge .%id%_GoWussOut>
+		.%id%_GoAttemptChallenge <if= v%id%02 0 else .%id%_GoMakeChallenge v= %id%01 PCRenown V+ %id%01 PCRenown ifG ChatNPCRenown v%id%01 else .%id%_GoMakeChallenge Goto .%id%_GoQuestionChallenge>
+		*.%id%_GoQuestionChallenge <*SmallFryChallenge .%id%_GoMakeChallenge .%id%_GoGiveUp .%id%_GoGiveUp>
+		.%id%_GoGiveUp <EndPlot Goto .%id%_GoGoodbye>
+		*.%id%_GoWussOut <*GodImBored>
+		*.%id%_GoGoodbye <*BrushOff>
+		.%id%_GoMakeChallenge <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03 AddChat %id%04  V= %id%02 1>
+		.%id%_GoStartDuel <PMemo %plotid% %id%02 SetPlotStatus %plotid1% %id1% Goto .%id%_GoAcceptChallenge>
+		*.%id%_GoAcceptChallenge <*IAcceptYourChallenge %3%>
+		result%id%01 <Cash+ -&%id%_BigAmount P= %id%01 &%id%_BigAmount Goto .%id%_GoStartDuel>
+		result%id%02 <Cash+ -&%id%_MediumAmount P= %id%01 &%id%_MediumAmount Goto .%id%_GoStartDuel>
+		result%id%03 <Cash+ -&%id%_SmallAmount P= %id%01 &%id%_SmallAmount Goto .%id%_GoStartDuel>
+		result%id%04 <NewChat Say %id%03 EndPlot>
+		Msg%id%01 <Are you ready to put your money where your mouth is? It won't be a proper match unless there's a bet riding on it. How much are you willing to risk?>
+		Msg%id%01_1 <>
+		CMsg%id%01_1 <ifNPCSociable Accept>
+		Msg%id%01_2 <Dueling is no fun unless there's money involved. How much do you want to bet?>
+		CMsg%id%01_2 <ifNPCShy Accept>
+		Msg%id%01_3 <>
+		CMsg%id%01_3 <ifNPCEasygoing Accept>
+		Msg%id%01_4 <>
+		CMsg%id%01_4 <ifNPCPassionate Accept>
+		Msg%id%01_5 <>
+		CMsg%id%01_5 <ifNPCCheerful Accept>
+		Msg%id%01_6 <>
+		CMsg%id%01_6 <ifNPCMelancholy Accept>
+		Msg%id%02 <You challenged %name1% to a duel in \EXACT_SCENE %3% .>
+		Msg%id%03 <Oh well. Maybe next time.>
+		Msg%id%03_1 <Too bad if you can't afford to play.>
+		Msg%id%03_2 <So that's how it is...>
+		Prompt%id%01 <I'll put down $ \VAL &%id%_BigAmount .>
+		CPrompt%id%01 <ifG PC$ &%id%_BigAmount Accept>
+		Prompt%id%02 <I'll put down $ \VAL &%id%_MediumAmount .>
+		CPrompt%id%02 <ifG PC$ &%id%_MediumAmount Accept>
+		Prompt%id%03 <I'll put down $ \VAL &%id%_SmallAmount .>
+		CPrompt%id%03 <ifG PC$ &%id%_SmallAmount Accept>
+		Prompt%id%04 <On second thought, I don't want to duel.>
+	end
+
+
+%%
+%%  *NC_WinDuelReturn
+%%
+%% The PC has just won a duel against this character. There will likely be some
+%% kind of reward, then the NPC will return to their home scene.
+%%
+%% PARAM1: The NPC in question
+%% PARAM2: The home scene
+%%
+
+Content
+	name <Duel Reward>
+	requires <*NC_WinDuelReturn>
+
+	% E1 is the NPC
+	% E2 is their home scene
+
+	end <ifNPCDead %1% EndPlot>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop%  EndChat Say %id%01  CashPrize Reward %threat% 100  MoveNPC %1% %2%  EndPlot>
+		Msg%id%01 <That was a pretty good fight... As the victor, I guess you're entitled to this.>
+	end
+
+
+%%
+%%  *NC_LoseDuelReturn
+%%
+%% The PC has just lost a duel against this character. There will likely be some
+%% taunting, then the NPC will return to their home scene.
+%%
+%% PARAM1: The NPC in question
+%% PARAM2: The home scene
+%%
+
+Content
+	name <Default Loss>
+	requires <*NC_LoseDuelReturn>
+
+	% E1 is the NPC
+	% E2 is their home scene
+
+	% P%id%01 = Timer
+
+	update <if= P%id%01 0 P= %id%01 ComTime P+ %id%01 21600>
+	start <if# P%id%01 0 ifG ComTime P%id%01 ifNPCOK %1% else end MoveNPC %1% %2% EndPlot>
+	end <ifNPCDead %1% EndPlot>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop%  EndChat Say %id%01  MoveNPC %1% %2%  EndPlot>
+		Msg%id%01 <You lost that match... Maybe someday I'll allow you to try again.>
+	end
+
+
+
+
+

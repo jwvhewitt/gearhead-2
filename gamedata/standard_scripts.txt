@@ -1,0 +1,373 @@
+%%
+%% Standard Scripts List
+%%
+%% All scripts need a NAME and a START attribute. Aside from these two, all
+%% other attributes must be marked by the script's %id%.
+%%
+
+Content
+	name <*SCIENCE_GetMechaPartsOrIngot>
+	%
+	% Param 1 = Difficulty Level (in Renown)
+	% Param 2 = Monster Description
+	%
+	% V%id%01 = Use Counter
+	% V%id%02 = Big Prize Counter
+	%
+	START <ifSelfDead if# SelfTeam NAV_LancemateTeam if= V%id%01 0 else .%id%_GoDone Mental Gut if= V%id%02 0 else .%id%_GoCheckParts V= %id%02 1 ifUScience HardSkillTar %1% else .%id%_GoCheckParts V= %id%01 1 Print %id%01 Goto .%id%_GoGiveIngot>
+	.%id%_GoGiveIngot   <if= d6 1 else .%id%_GoCheckSilver GiveSTCTreasure .%id%_golddesc Reward %1% 255>
+	.%id%_GoCheckSilver <if= d3 1 else .%id%_GoGiveCopper GiveSTCTreasure .%id%_silverdesc Reward %1% 95>
+	.%id%_GoGiveCopper  <GiveSTCTreasure .%id%_copperdesc Reward %1% 55>
+	.%id%_GoCheckParts <ifScience SkillTar %1% else .%id%_GoFail V= %id%01 1 Print %id%02 GiveSTC .%id%_partdesc>
+	.%id%_golddesc      <Gold Ingot>
+	.%id%_silverdesc    <Silver Ingot>
+	.%id%_copperdesc    <Copper Ingot>
+	.%id%_partdesc <SPAREPARTS-2>
+	.%id%_GoFail <Print %id%03>
+	.%id%_GoDone <Print %id%04>
+	Msg%id%01 <You take apart this %2% and find a valuable ingot inside.>
+	Msg%id%02 <You salvage some spare parts from this %2%.>
+	Msg%id%03 <You take apart the %2%, but don't find anything useful.>
+	Msg%id%04 <You've already disassembled this %2%.>
+
+Content
+	name <*SCIENCE_GetSparePartsOrSDN>
+	%
+	% Param 1 = Difficulty Level (in Renown)
+	% Param 2 = Monster Description
+	%
+	% V%id%01 = Use Counter
+	% V%id%02 = Big Prize Counter
+	%
+	START <ifSelfDead if# SelfTeam NAV_LancemateTeam if= V%id%01 0 else .%id%_GoDone Mental Gut if= V%id%02 0 else .%id%_GoCheckParts V= %id%02 1 ifUScience HardSkillTar %1% else .%id%_GoCheckParts V= %id%01 1 Print %id%01 GiveSTC .%id%_gooddesc>
+	.%id%_GoCheckParts <ifScience SkillTar %1% else .%id%_GoFail V= %id%01 1 Print %id%02 GiveSTC .%id%_partdesc>
+	.%id%_gooddesc <SELFDEFENSEMATRIX>
+	.%id%_partdesc <SPAREPARTS-1>
+	.%id%_GoFail <Print %id%03>
+	.%id%_GoDone <Print %id%04>
+	Msg%id%01 <You manage to extract the self defense neural network from this %2%.>
+	Msg%id%02 <You salvage some spare parts from this %2%.>
+	Msg%id%03 <You take apart the %2%, but don't find anything useful.>
+	Msg%id%04 <You've already disassembled this %2%.>
+
+Content
+	name <*SCIENCE_GetMechaPartsOrFCS>
+	%
+	% Param 1 = Difficulty Level (in Renown)
+	% Param 2 = Monster Description
+	%
+	% V%id%01 = Use Counter
+	% V%id%02 = Big Prize Counter
+	%
+	START <ifSelfDead if# SelfTeam NAV_LancemateTeam if= V%id%01 0 else .%id%_GoDone Mental Gut if= V%id%02 0 else .%id%_GoCheckParts V= %id%02 1 ifUScience HardSkillTar %1% else .%id%_GoCheckParts V= %id%01 1 Print %id%01 GiveSTC .%id%_gooddesc>
+	.%id%_GoCheckParts <ifScience SkillTar %1% else .%id%_GoFail V= %id%01 1 Print %id%02 GiveSTC .%id%_partdesc>
+	.%id%_gooddesc <SENTINELFCS>
+	.%id%_partdesc <SPAREPARTS-2>
+	.%id%_GoFail <Print %id%03>
+	.%id%_GoDone <Print %id%04>
+	Msg%id%01 <You manage to extract the Fire Control System from this %2%.>
+	Msg%id%02 <You salvage some spare parts from this %2%.>
+	Msg%id%03 <You take apart the %2%, but don't find anything useful.>
+	Msg%id%04 <You've already disassembled this %2%.>
+
+Content
+	name <*SCIENCE_GetSpareParts>
+	%
+	% Param 1 = Difficulty Level (in Renown)
+	% Param 2 = Monster Description
+	%
+	% V%id%01 = Use Counter
+	%
+	START <ifSelfDead if# SelfTeam NAV_LancemateTeam if= V%id%01 0 else .%id%_GoDone Mental Gut ifScience SkillTar %1% else .%id%_GoFail V= %id%01 1 Print %id%01 GiveSTC .%id%_stcdesc>
+	.%id%_stcdesc <SPAREPARTS-1>
+	.%id%_GoFail <Print %id%02>
+	.%id%_GoDone <Print %id%03>
+	Msg%id%01 <You extract some spare parts from the wreckage of this %2%.>
+	Msg%id%02 <You try to get some spare parts from this %2%, but don't find anything worth keeping.>
+	Msg%id%03 <You've already dismantled this %2%.>
+
+Content
+	name <*SURVIVAL_GetMeatOrFlameGlandOrDragonHeart>
+	%
+	% Param 1 = Difficulty Level (in Renown)
+	% Param 2 = Monster Description
+	%
+	% V%id%01 = Use Counter
+	% V%id%02 = Big Prize Counter
+	%
+	START <ifSelfDead if# SelfTeam NAV_LancemateTeam if= V%id%01 0 else .%id%_GoDone Mental Gut if= V%id%02 0 else .%id%_GoCheckMeat V= %id%02 1 ifUSurvival HardSkillTar %1% else .%id%_GoCheckGland V= %id%01 1 Print %id%01 GiveSTC .%id%_gooddesc>
+	.%id%_GoCheckGland <ifUSurvival SkillTar %1% else .%id%_GoCheckMeat  V= %id%01 1 Print %id%02 GiveSTC .%id%_sosodesc>
+	.%id%_GoCheckMeat <ifSurvival SkillTar %1% else .%id%_GoFail V= %id%01 1 Print %id%03 GiveSTC .%id%_meatdesc>
+	.%id%_gooddesc <DRAGONHEART>
+	.%id%_sosodesc <FLAMEGLAND>
+	.%id%_meatdesc <FOOD-3>
+	.%id%_GoFail <Print %id%04>
+	.%id%_GoDone <Print %id%05>
+	Msg%id%01 <You remove the heart from this %2% to have later.>
+	Msg%id%02 <You remove the flame gland from the %2%.>
+	Msg%id%03 <You cut some meat from the %2% to have later.>
+	Msg%id%04 <You don't manage to do anything with this carcass other than make a mess.>
+	Msg%id%05 <You've already gutted this %2%.>
+
+Content
+	name <*SURVIVAL_GetFlameGland>
+	%
+	% Param 1 = Difficulty Level (in Renown)
+	% Param 2 = Monster Description
+	%
+	% V%id%01 = Use Counter
+	%
+	START <ifSelfDead if# SelfTeam NAV_LancemateTeam if= V%id%01 0 else .%id%_GoDone Mental Gut ifSurvival SkillTar %1% else .%id%_GoFail V= %id%01 1 Print %id%01 GiveSTC .%id%_stcdesc>
+	.%id%_stcdesc <FLAMEGLAND>
+	.%id%_GoFail <Print %id%02>
+	.%id%_GoDone <Print %id%03>
+	Msg%id%01 <You remove the flame gland from the %2%.>
+	Msg%id%02 <You don't manage to do much of anything with this %2%.>
+	Msg%id%03 <You've already gutted this %2%.>
+
+Content
+	name <*SURVIVAL_GetMeatOrBearLiverOrDragonHeart>
+	%
+	% Param 1 = Difficulty Level (in Renown)
+	% Param 2 = Monster Description
+	%
+	% V%id%01 = Use Counter
+	% V%id%02 = Big Prize Counter
+	% V%id%03 = Difficulty Calc
+	%
+	START <ifSelfDead if# SelfTeam NAV_LancemateTeam if= V%id%01 0 else .%id%_GoDone Mental Gut if= V%id%02 0 else .%id%_GoCheckMeat V= %id%02 1 V= %id%03 %1% V+ %id%03 10 ifUSurvival HardSkillTar V%id%03 else .%id%_GoCheckLiver V= %id%01 1 Print %id%01 GiveSTC .%id%_gooddesc>
+	.%id%_GoCheckLiver <ifUSurvival HardSkillTar %1% else .%id%_GoCheckMeat  V= %id%01 1 Print %id%02 GiveSTC .%id%_liverdesc>
+	.%id%_GoCheckMeat <ifSurvival SkillTar %1% else .%id%_GoFail V= %id%01 1 Print %id%03 GiveSTC .%id%_meatdesc>
+	.%id%_gooddesc <DRAGONHEART>
+	.%id%_liverdesc <REDBEARLIVER>
+	.%id%_meatdesc <FOOD-3>
+	.%id%_GoFail <Print %id%04>
+	.%id%_GoDone <Print %id%05>
+	Msg%id%01 <You remove the heart from this %2% to have later.>
+	Msg%id%02 <You remove the liver from this %2%. It's supposed to have healing properties.>
+	Msg%id%03 <You cut some meat from the %2% to have later.>
+	Msg%id%04 <You don't manage to do anything with this carcass other than make a mess.>
+	Msg%id%05 <You've already gutted this %2%.>
+
+Content
+	name <*SURVIVAL_GetMeatOrBearLiver>
+	%
+	% Param 1 = Difficulty Level (in Renown)
+	% Param 2 = Monster Description
+	%
+	% V%id%01 = Use Counter
+	% V%id%02 = Big Prize Counter
+	%
+	START <ifSelfDead if# SelfTeam NAV_LancemateTeam if= V%id%01 0 else .%id%_GoDone Mental Gut if= V%id%02 0 else .%id%_GoCheckMeat V= %id%02 1 ifUSurvival HardSkillTar %1% else .%id%_GoCheckMeat V= %id%01 1 Print %id%01 GiveSTC .%id%_gooddesc>
+	.%id%_GoCheckMeat <ifSurvival SkillTar %1% else .%id%_GoFail V= %id%01 1 Print %id%02 GiveSTC .%id%_meatdesc>
+	.%id%_gooddesc <REDBEARLIVER>
+	.%id%_meatdesc <FOOD-3>
+	.%id%_GoFail <Print %id%03>
+	.%id%_GoDone <Print %id%04>
+	Msg%id%01 <You remove the liver from this %2%. It's supposed to have healing properties.>
+	Msg%id%02 <You cut some meat from the %2% to have later.>
+	Msg%id%03 <You don't manage to do much of anything with this %2%.>
+	Msg%id%04 <You've already done all you can with this %2% carcass.>
+
+Content
+	name <*SURVIVAL_GetMeatOrLootGizzard>
+	%
+	% Param 1 = Difficulty Level (in Renown)
+	% Param 2 = Monster Description
+	%
+	% V%id%01 = Use Counter
+	% V%id%02 = Big Prize Counter
+	% V%id%03 = Cash Payout
+	% V%id%04 = Cash Randomizer
+	%
+	START <ifSelfDead if# SelfTeam NAV_LancemateTeam if= V%id%01 0 else .%id%_GoDone Mental Gut if= V%id%02 0 else .%id%_GoCheckMeat V= %id%02 1 ifUSurvival HardSkillTar %1% else .%id%_GoCheckMeat V= %id%01 1   Print %id%01 CashPrize * d4 %1%>
+	.%id%_GoCheckMeat <ifSurvival SkillTar %1% else .%id%_GoFail V= %id%01 1 Print %id%02 GiveSTC .%id%_meatdesc>
+	.%id%_meatdesc <FOOD-3>
+	.%id%_GoFail <Print %id%03>
+	.%id%_GoDone <Print %id%04>
+	Msg%id%01 <You discover some shiny objects in the %2%'s gizzard.>
+	Msg%id%02 <You cut some meat from this %2%.>
+	Msg%id%03 <You don't manage to do much of anything with this %2%.>
+	Msg%id%04 <This %2% is of no further use to you.>
+
+Content
+	name <*SURVIVAL_LootGizzard>
+	%
+	% Param 1 = Difficulty Level (in Renown)
+	% Param 2 = Monster Description
+	%
+	% V%id%01 = Use Counter
+	% V%id%02 = Cash Payout
+	%
+	START <ifSelfDead if# SelfTeam NAV_LancemateTeam if= V%id%01 0 else .%id%_GoDone Mental Gut ifSurvival HardSkillTar %1% else .%id%_GoFail V= %id%01 1  Print %id%01  CashPrize * d5 %1%>
+	.%id%_GoFail <Print %id%02>
+	.%id%_GoDone <Print %id%03>
+	Msg%id%01 <You recover some shiny objects from the %2%'s gizzard.>
+	Msg%id%02 <You cut open the %2%'s gizzard to see if it swallowed anything valuable, but find nothing.>
+	Msg%id%03 <This %2% is of no further use to you.>
+
+Content
+	name <*SURVIVAL_GetMeatOrFlameGland>
+	%
+	% Param 1 = Difficulty Level (in Renown)
+	% Param 2 = Monster Description
+	%
+	% V%id%01 = Use Counter
+	% V%id%02 = Big Prize Counter
+	%
+	START <ifSelfDead if# SelfTeam NAV_LancemateTeam if= V%id%01 0 else .%id%_GoDone Mental Gut if= V%id%02 0 else .%id%_GoCheckMeat V= %id%02 1 ifUSurvival HardSkillTar %1% else .%id%_GoCheckMeat V= %id%01 1 Print %id%01 GiveSTC .%id%_gooddesc>
+	.%id%_GoCheckMeat <ifSurvival SkillTar %1% else .%id%_GoFail V= %id%01 1 Print %id%02 GiveSTC .%id%_meatdesc>
+	.%id%_gooddesc <FLAMEGLAND>
+	.%id%_meatdesc <FOOD-3>
+	.%id%_GoFail <Print %id%03>
+	.%id%_GoDone <Print %id%04>
+	Msg%id%01 <You remove the flame gland from the %2%.>
+	Msg%id%02 <You cut some meat from this %2%. It's very spicy!>
+	Msg%id%03 <You don't manage to do much of anything with this %2%.>
+	Msg%id%04 <You've already done all you can with this %2%.>
+
+Content
+	name <*SURVIVAL_GetSashimiOrLobsterShield>
+	%
+	% Param 1 = Difficulty Level (in Renown)
+	% Param 2 = Monster Description
+	%
+	% V%id%01 = Use Counter
+	% V%id%02 = Big Prize Counter
+	%
+	START <ifSelfDead if# SelfTeam NAV_LancemateTeam if= V%id%01 0 else .%id%_GoDone Mental Gut Flay if= V%id%02 0 else .%id%_GoCheckMeat V= %id%02 1 ifUSurvival HardSkillTar %1% else .%id%_GoCheckMeat V= %id%01 1 Print %id%01 GiveSTC .%id%_shielddesc>
+	.%id%_GoCheckMeat <ifSurvival SkillTar %1% else .%id%_GoFail V= %id%01 1 Print %id%02 GiveSTC .%id%_meatdesc>
+	.%id%_shielddesc <LOBSTERSHIELD>
+	.%id%_meatdesc <FOOD-4>
+	.%id%_GoFail <Print %id%03>
+	.%id%_GoDone <Print %id%04>
+	Msg%id%01 <You remove the tough, spiky plate from the top of this %2%. It might make a decent shield.>
+	Msg%id%02 <You cut up the %2% and make a lovely sushi plate.>
+	Msg%id%03 <You try to butcher the %2%, but can't get through its tough shell.>
+	Msg%id%04 <You've already done all you can with this %2%.>
+
+Content
+	name <*SURVIVAL_GetMeatOrDragonHeart>
+	%
+	% Param 1 = Difficulty Level (in Renown)
+	% Param 2 = Monster Description
+	%
+	% V%id%01 = Use Counter
+	% V%id%02 = Big Prize Counter
+	%
+	START <ifSelfDead if# SelfTeam NAV_LancemateTeam if= V%id%01 0 else .%id%_GoDone Mental Gut if= V%id%02 0 else .%id%_GoCheckMeat V= %id%02 1 ifUSurvival HardSkillTar %1% else .%id%_GoCheckMeat V= %id%01 1 Print %id%01 GiveSTC .%id%_heartdesc>
+	.%id%_GoCheckMeat <ifSurvival SkillTar %1% else .%id%_GoFail V= %id%01 1 Print %id%02 GiveSTC .%id%_meatdesc>
+	.%id%_heartdesc <DRAGONHEART>
+	.%id%_meatdesc <FOOD-3>
+	.%id%_GoFail <Print %id%03>
+	.%id%_GoDone <Print %id%04>
+	Msg%id%01 <You remove the heart from this %2%. It's supposed to be good for your health.>
+	Msg%id%02 <You cut up the %2% and save some nice steaks for later.>
+	Msg%id%03 <You try to butcher the %2%, but can't get through its tough scales.>
+	Msg%id%04 <You've already done all you can with this %2%.>
+
+Content
+	name <*SURVIVAL_GetSashimiMaybeTainted>
+	%
+	% Param 1 = Difficulty Level (in Renown)
+	% Param 2 = Monster Description
+	%
+	% V%id%01 = Use Counter
+	%
+	START <ifSelfDead if# SelfTeam NAV_LancemateTeam if= V%id%01 0 else .%id%_GoDone Mental Gut ifSurvival SkillTar %1% else .%id%_GoFail V= %id%01 1 Print %id%01 if# d6 1 else .%id%_GoGetTainted GiveSTC .%id%_stcdesc>
+	.%id%_GoGetTainted <GiveSTC .%id%_baddesc>
+	.%id%_stcdesc <FOOD-4>
+	.%id%_baddesc <TAINTED-SASHIMI>
+	.%id%_GoFail <Print %id%02>
+	.%id%_GoDone <Print %id%03>
+	Msg%id%01 <You cut open the %2% and collect some meat from inside.>
+	Msg%id%02 <You cut open the %2%, and nearly get sick...>
+	Msg%id%03 <You've already gutted this %2%.>
+
+Content
+	name <*SURVIVAL_GetMeatMaybeTainted>
+	%
+	% Param 1 = Difficulty Level (in Renown)
+	% Param 2 = Monster Description
+	%
+	% V%id%01 = Use Counter
+	%
+	START <ifSelfDead if# SelfTeam NAV_LancemateTeam if= V%id%01 0 else .%id%_GoDone Mental Gut ifSurvival SkillTar %1% else .%id%_GoFail V= %id%01 1 Print %id%01 if# d3 1 else .%id%_GoGetTainted GiveSTC .%id%_stcdesc>
+	.%id%_GoGetTainted <GiveSTC .%id%_baddesc>
+	.%id%_stcdesc <FOOD-3>
+	.%id%_baddesc <TAINTED-MEAT>
+	.%id%_GoFail <Print %id%02>
+	.%id%_GoDone <Print %id%03>
+	Msg%id%01 <You find some parts of this %2% that don't appear too rotten.>
+	Msg%id%02 <You cut some meat from this %2%, but would probably die if you tried to eat it.>
+	Msg%id%03 <You've already gutted this %2%.>
+
+Content
+	name <*SURVIVAL_GetMeatOrSmallPelt>
+	%
+	% Param 1 = Difficulty Level (in Renown)
+	% Param 2 = Monster Description
+	%
+	% V%id%01 = Use Counter
+	% V%id%02 = Big Prize Counter
+	%
+	START <ifSelfDead if# SelfTeam NAV_LancemateTeam if= V%id%01 0 else .%id%_GoDone Mental Gut Flay if= V%id%02 0 else .%id%_GoCheckMeat V= %id%02 1 ifUSurvival HardSkillTar %1% else .%id%_GoCheckMeat V= %id%01 1 Print %id%01 GiveSTCTreasure .%id%_peltdesc Reward %1% 75>
+	.%id%_GoCheckMeat <ifSurvival SkillTar %1% else .%id%_GoFail V= %id%01 1 Print %id%02 GiveSTC .%id%_meatdesc>
+	.%id%_peltdesc <PELT-1>
+	.%id%_meatdesc <FOOD-3>
+	.%id%_GoFail <Print %id%03>
+	.%id%_GoDone <Print %id%04>
+	Msg%id%01 <You skin the %2%, receiving a pelt worth $ \VAL Reward %1% 75 .>
+	Msg%id%02 <You cut up the %2% and save some nice steaks for later.>
+	Msg%id%03 <You attempt to skin the %2%, but end up just mutilating it instead.>
+	Msg%id%04 <You've already skinned this %2%.>
+
+Content
+	name <*SURVIVAL_GetPearl>
+	%
+	% Param 1 = Difficulty Level (in Renown)
+	% Param 2 = Monster Description
+	%
+	% V%id%01 = Use Counter
+	%
+	START <ifSelfDead if# SelfTeam NAV_LancemateTeam if= V%id%01 0 else .%id%_GoDone Mental Gut ifSurvival HardSkillTar %1% else .%id%_GoFail V= %id%01 1 Print %id%01 GiveSTCTreasure .%id%_stcdesc Reward %1% 100>
+	.%id%_stcdesc <PEARL-1>
+	.%id%_GoFail <Print %id%02>
+	.%id%_GoDone <Print %id%03>
+	Msg%id%01 <You cut up this %2% and find a pearl inside.>
+	Msg%id%02 <You cut up the %2% but don't find anything useful.>
+	Msg%id%03 <You've already gutted this %2%.>
+
+Content
+	name <*SURVIVAL_GetSashimi>
+	%
+	% Param 1 = Difficulty Level (in Renown)
+	% Param 2 = Monster Description
+	%
+	% V%id%01 = Use Counter
+	%
+	START <ifSelfDead if# SelfTeam NAV_LancemateTeam if= V%id%01 0 else .%id%_GoDone Mental Gut ifSurvival SkillTar %1% else .%id%_GoFail V= %id%01 1 Print %id%01 GiveSTC .%id%_stcdesc>
+	.%id%_stcdesc <FOOD-4>
+	.%id%_GoFail <Print %id%02>
+	.%id%_GoDone <Print %id%03>
+	Msg%id%01 <You cut up the %2% and make a lovely sushi plate.>
+	Msg%id%02 <You attempt to get some meat from the %2%, but it's tougher than it looks...>
+	Msg%id%03 <You've already gutted this %2%.>
+
+Content
+	name <*SURVIVAL_GetMeat>
+	%
+	% Param 1 = Difficulty Level (in Renown)
+	% Param 2 = Monster Description
+	%
+	% V%id%01 = Use Counter
+	%
+	START <ifSelfDead if# SelfTeam NAV_LancemateTeam if= V%id%01 0 else .%id%_GoDone Mental Gut ifSurvival SkillTar %1% else .%id%_GoFail V= %id%01 1 Print %id%01 GiveSTC .%id%_stcdesc>
+	.%id%_stcdesc <FOOD-3>
+	.%id%_GoFail <Print %id%02>
+	.%id%_GoDone <Print %id%03>
+	Msg%id%01 <You cut up the %2% and save some nice steaks for later.>
+	Msg%id%02 <You try to cut some meat from the %2%, but end up just making yourself nauseous.>
+	Msg%id%03 <You've already gutted this %2%.>
+
+

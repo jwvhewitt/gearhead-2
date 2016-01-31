@@ -1,0 +1,1317 @@
+Battroid 7
+Name <Savin>
+Desig <RIG-01 Zero>
+SDL_Sprite <btr_savin.png>
+SDL_Portrait <item_savin.png>
+Desc <Maquise Spinner's premier mecha suit. The Zero Savin is a general purpose fighter.>
+TYPE <GROUND SPACE INSIDE>
+FACTIONS <SILKN FEDER COMET MAQUI FCOMS RISHI>
+
+ROLE_SILKN <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_COMET <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+
+Sub
+Head
+	Armor 5
+	Size 5
+	Mass -5
+	sub
+		Sensor 6
+		mass -1
+
+		STC VC-5
+		Type <INTERCEPT>
+		Name <Vulcan Interceptor>
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		HeadArmor 5
+		Mass -6
+	end
+
+Torso
+	Armor 7
+	Mass -7
+	sub
+		Sensor 1
+
+		CPit
+		Armor 2
+		Mass -1
+
+		Computer 6
+		mass -6
+		sub
+			Software 2
+			name <Comet Target Control>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 2
+			name <Comet Maneuver Control>
+			S_MVBoost
+			S_BoostScale 2
+
+			Software 1
+			name <Oracle Target Aid>
+			S_SpeedComp
+			S_BoostScale 2
+		end
+
+
+		Gyro
+		Armor 2
+		Mass -1
+
+		Engine 7
+		Armor 2
+		Mass -1
+
+		STC LAS-5
+		mass -3
+		range 5
+
+		STC LAS-5
+		mass -3
+		range 5
+
+		ArcJet 3
+
+		ECM 5
+	end
+	inv
+		BodyArmor 8
+		Mass -9
+		sub
+			MLauncher 4
+			sub
+				STC HWM-4
+				Magazine 10
+			end
+		end
+	end
+
+Arm
+	Name <Right Arm>
+	Size 6
+	Armor 5
+	Mass -6
+	sub
+		Hand
+		Name <Right Hand>
+		inv
+			Gun 10
+			Name <Breaker Cannon>
+			Range 7
+			caliber <60cm Nuclear>
+			mass -6
+			Magazine 12
+			sub
+				Ammo 10
+				Type <ARMORPIERCING HYPER>
+				caliber <60cm Nuclear>
+			end
+		end
+
+		Mount
+		Name <Right Arm Mount>
+		inv
+			EMelee 12
+			Name <Nova Sword>
+			UsesReflexes
+			Speed 3
+			Acc 1
+		end
+
+		ArcJet 3
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		ArmArmor 6
+		Mass -7
+		sub
+			STC MAC-2
+			Mass -3
+			range 6
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	Size 6
+	Armor 5
+	Mass -6
+	sub
+		Hand
+		Name <Left Hand>
+
+		Mount
+		Name <Left Arm Mount>
+
+		ArcJet 3
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		ArmArmor 6
+		Mass -7
+		sub
+			STC MAC-2
+			Mass -3
+			range 6
+		end
+
+		Shield 5
+		DefBonus 1
+		Mass -5
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 7
+	Mass -7
+	sub
+		Mount
+		Name <Right Leg Mount>
+		inv
+			MLauncher 12
+			sub
+				STC SWM-2
+				Magazine 60
+			end
+		end
+
+		ArcJet 7
+	end
+	inv
+		LegArmor 6
+		Mass -7
+	end
+
+Leg
+	Name <Left Leg>
+	Armor 7
+	Mass -7
+	sub
+		Mount
+		Name <Left Leg Mount>
+		inv
+			MLauncher 12
+			sub
+				STC SWM-2
+				Magazine 60
+			end
+		end
+
+		ArcJet 7
+	end
+	inv
+		LegArmor 6
+		Mass -7
+	end
+end
+
+Battroid 7
+Name <Savin>
+Desig <RIG-02 Overkill>
+SDL_Sprite <btr_savin.png>
+SDL_Portrait <item_savin.png>
+Desc <Maquise Spinner's premier mecha suit. The Overkill Savin is a heavy artillery platform.>
+TYPE <GROUND SPACE INSIDE>
+FACTIONS <SILKN COMET>
+ROLE_SILKN <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+ROLE_COMET <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+
+Sub
+Head
+	Armor 5
+	Size 5
+	Mass -5
+	sub
+		Sensor 6
+		mass -1
+
+		STC VC-5
+		Type <INTERCEPT>
+		Name <Vulcan Interceptor>
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		HeadArmor 4
+		Mass -5
+	end
+
+Torso
+	Armor 7
+	Mass -7
+	sub
+		Sensor 1
+
+		CPit
+		Armor 2
+		Mass -1
+
+		Computer 6
+		mass -6
+		sub
+			Software 2
+			name <Comet Target Control>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 2
+			name <Comet Maneuver Control>
+			S_MVBoost
+			S_BoostScale 2
+
+			Software 1
+			name <Oracle Target Aid>
+			S_SpeedComp
+			S_BoostScale 2
+		end
+
+
+		Gyro
+		Armor 2
+		Mass -1
+
+		Engine 7
+		Armor 2
+		Mass -1
+
+		STC LAS-5
+		mass -3
+		range 5
+
+		STC LAS-5
+		mass -3
+		range 5
+
+		ArcJet 3
+
+		ECM 5
+	end
+	inv
+		BodyArmor 6
+		Mass -8
+		sub
+			STC LAS-5
+			mass -3
+			range 5
+
+			STC LAS-5
+			mass -3
+			range 5
+		end
+	end
+
+Arm
+	Name <Right Arm>
+	Size 6
+	Armor 5
+	Mass -6
+	sub
+		Hand
+		Name <Right Hand>
+
+		Mount
+		Name <Right Arm Mount>
+		inv
+			STC RG-16
+			mass -9
+		end
+
+		ArcJet 3
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		ArmArmor 5
+		Mass -6
+	end
+
+Arm
+	Name <Left Arm>
+	Size 6
+	Armor 5
+	Mass -6
+	sub
+		Hand
+		Name <Left Hand>
+
+		Mount
+		Name <Left Arm Mount>
+		inv
+			STC RG-16
+			mass -9
+		end
+
+		ArcJet 3
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		ArmArmor 5
+		Mass -6
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 7
+	Mass -7
+	sub
+		Mount
+		Name <Right Leg Mount>
+		inv
+			MLauncher 8
+			sub
+				STC SWM-2
+				Magazine 40
+			end
+		end
+
+		ArcJet 7
+	end
+	inv
+		LegArmor 5
+		Mass -5
+		sub
+			MLauncher 6
+			sub
+				STC SWM-2
+				Magazine 30
+			end
+		end
+	end
+
+Leg
+	Name <Left Leg>
+	Armor 7
+	Mass -7
+	sub
+		Mount
+		Name <Left Leg Mount>
+		inv
+			MLauncher 8
+			sub
+				STC SWM-2
+				Magazine 40
+			end
+		end
+
+		ArcJet 7
+	end
+	inv
+		LegArmor 5
+		Mass -5
+		sub
+			MLauncher 6
+			sub
+				STC SWM-2
+				Magazine 30
+			end
+		end
+	end
+end
+
+Battroid 7
+Name <Savin>
+Desig <RIG-03 Reaper>
+SDL_Sprite <btr_savin.png>
+SDL_Portrait <item_savin.png>
+Desc <Maquise Spinner's premier mecha suit. The Reaper Savin is a close combat fighter.>
+TYPE <GROUND SPACE INSIDE>
+FACTIONS <COMET PRIVA>
+ROLE_COMET <GENERAL:COMMAND  ASSAULT:TROOPER>
+ROLE_PRIVA <GENERAL:COMMAND  ASSAULT:TROOPER  DEFENSE:COMMAND>
+
+Sub
+Head
+	Armor 5
+	Size 5
+	Mass -5
+	sub
+		Sensor 6
+		mass -1
+
+		STC VC-5
+		Type <INTERCEPT>
+		Name <Vulcan Interceptor>
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		HeadArmor 5
+		Mass -6
+	end
+
+Torso
+	Armor 7
+	Mass -7
+	sub
+		Sensor 1
+
+		CPit
+		Armor 2
+		Mass -1
+
+		Computer 6
+		mass -6
+		sub
+			Software 2
+			name <Comet Target Control>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 2
+			name <Comet Maneuver Control>
+			S_MVBoost
+			S_BoostScale 2
+
+			Software 1
+			name <Oracle Target Aid>
+			S_SpeedComp
+			S_BoostScale 2
+		end
+
+
+		Gyro
+		Armor 2
+		Mass -1
+
+		Engine 7
+		Armor 2
+		Mass -1
+
+		STC LAS-5
+		mass -3
+		range 5
+
+		STC LAS-5
+		mass -3
+		range 5
+
+		ArcJet 3
+
+		ECM 5
+	end
+	inv
+		BodyArmor 8
+		Mass -9
+		sub
+			ArcJet 4
+		end
+	end
+
+Arm
+	Name <Right Arm>
+	Size 6
+	Armor 5
+	Mass -6
+	sub
+		Hand
+		Name <Right Hand>
+		inv
+			EMelee 20
+			Name <Nova Scythe>
+			Speed 3
+			UsesReflexes
+			Acc 2
+			Type <ARMORPIERCING EXTEND>
+			Mass 6
+		end
+
+		Mount
+		Name <Right Arm Mount>
+		inv
+			STC MAC-4
+		end
+
+		ArcJet 3
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		ArmArmor 6
+		Mass -7
+		sub
+			STC MAC-2
+			Mass -3
+			range 6
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	Size 6
+	Armor 5
+	Mass -6
+	sub
+		Hand
+		Name <Left Hand>
+
+		Mount
+		Name <Left Arm Mount>
+
+		ArcJet 3
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		ArmArmor 6
+		Mass -7
+		sub
+			STC MAC-2
+			Mass -3
+			range 6
+		end
+
+		Shield 3
+		DefBonus -1
+		sub
+			EMelee 5
+			Name <Shield Blade>
+			Type <RETURN THROWN>
+		end
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 7
+	Mass -7
+	sub
+		Mount
+		Name <Right Leg Mount>
+		inv
+			MLauncher 4
+			sub
+				STC HWM-4
+				Magazine 10
+			end
+		end
+
+		ArcJet 7
+	end
+	inv
+		LegArmor 6
+		Mass -7
+		sub
+			ArcJet 3
+		end
+	end
+
+Leg
+	Name <Left Leg>
+	Armor 7
+	Mass -7
+	sub
+		Mount
+		Name <Left Leg Mount>
+		inv
+			MLauncher 4
+			sub
+				STC HWM-4
+				Magazine 10
+			end
+		end
+
+		ArcJet 7
+	end
+	inv
+		LegArmor 6
+		Mass -7
+		sub
+			ArcJet 3
+		end
+	end
+end
+
+
+
+Battroid 7
+Name <Gladius>
+Desig <RIG-03a2>
+SDL_Sprite <btr_savin.png>
+SDL_Portrait <item_savin.png>
+Desc <A limited edition replica of the NT157 Robot Warriors grand prize, which fought against Typhon.>
+TYPE <GROUND SPACE INSIDE>
+FACTIONS <PDASS>
+
+Sub
+Head
+	Armor 5
+	Size 5
+	Mass -6
+	sub
+		Sensor 6
+		mass -1
+
+		STC VC-5
+		Type <INTERCEPT>
+		Name <Vulcan Interceptor>
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		HeadArmor 4
+		Mass -5
+	end
+
+Torso
+	Armor 7
+	Mass -8
+	sub
+		Sensor 1
+
+		CPit
+		Armor 2
+		Mass -1
+
+		Computer 6
+		mass -6
+		sub
+			Software 3
+			name <Range Zero Targeting System>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 3
+			name <ZeroG Movement System>
+			S_MVBoost
+			S_BoostScale 2
+		end
+
+
+		Gyro
+		Armor 2
+		Mass -1
+
+		Engine 7
+		HighPerformance
+		Armor 2
+		Mass -1
+
+		STC MAC-4
+		mass -3
+
+		HeavyActuator 2
+		mass -1
+
+		ArcJet 3
+
+		ECM 6
+	end
+	inv
+		BodyArmor 6
+		Mass -8
+		sub
+			ArcJet 3
+		end
+	end
+
+Arm
+	Name <Right Arm>
+	Size 6
+	Armor 5
+	Mass -7
+	sub
+		Hand
+		Name <Right Hand>
+		inv
+			Melee 20
+			name <Bronze Axe>
+			desc <This replica axe has a bronze finish instead of the original gold.>
+			Acc 2
+			type <Extend Armorpiercing Haywire>
+			Mass -14
+		end
+
+		Mount
+		Name <Right Arm Mount>
+		inv
+			STC LAS-10
+			name <Monster Slayer>
+			Range 5
+			type <Armorpiercing>
+		end
+
+		HeavyActuator 3
+		mass -2
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		ArmArmor 5
+		Mass -6
+		sub
+			MLauncher 3
+			sub
+				STC ICM-5
+				magazine 6
+			end
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	Size 6
+	Armor 5
+	Mass -7
+	sub
+		Hand
+		Name <Left Hand>
+
+		Mount
+		Name <Left Arm Mount>
+
+		HeavyActuator 3
+		mass -2
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		ArmArmor 5
+		Mass -6
+		sub
+			MLauncher 3
+			sub
+				STC ICM-5
+				magazine 6
+			end
+		end
+
+		EShield 5
+		DefBonus 2
+		name <Fire Shield>
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 7
+	Mass -8
+	sub
+		Mount
+		Name <Right Leg Mount>
+		inv
+			MLauncher 10
+			sub
+				STC SWM-5
+				type <SWARM ARMORPIERCING>
+				Magazine 20
+			end
+		end
+
+		ArcJet 7
+	end
+	inv
+		LegArmor 5
+		Mass -5
+		sub
+			ArcJet 3
+		end
+	end
+
+Leg
+	Name <Left Leg>
+	Armor 7
+	Mass -8
+	sub
+		Mount
+		Name <Left Leg Mount>
+		inv
+			MLauncher 10
+			sub
+				STC SWM-5
+				type <SWARM ARMORPIERCING>
+				Magazine 20
+			end
+		end
+
+		ArcJet 7
+	end
+	inv
+		LegArmor 5
+		Mass -5
+		sub
+			ArcJet 3
+		end
+	end
+end
+
+
+
+Battroid 7
+Name <Savin>
+Desig <RIG-04 Fortress>
+SDL_Sprite <btr_savin.png>
+SDL_Portrait <item_savin.png>
+Desc <Maquise Spinner's premier mecha suit. The Fortress Savin is a long range sniper.>
+TYPE <GROUND SPACE INSIDE>
+FACTIONS <COMET L5LAW>
+ROLE_COMET <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_L5LAW <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+
+Sub
+Head
+	Armor 5
+	Size 5
+	Mass -5
+	sub
+		Sensor 6
+		mass -1
+
+		STC VC-5
+		Type <INTERCEPT>
+		Name <Vulcan Interceptor>
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		HeadArmor 5
+		Mass -6
+	end
+
+Torso
+	Armor 7
+	Mass -7
+	sub
+		Sensor 1
+
+		CPit
+		Armor 2
+		Mass -1
+
+		Computer 6
+		mass -6
+		sub
+			Software 2
+			name <Comet Target Control>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 2
+			name <Comet Maneuver Control>
+			S_MVBoost
+			S_BoostScale 2
+
+			Software 1
+			name <Oracle Target Aid>
+			S_SpeedComp
+			S_BoostScale 2
+
+		end
+
+
+		Gyro
+		Armor 2
+		Mass -1
+
+		Engine 7
+		Armor 2
+		Mass -1
+
+		STC LAS-5
+		mass -3
+		range 5
+
+		STC LAS-5
+		mass -3
+		range 5
+
+		ArcJet 3
+
+		ECM 5
+	end
+	inv
+		BodyArmor 8
+		Mass -9
+		sub
+			MLauncher 4
+			sub
+				STC GM-10
+				Magazine 4
+			end
+		end
+	end
+
+Arm
+	Name <Right Arm>
+	Size 6
+	Armor 5
+	Mass -6
+	sub
+		Hand
+		Name <Right Hand>
+		inv
+			Melee 10
+			Name <Ion Sabre>
+			Acc 1
+			speed 3
+			Type <ARMORPIERCING OVERLOAD>
+			Mass -5
+		end
+
+		Mount
+		Name <Right Arm Mount>
+		inv
+			STC GR-24
+			desig <FS-01>
+			mass -14
+			Recharge 2
+		end
+
+		ArcJet 3
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		ArmArmor 5
+		Mass -6
+		sub
+			STC PAR-2
+			Integral
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	Size 6
+	Armor 5
+	Mass -6
+	sub
+		Hand
+		Name <Left Hand>
+
+		Mount
+		Name <Left Arm Mount>
+
+		ArcJet 3
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		ArmArmor 5
+		Mass -6
+		sub
+			STC PAR-2
+			Integral
+		end
+
+		Shield 4
+		name <Body Shield>
+		DefBonus 2
+		Mass -4
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 7
+	Mass -7
+	sub
+		Mount
+		Name <Right Leg Mount>
+		inv
+			MLauncher 8
+			sub
+				STC SWM-2
+				Magazine 40
+			end
+		end
+
+		ArcJet 7
+	end
+	inv
+		LegArmor 5
+		Mass -6
+		sub
+			ArcJet 3
+		end
+	end
+
+Leg
+	Name <Left Leg>
+	Armor 7
+	Mass -7
+	sub
+		Mount
+		Name <Left Leg Mount>
+		inv
+			MLauncher 8
+			sub
+				STC SWM-2
+				Magazine 40
+			end
+		end
+
+		ArcJet 7
+	end
+	inv
+		LegArmor 5
+		Mass -6
+		sub
+			ArcJet 3
+		end
+	end
+end
+
+Battroid 7
+Name <Savin>
+Desig <RIG-05 Dragon>
+SDL_Sprite <btr_savin.png>
+SDL_Portrait <item_savin.png>
+Desc <Maquise Spinner's premier mecha suit. The Dragon Savin is a short range assault platform.>
+TYPE <GROUND SPACE INSIDE>
+FACTIONS <COMET PDASS>
+ROLE_COMET <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+
+Sub
+Head
+	Armor 5
+	Size 5
+	Mass -5
+	sub
+		Sensor 6
+		mass -1
+
+		STC VC-5
+		Type <INTERCEPT>
+		Name <Vulcan Interceptor>
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		HeadArmor 5
+		Mass -6
+	end
+
+Torso
+	Armor 7
+	Mass -7
+	sub
+		Sensor 1
+
+		CPit
+		Armor 2
+		Mass -1
+
+		Computer 6
+		mass -6
+		sub
+			Software 2
+			name <Comet Target Control>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 2
+			name <Comet Maneuver Control>
+			S_MVBoost
+			S_BoostScale 2
+
+			Software 1
+			name <Oracle Target Aid>
+			S_SpeedComp
+			S_BoostScale 2
+		end
+
+
+		Gyro
+		Armor 2
+		Mass -1
+
+		Engine 7
+		Armor 2
+		Mass -1
+
+		STC LAS-5
+		mass -3
+		range 5
+
+		STC LAS-5
+		mass -3
+		range 5
+
+		ArcJet 3
+
+		ECM 5
+	end
+	inv
+		BodyArmor 8
+		Mass -9
+		sub
+			ArcJet 4
+		end
+	end
+
+Arm
+	Name <Right Arm>
+	Size 6
+	Armor 5
+	Mass -6
+	sub
+		Hand
+		Name <Right Hand>
+		inv
+			EMelee 12
+			Name <Double Lance>
+			Type <EXTEND>
+			UsesReflexes
+			Mass 4
+		end
+
+		Mount
+		Name <Right Arm Mount>
+		inv
+			Melee 4
+			Name <Dragon Fang>
+			Mass -3
+			type <ARMORPIERCING BURN>
+			Speed 1
+		end
+
+		ArcJet 3
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		ArmArmor 6
+		Mass -7
+		sub
+			STC MAC-2
+			Mass -3
+			range 6
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	Size 6
+	Armor 5
+	Mass -6
+	sub
+		Hand
+		Name <Left Hand>
+		inv
+			EMelee 15
+			Name <Dragon Sword>
+			UsesReflexes
+			Type <OVERLOAD>
+			Acc 1
+		end
+
+		Mount
+		Name <Left Arm Mount>
+		inv
+			Melee 4
+			Name <Dragon Fang>
+			Mass -3
+			type <ARMORPIERCING BURN>
+			Speed 1
+		end
+
+		ArcJet 3
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		ArmArmor 6
+		Mass -7
+		sub
+			STC MAC-2
+			Mass -3
+			range 6
+		end
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 7
+	Mass -7
+	sub
+		Mount
+		Name <Right Leg Mount>
+		inv
+			Gun 13
+			name <Fire Mortar>
+			caliber <Chemical>
+			desig <DS-02>
+			range 5
+			Speed 1
+			type <BLAST 2>
+			mass -6
+			Magazine 15
+			sub
+				Ammo 13
+				caliber <Chemical>
+				type <BURN>
+			end
+		end
+
+		ArcJet 7
+	end
+	inv
+		LegArmor 6
+		Mass -7
+		sub
+			ArcJet 3
+		end
+	end
+
+Leg
+	Name <Left Leg>
+	Armor 7
+	Mass -7
+	sub
+		Mount
+		Name <Left Leg Mount>
+		inv
+			Gun 13
+			name <Fire Mortar>
+			caliber <Chemical>
+			desig <DS-02>
+			range 5
+			Speed 1
+			type <BLAST 2>
+			mass -6
+			Magazine 15
+			sub
+				Ammo 13
+				caliber <Chemical>
+				type <BURN>
+			end
+		end
+
+		ArcJet 7
+	end
+	inv
+		LegArmor 6
+		Mass -7
+		sub
+			ArcJet 3
+		end
+	end
+end
+
+
+
+

@@ -1,0 +1,522 @@
+%%
+%% City missions are given by civil servants. They can be politicians, police
+%% officers, military, or anything else.
+%%
+
+Plot
+	name <CITY: Whar be it SR-71 Blackbird to?>
+	% There's a recon airplane and a Wurzels reference in town, and they
+	% both have to be destroyed.
+	requires <*GENERAL -!Ne -!Lo Capitol>
+	PayRate 250
+
+	% E1 is the town itself
+	% E2 is a character who will offer the mission
+	% E3 is a scene where the encounter will take place
+	% E4 is the enemy faction
+	Element1 <Scene Town>
+	Element2 <Character (HasMecha|POLIT) !Ally 1 RECHARGED>
+	Element3 <Scene Environs>
+	Element4 <Faction !Enemy 1 !Xclude 2>
+
+	% SubPlot1 is the combat encounter
+	SubPlot1 <*MECHAMISSION_Capture 2 3 4>
+
+	% P1 = Time Limit
+	% P2 = Email Indicator
+	start <if= PlotStatus %plotid% 0 ifNPCOK %2% else GoDelete ifG ComTime P1 EndPlot>
+	GoDelete <EndPlot>
+	update <if= PlotStatus %plotid% 0 if= P1 0 P= 1 ComTime P+ 1 86400>
+
+	% Insert email here
+	5min <if= PlotStatus %plotid% 0 if= RootSceneID %1% if= P2 0  if= PCFac NPCFac %2%  if= d4 1  ifG PCCharm d40  Email 1 P= 2 1>
+	Msg1   <%name2%@ \SCENE NPCSCene %2% :// \RANK \PC , report to \EXACT_SCENE EScene 2 for a mission.>
+	Msg1_1 <%name2%@ \SCENE NPCSCene %2% :// There are enemies nearby. Your services are required.>
+	Msg1_2 <%name2%@ \SCENE NPCSCene %2% :// %name1% needs your help. Give me a call for the mission details.>
+	Msg1_3 <%name2%@ \SCENE NPCSCene %2% :// This is a matter of grave importance to %name1%. Call me as soon as possible.>
+
+	sub
+		Persona 2
+		rumor0 <%name2% needs a cavalier for a secret mission.>
+		greeting <if= PlotStatus %plotid% %id1% else GoCheckOffer Goto GoRemind>
+		*GoRemind <*MechaMissionReminder %3%>
+		GoCheckOffer <if# PlotStatus %plotid% 0 else GoCheckEnemy NewChat SayAnything>
+		*GoCheckEnemy <*ENEMY_CHECK GoCheckEmail ChatNPCFac GoEnd>
+		GoCheckEmail <if= P2 1 else GoCheckMember Goto GoGotEmail>
+		*GoGotEmail <*DidYouGetEmail GoMissionBriefing>
+		GoCheckMember <if= PCFac ChatNPCFac else GoCheckAuto  Goto GoIsMember>
+		*GoIsMember <*IHaveAJobForYou GoMissionBriefing>
+		*GoCheckAuto <*AutoMissionTest&Mecha GoMissionBriefing GoRejectMission GoCheckSkill ChatNPCFac %4%>
+		*GoCheckSkill <*GenericMissionTest&Mecha  GoMissionBriefing GoEnd GoRejectMission ChatNPCFac %4% %threat%>
+		*GoRejectMission <*RejectMission GoEnd>
+		GoEnd <EndPlot>
+		GoMissionBriefing <NewChat Say 1  AddChat 1 AddChat 2>
+		*result1 <*GoodLuckOnMission&NoEnemyFac GoR1Final ChatNPCFac na>
+		GoR1Final <Memo 2 SetPlotStatus %plotid% %id1%>
+		result2 <Goto GoRejectMission>
+		Msg1 <Something odd has been detected in \EXACT_SCENE %3% ; we believe it's an observation vessel sent by %name4%. Capture it for %name1% and you'll earn $ \VAL Reward %threat% PayRate plus salvage.>
+		Msg1_1 <>
+		CMsg1_1 <ifNPCSociable Accept>
+		Msg1_2 <>
+		CMsg1_2 <ifNPCShy Accept>
+		Msg1_3 <>
+		CMsg1_3 <ifNPCEasygoing Accept>
+		Msg1_4 <>
+		CMsg1_4 <ifNPCPassionate Accept>
+		Msg1_5 <>
+		CMsg1_5 <ifNPCCheerful Accept>
+		Msg1_6 <>
+		CMsg1_6 <ifNPCMelancholy Accept>
+		Msg2 <%name2% in \SCENE NPCScene %2% hired you to intercept a espionage team sent by %name4%.>
+		Prompt1 <Okay, I'll do it.>
+		Prompt1_1 <Alright, I'll be back when I'm finished.>
+		Prompt1_2 <Don't worry, they won't get away.>
+		Prompt2 <You'll have to find someone else for this mission.>
+		CPrompt2 <if# PCFac ChatNPCFac Accept>
+		Prompt2_1 <This sounds way too clandestine for me.>
+		Prompt2_2 <Sorry, I don't want to get involved.>
+	end
+
+Plot
+	name <CITY: Anti-CHUD Duty>
+	% A basic fight against some generic enemy mecha in a cave.
+	% This job gives salvage. This job will not result in the PC making
+	% any enemies.
+	requires <*GENERAL Mine>
+	PayRate 105
+
+	% E1 is the town itself
+	% E2 is a character who will offer the mission
+	% E3 is a scene where the encounter will take place
+	Element1 <Scene Town>
+	Element2 <Character (HasMecha|POLIT) !Ally 1 RECHARGED>
+	Element3 <Scene Environs>
+
+	% SubPlot1 is the combat encounter
+	SubPlot1 <*MECHACAVE_Basic 2 3>
+
+	% P1 = Time Limit
+	% P2 = Email Indicator
+	start <if= PlotStatus %plotid% 0 ifNPCOK %2% else GoDelete ifG ComTime P1 EndPlot>
+	GoDelete <EndPlot>
+	update <if= PlotStatus %plotid% 0 if= P1 0 P= 1 ComTime P+ 1 86400>
+
+	% Insert email here
+	5min <if= PlotStatus %plotid% 0 if= RootSceneID %1% if= P2 0  if= PCFac NPCFac %2%  if= d4 1  ifG PCCharm d40  Email 1 P= 2 1>
+	Msg1   <%name2%@ \EXACT_SCENE NPCSCene %2% :// Hey \RANK , I've got a mission for you in %name1%.>
+	Msg1_1 <%name2%@ \EXACT_SCENE NPCSCene %2% :// Report to \EXACT_SCENE EScene 2 for a mission at once.>
+	Msg1_2 <%name2%@ \EXACT_SCENE NPCSCene %2% :// Your services are required by \FACTION NPCFac E2 . Come see me for mission briefing.>
+	Msg1_3 <%name2%@ \EXACT_SCENE NPCSCene %2% :// I've got a mission for you. Come to \EXACT_SCENE ESCene 2 for the briefing.>
+
+	sub
+		Persona 2
+		rumor0 <%name2% needs a mecha pilot to ferret out some bandits.>
+		greeting <if= PlotStatus %plotid% %id1% else GoCheckOffer Goto GoRemind>
+		*GoRemind <*MechaMissionReminder %3%>
+		GoCheckOffer <if# PlotStatus %plotid% 0 else GoCheckEnemy NewChat SayAnything>
+		*GoCheckEnemy <*ENEMY_CHECK GoCheckEmail ChatNPCFac GoEnd>
+		GoCheckEmail <if= P2 1 else GoCheckMember Goto GoGotEmail>
+		*GoGotEmail <*DidYouGetEmail GoMissionBriefing>
+		GoCheckMember <if= PCFac ChatNPCFac else GoCheckAuto  Goto GoIsMember>
+		*GoIsMember <*IHaveAJobForYou GoMissionBriefing>
+		*GoCheckAuto <*AutoMissionTest&Mecha GoMissionBriefing GoRejectMission GoCheckSkill ChatNPCFac na>
+		*GoCheckSkill <*GenericMissionTest&Mecha  GoMissionBriefing GoEnd GoRejectMission ChatNPCFac na %threat%>
+		*GoRejectMission <*RejectMission GoEnd>
+		GoEnd <EndPlot>
+		GoMissionBriefing <NewChat Say 1  AddChat 1 AddChat 2>
+		*result1 <*GoodLuckOnMission&NoEnemyFac GoR1Final ChatNPCFac na>
+		GoR1Final <Memo 2 SetPlotStatus %plotid% %id1%>
+		result2 <Goto GoRejectMission>
+		Msg1 <A gang of bandits has set up camp in an abandoned mine in \EXACT_SCENE %3% . Defeat them and you'll get $ \VAL Reward %threat% PayRate plus salvage.>
+		Msg1_1 <>
+		CMsg1_1 <ifNPCSociable Accept>
+		Msg1_2 <>
+		CMsg1_2 <ifNPCShy Accept>
+		Msg1_3 <>
+		CMsg1_3 <ifNPCEasygoing Accept>
+		Msg1_4 <>
+		CMsg1_4 <ifNPCPassionate Accept>
+		Msg1_5 <>
+		CMsg1_5 <ifNPCCheerful Accept>
+		Msg1_6 <>
+		CMsg1_6 <ifNPCMelancholy Accept>
+		Msg2 <\ELEMENT 2 in \SCENE NPCScene %2% hired you to drive some bandits from an abandoned mine in \EXACT_SCENE %3% .>
+		Prompt1 <Sounds good. I'll do it.>
+		Prompt1_1 <Alright, I'll do it.>
+		Prompt1_2 <I'll get to work immediately.>
+		Prompt2 <Sorry, I don't want this job.>
+		CPrompt2 <if# PCFac ChatNPCFac Accept>
+		Prompt2_1 <On second thought, I don't want this job.>
+		Prompt2_2 <Really, I don't want to do this.>
+	end
+
+Plot
+	name <CITY: Defend Our Produce>
+	% It's a cuisine city. Go protect the incoming veggies.
+	requires <*GENERAL cuisine -!Ne>
+	PayRate 175
+
+	% E1 is the town itself
+	% E2 is a character who will offer the mission
+	% E3 is a scene where the encounter will take place
+	% E4 is E2's faction
+	Element1 <Scene Town>
+	Element2 <Character (HasMecha|POLIT) !Ally 1 RECHARGED>
+	Element3 <Scene Environs>
+	Element4 <Faction !Comrade 2>
+
+	% SubPlot1 is the combat encounter
+	SubPlot1 <*MECHAMISSION_Escort 2 3 4>
+
+	% P1 = Time Limit
+	% P2 = Email Indicator
+	start <if= PlotStatus %plotid% 0 ifNPCOK %2% else GoDelete ifG ComTime P1 EndPlot>
+	GoDelete <EndPlot>
+	update <if= PlotStatus %plotid% 0 if= P1 0 P= 1 ComTime P+ 1 86400>
+
+	% Insert email here
+	5min <if= PlotStatus %plotid% 0 if= RootSceneID %1% if= P2 0  if= PCFac %4%  if= d4 1  ifG PCCharm d40  Email 1 P= 2 1>
+	Msg1   <%name2%@ \EXACT_SCENE NPCSCene %2% :// \RANK \PC , you have work to do in %name1%. Call me for the briefing.>
+	Msg1_1 <%name2%@ \EXACT_SCENE NPCSCene %2% :// Report to \EXACT_SCENE EScene 2 for a mission.>
+	Msg1_2 <%name2%@ \EXACT_SCENE NPCSCene %2% :// Hey \PC , I have a mission for you. Our veggies are on the line!>
+	Msg1_3 <%name2%@ \EXACT_SCENE NPCSCene %2% :// I've got a mission for you. This is of vital importance to %name1%.>
+	Msg1_4 <%name2%@ \EXACT_SCENE NPCSCene %2% :// %name1% needs you, \RANK \PC . Call me for the briefing.>
+
+	sub
+		Persona 2
+		rumor0 <%name2% needs a pilot to defend our produce.>
+		greeting <if= PlotStatus %plotid% %id1% else GoCheckOffer Goto GoRemind>
+		*GoRemind <*MechaMissionReminder %3%>
+		GoCheckOffer <if# PlotStatus %plotid% 0 else GoCheckEnemy NewChat SayAnything>
+		*GoCheckEnemy <*ENEMY_CHECK GoCheckEmail ChatNPCFac GoEnd>
+		GoCheckEmail <if= P2 1 else GoCheckMember Goto GoGotEmail>
+		*GoGotEmail <*DidYouGetEmail GoMissionBriefing>
+		GoCheckMember <if= PCFac ChatNPCFac else GoCheckAuto  Goto GoIsMember>
+		*GoIsMember <*IHaveAJobForYou GoMissionBriefing>
+		*GoCheckAuto <*AutoMissionTest&Mecha GoMissionBriefing GoRejectMission GoCheckSkill ChatNPCFac na>
+		*GoCheckSkill <*GenericMissionTest&Mecha  GoMissionBriefing GoEnd GoRejectMission ChatNPCFac na %threat%>
+		*GoRejectMission <*RejectMission GoEnd>
+		GoEnd <EndPlot>
+		GoMissionBriefing <NewChat Say 1  AddChat 1 AddChat 2>
+		*result1 <*GoodLuckOnMission&NoEnemyFac GoR1Final ChatNPCFac na>
+		GoR1Final <Memo 2 SetPlotStatus %plotid% %id1%>
+		result2 <Goto GoRejectMission>
+		Msg1 <There's a big shipment of produce coming through \EXACT_SCENE %3% soon. I need you to go defend it... This mission pays $ \VAL Reward %threat% PayRate plus salvage.>
+		Msg1_1 <Everybody likes fresh food, right? It's what %name1% is famous for. I need you to defend a shipment of produce coming in through \EXACT_SCENE %3% . Succeed and you'll get $ \VAL Reward %threat% PayRate plus full salvage rights.>
+		CMsg1_1 <ifNPCSociable Accept>
+		Msg1_2 <Your mission is to defend a produce shipment coming in through \EXACT_SCENE %3% . You'll earn $ \VAL Reward %threat% PayRate plus salvage.>
+		CMsg1_2 <ifNPCShy Accept>
+		Msg1_3 <Your mission, should you choose to accept it, is to go babysit some zucchinis. There's a shipment coming through \EXACT_SCENE %3% today. Make sure it gets here, and you'll earn $ \VAL Reward %threat% PayRate plus salvage.>
+		CMsg1_3 <ifNPCEasygoing Accept>
+		Msg1_4 <Only the freshest produce will do for %name1%! That's why everyone wants to steal it... There's a shipment coming through \EXACT_SCENE %3% that I want you to guard. This mission pays $ \VAL Reward %threat% PayRate and salvage.>
+		CMsg1_4 <ifNPCPassionate Accept>
+		Msg1_5 <Who doesn't love fresh produce? I want you to guard today's shipment in \EXACT_SCENE %3% . Complete the mission and you get $ \VAL Reward %threat% PayRate plus salvage.>
+		CMsg1_5 <ifNPCCheerful Accept>
+		Msg1_6 <Last week a shipment of produce got hijacked and we had to use synthetic lettuce for a week. It was ghastly. Ensure that the next convoy makes it through \EXACT_SCENE %3% and you'll earn $ \VAL Reward %threat% PayRate plus salvage.>
+		CMsg1_6 <ifNPCMelancholy Accept>
+		Msg2 <\ELEMENT 2 in \SCENE NPCScene %2% hired you to escort a convoy in \EXACT_SCENE %3% .>
+		Prompt1 <I'll be back when I'm finished.>
+		Prompt1_1 <Alright, I'll do it.>
+		Prompt1_2 <No problem.>
+		Prompt2 <Sorry, I'd really rather not.>
+		CPrompt2 <if# PCFac ChatNPCFac Accept>
+		Prompt2_1 <No way. I don't do escort missions.>
+		Prompt2_2 <This isn't my kind of work.>
+	end
+
+Plot
+	name <CITY: Shipping Lanes Job>
+	% It's a trade hub city. Go defend a convoy from someone or another.
+	requires <*GENERAL tradehub -!Ne>
+	PayRate 175
+
+	% E1 is the town itself
+	% E2 is a character who will offer the mission
+	% E3 is a scene where the encounter will take place
+	% E4 is E2's faction
+	Element1 <Scene Town>
+	Element2 <Character (HasMecha|POLIT) !Ally 1 RECHARGED>
+	Element3 <Scene Environs>
+	Element4 <Faction !Comrade 2>
+
+	% SubPlot1 is the combat encounter
+	SubPlot1 <*MECHAMISSION_Escort 2 3 4>
+
+	% P1 = Time Limit
+	% P2 = Email Indicator
+	start <if= PlotStatus %plotid% 0 ifNPCOK %2% else GoDelete ifG ComTime P1 EndPlot>
+	GoDelete <EndPlot>
+	update <if= PlotStatus %plotid% 0 if= P1 0 P= 1 ComTime P+ 1 86400>
+
+	% Insert email here
+	5min <if= PlotStatus %plotid% 0 if= RootSceneID %1% if= P2 0  if= PCFac %4%  if= d4 1  ifG PCCharm d40  Email 1 P= 2 1>
+	Msg1   <%name2%@ \EXACT_SCENE NPCSCene %2% :// \RANK \PC , I've got a mission for you in %name1%.>
+	Msg1_1 <%name2%@ \EXACT_SCENE NPCSCene %2% :// Report to \EXACT_SCENE EScene 2 for a mission.>
+	Msg1_2 <%name2%@ \EXACT_SCENE NPCSCene %2% :// Hey \PC , I know how much you love driving around! Have I got a job for you...>
+	Msg1_3 <%name2%@ \EXACT_SCENE NPCSCene %2% :// You've got a mission for %name4%. Come to \EXACT_SCENE ESCene 2 and I'll fill you in.>
+	Msg1_4 <%name2%@ \EXACT_SCENE NPCSCene %2% :// %name1% needs you, \RANK \PC . Come see me for the details.>
+
+	sub
+		Persona 2
+		rumor0 <%name2% needs a pilot to defend the shipping lanes.>
+		greeting <if= PlotStatus %plotid% %id1% else GoCheckOffer Goto GoRemind>
+		*GoRemind <*MechaMissionReminder %3%>
+		GoCheckOffer <if# PlotStatus %plotid% 0 else GoCheckEnemy NewChat SayAnything>
+		*GoCheckEnemy <*ENEMY_CHECK GoCheckEmail ChatNPCFac GoEnd>
+		GoCheckEmail <if= P2 1 else GoCheckMember Goto GoGotEmail>
+		*GoGotEmail <*DidYouGetEmail GoMissionBriefing>
+		GoCheckMember <if= PCFac ChatNPCFac else GoCheckAuto  Goto GoIsMember>
+		*GoIsMember <*IHaveAJobForYou GoMissionBriefing>
+		*GoCheckAuto <*AutoMissionTest&Mecha GoMissionBriefing GoRejectMission GoCheckSkill ChatNPCFac na>
+		*GoCheckSkill <*GenericMissionTest&Mecha  GoMissionBriefing GoEnd GoRejectMission ChatNPCFac na %threat%>
+		*GoRejectMission <*RejectMission GoEnd>
+		GoEnd <EndPlot>
+		GoMissionBriefing <NewChat Say 1  AddChat 1 AddChat 2>
+		*result1 <*GoodLuckOnMission&NoEnemyFac GoR1Final ChatNPCFac na>
+		GoR1Final <Memo 2 SetPlotStatus %plotid% %id1%>
+		result2 <Goto GoRejectMission>
+		Msg1 <There have been some attacks against the trade route in \EXACT_SCENE %3% recently. A convoy is moving out today and I want you to guard it. Do this and you'll earn $ \VAL Reward %threat% PayRate plus salvage.>
+		Msg1_1 <>
+		CMsg1_1 <ifNPCSociable Accept>
+		Msg1_2 <>
+		CMsg1_2 <ifNPCShy Accept>
+		Msg1_3 <>
+		CMsg1_3 <ifNPCEasygoing Accept>
+		Msg1_4 <>
+		CMsg1_4 <ifNPCPassionate Accept>
+		Msg1_5 <>
+		CMsg1_5 <ifNPCCheerful Accept>
+		Msg1_6 <>
+		CMsg1_6 <ifNPCMelancholy Accept>
+		Msg2 <\ELEMENT 2 in \SCENE NPCScene %2% hired you to escort a convoy in \EXACT_SCENE %3% .>
+		Prompt1 <I can do that.>
+		Prompt1_1 <Alright, I'll do it.>
+		Prompt1_2 <No problem.>
+		Prompt2 <Sorry, I don't do escort duty.>
+		CPrompt2 <if# PCFac ChatNPCFac Accept>
+		Prompt2_1 <You'll need to find a different pilot for this.>
+		Prompt2_2 <This isn't my kind of job.>
+	end
+
+Plot
+	name <CITY: Industrial Defense Job>
+	% It's an industrial city. Go defend a factory from someone or another.
+	requires <*GENERAL industrial -!Ne>
+	PayRate 175
+
+	% E1 is the town itself
+	% E2 is a character who will offer the mission
+	% E3 is a scene where the encounter will take place
+	% E4 is E2's faction
+	Element1 <Scene Town>
+	Element2 <Character (HasMecha|POLIT) !Ally 1 RECHARGED>
+	Element3 <Scene Urban>
+	Element4 <Faction !Comrade 2>
+
+	% SubPlot1 is the combat encounter
+	SubPlot1 <*MECHAMISSION_Defense 2 3 4>
+
+	% P1 = Time Limit
+	% P2 = Email Indicator
+	start <if= PlotStatus %plotid% 0 ifNPCOK %2% else GoDelete ifG ComTime P1 EndPlot>
+	GoDelete <EndPlot>
+	update <if= PlotStatus %plotid% 0 if= P1 0 P= 1 ComTime P+ 1 86400>
+
+	% Insert email here
+	5min <if= PlotStatus %plotid% 0 if= RootSceneID %1% if= P2 0  if= PCFac %4%  if= d4 1  ifG PCCharm d40  Email 1 P= 2 1>
+	Msg1   <%name2%@ \EXACT_SCENE NPCSCene %2% :// \RANK \PC , I've got a mission for you in %name1%.>
+	Msg1_1 <%name2%@ \EXACT_SCENE NPCSCene %2% :// Report to \EXACT_SCENE EScene 2 for a mission.>
+	Msg1_2 <%name2%@ \EXACT_SCENE NPCSCene %2% :// Hey \PC , I know how much you love guard duty! Give me a call.>
+	Msg1_3 <%name2%@ \EXACT_SCENE NPCSCene %2% :// You've got a mission for %name4%. Come to \EXACT_SCENE ESCene 2 and I'll tell you about it.>
+	Msg1_4 <%name2%@ \EXACT_SCENE NPCSCene %2% :// %name1% needs you, \RANK \PC . Come see me for the details.>
+
+	sub
+		Persona 2
+		rumor0 <%name2% needs a pilot for some guard duty.>
+		greeting <if= PlotStatus %plotid% %id1% else GoCheckOffer Goto GoRemind>
+		*GoRemind <*MechaMissionReminder %3%>
+		GoCheckOffer <if# PlotStatus %plotid% 0 else GoCheckEnemy NewChat SayAnything>
+		*GoCheckEnemy <*ENEMY_CHECK GoCheckEmail ChatNPCFac GoEnd>
+		GoCheckEmail <if= P2 1 else GoCheckMember Goto GoGotEmail>
+		*GoGotEmail <*DidYouGetEmail GoMissionBriefing>
+		GoCheckMember <if= PCFac ChatNPCFac else GoCheckAuto  Goto GoIsMember>
+		*GoIsMember <*IHaveAJobForYou GoMissionBriefing>
+		*GoCheckAuto <*AutoMissionTest&Mecha GoMissionBriefing GoRejectMission GoCheckSkill ChatNPCFac na>
+		*GoCheckSkill <*GenericMissionTest&Mecha  GoMissionBriefing GoEnd GoRejectMission ChatNPCFac na %threat%>
+		*GoRejectMission <*RejectMission GoEnd>
+		GoEnd <EndPlot>
+		GoMissionBriefing <NewChat Say 1  AddChat 1 AddChat 2>
+		*result1 <*GoodLuckOnMission&NoEnemyFac GoR1Final ChatNPCFac na>
+		GoR1Final <Memo 2 SetPlotStatus %plotid% %id1%>
+		result2 <Goto GoRejectMission>
+		Msg1 <Our recon division reports that there's going to be a factory attack in \EXACT_SCENE %3% . I want you to get over there and make sure it doesn't happen. Do this and you'll earn $ \VAL Reward %threat% PayRate plus salvage.>
+		Msg1_1 <Do you know what makes %name1% special? It's our industry. Someone is planning to attack a factory in \EXACT_SCENE %3% , and we want you to stop it. Do this and you'll earn $ \VAL Reward %threat% PayRate plus full salvage rights.>
+		CMsg1_1 <ifNPCSociable Accept>
+		Msg1_2 <I need you to guard a factory in \EXACT_SCENE %3% . You'll earn $ \VAL Reward %threat% PayRate plus salvage.>
+		CMsg1_2 <ifNPCShy Accept>
+		Msg1_3 <I just need you to watch a building and make sure nobody attacks it. It should be easy... I can offer you $ \VAL Reward %threat% PayRate plus salvage for your trouble.>
+		CMsg1_3 <ifNPCEasygoing Accept>
+		Msg1_4 <%name1% is a capital of industry, making it a prime target for our enemies! Your mission is to defend a factory. For this I can offer you $ \VAL Reward %threat% PayRate plus salvage.>
+		CMsg1_4 <ifNPCPassionate Accept>
+		Msg1_5 <%name1% has grown strong from our solar-class industry, and industry needs brave cavaliers to defend it. I want you to guard a factory in \EXACT_SCENE %3% . You'll get $ \VAL Reward %threat% PayRate and salvage.>
+		CMsg1_5 <ifNPCCheerful Accept>
+		Msg1_6 <Recently, several of our factories have been destroyed by mecha attacks. Another attack is immanent. I need you to defend this installation in \EXACT_SCENE %3% . You'll earn $ \VAL Reward %threat% PayRate plus salvage.>
+		CMsg1_6 <ifNPCMelancholy Accept>
+		Msg2 <\ELEMENT 2 in \SCENE NPCScene %2% hired you to defend a factory in \EXACT_SCENE %3% .>
+		Prompt1 <Sounds easy enough. I'll do it.>
+		Prompt1_1 <Okay, I'll do it.>
+		Prompt1_2 <I'll be back when I'm finished.>
+		Prompt2 <No way, I don't do guard duty.>
+		CPrompt2 <if# PCFac ChatNPCFac Accept>
+		Prompt2_1 <Sorry, but I don't want this job.>
+		Prompt2_2 <Really, this isn't my kind of job.>
+	end
+
+Plot
+	name <Basic City Patrol Job>
+	% The basic patrol job is a fight against some generic enemy mecha.
+	% This job gives salvage. This job will not result in the PC making
+	% any enemies.
+	requires <*GENERAL>
+	PayRate 100
+
+	% E1 is the town itself
+	% E2 is a character who will offer the mission
+	% E3 is a scene where the encounter will take place
+	Element1 <Scene Town>
+	Element2 <Character (HasMecha|POLIT) !Ally 1 RECHARGED>
+	Element3 <Scene Environs>
+
+	% SubPlot1 is the combat encounter
+	SubPlot1 <*MECHAMISSION_Basic 2 3>
+
+	% P1 = Time Limit
+	% P2 = Email Indicator
+	start <if= PlotStatus %plotid% 0 ifNPCOK %2% else GoDelete ifG ComTime P1 EndPlot>
+	GoDelete <EndPlot>
+	update <if= PlotStatus %plotid% 0 if= P1 0 P= 1 ComTime P+ 1 86400>
+
+	% Insert email here
+	5min <if= PlotStatus %plotid% 0 if= RootSceneID %1% if= P2 0  if= PCFac NPCFac %2%  if= d4 1  ifG PCCharm d40  Email 1 P= 2 1>
+	Msg1   <%name2%@ \EXACT_SCENE NPCSCene %2% :// Hey \RANK , I've got a mission for you in %name1%.>
+	Msg1_1 <%name2%@ \EXACT_SCENE NPCSCene %2% :// Report to \EXACT_SCENE EScene 2 for a mission at once.>
+	Msg1_2 <%name2%@ \EXACT_SCENE NPCSCene %2% :// Your services are required by \FACTION NPCFac E2 . Come see me for mission briefing.>
+	Msg1_3 <%name2%@ \EXACT_SCENE NPCSCene %2% :// I've got a mission for you. Come to \EXACT_SCENE ESCene 2 for the briefing.>
+
+	sub
+		Persona 2
+		rumor0 <%name2% needs a mecha pilot to intercept an enemy patrol.>
+		greeting <if= PlotStatus %plotid% %id1% else GoCheckOffer Goto GoRemind>
+		*GoRemind <*MechaMissionReminder %3%>
+		GoCheckOffer <if# PlotStatus %plotid% 0 else GoCheckEnemy NewChat SayAnything>
+		*GoCheckEnemy <*ENEMY_CHECK GoCheckEmail ChatNPCFac GoEnd>
+		GoCheckEmail <if= P2 1 else GoCheckMember Goto GoGotEmail>
+		*GoGotEmail <*DidYouGetEmail GoMissionBriefing>
+		GoCheckMember <if= PCFac ChatNPCFac else GoCheckAuto  Goto GoIsMember>
+		*GoIsMember <*IHaveAJobForYou GoMissionBriefing>
+		*GoCheckAuto <*AutoMissionTest&Mecha GoMissionBriefing GoRejectMission GoCheckSkill ChatNPCFac na>
+		*GoCheckSkill <*GenericMissionTest&Mecha  GoMissionBriefing GoEnd GoRejectMission ChatNPCFac na %threat%>
+		*GoRejectMission <*RejectMission GoEnd>
+		GoEnd <EndPlot>
+		GoMissionBriefing <NewChat Say 1  AddChat 1 AddChat 2>
+		*result1 <*GoodLuckOnMission&NoEnemyFac GoR1Final ChatNPCFac na>
+		GoR1Final <Memo 2 SetPlotStatus %plotid% %id1%>
+		result2 <Goto GoRejectMission>
+		Msg1 <A lance of unauthorized mecha has been spotted in \EXACT_SCENE %3% . Defeat them and you'll get $ \VAL Reward %threat% PayRate plus salvage.>
+		Msg1_1 <>
+		CMsg1_1 <ifNPCSociable Accept>
+		Msg1_2 <>
+		CMsg1_2 <ifNPCShy Accept>
+		Msg1_3 <>
+		CMsg1_3 <ifNPCEasygoing Accept>
+		Msg1_4 <>
+		CMsg1_4 <ifNPCPassionate Accept>
+		Msg1_5 <>
+		CMsg1_5 <ifNPCCheerful Accept>
+		Msg1_6 <>
+		CMsg1_6 <ifNPCMelancholy Accept>
+		Msg2 <\ELEMENT 2 in \SCENE NPCScene %2% hired you to fight some unauthorized mecha in \EXACT_SCENE %3% .>
+		Prompt1 <Sounds good. I'll do it.>
+		Prompt1_1 <Alright, I'll do it.>
+		Prompt1_2 <I'll get to work immediately.>
+		Prompt2 <Sorry, I don't want this job.>
+		CPrompt2 <if# PCFac ChatNPCFac Accept>
+		Prompt2_1 <On second thought, I don't want this job.>
+		Prompt2_2 <Really, I don't want to do this.>
+	end
+
+
+Plot
+	name <Versus City Patrol Job>
+	% The basic patrol job is a fight against some generic enemy mecha.
+	% This job gives salvage.
+	requires <*GENERAL -!Ne -SAFE>
+	PayRate 150
+
+	% E1 is the town itself
+	% E2 is a character who will offer the mission
+	% E3 is a scene where the encounter will take place
+	% E4 is the enemy faction
+	Element1 <Scene Town>
+	Element2 <Character (HasMecha|POLIT) !Ally 1 RECHARGED>
+	Element3 <Scene Environs>
+	Element4 <Faction !Enemy 1 !Xclude 2>
+
+	% SubPlot1 is the combat encounter
+	SubPlot1 <*MECHAMISSION_Versus 2 3 4>
+
+	% P1 = Time Limit
+	% P2 = Email Indicator
+	start <if= PlotStatus %plotid% 0 ifNPCOK %2% else GoDelete ifG ComTime P1 EndPlot>
+	GoDelete <EndPlot>
+	update <if= PlotStatus %plotid% 0 if= P1 0 P= 1 ComTime P+ 1 86400>
+
+	% Insert email here
+	5min <if= PlotStatus %plotid% 0 if= RootSceneID %1% if= P2 0  if= PCFac NPCFac %2%  if= d4 1  ifG PCCharm d40  Email 1 P= 2 1>
+	Msg1   <%name2%@ \EXACT_SCENE NPCSCene %2% :// \RANK \PC , report to \SCENE EScene 2 for a mission.>
+	Msg1_1 <%name2%@ \EXACT_SCENE NPCSCene %2% :// I have a job for you at \SCENE EScene 2 .>
+	Msg1_2 <%name2%@ \EXACT_SCENE NPCSCene %2% :// %name1% needs your help. Come see me at \SCENE EScene 2 .>
+	Msg1_3 <%name2%@ \EXACT_SCENE NPCSCene %2% :// Call when you can; I've got a mission for you.>
+
+	sub
+		Persona 2
+		rumor0 <%name2% is looking for someone to drive %name4% out of town.>
+		greeting <if= PlotStatus %plotid% %id1% else GoCheckOffer Goto GoRemind>
+		*GoRemind <*MechaMissionReminder %3%>
+		GoCheckOffer <if# PlotStatus %plotid% 0 else GoCheckEnemy NewChat SayAnything>
+		*GoCheckEnemy <*ENEMY_CHECK GoCheckEmail ChatNPCFac GoEnd>
+		GoCheckEmail <if= P2 1 else GoCheckMember Goto GoGotEmail>
+		*GoGotEmail <*DidYouGetEmail GoMissionBriefing>
+		GoCheckMember <if= PCFac ChatNPCFac else GoCheckAuto  Goto GoIsMember>
+		*GoIsMember <*IHaveAJobForYou GoMissionBriefing>
+		*GoCheckAuto <*AutoMissionTest&Mecha GoMissionBriefing GoRejectMission GoCheckSkill ChatNPCFac %4%>
+		*GoCheckSkill <*GenericMissionTest&Mecha  GoMissionBriefing GoEnd GoRejectMission ChatNPCFac %4% %threat%>
+		*GoRejectMission <*RejectMission GoEnd>
+		GoEnd <EndPlot>
+		GoMissionBriefing <NewChat Say 1  AddChat 1 AddChat 2>
+		*result1 <*GoodLuckOnMission&NoEnemyFac GoR1Final ChatNPCFac na>
+		GoR1Final <Memo 2 SetPlotStatus %plotid% %id1%>
+		result2 <Goto GoRejectMission>
+		Msg1 <Raiders from %name4% have been detected in \EXACT_SCENE %3% . Go drive them off and you'll earn $ \VAL Reward %threat% PayRate plus salvage rights.>
+		Msg1_1 <There are infiltrators operating in \EXACT_SCENE %3% ; it's believed that they were sent by %name4%. Report to these coordinates and engage any hostile mecha you find. Win, and you'll get $ \VAL Reward %threat% PayRate plus salvage.>
+		CMsg1_1 <ifNPCSociable Accept>
+		Msg1_2 <There are mecha from %name4% in \EXACT_SCENE %3% . Defeat them and you'll earn $ \VAL Reward %threat% PayRate plus salvage.>
+		CMsg1_2 <ifNPCShy Accept>
+		Msg1_3 <>
+		CMsg1_3 <ifNPCEasygoing Accept>
+		Msg1_4 <>
+		CMsg1_4 <ifNPCPassionate Accept>
+		Msg1_5 <>
+		CMsg1_5 <ifNPCCheerful Accept>
+		Msg1_6 <>
+		CMsg1_6 <ifNPCMelancholy Accept>
+		Msg2 <\ELEMENT 2 in \SCENE NPCScene %2% hired you to fight %name4% in \EXACT_SCENE %3% .>
+		Prompt1 <No problem. I'll do it.>
+		Prompt1_1 <I'll be back when I'm finished.>
+		Prompt1_2 <I'll get to work right away.>
+		Prompt2 <You can find someone else for this mission.>
+		CPrompt2 <if# PCFac ChatNPCFac Accept>
+		Prompt2_1 <Sorry, I find your terms unacceptable.>
+		Prompt2_2 <Really, I'd rather not get involved.>
+	end
+

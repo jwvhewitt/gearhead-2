@@ -1,0 +1,68 @@
+%
+% This file contains a single persona. The persona contains all the messages that can be spoken by the
+% ArenaHQ personalities.
+%
+
+Persona
+
+PCHealed <# was recovered from the battlefield.>
+
+PCDead <# didn't return from that last mission.>
+
+MechaFixed <Your # was in pretty bad shape, but I think I've managed to repair it.>
+
+MechaDestroyed <I'm sorry, but your # was damaged beyond repair.>
+
+SalvageReport <We recovered a # from the battlefield.>
+
+MechaObtained <We have obtained a # .>
+
+ReportEarnings <You earned $# from this mission.>
+ReportEarnings_1 <Good work, team. You earned $# from that last mission.>
+CReportEarnings_1 <ifNPCSociable Accept>
+ReportEarnings_2 <Here, you earned $#.>
+CReportEarnings_2 <ifNPCShy Accept>
+ReportEarnings_3 <That went well. You earned $# for the mission.>
+CReportEarnings_3 <ifNPCEasygoing Accept>
+ReportEarnings_4 <You did it! Here, you earned $# from that mission.>
+CReportEarnings_4 <ifNPCPassionate Accept>
+ReportEarnings_5 <Fantastic job. Here, you earned $#.>
+CReportEarnings_5 <ifNPCCheerful Accept>
+ReportEarnings_6 <That didn't go as well as I had hoped, but it will do. You earned $#.>
+CReportEarnings_6 <ifNPCMelancholy Accept>
+ReportEarnings_7 <I knew you could do it. You earned $# from this mission.>
+CReportEarnings_7 <ifNPCHeroic Accept>
+ReportEarnings_8 <So, you managed to survive... I guess you've earned this $#.>
+CReportEarnings_8 <ifNPCVillainous Accept>
+
+ReportExpenses <Repairs and ammunition cost $#.>
+ReportExpenses_1 <It cost $# to cover the repairs and ammunition for that mission.>
+CReportExpenses_1 <ifNPCSociable Accept>
+ReportExpenses_2 <Maintenance cost $#.>
+CReportExpenses_2 <ifNPCShy Accept>
+ReportExpenses_3 <I think I've managed to fix everything. Repairs and maintenance cost $#.>
+CReportExpenses_3 <ifNPCEasygoing Accept>
+ReportExpenses_4 <It cost $# to restore your mecha from that battle. Try not to mess up my fine handiwork next time.>
+CReportExpenses_4 <ifNPCPassionate Accept>
+ReportExpenses_5 <I've restored your mecha to top shape for $#.>
+CReportExpenses_5 <ifNPCCheerful Accept>
+ReportExpenses_6 <It cost $# to fix all the damage you inflicted on yourself out there.>
+CReportExpenses_6 <ifNPCMelancholy Accept>
+ReportExpenses_7 <>
+CReportExpenses_7 <ifNPCHeroic Accept>
+ReportExpenses_8 <>
+CReportExpenses_8 <ifNPCVillainous Accept>
+ReportExpenses_9 <>
+CReportExpenses_9 <ifNPCLawful Accept>
+ReportExpenses_10 <>
+CReportExpenses_10 <ifNPCCriminal Accept>
+ReportExpenses_11 <>
+CReportExpenses_11 <ifNPCPragmatic Accept>
+ReportExpenses_12 <>
+CReportExpenses_12 <ifNPCSpiritual Accept>
+
+GainPromotion <You have been promoted to the rank of #.>
+
+LosePromotion <You have been demoted to the rank of #.>
+
+

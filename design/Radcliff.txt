@@ -1,0 +1,176 @@
+Battroid 6
+Name <Radcliff>
+Desig <GHA-05b>
+SDL_Sprite <btr_radcliff.png>
+desc <An artillery battroid.>
+factions <>
+
+Sub
+Head
+	Size 5
+	Armor 4
+	Mass -1
+	sub
+		CPit
+		Armor 2
+
+		Sensor 6
+
+		LongRangeScanner 4
+		Integral
+	end
+
+Torso
+	Armor 6
+	sub
+		Computer 7
+		mass -9
+		sub
+			Software 5
+			name <Radical Targeting>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 2
+			name <X-Rank Maneuver Control>
+			S_MVBoost
+			S_BoostScale 2
+		end
+
+		STC LAS-5
+		mass -2
+
+		STC LAS-5
+		mass -2
+
+		ECM 7
+	end
+
+Arm
+	Name <Right Arm>
+	Size 5
+	Armor 6
+	mass -1
+	sub
+		STC PHS-8
+
+		mount
+		name <Right Shoulder Mount>
+		inv
+			MLauncher 2
+			sub
+				Rockets 20
+				Name <Superheavy Missile>
+				Type <BLAST 5 BRUTAL>
+				Range 8
+				Acc 2
+				Magazine 1
+			end
+		end
+
+		HeavyActuator 1
+	end
+	inv
+		ArmArmor 3
+	end
+
+Arm
+	Name <Left Arm>
+	Size 5
+	Armor 6
+	mass -1
+	sub
+		STC PHS-8
+
+		mount
+		name <Left Shoulder Mount>
+		inv
+			MLauncher 2
+			sub
+				Rockets 20
+				Name <Superheavy Missile>
+				Type <BLAST 5 BRUTAL>
+				Range 8
+				Acc 2
+				Magazine 1
+			end
+		end
+
+		HeavyActuator 1
+	end
+	inv
+		ArmArmor 3
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 6
+	mass -1
+	sub
+		Mount
+		Name <Right Leg Mount>
+		inv
+			MLauncher 12
+			sub
+				STC SWM-2
+				Magazine 60
+				range 7
+			end
+		end
+		PowerSource 3
+		mass -4
+
+		HeavyActuator 3
+		Mass -1
+	end
+
+Leg
+	Name <Left Leg>
+	Armor 6
+	mass -1
+	sub
+		Mount
+		Name <Left Leg Mount>
+		inv
+			MLauncher 12
+			sub
+				STC SWM-2
+				Magazine 60
+				range 7
+			end
+		end
+		PowerSource 3
+		mass -4
+
+		HeavyActuator 3
+		Mass -1
+	end
+
+Storage
+	Name <Right Pod>
+	Armor 5
+	Size 5
+	sub
+		MLauncher 12
+		sub
+			STC FRM-6
+			Magazine 20
+			range 8
+			mass -3
+		end
+	end
+
+Storage
+	Name <Left Pod>
+	Armor 5
+	Size 5
+	sub
+		MLauncher 12
+		sub
+			STC FRM-6
+			Magazine 20
+			range 8
+			mass -3
+		end
+	end
+end

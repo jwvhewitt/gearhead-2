@@ -1,0 +1,74 @@
+HoverFighter 4
+name <Skull>
+desig <Crihna>
+type <GROUND SPACE>
+desc <A rapid strike interceptor used by the Blade of Crihna pirates. Though technologically primitive, this fighter packs an impressive amount of firepower.>
+
+factions <CRIHN REDMA>
+ROLE_CRIHN <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+ROLE_REDMA <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+
+SDL_PORTRAIT <item_skullmecha.png>
+
+sub
+Torso
+	Armor 3
+	sub
+		CPit
+		Sensor 5
+		Flight 7
+	end
+	inv
+		BodyArmor 1
+		fits <Hoverfighter>
+		name <Skull Canopy>
+	end
+
+Turret
+	Size 2
+	Armor 3
+	sub
+		Mount
+		name <Turret Mount>
+		inv
+			STC LAS-10
+		end
+
+		MLauncher 1
+		sub
+			STC LR-1
+			Magazine 10
+		end
+	end
+
+Wing
+	name <Right Wing>
+	Size 5
+	Armor 2
+	sub
+		Flight 2
+		Overcharger 3
+		Mount
+		name <Right Wing Mount>
+		inv
+			STC MAC-2
+		end
+	end
+
+Wing
+	name <Left Wing>
+	Size 5
+	Armor 2
+	sub
+		Flight 2
+		Overcharger 3
+		Mount
+		name <Left Wing Mount>
+		inv
+			STC MAC-2
+		end
+	end
+end
+
+
+

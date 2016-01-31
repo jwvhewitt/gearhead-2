@@ -1,0 +1,337 @@
+%%
+%%  *:Q_DungeonQuest Content
+%%
+%% A dungeon is a dangerous place filled with monsters. We give them dungeon
+%% quests in order to prevent them from being boring.
+%%
+%% Set label to *:Q_DDungeonQuest for debuging.
+%%
+%%
+%%  PARAM1: The dungeon involved
+%%
+
+Content
+	name <Last Rites>
+	requires <*:Q_DungeonQuest>
+	% Someone died in this dungeon; apparently, they want their ashes
+	% returned there. Yes, I know I did this plot in GH1... I'm trying
+	% to get the Cayley dungeon ready for release!
+
+	% E1 is the dungeon involved
+	% E2 is a local public scene
+	% E3 is the priest who requests this
+	% E4 is the urn to be placed
+	% E5 is the character to die
+	Element2 <Scene Public (meeting|residence|temple)>
+	Element3 <Prefab>
+	Place3 <2 (Citizens) pass ally>
+	Element4 <Prefab>
+	Place4 <3>
+	Element5 <Prefab>
+	Place5 <2 (Citizens) pass ally>
+
+	% P%id%01 = Have accepted task
+	% P%id%02 = Initialization Counter
+
+	%% FAIL CONDITIONS:
+	%% - Before accepting quest, priest dies or item destroyed
+	%% - After accepting quest, urn destroyed
+	end <if= P%id%01 0 else .%id%_GoCheckUrn ifNPCDead %3% else .%id%_GoCU2 LoseSubPlot %plotid%>
+	.%id%_GoCheckUrn <ifItemDestroyed %4% SetPlotStatus %plotid2% %id2%>
+	.%id%_GoCU2 <ifItemDestroyed %4% LoseSubPlot %plotid%>
+
+	update <if= P%id%02 0 P= %id%02 1 DeleteNPC %5%>
+
+	% Victory is achieved if the PC has accepted the mission, the urn is in E1,
+	% and E1 isn't the current scene.
+	start <if# P%id%01 0 if# SceneID %1% if= ItemScene %4% %1%  Alert %id%01 XPV 100 QMemo %plotid% %id%02 DeleteItem %4% SetPlotStatus %plotid1% %id1%>
+
+	Msg%id%01 <The soul of %name5% has been laid to rest.>
+	Msg%id%02 <You placed %name5%'s urn in %name1%. You should return to %name3% now.>
+
+	% SubPlot1 is the victory condition
+	% SubPlot2 is the loss condition
+	SubPlot1 <*Q_WinTask 3>
+	SubPlot2 <*Q_LoseTask 3>
+
+	sub
+		Persona 3
+		rumor%id% <%name3% needs a cavalier to make a very unusual delivery.>
+		greeting <if= PlotStatus %plotid% %id% else GoGreet if= P%id%01 0 else GoRemind ifItemOK %4% else GoGreet ifChatNPCInPlay else GoComeHere Goto GoMakeOffer>
+		*GoRemind <*GenericMissionReminder>
+		*GoGreet <*NiceToMeetYou GoChat>
+		*GoChat <*MISC_CHATTER>
+		*GoComeHere <*NotByPhone>
+		*GoMakeOffer <*INeedYourHelp&Spiritual GoListen GoRefuse>
+		*GoRefuse <*RejectMission GoCancelQuest>
+		GoCancelQuest <AddReact -d10   CancelSubPlot %plotid%>
+		GoListen <NewChat Say 1 AddChat 1 AddChat 2 AddChat 3>
+		result1 <NewChat Say 2 P= %id%01 1 GiveItem %4% QMemo %plotid% 3>
+		result2 <Goto GoRefuse>
+		result3 <NewCHat Say 4 AddChat 4 AddChat 5>
+		result4 <Goto result1>
+		result5 <Goto GoRefuse>
+		Msg1 <An adventurer by the name of %name5% recently passed away. This urn contains his ashes; I would hire you to deliver them to \SCENE %1% , as was the deceased's wish.>
+		Msg2 <Thank you. Here is the urn; return to me after you have placed it, and I will give you a reward then.>
+		Msg3 <%name3% hired you to bring %name5%'s ashes to \SCENE %1% .>
+		Msg4 <It's a strange thing. Around five years ago a famous explorer had his ashes returned to the dungeon where he died, and now it seems like everyone's doing it.>
+		Prompt1 <Alright, I can do that for you.>
+		Prompt2 <No way. This mission is way too creepy.>
+		Prompt3 <Why would anyone want to be buried in a dungeon?>
+		Prompt4 <As long as it's in fashion, I'll do it.>
+		Prompt5 <Weird. The more I learn, the less I want any part in this.>
+	end
+	inv
+		NPC Priest
+		chardesc heroic spiritual
+
+		Treasure
+		name <Burial Urn>
+		mass 1
+		Fudge 65000
+
+		NPC Explorer
+		chardesc Male
+	end
+
+Content
+	name <Artifact Recovery 2>
+	requires <*:Q_DungeonQuest>
+
+	% E1 is the dungeon involved
+	% E2 is a local public scene
+	% E3 is an adventurer who is looking for an artifact
+	% E4 is the artifact being sought
+	Element2 <Scene Public (Building|Meeting|School)>
+	Element3 <Prefab>
+	Place3 <2 (Citizens) pass ally>
+	Element4 <Artifact>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have accepted quest
+
+	%% FAIL CONDITIONS:
+	%% - E4 gets destroyed
+	%% - E3 dies
+
+	update <if= P%id%01 0 P= %id%01 1 MoveItem %4% %1%>
+	end <ifItemDestroyed %4% else .%id%_GoCheckDeath if= P%id%02 0 else .%id%_GoFailTask CancelSubPlot %plotid%>
+	.%id%_GoFailTask <SetPlotStatus %plotid2% %id2%>
+	.%id%_GoCheckDeath <ifNPCDead %3% CancelSubPlot %plotid%>
+
+	% If the PC gets the item, call the Win Fetch subplot.
+	Get%4% <if= P%id%02 1 else .%id%_GoFetchNoMission SetPlotStatus %plotid1% %id1%>
+	.%id%_GoFetchNoMission <SetPlotStatus %plotid3% %id3%>
+
+	% SubPlot1 is the win fetch quest.
+	% SubPlot2 is the task lost quest.
+	% SubPlot3 is the didn't-accept-quest-but-fetched-anyways bit.
+	SubPlot1 <*Q_Win_FetchItem 3 4>
+	SubPlot2 <*Q_LoseTask 3>
+	SubPlot3 <*Q_FetchWantedItem 3 4>
+
+	sub
+		Persona 3
+		rumor%id% <%name3% is looking for something in %name1%.>
+		greeting <if= PlotStatus %plotid% %id% else %pop% if= P%id%02 0 else .%id%_GoRemind Goto .%id%_GoGreet>
+		*.%id%_GoRemind <*GenericMissionReminder>
+		*.%id%_GoGreet <*AreYouHereAboutJob .%id%_GoBriefing>
+		.%id%_GoBriefing <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+		result%id%01 <NewChat Say %id%02 AddChat %id%04 AddChat %id%05>
+		*result%id%02 <*RejectMission .%id%_GoR2Exit>
+		.%id%_GoR2Exit <AddReact -10   CancelSubPlot %plotid%>
+		result%id%03 <NewChat Say %id%03 AddChat %id%04 AddChat %id%05>
+		result%id%04 <NewChat Say %id%04 QMemo %plotid% %id%05 P= %id%02 1>
+		result%id%05 <Goto result%id%02>
+		Msg%id%01 <I've come to \SCENE RootSceneID to find an item called the %name4%. \ITEM_DESC %4%>
+		Msg%id%02 <Ah, but it wouldn't make much sense for me to tell you that... unless you were willing to help me retrieve it.>
+		Msg%id%03 <\ITEM_HISTORY %4% \ITEM_USAGE %4% If you find it for me you'll be greatly rewarded.>
+		Msg%id%04 <The %name4% was last seen in %name1%. That's where I would begin searching, were I you.>
+		Msg%id%05 <%name3% in %name2% hired you to recover the %name4% from %name1%.>
+		Prompt%id%01 <Where do you think it is?>
+		Prompt%id%02 <Sorry, I'm not in the fetch business.>
+		Prompt%id%03 <Can you tell me some more about it?>
+		Prompt%id%04 <Alright, I'll return to you when I've found it.>
+		Prompt%id%05 <Sorry, I don't want this job.>
+	end
+	inv
+		NPC Explorer
+	end
+
+Content
+	name <Artifact Recovery 1>
+	requires <*:Q_DungeonQuest>
+
+	% E1 is the dungeon involved
+	% E2 is a local public scene
+	% E3 is a professor who is looking for an artifact
+	% E4 is the artifact being sought
+	Element2 <Scene Public (Building|Meeting|School)>
+	Element3 <Prefab>
+	Place3 <2 (Citizens) pass ally>
+	Element4 <Artifact PreZero>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have accepted quest
+
+	%% FAIL CONDITIONS:
+	%% - E4 gets destroyed
+	%% - E3 dies
+
+	update <if= P%id%01 0 P= %id%01 1 MoveItem %4% %1%>
+	end <ifItemDestroyed %4% else .%id%_GoCheckDeath if= P%id%02 0 else .%id%_GoFailTask CancelSubPlot %plotid%>
+	.%id%_GoFailTask <SetPlotStatus %plotid2% %id2%>
+	.%id%_GoCheckDeath <ifNPCDead %3% CancelSubPlot %plotid%>
+
+	% If the PC gets the item, call the Win Fetch subplot.
+	Get%4% <if= P%id%02 1 else .%id%_GoFetchNoMission SetPlotStatus %plotid1% %id1%>
+	.%id%_GoFetchNoMission <SetPlotStatus %plotid3% %id3%>
+
+	% SubPlot1 is the win fetch quest.
+	% SubPlot2 is the task lost quest.
+	% SubPlot3 is the didn't-accept-quest-but-fetched-anyways bit.
+	SubPlot1 <*Q_Win_FetchItem 3 4>
+	SubPlot2 <*Q_LoseTask 3>
+	SubPlot3 <*Q_FetchWantedItem 3 4>
+
+	sub
+		Persona 3
+		rumor%id% <%name3% has been trying to locate the %name4%.>
+		greeting <if= PlotStatus %plotid% %id% else %pop% if= P%id%02 0 else .%id%_GoRemind Goto .%id%_GoGreet>
+		*.%id%_GoRemind <*GenericMissionReminder>
+		*.%id%_GoGreet <*AreYouHereAboutJob .%id%_GoBriefing>
+		.%id%_GoBriefing <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+		result%id%01 <NewChat Say %id%02 AddChat %id%04 AddChat %id%05 AddChat %id%06>
+		*result%id%02 <*RejectMission .%id%_GoR2Exit>
+		.%id%_GoR2Exit <AddReact -10   CancelSubPlot %plotid%>
+		result%id%03 <NewChat Say %id%03 AddChat %id%04 AddChat %id%05 AddChat %id%06>
+		result%id%04 <NewChat Say %id%04 QMemo %plotid% %id%05 P= %id%02 1>
+		result%id%05 <Goto result%id%02>
+		result%id%06 <NewChat Say %id%06 XPV 100 QMemo %plotid% %id%05 P= %id%02 1>
+		Msg%id%01 <I've been searching for an artifact known as the %name4%. My research has led me to conclude that it is nearby, but I am unable to reach it myself.>
+		Msg%id%02 <Yes, exactly. You will be handsomely rewarded for your efforts, of course.>
+		Msg%id%03 <\ITEM_DESC %4% \ITEM_HISTORY %4% If you recover it, I can continue my research.>
+		Msg%id%04 <The %name4% was last seen in %name1%. That's where I would begin searching, were I you.>
+		Msg%id%05 <%name3% in %name2% hired you to recover the %name4% from %name1%.>
+		Msg%id%06 <Co-authorship!? Very well, I can't write the paper at all if I don't have the %name4%... According to historical records the %name4% was last seen in %name1%. That's where I would begin searching, were I you.>
+		Prompt%id%01 <So you want me to get it for you?>
+		Prompt%id%02 <This doesn't sound like my kind of mission.>
+		Prompt%id%03 <What can you tell me about this %name4%?>
+		Prompt%id%04 <Alright, I'll return to you when I've found it.>
+		Prompt%id%05 <Sorry, I don't want this job.>
+		Prompt%id%06 <Okay, but I want co-authorship on the research paper.>
+		CPrompt%id%06 <ifSkillTest NAS_Science STAT_Ego SkillTar %threat% Accept>
+	end
+	inv
+		NPC Professor
+	end
+
+%%
+%% *:Q_DungeonSecret
+%%
+%% Loads a hopefully unique treasure for this dungeon.
+%%
+%% Set label to *:Q_DDungeonQuest for debuging.
+%%
+%%
+%%  PARAM1: The dungeon involved
+%%
+
+Content
+	name <Custom Mecha>
+	requires <*:Q_DungeonSecret>
+
+	% E1 is the dungeon level
+	% E2 is the entrance to the treasure room
+	% E3 is the treasure room itself
+	Element2 <Prefab>
+	Place2 <1>
+	Element3 <QuestScene>
+	Place3 <1>
+
+	sub
+		MetaScene 2
+		sub
+			room
+			minimap <......###..#1#...........>
+			desig <HOME>
+		end
+
+		MetaScene 3
+		name <# Mecha Bay>
+		type <Industrial Ruin>
+		mapwidth 17
+		mapheight 12
+		BoxMap
+		IndustrialTiles
+		Ceiling
+		special <NOEXIT>
+		start <Print 1>
+		Msg1 <You discover an abandoned mecha bay.>
+		NeededCells 4
+		content1 <Some 4 70 *RANDOM_SHAPES na>
+		sub
+			team 1
+
+			team 2
+			name <Enemies>
+			SetEnemy 1
+
+			room
+			minimap <.......##...1#...##......>
+			inv
+				Elevator
+				name <Exit>
+				MiniMapComponent 1
+				Destination -1
+			end
+
+			room
+			minimap <......###..##1..###......>
+			inv
+				Elevator
+				MiniMapComponent 1
+				name <Mecha Bay>
+				% V1 = Have obtained mecha
+				use <if= V1 0 else GoBeenBefore ifYesNo 1 2 3 V= 1 1 MechaPrize .mektype %threat% RandomTheme 10 XPV 100>
+				.mektype <GENERAL \FACTION_DESIG RootSceneFac>
+				GoBeenBefore <Print 4>
+				Msg1 <You find a mecha that someone left behind. It appears to be in working order.>
+				Msg2 <Open external bay doors.>
+				Msg3 <Leave the mecha where it is.>
+				Msg4 <There's nothing left here now.>
+			end
+		end
+	end
+	inv
+		Elevator
+		desig <ENTRANCE %3%>
+	end
+
+
+%%
+%% *:Debug Frame
+%%
+%% Loads a dungeon quest into the Cavalier's Club for easy debugging.
+%%
+
+Content
+	requires <*:Q_Debug>
+
+	% E1 is the CavClub
+	% E2 is the new dungeon
+	Element1 <Scene CavClub>
+	Element2 <QuestScene>
+	Place2 <1>
+
+	update <if= PlotStatus %plotid1% 0 SetPlotStatus %plotid1% %id1%>
+
+	% SubQuest1 is the mission.
+	SubPlot1 <*:Q_DDungeonQuest 2>
+
+	sub
+		STC QS_Dungeon_Sewer
+		SetID 2
+		entrance <*GoDown>
+	end
+

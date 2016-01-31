@@ -1,0 +1,189 @@
+Battroid 4
+Name <Mebsy>
+SDL_Sprite <>
+SDL_Portrait <item_mebsy.png>
+Desig <GCF-2>
+desc <A light battroid from the early days of space colonization.>
+TYPE <GROUND SPACE INSIDE>
+FACTIONS <MAQUI COMET PRIVA HOELL FCOMS RISHI BOHEM MUGLE REDMA CRIHN>
+ROLE_MAQUI <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_FCOMS <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_PRIVA <GENERAL:TROOPER  DEFENSE:TROOPER>
+ROLE_RISHI <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_BOHEM <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+
+sub
+Head
+	size 1
+	Armor 3
+	sub
+		Sensor 4
+	end
+
+Torso
+	Armor 4
+	mass 1
+	sub
+		CPit
+	end
+
+Arm
+	name <Right Arm>
+	size 3
+	Armor 3
+	sub
+		Hand
+		name <Right Hand>
+		inv
+			Gun 5
+			name <Mag Rifle>
+			caliber <25mm ferrous>
+			speed 3
+			Range 6
+			Magazine 40
+			sub
+				Ammo 5
+				caliber <25mm ferrous>
+			end
+		end
+	end
+
+Arm
+	name <Left Arm>
+	size 3
+	Armor 3
+	sub
+		Hand
+		name <Left Hand>
+	end
+	inv
+		Shield 2
+	end
+
+Leg
+	name <Right Leg>
+	Armor 3
+	mass 1
+	sub
+		Mount
+		name <Right Leg Mount>
+		inv
+			MLauncher 1
+			sub
+				STC LR-1
+				magazine 10
+			end
+		end
+
+		SpaceFlight 4
+	end
+
+Leg
+	name <Left Leg>
+	Armor 3
+	mass 1
+	sub
+		Mount
+		name <Left Leg Mount>
+		inv
+			MLauncher 1
+			sub
+				STC LR-1
+				magazine 10
+			end
+		end
+
+		SpaceFlight 4
+	end
+
+end
+
+
+
+Battroid 4
+Name <Mebsy>
+SDL_Sprite <>
+SDL_Portrait <item_mebsy.png>
+Desig <GCF-2d Strike>
+desc <A light battroid from the early days of space colonization.>
+TYPE <GROUND SPACE INSIDE>
+FACTIONS <BOHEM>
+ROLE_BOHEM <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+
+sub
+Head
+	size 1
+	Armor 3
+	sub
+		Sensor 4
+	end
+
+Torso
+	Armor 4
+	mass 1
+	sub
+		CPit
+	end
+
+Arm
+	name <Right Arm>
+	size 3
+	Armor 3
+	sub
+		Hand
+		name <Right Hand>
+		inv
+			STC GBAZ-17
+		end
+	end
+
+Arm
+	name <Left Arm>
+	size 3
+	Armor 3
+	sub
+		Hand
+		name <Left Hand>
+	end
+	inv
+		Shield 2
+	end
+
+Leg
+	name <Right Leg>
+	Armor 3
+	mass 1
+	sub
+		Mount
+		name <Right Leg Mount>
+		inv
+			MLauncher 1
+			sub
+				STC LR-1
+				magazine 10
+			end
+		end
+
+		SpaceFlight 4
+	end
+
+Leg
+	name <Left Leg>
+	Armor 3
+	mass 1
+	sub
+		Mount
+		name <Left Leg Mount>
+		inv
+			MLauncher 1
+			sub
+				STC LR-1
+				magazine 10
+			end
+		end
+
+		SpaceFlight 4
+	end
+
+end
+

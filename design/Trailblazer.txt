@@ -1,0 +1,129 @@
+Battroid 2
+Name <Trailblazer>
+SDL_Sprite <btr_trailblazer.png>
+SDL_Portrait <item_trailblazer.png>
+Desig <TR9-02>
+desc <The Trailblazer is a scout mecha design from Comet Metalworks.>
+TYPE <GROUND SPACE INSIDE>
+FACTIONS <MAQUI SILKN COMET>
+ROLE_SILKN <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_COMET <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+
+sub
+Head
+	size 3
+	Armor 2
+	sub
+		Sensor 7
+		mass -1
+	end
+	inv
+		HeadArmor 1
+		mass -1
+	end
+
+Torso
+	Armor 3
+	mass -1
+	sub
+		CPit
+		Armor 1
+
+		LongRangeScanner 2
+		mass -1
+
+		ECM 3
+
+		Computer 1
+		mass -1
+		sub
+			Software
+			name <Target Analysis>
+			S_Information
+			SInfo_MechaDex
+		end
+	end
+	inv
+		BodyArmor 1
+		mass -1
+		sub
+			Flight 1
+		end
+	end
+Arm
+	Name <Right Arm>
+	Size 2
+	Armor 2
+	mass -1
+	sub
+		Mount
+		name <Right Arm Mount>
+		inv
+			STC PAR-2
+		end
+
+		Hand
+	end
+	inv
+		ArmArmor 1
+		mass -1
+	end
+Arm
+	Name <Left Arm>
+	Size 2
+	Armor 2
+	mass -1
+	sub
+		mount
+		name <Left Arm Mount>
+		inv
+			MLauncher 1
+			sub
+				STC HWM-4
+				Magazine 2
+			end
+		end
+
+		Hand
+		inv
+			EMelee 5
+			Name <Plasma Spear>
+			type <EXTEND>
+		end
+	end
+	inv
+		ArmArmor 1
+		mass -1
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 2
+	mass -1
+	sub
+		Flight 3
+	end
+	inv
+		LegArmor 1
+		mass -1
+		sub
+			Flight 1
+		end
+	end
+
+Leg
+	Name <Left Leg>
+	Armor 2
+	mass -1
+	sub
+		Flight 3
+	end
+	inv
+		LegArmor 1
+		mass -1
+		sub
+			Flight 1
+		end
+	end
+
+end

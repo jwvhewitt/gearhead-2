@@ -1,0 +1,201 @@
+%% Prop Mesh File
+%%
+%% Contains all the meshes for the action props.
+%% Note that the commands aren't strongly parsed, and are just executed as they're
+%% encountered. Remember to end all the shapes you begin!
+%%
+%% Also remember that you must set the texture before you begin drawing.
+
+% COMMANDS:
+%	GL_Quads	Begins GL_QUADS
+%	P [x] [y] [z] [tx] [ty]		Places a point at X,Y,Z with TexCoords TX,TY
+%	Normal [X] [Y] [Z]		Defines the normal vector
+%	glEnd		Ends a shape
+%	EndMesh		Ends a mesh
+%	Tex [n]		Assigns a spaceship texture to the mesh
+
+%% MESH 1 = The Big Spaceschip Box
+%%  Not much to tell here. It's a big box. This can be used for the main
+%%  body of a spaceship, with the more interesting shape making up the edges.
+	% Sides of the box
+	Tex 1
+	GL_Quads
+	Normal 0.0 0.0 -1.0 
+	P 	-0.5 	0 	-0.5		0.0	1.0
+	p 	-0.5 	0.5 	-0.5		0.0	0.0
+	p 	0.5 	0.5 	-0.5		1.0	0.0
+	p 	0.5 	0 	-0.5		1.0	1.0
+
+	Normal 0.0 0.0 1.0 
+	P 	-0.5 	0 	0.5		0.0	1.0
+	p 	-0.5 	0.5 	0.5		0.0	0.0
+	p 	0.5 	0.5 	0.5		1.0	0.0
+	p 	0.5 	0 	0.5		1.0	1.0
+
+	Normal 1.0 0.0 0.0 
+	P 	0.5 	0 	0.5		0.0	1.0
+	p 	0.5 	0.5 	0.5		0.0	0.0
+	p 	0.5 	0.5 	-0.5		1.0	0.0
+	p 	0.5 	0 	-0.5		1.0	1.0
+
+	Normal -1.0 0.0 0.0 
+	P 	-0.5 	0 	0.5		0.0	1.0
+	p 	-0.5 	0.5 	0.5		0.0	0.0
+	p 	-0.5 	0.5 	-0.5		1.0	0.0
+	p 	-0.5 	0 	-0.5		1.0	1.0
+	glEnd
+
+	% Top
+	Tex 2
+	GL_Quads
+	Normal 0.0 1.0 0.0 
+	P 	-0.5 	0.5 	-0.5		0.0	0.0
+	p 	-0.5 	0.5 	0.5		0.0	1.0
+	p 	0.5 	0.5 	0.5		1.0	1.0
+	p 	0.5 	0.5	-0.5		1.0	0.0
+
+
+	glEnd
+	EndMesh
+	% End Big Box
+
+%% MESH 2 = The Big Spaceschip Box, Destroyed
+%%  Not much to tell here. It's a big box. This can be used for the main
+%%  body of a spaceship, with the more interesting shape making up the edges.
+	% Sides of the box
+	Tex 3
+	GL_Quads
+	Normal 0.0 0.0 -1.0 
+	P 	-0.5 	0 	-0.5		0.0	1.0
+	p 	-0.5 	0.5 	-0.5		0.0	0.0
+	p 	0.5 	0.5 	-0.5		1.0	0.0
+	p 	0.5 	0 	-0.5		1.0	1.0
+
+	Normal 0.0 0.0 1.0 
+	P 	-0.5 	0 	0.5		0.0	1.0
+	p 	-0.5 	0.5 	0.5		0.0	0.0
+	p 	0.5 	0.5 	0.5		1.0	0.0
+	p 	0.5 	0 	0.5		1.0	1.0
+
+	Normal 1.0 0.0 0.0 
+	P 	0.5 	0 	0.5		0.0	1.0
+	p 	0.5 	0.5 	0.5		0.0	0.0
+	p 	0.5 	0.5 	-0.5		1.0	0.0
+	p 	0.5 	0 	-0.5		1.0	1.0
+
+	Normal -1.0 0.0 0.0 
+	P 	-0.5 	0 	0.5		0.0	1.0
+	p 	-0.5 	0.5 	0.5		0.0	0.0
+	p 	-0.5 	0.5 	-0.5		1.0	0.0
+	p 	-0.5 	0 	-0.5		1.0	1.0
+
+	% Top
+	Normal 0.0 1.0 0.0 
+	P 	-0.5 	0.5 	-0.5		0.0	0.0
+	p 	-0.5 	0.5 	0.5		0.0	1.0
+	p 	0.5 	0.5 	0.5		1.0	1.0
+	p 	0.5 	0.5	-0.5		1.0	0.0
+
+
+	glEnd
+	EndMesh
+	% End Big Box
+
+%% MESH 3 = The D-Box
+%%	Kind of in the shape of a "D".
+	Tex 2
+	GL_Quads
+
+	% Back end
+	Normal 0.0 0.0 -1.0 
+	P 	-0.5 	0 	-0.5		0.0	1.0
+	p 	-0.5 	0.5 	-0.5		0.0	0.0
+	p 	0.5 	0.5 	-0.5		1.0	0.0
+	p 	0.5 	0 	-0.5		1.0	1.0
+
+	% Front End
+	Normal 0.0 0.0 1.0 
+	P 	-0.5 	0.2 	0.5		0.0	1.0
+	p 	-0.5 	0.3 	0.5		0.0	0.0
+	p 	0.5 	0.3 	0.5		1.0	0.0
+	p 	0.5 	0.2 	0.5		1.0	1.0
+
+	% Sides
+	Normal 1.0 0.0 0.0 
+	P 	0.5 	0.2 	0.5		0.0	1.0
+	p 	0.5 	0.3 	0.5		0.0	0.0
+	p 	0.5 	0.5 	-0.5		1.0	0.0
+	p 	0.5 	0 	-0.5		1.0	1.0
+
+	Normal -1.0 0.0 0.0 
+	P 	-0.5 	0.2 	0.5		0.0	1.0
+	p 	-0.5 	0.3 	0.5		0.0	0.0
+	p 	-0.5 	0.5 	-0.5		1.0	0.0
+	p 	-0.5 	0 	-0.5		1.0	1.0
+	glEnd
+
+	% Top
+	Tex 2
+	GL_Quads
+	Normal 0.0 1.0 0.0 
+	P 	-0.5 	0.5 	-0.5		0.0	0.0
+	p 	-0.5 	0.5 	0.5		0.0	1.0
+	p 	0.5 	0.3 	0.5		1.0	1.0
+	p 	0.5 	0.3	-0.5		1.0	0.0
+
+
+	glEnd
+	EndMesh
+
+%% MESH 4 = Destroyed D-Box
+%%	Kind of in the shape of a "D".
+	Tex 3
+	GL_Quads
+
+	% Back end
+	Normal 0.0 0.0 -1.0 
+	P 	-0.5 	0 	-0.5		0.0	1.0
+	p 	-0.5 	0.5 	-0.5		0.0	0.0
+	p 	0.5 	0.5 	-0.5		1.0	0.0
+	p 	0.5 	0 	-0.5		1.0	1.0
+
+	% Front End
+	Normal 0.0 0.0 1.0 
+	P 	-0.5 	0.2 	0.5		0.0	1.0
+	p 	-0.5 	0.3 	0.5		0.0	0.0
+	p 	0.5 	0.3 	0.5		1.0	0.0
+	p 	0.5 	0.2 	0.5		1.0	1.0
+
+	% Sides
+	Normal 1.0 0.0 0.0 
+	P 	0.5 	0.2 	0.5		0.0	1.0
+	p 	0.5 	0.3 	0.5		0.0	0.0
+	p 	0.5 	0.5 	-0.5		1.0	0.0
+	p 	0.5 	0 	-0.5		1.0	1.0
+
+	Normal -1.0 0.0 0.0 
+	P 	-0.5 	0.2 	0.5		0.0	1.0
+	p 	-0.5 	0.3 	0.5		0.0	0.0
+	p 	-0.5 	0.5 	-0.5		1.0	0.0
+	p 	-0.5 	0 	-0.5		1.0	1.0
+	glEnd
+
+	% Top
+	Tex 2
+	GL_Quads
+	Normal 0.0 1.0 0.0 
+	P 	-0.5 	0.5 	-0.5		0.0	0.0
+	p 	-0.5 	0.5 	0.5		0.0	1.0
+	p 	0.5 	0.3 	0.5		1.0	1.0
+	p 	0.5 	0.3	-0.5		1.0	0.0
+
+
+	glEnd
+	EndMesh
+
+%% MESH 5 = Engine Block
+%% Some spaceship engines
+	Tex 4
+	GL_Quads
+
+

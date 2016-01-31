@@ -1,0 +1,68 @@
+Battroid 5
+Name <Joust>
+Desig <A7800>
+desc <This mecha was designed specifically for arena combat. It is the first training mecha used by many pilots.>
+type <GROUND SPACE INSIDE>
+factions <PDASS>
+sdl_portrait <item_joust.png>
+Legality -5
+
+sub
+Head
+	Size 3
+	Armor 4
+	sub
+		CPit
+		Sensor 5
+	end
+
+torso
+	Armor 4
+	sub
+		Mount
+		name <Torso Mount>
+		inv
+			MLauncher 3
+			sub
+				STC SWM-2
+				magazine 15
+			end
+		end
+	end
+
+Arm
+	Name <Right Arm>
+	Armor 3
+	sub
+		Hand
+		inv
+			EMelee 6
+			Name <Plasma Sword>
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	Armor 3
+	sub
+		Hand
+
+		inv
+			STC maC-4
+		end
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 4
+	sub
+		HoverJet 4
+	end
+
+Leg
+	Name <Left Leg>
+	Armor 4
+	sub
+		HoverJet 4
+	end
+end

@@ -1,0 +1,285 @@
+%%
+%% Stuff that only NPCs can use. This includes sets of armor that are
+%% usually sold separately, makeshift weapons, and even the occasional
+%% powerful item not found in stores.
+%%
+%% Give everything here the NPCOnly category.
+%%
+
+%  ************************
+%  ***  MELEE  WEAPONS  ***
+%  ************************
+
+Melee 3
+Name <Steel Pipe>
+desc <A simple but effective weapon.>
+category <NPCONLY>
+factions <GENERAL>
+SDL_PORTRAIT <item_steelpipe.png>
+legality -15
+Mass 2
+Acc -2
+Speed 3
+
+%  ****************************
+%  ***  BALLISTIC  WEAPONS  ***
+%  ****************************
+
+%  ******************
+%  ***  GRENADES  ***
+%  ******************
+
+%  ***************
+%  ***  ARMOR  ***
+%  ***************
+
+	HeadArmor 3
+	name <Steel Mask>
+	sdl_portrait <item_steelmask.png>
+	desc <This type of mask is commonly worn by ravagers of the dead zone.>
+
+Set
+name <Recon Set>
+Category <NPCONLY>
+Factions <GENERAL>
+legality -10
+inv
+	HeadArmor 3
+	Name <Recce Helmet>
+	desc <Helmet used in reconnaissance missions, capable of transmitting and receiving data.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	SDL_PORTRAIT <item_lighthelmet.png>
+	Mass -5
+	Memo
+	Phone
+	legality -5
+
+	BodyArmor 2
+	Name <Armorweave Clothes>
+	desc <Armor mesh has been integrated with these clothes, making them a little stiff.>
+	Category <CLOTHING>
+	Factions <GENERAL>
+	Mass -3
+	legality -15
+
+	ArmArmor 2
+	Name <Heavy Elbow Pad>
+	desc <Elbow pad that protects some of the forearm as well.>
+	sdl_Portrait <item_elbowpad.png>
+	Category <CLOTHING SPORTS>
+	Factions <GENERAL>
+	Mass -3
+	legality -20
+
+	LegArmor 2
+	Name <Heavy Knee Pad>
+	desc <Knee pad that protects part of the shins as well.>
+	Category <CLOTHING SPORTS>
+	Factions <GENERAL>
+	sdl_Portrait <item_elbowpad.png>
+	Mass -3
+	legality -20
+
+	ArmArmor 2
+	Name <Heavy Elbow Pad>
+	desc <Elbow pad that protects some of the forearm as well.>
+	Category <CLOTHING SPORTS>
+	sdl_Portrait <item_elbowpad.png>
+	Factions <GENERAL>
+	Mass -3
+	legality -20
+
+	LegArmor 2
+	Name <Heavy Knee Pad>
+	desc <Knee pad that protects part of the shins as well.>
+	Category <CLOTHING SPORTS>
+	Factions <GENERAL>
+	sdl_Portrait <item_elbowpad.png>
+	Mass -3
+	legality -20
+end
+
+Set
+name <Combat Set>
+Category <NPCONLY>
+Factions <GENERAL>
+legality -10
+inv
+	HeadArmor 3
+	Name <Combat Helmet>
+	desc <An armored helmet with an integrated objective-storing system.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	SDL_PORTRAIT <item_lighthelmet.png>
+	Mass -5
+	Memo
+	legality -10
+
+	BodyArmor 3
+	Name <Flak Jacket>
+	desc <This jacket is designed to protect against shrapnel.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	legality -10
+
+	ArmArmor 3
+	Name <Flak Sleeve>
+	desc <Arm armor made from a combination of tough cloths and armor plates.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -3
+	legality -5
+
+	LegArmor 3
+	Name <Flak Legging>
+	desc <Leg armor made from a combination of tough cloths and armor plates.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -3
+	legality -5
+
+	ArmArmor 3
+	Name <Flak Sleeve>
+	desc <Arm armor made from a combination of tough cloths and armor plates.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -3
+	legality -5
+
+	LegArmor 3
+	Name <Flak Legging>
+	desc <Leg armor made from a combination of tough cloths and armor plates.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -3
+	legality -5
+end
+
+Set
+name <Spiky Set>
+Category <NPCONLY>
+Factions <GENERAL>
+legality 5
+inv
+	BodyArmor 2
+	Name <Security Vest>
+	desc <A standard vest issued to security guards.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -1
+	legality -5
+
+	ArmArmor 2
+	Name <Spiked Bracer>
+	desc <This forearm armor features a sharp spike that functions as a weapon.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -1
+	legality 5
+	sub
+		Melee 5
+		Mass -4
+		Speed 1
+		Name <Spike>
+		desc <A sharp spike.>
+	end
+
+	LegArmor 2
+	Name <Spiked Legging>
+	desc <This leg armor has a spike that can be used as a weapon.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -1
+	legality 5
+	sub
+		Melee 5
+		Mass -4
+		Speed 1
+		Name <Spike>
+		desc <A sharp spike.>
+	end
+
+	ArmArmor 2
+	Name <Spiked Bracer>
+	desc <This forearm armor features a sharp spike that functions as a weapon.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -1
+	legality 5
+	sub
+		Melee 5
+		Mass -4
+		Speed 1
+		Name <Spike>
+		desc <A sharp spike.>
+	end
+
+	LegArmor 2
+	Name <Spiked Legging>
+	desc <This leg armor has a spike that can be used as a weapon.>
+	Category <ARMOR>
+	Factions <GENERAL>
+	Mass -1
+	legality 5
+	sub
+		Melee 5
+		Mass -4
+		Speed 1
+		Name <Spike>
+		desc <A sharp spike.>
+	end
+end
+
+Set
+name <Light Armor Set>
+Category <NPCONLY>
+Factions <GENERAL>
+legality -10
+inv
+	BodyArmor 1
+	Name <Leather Jacket>
+	desc <A comfortable leather jacket with a zipper down the front.>
+	Category <CLOTHING>
+	Factions <GENERAL>
+	Mass 3
+	legality -25
+
+	ArmArmor 1
+	Name <Elbow Pad>
+	desc <Protects elbows from grazes and other accidents.>
+	Category <CLOTHING SPORTS>
+	sdl_Portrait <item_elbowpad.png>
+	Factions <GENERAL>
+	Mass -1
+	legality -25
+
+	LegArmor 1
+	Name <Knee Pad>
+	desc <Protects knees from grazes and other accidents.>
+	Category <CLOTHING SPORTS>
+	Factions <GENERAL>
+	sdl_Portrait <item_elbowpad.png>
+	Mass -1
+	legality -25
+
+	ArmArmor 1
+	Name <Elbow Pad>
+	desc <Protects elbows from grazes and other accidents.>
+	Category <CLOTHING SPORTS>
+	sdl_Portrait <item_elbowpad.png>
+	Factions <GENERAL>
+	Mass -1
+	legality -25
+
+	LegArmor 1
+	Name <Knee Pad>
+	desc <Protects knees from grazes and other accidents.>
+	Category <CLOTHING SPORTS>
+	Factions <GENERAL>
+	sdl_Portrait <item_elbowpad.png>
+	Mass -1
+	legality -25
+end
+
+

@@ -1,0 +1,53 @@
+Plot
+	name <PLOT: Fortune Cookie>
+	desc <Talk to a pilot, receive sage words of advice.>
+	requires <*GENERAL>
+
+	% Another public service announcement, this time containing
+	% various cookies for the PC. Ehhh, just a catchall collection
+	% of advice and clues, really. Not many good cookies here.
+
+	element1 <Character HasMecha Sociable>
+
+	start <ifNPCOK E1 else GoDelete if= V1 0 else GoCheckTime V= 1 ComTime V+ 1 86400>
+	update <ifNPCOK E1 else GoDelete if= V1 0 else GoCheckTime V= 1 ComTime V+ 1 86400>
+	GoCheckTime <ifG ComTime V1 EndPlot>
+	GoDelete <EndPlot>
+
+sub
+	Persona 1
+	rumor <%name1% really likes fortune cookies.>
+	Greeting <NewChat ifG React 0 else GoNoLike Say 1 EndPlot>
+	GoNoLike <SayAnything EndPlot>
+
+	Msg1 <If you specialize in armed combat, you might want to think about getting a boomerang or a spear so you'll have a missile attack which uses your best skill.>
+	Msg1_1 <Cybernetics may make you more powerful, but the side effects are killer if you don't know what you're getting into.>
+	Msg1_2 <The higher a shield's defense bonus, the harder it is to attack with that arm.>
+	Msg1_3 <Stealth isn't very useful if you're standing in the open.>
+	Msg1_4 <Zoanoids are deadly in close combat, but pretty much useless at range.>
+	Msg1_5 <Puffins fly, penguins plummet.>
+	Msg1_6 <Only villainous people like email spam.>
+	Msg1_7 <Running is good for your health.>
+	Msg1_8 <Fixing things is a good experience.>
+	Msg1_9 <If you keep buying and selling things, you'll get the hang of it eventually.>
+	Msg1_10 <The more difficult the fight, the more you'll learn from it.>
+	Msg1_11 <You can shoot carefully or you can shoot lots but you can't do both at once.>
+	Msg1_12 <The small pepper is hotter.>
+	Msg1_13 <If you're out of luck and your mecha's been trashed, maybe you should just settle down and get a corporate job.>
+	Msg1_14 <Survivalists often find dead animals very useful.>
+	Msg1_15 <Mystics can learn a lot from shrines.>
+	Msg1_16 <If you would be a great warrior, you must battle through the cave naked, armed only with a toothpick.>
+	Msg1_17 <Scientists spend too much time looking at rocks.>
+	Msg1_18 <An honest shopkeeper won't buy stolen goods.>
+	Msg1_19 <Even a crooked shopkeeper might have a conscience.>
+	Msg1_20 <Installing cyberware is a pragmatic decision.>
+	Msg1_21 <Spiritual people should keep their bodies pure.>
+	Msg1_22 <Save your fighting for the battlefield. There's no reason to pull a gun on someone in town, unless they attack you first.>
+	Msg1_23 <Whoever pulls their gun out first will get blamed for starting the fight.>
+	Msg1_24 <If you're good at intimidation, nobody's even going to want to fight you.>
+	Msg1_25 <You'll be surprised very often if you don't have a good awareness of your surroundings.>
+	Msg1_26 <There actually is such a thing as a stupid question.>
+	Msg1_27 <Money spent on training is never wasted.>
+
+end
+

@@ -1,0 +1,107 @@
+TYPES LIST
+
+GEAR GENERAL DESCRIPTORS
+-21:	Secret
+-20:	City Mood
+-19:	Theme
+-18:	Meme
+-17:	SuperProp
+-16:	Plot Thing Set
+GG_ContentSet = -15;	{ The collection of unique scene content in an adventure. }
+GG_ArtifactSet = -14;	{ The collection of unique artifacts in an adventure. }
+GG_Set = -13;		{ A collection of things at a store, purchased as one item. }
+GG_World = -12;		{ A planet, moon, or region of space. A place to group scenes. }
+GG_MetaScene = -11;
+-10:	Story
+-9 :	Plot
+-8 :	Map Feature
+-7 :	Adventure
+-6 :	Faction
+-5 :	Persona
+-4 :	Team
+-3 :	Scene
+-2 :	
+-1 :	Delete this gear
+ 0 :	Mecha
+ 1 :	Module
+ 2 :	Character
+ 3 :	Cockpit / Submecha Storage
+ 4 :	Weapon System
+ 5 :	Ammunition
+ 6 :	Movement System
+ 7 :	Holder
+ 8 :	Sensor System
+ 9 :	Support Equipment
+10 :	Shield
+11 :	External Armor
+12 :	Swag
+13 :	Prop
+14 :	Electronics (ghsensor.pp)
+15 :	MetaTerrain (ghprop.pp)
+16 :	Tools (ghswag.pp)
+17 :	Repair Fuel (ghswag.pp)
+18 :	Consumable (ghswag.pp)
+19 :	Modifier (ghmodule.pp)
+20 :	Weapon Add-On (ghweapon.pp)
+21 :	Power Source (ghweapon.pp)
+22 :	Computer
+23 :	Software
+24 :	Harness (ghguard.pp)
+25 :	Usable System (ghsupport.pp)
+
+NUMERICAL ATTRIBUTE GENERAL DESCRIPTORS
+-25:	Completed XXRan Goals (narration.pp)
+-24:	Team Ally/Enemy (locale.pp)
+-23:	Mood Data (narration.pp)
+-22:	Plot Status (narration.pp)
+-21:	SubPlot Plot IDs (narration.pp)
+-20:	Master Plot Element Index (narration.pp)
+-19:	SubPlot Layer IDs (narration.pp)
+-18:	Pro Duelist League Arena Data (arenascript.pp)
+-17:	Meme Data (narration.pp)
+-16:	Skill Roll Counters (arenascript.pp)
+-15:	EntryDirections (locale.pp)
+-14:	Quest Status (narration.pp)
+-13:	Quest Element Scene (narration.pp)
+-12:	Quest Info (narration.pp)
+-11:	SubQuest Layer IDs (narration.pp)
+-10:	SubQuest Quest IDs (narration.pp)
+-9 :	Plot/Story Element IDs (narration.pp)
+-8 :	Content Desc (randmaps.pp)
+-7 :	XXRAN data (narration.pp)
+-6 :	ParaLocation
+-5 :	Visibility Marker {locale.pp}
+-4 :	Episode Data
+-3 :	Weapon Modifiers
+-2 :	Action Data
+-1 :	Location Data / Game Map Coordinates
+ 0 :	Script Variable (ArenaScript.pp)
+ 1 :	Skill (GHChar.pp)
+ 2 :	Gear Options (gear.pp)
+ 3 :	Character Description (GHChar.pp)
+ 4 :	Experience Record (GHChar.pp)
+ 5 :	Personal Variables (interact.pp)
+ 6 :    Relationship Score (interact.pp)
+ 7 :	Narrative Variables (gears.pp)
+ 8 :	Faction Score (interact.pp)
+ 9 :	Condition (ghchars.pp)
+10 :    Relationship Type (interact.pp)
+11 :	Statistic Improvement Level (ghchar.pp)
+12 :	Damage (damage.pp)
+13 :	SDL Frame Number (gears.pp)
+14 :	Status Effect Counter (ghweapon.pp)
+15 :	Prefrences (gears.pp)
+16 :	Talents (ghchars.pp)
+17 :	Faction Rewards (ghchars.pp)
+18 :	Intrinsic (ghintrinsic.pp)
+19 :	MetaTerrain Appearance (ghprop.pp)
+20 :	Arena Mission Info (gh2arena.pp)
+21 :	Scene Data (locale.pp)
+22 :	Environment Data (movement.pp)
+23 : 	Mission Report (locale.pp)
+24 :	Mission Coupons (gh2arena.pp)
+25 :	ArenaHQ Skill Trainers (gh2arena.pp)
+26 :	ArenaHQ Mecha Factions (gh2arena.pp)
+27 :	ArenaHQ Data (gh2arena.pp)
+28 :	Merit Badge (ghchars.pp)
+

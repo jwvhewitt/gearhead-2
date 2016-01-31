@@ -1,0 +1,51 @@
+%%
+%%  *FACTION_PROMOTION_REWARD
+%%
+%% These components contain faction reward stuff.
+%%
+%% Reward components have to check the PC's RENOWN. Renown must be greater
+%% than RewardRank * 10 or the PC will get a cash prize instead of whatever
+%% super reward was being planned. Certain factions may add an additional
+%% test; for instance, a police faction may only give the premium reward
+%% if the PC's Lawfulness is also greater than RewardRank * 10.
+%%
+%% Reward components also have to check to make sure the level being
+%% rewarded is in the range 1..8; for faction level 9 and above, a cash
+%% prize is all that the PC can get.
+%%
+%%  PARAM 1 = The NPC to give the reward.
+%%            This NPC must belong to the faction rewarding the PC.
+
+Content
+	name <Generic Reward>
+	desc <The most generic reward possible is to give the PC a mecha.>
+	requires <*FACTION_PROMOTION_REWARD>
+
+	% E1 is the character giving the reward
+
+	sub
+		Persona 1
+		% V%id%01 = Mecha rating calculator
+		greeting <PCRewardLevel+ 1 XPV 100 EndPlot  AddReact d4  ifG 9 PCRewardLevel else .%id%_GoMinorPrize ifG PCRenown * 10 PCRewardLevel else .%id%_GoMinorPrize Goto .%id%_GoBigPrize>
+		*.%id%_GoMinorPrize <*PROMOTION_Minor_Reward>
+		% Generate a mecha of the requested renown level with a random theme and
+		% rewardlevel * 2 modification points.
+		.%id%_GoBigPrize <NewChat Say %id%01   V= %id%01 * 11 PCRewardLevel V+ %id%01 12   MechaPrize .%id%_fac V%id%01 RandomTheme * 2 PCRewardLevel>
+		.%id%_fac <GENERAL \FACTION_DESIG ChatNPCFac>
+		Msg%id%01 <You have been promoted to the rank of \FacRank ChatNPCFac PCRewardLevel . Here is a new mecha in recognition of your service to \FACTION ChatNPCFac .>
+		Msg%id%01_1 <>
+		CMsg%id%01_1 <ifNPCSociable Accept>
+		Msg%id%01_2 <>
+		CMsg%id%01_2 <ifNPCShy Accept>
+		Msg%id%01_3 <>
+		CMsg%id%01_3 <ifNPCEasygoing Accept>
+		Msg%id%01_4 <>
+		CMsg%id%01_4 <ifNPCPassionate Accept>
+		Msg%id%01_5 <>
+		CMsg%id%01_5 <ifNPCCheerful Accept>
+		Msg%id%01_6 <>
+		CMsg%id%01_6 <ifNPCMelancholy Accept>
+	end
+
+
+

@@ -1,0 +1,726 @@
+%% *:CS_Plunder Content
+%%
+%%
+%% The PC has been sent to plunder a ship, warehouse, or whatever else sort of
+%% thing a pirate might be inclined to attack. Note that this is quite likely to
+%% make the PC some enemies... Or maybe even upgrade their enemy.
+%%
+%% Depending on the core story enemy faction...
+%% - if THIEF, PC will probably compete with them to get plunder
+%% - if POLIC, they'll be guarding a ship belonging to someone else
+%% - if nonexistent, PC will get a new enemy
+%% - otherwise, the ship will probably belong to them, except in the case of
+%%   an enemy faction upgrade.
+%%
+%% The target is activated as soon as this subplot is.
+%%
+%% When this subplot concludes, it sets one of the following triggers:
+%%  .%id%_%plotid%_GoWin
+%%  .%id%_%plotid%_GoLoss
+%%
+%% This is a MAIN COURSE subplot, and as such should alter the story context.
+%%
+%%
+%%  Param1: The outdoors location of the target.
+%%
+
+
+Content
+	name <New Enemy Before Raid>
+	desc <Get accosted by a new enemy NPC before the raid.>
+	requires <*:CS_Plunder F:++ E:-->
+	changes <E:++>
+
+	% Element1 is the outdoors scene for the ship
+	% Element2 is the encounter for the ship
+	% Element3 is the enemy faction
+	% Element4 is the initial encounter with the enemy
+	% Element5 is the new enemy NPC
+	Element2 <Prefab>
+	Place2 <1>
+	Element3 <Grab 2>
+	Element4 <Prefab>
+	Place4 <1>
+	Element5 <NewNPC 3 -7>
+	Place5 <4 (Enemies) sd enemy>
+
+	% P%id%01 = Initialization Counter
+
+	% At startup, activate the escort and level the enemy.
+	update <if= P%id%01 0 P= %id%01 1  SetPlotStatus %plotid1% %id1%  SetEncounterActive %4%  NPCLevel %5% StoryDL>
+
+	% Pass the hint-buck to the ship being plundered.
+	HINT_%id% <:%id1%>
+
+	% The narrative hooks for the BASE_PlunderShip encounter.
+	%   "This is where the magic happens."
+	.%id1%_%plotid1%_GoAttackShip  <>
+	.%id1%_%plotid1%_GoBoardShip   <>
+	.%id1%_%plotid1%_GoPlunderOK   <SetPlotStatus %plotid2% %id2%   WinSubPlot %plotid%   Trigger0 .%id%_%plotid%_GoWin>
+	.%id1%_%plotid1%_GoPlunderBad  <SetPlotStatus %plotid3% %id3%   WinSubPlot %plotid%   Trigger0 .%id%_%plotid%_GoWin>
+	.%id1%_%plotid1%_GoPlunderFail <LoseSubPlot %plotid%    Trigger0 .%id%_%plotid%_GoLoss>
+
+	% SubPlot1 is the plundering core.
+	% SubPlot2 is the good loot
+	% SubPlot3 is whatever the PC gets for blowing up the ship
+	SubPlot1 <*:CS_BASE_PlunderShip 1 2 3>
+	SubPlot2 <*:CS_FilthyLucre_OK 3>
+	SubPlot3 <*:CS_FilthyLucre_Bad 3>
+
+	sub
+		MetaScene 4 2
+		%% An initial combat scene with the ship's escort. If combat is
+		%% won, then the ship gets activated and the escort gets deactivated.
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		% L3 = Attempt Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0  L= 2 1   Alert 1 History 2 &SetEnemyNPC %5%  ForceChat %5%>
+		nu1 <if= T1 0   Return>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   Alert 3   SetEncounterActive %2% Exit %1% SeekGate %2% if= L3 0 XPV 100  AddRenown 1>
+		end <L+ 3 1 FreezeNPC %5% if# L1 0 SetEncounterInactive %4%>
+
+		Msg1 <Before you can get close to %name2% , you are intercepted by a team of mecha from %name3%. Their leader contacts you.>
+		Msg2 <Your raid was blocked by %name5%.>
+		Msg3 <You have defeated the escort. Now, you should be able to get close to %name2%.>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction %3%   WMecha 2 StoryDL 90>
+			ParaX 45
+			ParaY 45
+		end
+
+		Persona 5
+		special <UNLISTED>
+		greeting <EndChat Say %id%01 AddChat %id%01>
+		*result%id%01 <*THEME_EXPO&Enemy na>
+		Msg%id%01 <I was told you'd be coming this way, \PC . In the name of %name3% you will not pass!>
+		Msg%id%01_1 <Surprised? We knew you'd be coming this way sooner or later... %name3% sent me to make sure you get no farther.>
+		Prompt%id%01 <Stop me if you can.>
+		Prompt%id%01_1 <Around you or through you, it doesn't matter to me.>
+		Prompt%id%01_2 <Yeah, try and stop me. I dare you.>
+	end
+	inv
+		STC CORE-ACTIVATABLE
+		name <The S.S. %r%>
+
+		STC CORE-ACTIVATABLE
+		name <%name2%>
+	end
+
+
+Content
+	name <Police Confrontation>
+	desc <You can plunder a ship, but can you hold your booty?>
+	requires <*:CS_Plunder (F:POLIC|F:POLIT) E:++>
+
+	% Element1 is the outdoors scene for the ship
+	% Element2 is the encounter for the ship
+	% Element3 is a corporate faction for the ship; doesn't matter what
+	% Element4 is the battle to get away
+	% Element5 is the enemy NPC
+	% Element6 is a secret about the NPC
+	Element2 <Prefab>
+	Place2 <1>
+	Element3 <Faction Corporate>
+	Element4 <Prefab>
+	Place4 <1>
+	Element5 <Grab 1>
+	Place5 <4 (EnemyNPC) sd enemy>
+	Element6 <Prefab>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Big Plunder (0) or Little Plunder (1)
+	% P%id%03 = Have gained decimation
+
+	% At startup activate the plunder, scale the NPC, and set the secret.
+	update <if= P%id%01 0 P= %id%01 1  SetPlotStatus %plotid1% %id1%  NPCLevel %5% StoryDL  SetPlotStatus %plotid5% %id5%>
+
+	% Pass the hint-buck to the ship being plundered.
+	HINT_%id% <:%id1%>
+
+	% The narrative hooks for the BASE_PlunderShip encounter.
+	%   "This is where the magic happens."
+	.%id1%_%plotid1%_GoAttackShip  <>
+	.%id1%_%plotid1%_GoBoardShip   <>
+	.%id1%_%plotid1%_GoPlunderOK   <Alert %id%01 Exit %4%>
+	.%id1%_%plotid1%_GoPlunderBad  <P= %id%02 1 Alert %id%01 Exit %4%>
+	.%id1%_%plotid1%_GoPlunderFail <LoseSubPlot %plotid%    Trigger0 .%id%_%plotid%_GoLoss>
+
+	% The narrative hooks for the confrontation.
+	.%id4%_%plotid4%_GoWin  <if= P%id%02 0 else .%id%_GoSmallWin  SetPlotStatus %plotid2% %id2%   WinSubPlot %plotid%   Trigger0 .%id%_%plotid%_GoWin>
+	.%id%_GoSmallWin <SetPlotStatus %plotid3% %id3%   WinSubPlot %plotid%   Trigger0 .%id%_%plotid%_GoWin>
+	.%id4%_%plotid4%_GoLoss <LoseSubPlot %plotid%    Trigger0 .%id%_%plotid%_GoLoss>
+
+	% Other narrative hooks.
+	.%id5%_%plotid5%_GoLearnSecret <if= PlotStatus %plotid6% 0 SetPlotStatus %plotid6% %id6%>
+	.%id6%_%plotid6%_GoDecimation <P= %id%03 1>
+
+	Msg%id%01 <But before you can make a clean getaway, you are stopped by \FACTION &EnemyFac !>
+
+	% SubPlot1 is the plundering core.
+	% SubPlot2 is the good loot
+	% SubPlot3 is whatever the PC gets for blowing up the ship
+	% SubPlot4 is the Confrontation bit
+	% SubPlot5 is the chance to learn about E5's raid...
+	% SubPlot6 is the GainAdvantage against E5 once you do know
+	SubPlot1 <*:CS_BASE_PlunderShip 1 2 3>
+	SubPlot2 <*:CS_FilthyLucre_OK 3>
+	SubPlot3 <*:CS_FilthyLucre_Bad 3>
+	SubPlot4 <*:CS_MIX_Confrontation 5 1>
+	SubPlot5 <*:CS_LearnSecretAboutNPC 6 5>
+	SubPlot6 <*:CS_GainAdvantageVsNPC&Decimation 5>
+
+	sub
+		MetaScene 4 2
+		%% After capturing the ship, you have to defend your take from
+		%% the police.
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0  L= 2 1   Alert 1  History 2  SetPlotStatus %plotid4% %id4%  CancelSubPlot %plotid5%  CancelSubPlot %plotid6%>
+		nu1 <if= T1 0   Return  if= V1 0  V= 1 1  Alert 3   Trigger0 .%id4%_%plotid4%_GoCombatLoss>
+		nu2 <if= T2 0 if= T3 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   Trigger0 .%id4%_%plotid4%_GoCombatWin>
+		nu3 <Goto nu2>
+
+		Msg1 <You'll never be able to cart off the loot with all those police in the way.>
+		Msg2 <%name5% tried to arrest you.>
+		Msg3 <You get away... but without any of your rightfully pilfered loot.>
+
+		sub
+			team 1
+			SetEnemy 2 3
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1
+			SetAlly 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   if= P%id%03 0 else GoSmallDeploy WMecha 2 StoryDL 60>
+			GoSmallDeploy <WMecha 2 StoryDL 20>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			name <EnemyNPC>
+			SetEnemy 1
+			SetAlly 2
+			ParaX 45
+			ParaY 45
+		end
+	end
+	inv
+		STC CORE-STATIONARY
+		name <The S.S. %r%>
+
+		Encounter
+		name <Interceptors>
+		% The people who want to steal the PC's booty.
+		update <SetSelfX EncounterX %2% SetSelfY EncounterY %2% Goto GoHide>
+		Use <  >
+		Attack <  >
+
+		Secret
+		Msg <%name5% has been setting a trap for you.>
+	end
+
+Content
+	name <Criminal Confrontation>
+	desc <You can plunder a ship, but can you hold your booty?>
+	%% Prototype: Mecha fight after ship; lose mission if lost
+	requires <*:CS_Plunder F:CRIME E:++>
+
+	% Element1 is the outdoors scene for the ship
+	% Element2 is the encounter for the ship
+	% Element3 is a corporate faction for the ship; doesn't matter what
+	% Element4 is the battle to keep the booty
+	% Element5 is the enemy NPC
+	% Element6 is a secret about the NPC
+	Element2 <Prefab>
+	Place2 <1>
+	Element3 <Faction Corporate>
+	Element4 <Prefab>
+	Place4 <1>
+	Element5 <Grab 1>
+	Place5 <4 (EnemyNPC) sd enemy>
+	Element6 <Prefab>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Big Plunder (0) or Little Plunder (1)
+	% P%id%03 = Have gained decimation
+
+	% At startup activate the plunder, scale the NPC, and set the secret.
+	update <if= P%id%01 0 P= %id%01 1  SetPlotStatus %plotid1% %id1%  NPCLevel %5% StoryDL  SetPlotStatus %plotid5% %id5%>
+
+	% Pass the hint-buck to the ship being plundered.
+	HINT_%id% <:%id1%>
+
+	% The narrative hooks for the BASE_PlunderShip encounter.
+	%   "This is where the magic happens."
+	.%id1%_%plotid1%_GoAttackShip  <>
+	.%id1%_%plotid1%_GoBoardShip   <>
+	.%id1%_%plotid1%_GoPlunderOK   <Alert %id%01 Exit %4%>
+	.%id1%_%plotid1%_GoPlunderBad  <P= %id%02 1 Alert %id%01 Exit %4%>
+	.%id1%_%plotid1%_GoPlunderFail <LoseSubPlot %plotid%    Trigger0 .%id%_%plotid%_GoLoss>
+
+	% The narrative hooks for the confrontation.
+	.%id4%_%plotid4%_GoWin  <if= P%id%02 0 else .%id%_GoSmallWin  SetPlotStatus %plotid2% %id2%   WinSubPlot %plotid%   Trigger0 .%id%_%plotid%_GoWin>
+	.%id%_GoSmallWin <SetPlotStatus %plotid3% %id3%   WinSubPlot %plotid%   Trigger0 .%id%_%plotid%_GoWin>
+	.%id4%_%plotid4%_GoLoss <LoseSubPlot %plotid%    Trigger0 .%id%_%plotid%_GoLoss>
+
+	% Other narrative hooks.
+	.%id5%_%plotid5%_GoLearnSecret <if= PlotStatus %plotid6% 0 SetPlotStatus %plotid6% %id6%>
+	.%id6%_%plotid6%_GoDecimation <P= %id%03 1>
+
+	Msg%id%01 <But before you can haul off your booty, you are attacked by rivals from \FACTION &EnemyFac !>
+
+	% SubPlot1 is the plundering core.
+	% SubPlot2 is the good loot
+	% SubPlot3 is whatever the PC gets for blowing up the ship
+	% SubPlot4 is the Confrontation bit
+	% SubPlot5 is the chance to learn about E5's raid...
+	% SubPlot6 is the GainAdvantage against E5 once you do know
+	SubPlot1 <*:CS_BASE_PlunderShip 1 2 3>
+	SubPlot2 <*:CS_FilthyLucre_OK 3>
+	SubPlot3 <*:CS_FilthyLucre_Bad 3>
+	SubPlot4 <*:CS_MIX_Confrontation 5 1>
+	SubPlot5 <*:CS_LearnSecretAboutNPC 6 5>
+	SubPlot6 <*:CS_GainAdvantageVsNPC&Decimation 5>
+
+	sub
+		MetaScene 4 2
+		%% After capturing the ship, you have to defend your take from
+		%% these other crooks.
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0  L= 2 1   Alert 1  History 2  SetPlotStatus %plotid4% %id4%  CancelSubPlot %plotid5%  CancelSubPlot %plotid6%>
+		nu1 <if= T1 0   Return  if= V1 0  V= 1 1  Alert 3   Trigger0 .%id4%_%plotid4%_GoCombatLoss>
+		nu2 <if= T2 0 if= T3 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   Trigger0 .%id4%_%plotid4%_GoCombatWin>
+		nu3 <Goto nu2>
+
+		Msg1 <The enemy gang is being led by %name5%.>
+		Msg2 <%name5% attempted to steal your booty.>
+		Msg3 <%name5%'s gang steals all of your rightfully-pilfered loot.>
+
+		sub
+			team 1
+			SetEnemy 2 3
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1
+			SetAlly 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction &EnemyFac   if= P%id%03 0 else GoSmallDeploy WMecha 2 StoryDL 60>
+			GoSmallDeploy <WMecha 2 StoryDL 20>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			name <EnemyNPC>
+			SetEnemy 1
+			SetAlly 2
+			ParaX 45
+			ParaY 45
+		end
+	end
+	inv
+		STC CORE-STATIONARY
+		name <The S.S. %r%>
+
+		Encounter
+		name <Interceptors>
+		% The people who want to steal the PC's booty.
+		update <SetSelfX EncounterX %2% SetSelfY EncounterY %2% Goto GoHide>
+		Use <  >
+		Attack <  >
+
+		Secret
+		Msg <%name5% has been planning a raid against %name2%.>
+	end
+
+
+Content
+	name <Raid Corporate Cruiser (L5PAT)>
+	desc <The ship you're raiding? Belongs to a corporation. Now they hate you.>
+	%% Prototype: Mecha fight before ship; may re-attempt fight if lost
+	requires <*:CS_Plunder F:-- (L:FCOMS|L:RISHI|L:CRIHN|L:MAQUI|L:BOHEM|L:REDMA) -P:PRIVA>
+	changes <F:++>
+
+	% Element1 is the outdoors scene for the ship
+	% Element2 is the encounter for the ship
+	% Element3 is the corporate faction
+	% Element4 is the initial encounter with corporate guards
+	Element2 <Prefab>
+	Place2 <1>
+	Element3 <Faction (MUGLE|COMET|HOELL) -PCFAC -Ally>
+	Element4 <Prefab>
+	Place4 <1>
+
+	% P%id%01 = Initialization Counter
+
+	% At startup, activate the escort.
+	update <if= P%id%01 0 P= %id%01 1  SetPlotStatus %plotid1% %id1%  SetEncounterActive %4%>
+
+	% Pass the hint-buck to the ship being plundered.
+	HINT_%id% <:%id1%>
+
+	% The narrative hooks for the BASE_PlunderShip encounter.
+	%   "This is where the magic happens."
+	.%id1%_%plotid1%_GoAttackShip  <>
+	.%id1%_%plotid1%_GoBoardShip   <>
+	.%id1%_%plotid1%_GoPlunderOK   <SetPlotStatus %plotid2% %id2%   WinSubPlot %plotid%   Trigger0 .%id%_%plotid%_GoWin>
+	.%id1%_%plotid1%_GoPlunderBad  <SetPlotStatus %plotid3% %id3%   WinSubPlot %plotid%   Trigger0 .%id%_%plotid%_GoWin>
+	.%id1%_%plotid1%_GoPlunderFail <LoseSubPlot %plotid%    Trigger0 .%id%_%plotid%_GoLoss>
+
+	% SubPlot1 is the plundering core.
+	% SubPlot2 is the good loot
+	% SubPlot3 is whatever the PC gets for blowing up the ship
+	SubPlot1 <*:CS_BASE_PlunderShip 1 2 3>
+	SubPlot2 <*:CS_FilthyLucre_OK 3>
+	SubPlot3 <*:CS_FilthyLucre_Bad 3>
+
+	sub
+		MetaScene 4 2
+		%% An initial combat scene with the ship's escort. If combat is
+		%% won, then the ship gets activated and the escort gets deactivated.
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0  L= 2 1   Alert 1 History 2 &SetEnemyFac %3%>
+		nu1 <if= T1 0   Return>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   Alert 3   SetEncounterActive %2% Exit %1% SeekGate %2%>
+		end <if# L1 0 SetEncounterInactive %4%>
+
+		Msg1 <Before you can get close to %name2% , you are intercepted by a team of mecha from %name3%. With any luck this corporate vessel will have all kinds of merchandise to steal.>
+		Msg2 <You attacked a ship belonging to %name3%.>
+		Msg3 <You have defeated the escort. Now, you should be able to get close to %name2%.>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction %3%   WMecha 2 StoryDL 120>
+			ParaX 45
+			ParaY 45
+		end
+
+	end
+	inv
+		STC CORE-ACTIVATABLE
+		name <The S.S. %r%>
+
+		STC CORE-ACTIVATABLE
+		name <%name2%>
+	end
+
+Content
+	name <Privateer's First Raid>
+	desc <The ship you're raiding? Belongs to an enemy faction.>
+	requires <*:CS_Plunder F:-- P:PRIVA>
+	changes <F:++>
+
+	% Element1 is the outdoors scene for the ship
+	% Element2 is the encounter for the ship
+	% Element3 is the corporate faction
+	% Element4 is the initial encounter with corporate guards
+	Element2 <Prefab>
+	Place2 <1>
+	Element3 <Faction (AEGIS|AEGSF|REDMA)>
+	Element4 <Prefab>
+	Place4 <1>
+
+	% P%id%01 = Initialization Counter
+
+	% At startup, activate the escort.
+	update <if= P%id%01 0 P= %id%01 1  SetPlotStatus %plotid1% %id1%  SetEncounterActive %4%>
+
+	% Pass the hint-buck to the ship being plundered.
+	HINT_%id% <:%id1%>
+
+	% The narrative hooks for the BASE_PlunderShip encounter.
+	%   "This is where the magic happens."
+	.%id1%_%plotid1%_GoAttackShip  <>
+	.%id1%_%plotid1%_GoBoardShip   <>
+	.%id1%_%plotid1%_GoPlunderOK   <SetPlotStatus %plotid2% %id2%   WinSubPlot %plotid%   Trigger0 .%id%_%plotid%_GoWin>
+	.%id1%_%plotid1%_GoPlunderBad  <SetPlotStatus %plotid3% %id3%   WinSubPlot %plotid%   Trigger0 .%id%_%plotid%_GoWin>
+	.%id1%_%plotid1%_GoPlunderFail <LoseSubPlot %plotid%    Trigger0 .%id%_%plotid%_GoLoss>
+
+	% SubPlot1 is the plundering core.
+	% SubPlot2 is the good loot
+	% SubPlot3 is whatever the PC gets for blowing up the ship
+	SubPlot1 <*:CS_BASE_PlunderShip 1 2 3>
+	SubPlot2 <*:CS_FilthyLucre_OK 3>
+	SubPlot3 <*:CS_FilthyLucre_Bad 3>
+
+	sub
+		MetaScene 4 2
+		%% An initial combat scene with the ship's escort. If combat is
+		%% won, then the ship gets activated and the escort gets deactivated.
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0  L= 2 1   Alert 1 History 2 &SetEnemyFac %3%>
+		nu1 <if= T1 0   Return>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   Alert 3   SetEncounterActive %2% Exit %1% SeekGate %2%>
+		end <if# L1 0 SetEncounterInactive %4%>
+
+		Msg1 <%name2% is being escorted by a team of mecha from %name3%. With any luck, they're carrying something worth stealing.>
+		Msg2 <You attacked a ship belonging to %name3%.>
+		Msg3 <You have defeated the escort. Now, you should be able to get close to %name2%.>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction %3%   WMecha 2 StoryDL 120>
+			ParaX 45
+			ParaY 45
+		end
+
+	end
+	inv
+		STC CORE-ACTIVATABLE
+		name <The S.S. %r%>
+
+		STC CORE-ACTIVATABLE
+		name <%name2%>
+	end
+
+
+
+%%
+%% *CS_SeekPlunder
+%%
+%% The PC has to find someone and convince them to hand over some info leading
+%% to a plunder event. For instance, an enemy base may be raided to steal their
+%% info, or a thief might give the PC a corporate route plan in exchange for
+%% some kind of service.
+%%
+%% This subplot needs a HINT_%id%, which will explain to the PC what needs to
+%% be done to gain the info (or, at least, how to meet the person who will
+%% explain).
+%%
+
+Content
+	name <Moderately Easy Tip>
+	desc <Looking for easy money? It could be easier, but not by much.>
+	requires <*CS_SeekPlunder>
+
+	% The PC can get the tip by performing a service for the NPC.
+
+	% E1 is a local public scene
+	% E2 is the NPC to pass the info
+	% E3 is the datachip with the info
+	% E4 is the environs scene for the robbery
+	Element1 <Scene (Building|Meeting) Public !Near -7>
+	Element2 <Character THIEF -Enemy !Okay -3 !XClude -2 !Near 1 NeverFail>
+	NeverFail2 <Thief>
+	Place2 </>
+	Element3 <Prefab>
+	Place3 <2>
+	Element4 <Scene Environs !Near -7>
+
+	%% HINT
+	HINT_%id% <%name2% knows how to score some easy money, but won't be giving the info away for free.>
+
+	% P%id%01 = Initialization Counter
+
+	update <if= P%id%01 0 P= %id%01 1 MoveNPC %2% %1%>
+
+	%% FAIL CONDITIONS:
+	%% - E2 dies before PLUNDER activated
+	end <if= PlotStatus %plotid1% 0 ifNPCDead %2% LoseEpisode>
+
+	% Stealing the datachip will give the PC the info.
+	Get%3% <if= PlotStatus %plotid1% 0  Alert %id%02  DeleteItem %3%  SetPlotStatus %plotid1% %id1%  SMemo %id%03  History %id%04>
+
+	% Completing the PLUNDER ends this episode.
+	.%id1%_%plotid1%_GoWin  <WinEpisode>
+	.%id1%_%plotid1%_GoLoss <LoseEpisode>
+
+	Msg%id%02 <This datachip contains all the info needed to pull off a big heist. \HINT %id1%>
+	Msg%id%03 <You stole a datachip from %name2% leading to an easy target. \HINT %id1%>
+	Msg%id%04 <You stole a datachip from %name2%.>
+
+	% SubPlot1 is the Plunder itself.
+	% SubPlot2 is the mission the PC must complete.
+	SubPlot1 <*:CS_Plunder 4>
+	SubPlot2 <*:CS_MinorMission 2>
+
+	sub
+		Persona 2
+		&Price <Reward StoryDL 500>
+		greeting <if= PlotStatus %plotid% %id% else .%id%_GoChat if= PlotStatus %plotid1% 0 else .%id%_GoChat if= PlotStatus %plotid2% 0 else .%id%_GoCheckWin Goto .%id%_GoGreet>
+		.%id%_GoCheckWin <ifSubPlotWon %plotid2% else .%id%_GoCheckLoss NewChat Say %id%01 Goto .%id%_GoGiveTip>
+		.%id%_GoCheckLoss <ifSubPlotLost %plotid2% else .%id%_GoRemind NewChat Say %id%02 AddChat %id%01 AddChat %id%04 AddChat %id%03>
+		*.%id%_GoRemind <*GenericMissionReminder>
+		.%id%_GoGiveTip <SMemo %id%03 History %id%04 SetPlotStatus %plotid1% %id1%>
+		.%id%_GoChat <RevertPersona>
+		*.%id%_GoGreet <*IHaveInformation&AboutMoney .%id%_GoOffer na>
+		.%id%_GoOffer <NewChat Say %id%05 AddChat %id%05 AddChat %id%02>
+		result%id%01 <NewChat Say %id%06  Cash+ -&Price Goto .%id%_GoGiveTip>
+		*result%id%02 <*YourLossSucker .%id%_GoLoseEpisode>
+		.%id%_GoLoseEpisode <LoseEpisode>
+		*result%id%03 <*HurryBackWithMoney>
+		result%id%04 <Goto result%id%02>
+		result%id%05 <Goto .%id2%_GoInit>
+		Msg%id%01 <Good going, \PC . I suppose I owe you this... \HINT %id1% These coords will take you where you're going.>
+		Msg%id%02 <You list the mission... but, if you want, the info can still be yours for a mere $ \VAL &Price .>
+		Msg%id%03 <%name2% told you about a good target. \HINT %id1%>
+		Msg%id%04 <%name2% told you about a good target.>
+		Msg%id%05 <I've got some transport logs which should let you pull off an easy heist. I'm willing to share them with you, but first you've got to do something for me...>
+		Msg%id%06 <Thanks... with this money, I can hire someone better to do that mission you screwed up. \HINT %id1% This datachip has all the info you need.>
+		Prompt%id%01 <You're a thief, \CHATNPC . [Give Money]>
+		CPrompt%id%01 <ifG PC$ &Price Accept>
+		Prompt%id%02 <Sorry, I don't do that kind of work.>
+		Prompt%id%03 <I'll be back for it later.>
+		Prompt%id%04 <No thanks, I've lost interest.>
+		Prompt%id%05 <What kind of mission are you talking about?>
+	end
+	inv
+		Treasure
+		name <Datachip>
+	end
+
+Content
+	name <Easy Tip>
+	desc <Looking for easy money? Can't get easier than this.>
+	requires <*CS_SeekPlunder ~!Ne>
+
+	% The PC will get a call from someone about a fast cash opportunity.
+	% Then they can buy the info, steal it, or maybe even talk it out.
+
+	% E1 is a local public scene
+	% E2 is the NPC to pass the info
+	% E3 is the datachip with the info
+	% E4 is the environs scene for the robbery
+	Element1 <Scene (Building|Meeting) Public !Near -7>
+	Element2 <Character THIEF -Enemy !Okay -3 !XClude -2 !Near 1 NeverFail>
+	NeverFail2 <Thief>
+	Place2 </>
+	Element3 <Prefab>
+	Place3 <2>
+	Element4 <Scene Environs !Near -7>
+
+	%% HINT
+	HINT_%id% <%name2% will be selling some valuable info to the higest bidder.>
+
+	% P%id%01 = Initialization Counter
+
+	update <if= P%id%01 0 P= %id%01 1 MoveNPC %2% %1%>
+
+	%% FAIL CONDITIONS:
+	%% - E2 dies before PLUNDER activated
+	end <if= PlotStatus %plotid1% 0 ifNPCDead %2% LoseEpisode>
+
+	% Stealing the datachip will give the PC the info.
+	Get%3% <if= PlotStatus %plotid1% 0  Alert %id%02  DeleteItem %3%  SetPlotStatus %plotid1% %id1%  SMemo %id%03  History %id%04>
+
+	% Completing the PLUNDER ends this episode.
+	.%id1%_%plotid1%_GoWin  <WinEpisode>
+	.%id1%_%plotid1%_GoLoss <LoseEpisode>
+
+	Msg%id%02 <This datachip contains all the info needed to pull off a big heist. \HINT %id1%>
+	Msg%id%03 <You stole a datachip from %name2% leading to an easy target. \HINT %id1%>
+	Msg%id%04 <You stole a datachip from %name2%.>
+
+	% SubPlot1 is the Plunder itself. Nice and simple.
+	SubPlot1 <*:CS_Plunder 4>
+
+	sub
+		Persona 2
+		&Price <Reward StoryDL 300>
+		greeting <if= PlotStatus %plotid% %id% else .%id%_GoChat if= PlotStatus %plotid1% 0 else .%id%_GoChat Goto .%id%_GoGreet>
+		.%id%_GoChat <RevertPersona>
+		*.%id%_GoGreet <*IHaveInformation&AboutMoney .%id%_GoOffer na>
+		.%id%_GoOffer <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+		result%id%01 <NewChat Say %id%02 SMemo %id%03 History %id%04 Cash+ -&Price SetPlotStatus %plotid1% %id1%>
+		*result%id%02 <*YourLossSucker .%id%_GoLoseEpisode>
+		.%id%_GoLoseEpisode <LoseEpisode>
+		*result%id%03 <*HurryBackWithMoney>
+		Msg%id%01 <I've got some inside info on a ripe target for a heist... if you want it, it's just $ \VAL &Price .>
+		Msg%id%02 <No worries, this is a smart investment... unless you manage to screw up. \HINT %id1% This datachip should tell you everything you need to know.>
+		Msg%id%03 <%name2% told you about a good target. \HINT %id1%>
+		Msg%id%04 <%name2% told you about a good target.>
+		Prompt%id%01 <This better be worth it. [Give Money]>
+		CPrompt%id%01 <ifG PC$ &Price Accept>
+		Prompt%id%02 <Sorry, I don't do that kind of work.>
+		Prompt%id%03 <I'll be back for it later.>
+	end
+	inv
+		Treasure
+		name <Datachip>
+	end
+
+
+%%
+%% *:CS_FilthyLucre_OK Content
+%% *:CS_FilthyLucre_Bad Content
+%%
+%% The PC has just robbed someone. Give them their filthy lucre! Just set the
+%% plotstatus to give the loot and cancel this subplot.
+%%
+%% Note that *CORE_EMO_ should get better loot than other plunder missions.
+%% 
+%%  Param1: The faction wot is being robbed.
+%%
+
+Content
+	name <Easy Nothing But Money>
+	requires <*:CS_FilthyLucre_OK *CORE_EMO_>
+
+	update <Alert %id%01  CashPrize Reward StoryDL 1500  CancelSubPlot %plotid%>
+	Msg%id%01 <You raid the cargo hold, finding valuables worth $ \VAL Reward StoryDL 1500 .>
+
+Content
+	name <Difficult Money, Apparently>
+	requires <*:CS_FilthyLucre_OK -*CORE_EMO_>
+
+	update <Alert %id%01  CashPrize Reward StoryDL 750  CancelSubPlot %plotid%>
+	Msg%id%01 <You raid the cargo hold, finding valuables worth $ \VAL Reward StoryDL 1500 .>
+
+Content
+	name <Nothing But Not Much Cash>
+	requires <*:CS_FilthyLucre_Bad>
+
+	update <Alert %id%01  CashPrize Reward StoryDL 100  CancelSubPlot %plotid%>
+	Msg%id%01 <There isn't much left in the cargo hold. You find valuables worth $ \VAL Reward StoryDL 1500 .>
+
+
+
+
+
+
+

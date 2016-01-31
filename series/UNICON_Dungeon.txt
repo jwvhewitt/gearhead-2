@@ -1,0 +1,254 @@
+%% *DUNGEON_THREAT CONTENT
+%%   Dungeon threats. Little things to make life more dangerous for hapless adventurers.
+
+
+%% *DUNGEON_REWARD CONTENT
+%%   Dungeon treasure. Something that's good for everyone.
+
+Content
+	name <Dungeon Medic>
+	requires <*DUNGEON_REWARD GROUND>
+	element1 <Prefab>
+	team1 <Citizen>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMain>
+		GoMain <NewChat Say 1 AddChat 1 AddChat 2>
+		result1 <EndChat Say 2 shop .nowares Say 3>
+		result2 <NewChat Say 4>
+		Msg1 <This is a pretty dangerous place. If you've been injured, I could give you some help.>
+		Msg2 <I'm not equipped to deal with everything, but I should be able to patch things up until you get back to the surface.>
+		Msg3 <Happy exploring!>
+		Msg4 <If ever you do need help you know where you can find me.>
+		Prompt1 <I could use a bit of that, yeah.>
+		Prompt2 <No thanks, I'm doing fine.>
+	end
+	inv
+		NPC Nurse
+	end
+
+
+%% *DUNGEON_DECOR CONTENT
+%%   Dungeon Extras. Little bits of personality for dungeon levels.
+
+Content
+	name <Mine Treasure>
+	requires <*DUNGEON_DECOR (Mine|derelict) !Ex ~Asteroid>
+	element1 <Prefab>
+	element2 <Prefab>
+	teamdata2 <sd enemy>
+	start <if= V%id%01 0 else %pop% V= %id%01 1 ifAwareness 5 else %pop% Print %id%01 Goto %pop%>
+	msg%id%01 <The walls of this level have been sliced erratically.>
+	inv
+		Treasure
+		name <Ruby>
+		Fudge 12000000
+		mass 2
+		desc <An enormous red jewel.>
+		CLUE_SCIENCE <Print 1 if= V1 0 V= 1 1 SkillXP NAS_Science 100>
+		CLUE_INSIGHT <Print 2 if= V2 0 V= 2 1 SkillXP NAS_Insight 100>
+		Msg1 <Jewels like this are often formed on asteroids, but this one is exceptionally large.>
+		Msg2 <This jewel is both large and flawless. It must be worth a lot of money.>
+
+		monster murder machine
+		% This is a worse than usual murder machine, in that it has a
+		% dodge skill of 10 and an attack skill of 15. Killer.
+		CloseCombat 15
+		Dodge 10
+	end
+
+Content
+	name <Dead Miner>
+	requires <*DUNGEON_DECOR Mine Space Ruin>
+	element1 <prefab>
+	element2 <prefab>
+	place2 <1>
+
+	% A dead miner and his harmonica, v2.1
+	%  a GH2 RANCON_Dungeon content entry written for the purpose of learning ASL.
+	%	-by Yendaa
+	%	-edited by Joe
+	inv
+		% v%id%1 - how the body was treated
+		%   0 nothing yet
+		%   1 rummaged through
+		%   2 left alone
+		% v%id%02 - Mysticism counter
+
+		MetaTerrain 0 0
+		name <Dead Miner>
+		desc <A dead miner> 
+		SDL_Sprite <prop_body.png>
+		roguechar <!>
+		mass 170
+		CLUE_MEDICINE <Print %id%06>
+		clue_REPAIR <Print %id%07>
+		clue_SCIENCE <Print %id%06>
+		clue_MYSTICISM <Print %id%08 if= v%id%02 0 XPV 50 V= %id%02 1>
+		clue_INSIGHT <Print %id%06>
+
+		use <if= v%id%01 0 else GoLeft ifYesNo %id%01 %id%02 %id%03 else GoLeave goto GoRummage>
+		GoLeave <v= %id%01 2 AddHeroic 1>
+		GoRummage <V= %id%01 1 Print %id%05 CASHPRIZE d50 GiveItem %2% AddPragmatic 3>
+
+		GoLeft <if= v%id%01 2 else GoRummaged Print %id%01>
+		GoRummaged <Print %id%04>
+
+		Msg%id%01 <A dead miner lies on the ground before you, his spacesuit torn and helmet cracked.>
+		Msg%id%02 <Rummage through his belongings.>
+		Msg%id%03 <Leave him.>
+		Msg%id%04 <A dead miner lies here, his corpse desecrated.>
+		Msg%id%05 <Cutting open what remains of his spacesuit, you find a couple of credits and an old silver harmonica.>
+		Msg%id%06 <This man died of asphyxiation when his spacesuit lost pressure because of damage.>
+		Msg%id%07 <It's too late for that. Perhaps if you had been here at the time when he died...>
+		Msg%id%08 <You say a prayer for the soul of the deceased.>
+
+		Instrument 2
+		name <Old Harmonica>
+		desc <Scratches and dents cover the silver surface of this instrument.>
+	end
+
+%% *DUNGEON_GOAL CONTENT
+
+	Content
+	name <Shiny Rock>
+	requires <*DUNGEON_GOAL Mine !Ne>
+	minimap < ... .......1....... ... >
+	% E1 is the treasure. It's heavy.
+	element1 <Prefab>
+	inv
+		Treasure
+		name <Shiny Rock>
+		desc <This rock is really shiny. It probably contains all kinds of valuable minerals.>
+		CLUE_SCIENCE <Print 1>
+		CLUE_SURVIVAL <Print 1>
+		CLUE_INSIGHT <Print 1>
+		Msg1 <It does indeed contain all kinds of valuable minerals.>
+		Fudge 1255000
+		mass 24
+	end
+
+	Content
+	name <Massive Geode>
+	requires <*DUNGEON_GOAL Mine !Lo>
+	minimap < ... .......1....... ... >
+	% E1 is the treasure. It's heavy.
+	element1 <Prefab>
+	inv
+		Treasure
+		name <Massive Geode>
+		desc <This is the biggest geode that you've ever seen.>
+		Fudge 2550000
+		mass 21
+	end
+
+	Content
+	name <Big Gold Nugget>
+	requires <*DUNGEON_GOAL Mine !Md>
+	minimap < ... .......1....... ... >
+	% E1 is the nugget. It's a doozy.
+	element1 <Prefab>
+	inv
+		Treasure
+		name <Huge Gold Nugget>
+		desc <This gold nugget is very big.>
+		Fudge 5500000
+		mass 32
+	end
+
+	Content
+	name <Huge Jewel>
+	requires <*DUNGEON_GOAL Mine !Hi>
+	minimap < ... .......1....... ... >
+	% E1 is the treasure.
+	element1 <Prefab>
+	inv
+		Treasure
+		name <Huge Jewel>
+		desc <This jewel is extremely large. It must be worth quite a lot of money.>
+		Fudge 9000000
+		mass 14
+	end
+
+	Content
+	name <Enormous Gold Nugget>
+	requires <*DUNGEON_GOAL Mine !Ex>
+	minimap < ... .......1....... ... >
+	% E1 is the treasure.
+	element1 <Prefab>
+	inv
+		Treasure
+		name <Enormous Gold Nugget>
+		desc <This nugget is extremely large.>
+		Fudge 20000000
+		mass 45
+	end
+
+
+	Content
+	name <Careless Samurai>
+	requires <*DUNGEON_GOAL>
+	minimap < ... .......1....... ... >
+
+	% Element1 is the katana
+	% E2 is the current scene being built.
+	% E3 is a public building somewhere in the same city.
+	% E4 is the samurai whom the PC can recruit.
+	Element1 <Prefab>
+	Element2 <.>
+	Element3 <Scene Building Public !Near 2>
+	Element4 <Prefab>
+	Place4 <3 SD Ally>
+
+	get%1% <if= L%id%01 0 L= %id%01 1 NPCLevel %4% PCRenown>
+
+	sub
+		Persona 4
+		% Kind of a kludgey thing- after resolving this event, one way or another,
+		% manually delete the following rumor.
+		rumor <%name4% lost something precious in %name2%.>
+		% V1 = Have resolved issue.
+		% V2 = Original Team Value
+		greeting <if= V1 0 else GoSolvedCase ifChatNPCSurrendered else GoAskAbout PCAlly %4% NewChat Say 2 History 3 Goto GoSurrender>
+		GoSurrender <UnSurrender %4% SetNPCTeam %4% V2 Goto GoResolve>
+		GoResolve <V= 1 1 EraseRumor>
+		GoAskAbout <ifChatNPCInPlay else GoNotHere NewChat Say 1 AddChat 1 AddChat 2 AddChat 3 ifItemDestroyed %1% Goto GoResolve>
+		*GoSolvedCase <*MISC_CHATTER>
+		*GoNotHere <*IAmBusy&OnPhone>
+		result1 <PCAlly %4% AddLawful 1 AddReact d20  NewChat Say 4 History 5 DeleteItem %1% Goto GoResolve>
+		result2 <ifG ChatNPCRenown PCRenown else GoR2Fail EndChat Say 6 V= 2 ChatNPCTeam SoloAttack %4%>
+		GoR2Fail <SetXXRAttitude %4% XXR_A_HatesPC  PCEnemy %4% NewChat Say 7 Goto GoResolve>
+		result3 <NewChat Say 8  SkillXP NAS_Taunt 100  SetXXRMotivation %4% XXR_M_Seeker  Goto GoResolve>
+		Msg1 <I have shamed myself deeply... While exploring %name2% I lost my ancestral weapon. It was a priceless artifact, and can never be replaced.>
+		Msg2 <You have proven that you are far more worthy of the blade than I... I can only hope to learn from your example.>
+		Msg3 <You bested %name4% in combat, and \SPR %4% pledged to aid you.>
+		Msg4 <Yes, it is! Thank you... Truly, you are a fearsome warrior with a noble heart. Maybe someday we will be able to fight side by side.>
+		Msg5 <You returned %name4%'s katana, so \SPR %4% pledged to aid you.>
+		Msg6 <You think you are worthy to wield that blade? I will show you your true value!>
+		Msg7 <Fine. I have proven myself unworthy to posess that blade any longer... but do not think that I will forget what you have taken from me.>
+		Msg8 <You're right! I am undeserving of such a fine weapon... I will rededicate my life to training, and maybe someday I will be worthy...>
+		Prompt1 <Is this it? [Give Katana]>
+		CPrompt1 <ifKeyItem %1% Accept>
+		Prompt2 <I found it... and I intend to keep it.>
+		CPrompt2 <ifKeyItem %1% Accept>
+		Prompt3 <You can't be much of a samurai, then.>
+		CPrompt3 <ifTaunt SkillTar ChatNPCRenown Accept>
+	end
+	inv
+		Melee 9
+		Name <Heirloom Katana>
+		desc <A PreZero sword of great antiquity.>
+		SDL_PORTRAIT <item_katana.png>
+		type <ARMORPIERCING>
+		legality 5
+		Acc 3
+		Speed 5
+		Mass -5
+
+		NPC Warrior Monk
+		statline 14 12 13 11 9 14 9 7
+		job <Samurai>
+		MOTIVATION:Professional
+	end
+

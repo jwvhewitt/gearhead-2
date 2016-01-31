@@ -1,0 +1,383 @@
+%%
+%% Arena Persona Fragments
+%%
+%%	This file contains persona fragments needed by the mecha arenas.
+%%	Mostly this is for the managers.
+
+%% TYPE: *RejectChallenge
+%%	The PC has told the NPC that he isn't ready to fight yet. The NPC will reply.
+
+	Persona
+	requires <*RejectChallenge>
+	START <NewChat Say %id%01>
+	Msg%id%01 <Come back when you're ready, then.>
+	Msg%id%01_1 <It's always best to make sure everything is in order before you enter the arena. I'll take this opportunity to go over my own stuff, too.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Let me know when you're ready.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <No worries. Get back to me when you're ready to go.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <What's the matter, you don't have the nerve to face me? Ha!>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <I'm looking forward to starting the fight!>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <Do you need to prepare for this fight, or are you simply afraid? I wonder...>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+%% TYPE: *ChallengerStatusReport
+%%	The PC is supposed to fight NPC1; the arena manager will tell him the current status
+%%	of things. This procedure checks for lost battles, proceeding battles, and the death
+%%	of the NPC.
+%%  PARAM1: CID of the challenger
+%%  PARAM2: ID of the arena
+%%  PARAM3: Challenger died exit label
+
+	Persona
+	requires <*ChallengerStatusReport>
+	START <if= ArenaState %2% NAV_AS_Loss else .%id%_GoCheckAnything NewChat Say %id%01 ResetArena %2%>
+	.%id%_GoCheckAnything <if# ArenaState %2% NAV_AS_Vacant else .%id%_GoCheckEligibility NewChat Say %id%02>
+	.%id%_GoCheckEligibility <ifNPCOK %1% else %3% NewChat Say %id%03>
+	Msg%id%01 <\PERSONA %1% defeated you in the arena. Try challenging \OPR %1% again later; you can't advance in the competition until you defeat \OPR %1% .>
+	Msg%id%02 <You're supposed to fight \PERSONA %1% in the arena. Get over there and do something!>
+	Msg%id%03 <You can't advance in the competition until after you defeat \PERSONA %1% .>
+
+
+%% TYPE: *YourChallengerDied
+%%	The challenger the PC was supposed to fight has died, making that fight impossible.
+%%	This pfrag will instead set up a generic encounter at the arena, and cancel the
+%%	challenger quest. The PC will be jumped directly to the arena.
+%%  PARAM1: ID of the arena
+%%  PARAM2: QID of subquest
+
+	Persona
+	requires <*YourChallengerDied>
+	START <NewChat Say %id%01 SavePos PrepArena %1% 150 Jump %1% CancelSubPlot %2%>
+	Msg%id%01 <You were supposed to face a special opponent, but that's not going to happen. Instead you'll just have a regular fight... Come talk to me when you're done.>
+	Msg%id%01_1 <Did you hear that one of our pilots has died? This is a dangerous business... The challenge match you were supposed to have has been cancelled; instead you'll just fight a normal one.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Good luck.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <There's been a problem with the arena schedule, but fortunately it doesn't affect you. Good luck on the field.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <Being an arena pilot is dangerous. The person you were supposed to battle today has died. In place of the special match, we'll just run a normal fight.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <The special challenger match you were supposed to have has been cancelled, but don't worry! In its place we'll hold a grand melee battle royale instead. That sounds like way more fun.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <You were going to have a special challenger for the next match, but as so often happens your opponent has turned up dead. Instead I'll just set you up against a massive group of nobodies.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+%% TYPE: *MeetMeAtArena
+%%	The NPC will meet the PC at the arena for a big fight.
+%%  PARAM1: ID of the arena
+%%  PARAM2: Exit label
+
+	Persona
+	requires <*MeetMeAtArena Easygoing>
+	START <EndChat Say %id%01 Goto %2%>
+	Msg%id%01 <I'll go wait for you at \SCENE %1% . Take however much time you need.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Cool. I'll see you at \SCENE %1% , then.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_5 <This is going to be a fun match! Come meet me at \SCENE %1% when you're ready.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+	Persona
+	requires <*MeetMeAtArena>
+	START <EndChat Say %id%01 Goto %2%>
+	Msg%id%01 <Meet me at the arena. We'll find out who the superior pilot is.>
+	Msg%id%01_1 <So, do you really think you can take me? I'll be waiting for you at \SCENE %1% .>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Let's do it. I'll see you at \SCENE %1% .>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <I'll head over to the arena first, and you can meet me there when you're ready.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <I'll be waiting for you at \SCENE %1% . Don't make me wait long.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Meet me at \SCENE %1% . This is going to be so much fun!>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <Come to \SCENE %1% when you're ready to die. I'll be waiting.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+
+%% TYPE: *ChallengeMeLater
+%%	The PC can't challenge this NPC again so soon; maybe in 24 hours.
+
+	Persona
+	requires <*ChallengeMeLater>
+	START <NewChat Say %id%01>
+	Msg%id%01 <Come back tomorrow and you can challenge me again.>
+	Msg%id%01_1 <I'd love to fight you again right now, but arena regulations say there can only be one fight a day. Come see me later and then we'll have a rematch.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <I'm busy. Come back later.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <I'd rather not fight now. How about tomorrow?>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <I only fight one match per day. If you want to challenge me again you'll have to come back tomorrow.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <If you come back tomorrow, we can have more fun then.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <So, you want me to beat you one more time? I don't feel like it right now. Ask me again tomorrow.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+
+%% TYPE: *ChallengeArenaWin
+%%	The PC has won against a NPC challenger. Give some money
+%%  PARAM1: CID of the challenger. Be careful, he may be dead.
+%%  PARAM2: ID of the arena, needed for calculating the cash prize
+%%  PARAM3: Arena reset exit label; called when the prize is given
+
+	Persona
+	requires <*ChallengeArenaWin>
+	START <NewChat Say %id%01  AddReact d10  CashPrize Reward ArenaThreat %2% 150 Goto %3%>
+	Msg%id%01_10 <Good job. Here's your prize money. Come back tomorrow for another match.>
+	CMsg%id%01_10 <ifNPCDead %1% Accept>
+	Msg%id%01_20 <Good job against \PERSONA %1% . Here's your prize money. Come back tomorrow for another fight.>
+	CMsg%id%01_20 <ifNPCOK %1% Accept>
+
+	Persona
+	requires <*ChallengeArenaWin>
+	START <NewChat Say %id%01 AddReact d3     CustomMecha .%id%_MekFac ArenaThreat %2%   Goto %3%>
+	.%id%_MekFac <PDASS>
+	Msg%id%01 <In recognition of your victory, I'm glad to present you with a brand new mecha. Come back tomorrow for another match.>
+	Msg%id%01_20 <You have defeated \PERSONA %1% . As a reward, you've earned a brand new Duelist League mecha. There will be another match tomorrow.>
+	CMsg%id%01_20 <ifNPCOK %1% Accept>
+
+	Persona
+	requires <*ChallengeArenaWin L5PAT>
+	START <NewChat Say %id%01  AddReact d6     RandomMecha .%id%_MekFac ArenaThreat %2%   Goto %3%>
+	.%id%_MekFac <PDASS COMET HOELL>
+	Msg%id%01 <For the last match, you've earned a brand new mecha. Congratulations. As always there'll be a new challenger waiting for you tomorrow.>
+	Msg%id%01_20 <For defeating \PERSONA %1% , I'm glad to present you with this brand new mecha. Use it well. There will be another match tomorrow.>
+	CMsg%id%01_20 <ifNPCOK %1% Accept>
+
+
+%% TYPE: *BasicArenaWin
+%%	The PC has won a non-championship match. Give some money
+%%  PARAM1: ID of the arena, needed for calculating the cash prize
+%%  PARAM2: Arena reset exit label; called when the prize is given
+
+	Persona
+	requires <*BasicArenaWin>
+	START <NewChat Say %id%01 CashPrize Reward ArenaThreat %1% 100  AddReact d4   Goto %2%>
+	Msg%id%01 <Good job. Here's the prize money you earned. Come back tomorrow for another fight.>
+	Msg%id%01_1 <You did well out there; people will be talking about that win. Here's your prize.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Good job. There'll be another fight tomorrow.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <I think that went fairly well. Here's your prize; hopefully I'll see you back here for tomorrow's match.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <You blew them away! Good work out there. Here's the prize you earned; come back tomorrow and you might get another.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <I knew you could do it! Here's the prize money; come back tomorrow for your next match.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <You have lived to fight another day. Maybe tomorrow's match will be more challenging.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+
+
+%% TYPE: *BasicArenaLoss
+%%	The PC has lost a match. Basically do nothing.
+%%  PARAM1: ID of the arena; might be needed, better include it anyway
+%%  PARAM2: Arena reset exit label
+
+	Persona
+	requires <*BasicArenaLoss Melancholy>
+	START <NewChat Say %id%01  AddReact -d4  Goto %2%>
+	Msg%id%01 <You lost the fight. Try not to lose again in tomorrow's match.>
+	Msg%id%01_1 <Wow, that was a record ass-kicking that they gave you. Do you think you could try to not lose next time? There'll be another fight tomorrow.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <You lost. Horribly. There's another fight tomorrow.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Maybe you should think about getting out of the arena business, you don't seem to be very good at it. Anyhow there'll be another fight tomorrow.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <Ah, the sting of defeat... You must know it pretty well. Come back tomorrow and try your luck again.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+
+	Persona
+	requires <*BasicArenaLoss>
+	START <NewChat Say %id%01  AddReact -d4  Goto %2%>
+	Msg%id%01 <You lost the match. Come back here tomorrow and try your luck again.>
+	Msg%id%01_1 <You were defeated... that's not going to be good for your reputation. We'll have another match tomorrow and maybe you can redeem yourself.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <You lost. You can get another chance tomorrow.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <You lost the match, but it's not the end of the world. You can try again tomorrow.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <You'll never make it to the championship like this. Come back tomorrow for a new battle.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Well, that was a depressing performance. Maybe you'll do better in tomorrow's match.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <That was horrible. You can come back here tomorrow for a chance to redeem yourself.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+%% TYPE: *CharaArenaWin
+%%	The PC has won a non-championship match at a personal scale
+%%	arena. Give some money
+%%  PARAM1: ID of the arena, needed for calculating the cash prize
+%%  PARAM2: Arena reset exit label; called when the prize is given
+
+	Persona
+	requires <*CharaArenaWin>
+	START <NewChat Say %id%01 CashPrize Reward ArenaThreat %1% 400  AddReact d4  Goto %2%>
+	Msg%id%01 <You've emerged victorious from the arena. Come back tomorrow and I'll give you another shot.>
+	Msg%id%01_1 <You survived the battle. Here's your reward. Come see me again tomorrow and I'll line up another fight.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <You won the match.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Just between you and me, the arena's profits are highest when no-one survives a battle. Here's your prize money.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <A gladiator's life is hard, but the cash makes things easier. Congratulations.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <That was a fantastic match! Here's the prize money you earned.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <You've eluded death, this time. Here's your pay.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+
+
+%% TYPE: *CharaArenaLoss
+%%	The PC has lost a match at a personal scale arena. The arena manager will
+%%	be surprised that the PC is still alive.
+%%  PARAM1: ID of the arena; might be needed, better include it anyway
+%%  PARAM2: Arena reset exit label
+
+	Persona
+	requires <*CharaArenaLoss>
+	START <NewChat Say %id%01  AddReact -d4  Goto %2%>
+	Msg%id%01 <Strange to see you again, I could have sworn they took you to bits in the arena. We'll be having another game tomorrow.>
+	Msg%id%01_1 <Didn't you get killed in the arena? No matter... we've got another game coming up tomorrow.>
+	Msg%id%01_2 <Look at this, the living dead... There's no match going on right now, but we'll have another one tomorrow if you're interested.>
+
+
+%% TYPE: *ArenaIsBusy
+%%	There's no fight right now, but later there will be.
+%%  PARAM1: ID of the arena; might be needed, better include it anyway
+
+	Persona
+	requires <*ArenaIsBusy>
+	START <NewChat Say %id%01>
+	Msg%id%01 <There's no battle taking place right now. Come back tomorrow and there should be another match.>
+	Msg%id%01_1 <All of our battle for today have concluded. You can come back tomorrow and we should have something else lined up then.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <The arena's closed. Come back tomorrow for another fight.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Sorry, but we don't have any more matches going on today. I could let you go into the arena by yourself but that would hardly be very exciting.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <We're closed. Come back tomorrow if you want to fight.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <I'm sorry but the arena is closed for today. We'll have another match tomorrow, though!>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <You're out of luck, the arena is closed. Come back later if you want to fight.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+
+
+%% TYPE: *ArenaIsFull
+%%	The PC should be in the arena fighting right now.
+%%  PARAM1: ID of the arena; might be needed, better include it anyway
+
+	Persona
+	requires <*ArenaIsFull>
+	START <NewChat Say %id%01>
+	Msg%id%01 <What are you doing talking to me? Shouldn't you be fighting now?>
+
+
+
+%% TYPE: *RefuseArenaFight
+%%	The PC doesn't want to fight right now.
+%%  PARAM1: ID of the arena; might be needed, better include it anyway
+
+	Persona
+	requires <*RefuseArenaFight>
+	START <NewChat Say %id%01>
+	Msg%id%01 <That's too bad. Come back later if you change your mind.>
+	Msg%id%01_1 <I see. I'm disappointed that you won't take part this time, but you can always come back later.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <So that's how it is.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Oh well. If you should happen to change your mind, come back whenever.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <What's the matter? You don't have the guts for it?>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Aw, that's no fun.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <You have a well-developed sense of self-preservation. I can respect that.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+
+
+%% TYPE: *StartArenaBattle
+%%	The PC has agreed to fight. Do something.
+%%  PARAM1: ID of the arena; might be needed, better include it anyway
+%%  PARAM2: Arena fight prep exit label
+
+	Persona
+	requires <*StartArenaBattle Cheerful>
+	START <EndChat Say %id%01  Goto %2%>
+	Msg%id%01 <Good luck out there! Come back when you win and I'll give you the prize money.>
+	Msg%id%01_1 <Keep winning matches and you're going to be a superstar! Come back when this is over and I'll give you the prize money.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Good luck in this match!>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Good luck, and don't forget to have a good time!>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <Fame, fortune, hot gorgeous mecha... All these things could be yours if you win this match!>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+
+	Persona
+	requires <*StartArenaBattle Melancholy>
+	START <EndChat Say %id%01  Goto %2%>
+	Msg%id%01 <Good luck. Come see me about the prize if you happen to survive.>
+	Msg%id%01_1 <To the victor goes the spoils, to the loser only defeat... and there's just going to be one victor.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Here's hoping you make it back alive.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Try not to get yourself killed out there. If you manage to win, I'll have a prize waiting for you.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <You better be ready to fight. Every match in the arena could be your last.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+
+	Persona
+	requires <*StartArenaBattle>
+	START <EndChat Say %id%01  Goto %2%>
+	Msg%id%01 <Good luck out there. Come back here if you win and I'll give you a prize.>
+	Msg%id%01_1 <Your compeditors are in position and ready to fight. Good luck out there. If you win the match, remember to come talk to me for your prize money.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <May the best pilot win.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Here we go again. If you win the fight, come see me for your prize.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <Get ready for battle! If you win, make sure to come see me for the prize money.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Have a good match! Come talk to me after you've won and I'll give you the prize money.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <Give them hell. Come back if you survive and I'll reward you then.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+
+%% TYPE: *StartCharaBattle
+%%	The PC has agreed to fight in a personal-scale arena.
+%%  PARAM1: ID of the arena; might be needed, better include it anyway
+%%  PARAM2: Arena fight prep exit label
+
+	Persona
+	requires <*StartCharaBattle>
+	START <EndChat Say %id%01  Goto %2%>
+	Msg%id%01 <Fight hard. Remember, you can't leave the arena until either your opponents are dead or you are.>
+	Msg%id%01_1 <Survive this match and the crowd will love you. Lose, and it won't matter whether they love you or not.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Good luck. You'll need it.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <If you win the match come back here for the prize money. If you lose the match I'll make sure you get a decent funeral.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <This battle is to the death. Don't take it lightly, or you won't make it back.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <I'm sure you'll give us a most impressive show. Fight hard!>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <From this point on your only options are victory or death. Fight hard.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+

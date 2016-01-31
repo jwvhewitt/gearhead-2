@@ -1,0 +1,794 @@
+%
+% MECHA THEMES
+%
+% Each theme needs a unique ID number.
+%
+% In the theme's InvCom, store all the equipment that this theme might install in
+% other mecha.
+
+% Context of the specialist skill is indicated by "[skill number]". For instance,
+% a Mecha Artillery specialist would be indicated by "[3]".
+
+% All themes must have:
+%   CUSTOMIZATION_ADJECTIVE_0 .. CUSTOMIZATION_ADJECTIVE_4
+%   CUSTOMIZATION_NOUN_0 .. CUSTOMIZATION_NOUN_4
+
+%% Contents
+%%  11. Lightning
+%%  12. Devil
+
+Theme 11
+	name <Lightning>
+	% All of these weapons have a lightning or thunder theme. Many of them
+	% will feature the Overload or Haywire effects, and most of them should
+	% have a relatively high speed.
+	requires <GENERAL ~[1] ~Speed>
+
+	CUSTOMIZATION_ADJECTIVE_0 <Electric>
+	CUSTOMIZATION_ADJECTIVE_1 <Shocking>
+	CUSTOMIZATION_ADJECTIVE_2 <Lightning>
+	CUSTOMIZATION_ADJECTIVE_3 <Gigavolt>
+	CUSTOMIZATION_ADJECTIVE_4 <Ion>
+	CUSTOMIZATION_NOUN_0 <Thunder>
+	CUSTOMIZATION_NOUN_1 <Thor>
+	CUSTOMIZATION_NOUN_2 <Zeus>
+	CUSTOMIZATION_NOUN_3 <Bolt>
+	CUSTOMIZATION_NOUN_4 <Storm>
+
+	inv
+		%% Big Guns
+		Gun 11
+		Scale 2
+		name <Storm Bomber>
+		caliber <50cm self-propelled>
+		Range 5
+		Recharge 1
+		Magazine 12
+		sub
+			Ammo 11
+			caliber <50cm self-propelled>
+			type <BLAST 1>
+		end
+
+		Gun 12
+		Scale 2
+		name <Polaris Cannon>
+		caliber <140mm caseless>
+		Range 5
+		Recharge 2
+		Magazine 30
+		sub
+			Ammo 12
+			caliber <140mm caseless>
+		end
+
+		Gun 12
+		Scale 2
+		name <Thunder Bringer>
+		caliber <165mm shell>
+		Range 6
+		Recharge 3
+		acc -2
+		Magazine 25
+		sub
+			Ammo 12
+			caliber <165mm shell>
+		end
+
+		Gun 12
+		Scale 2
+		name <Thunderbolt Cannon>
+		caliber <70mm ferrous>
+		Range 7
+		Recharge 2
+		Magazine 16
+		sub
+			Ammo 12
+			caliber <70mm ferrous>
+			type <HAYWIRE>
+		end
+
+		Gun 14
+		name <Storm Cannon>
+		caliber <210mm capacitor>
+		range 9
+		scale 2
+		speed 1
+		Magazine 16
+		sub
+			Ammo 14
+			caliber <210mm capacitor>
+			type <BLAST 3 OVERLOAD>
+		end
+
+		Gun 16
+		Scale 2
+		name <Thor Cannon>
+		caliber <50mm ferrous>
+		Range 7
+		Speed 4
+		Magazine 60
+		sub
+			Ammo 16
+			caliber <50mm ferrous>
+			mass -10
+		end
+
+		Beamgun 11
+		name <Heavy Electrolaser>
+		scale 2
+		range 7
+
+		Beamgun 12
+		name <Jove Cannon>
+		desc <This cannon fires a stream of charged particles, hopefully disrupting the electrical systems of its target.>
+		scale 2
+		range 5
+		type <HAYWIRE>
+
+		STC PAR-13
+
+		STC PAR-13
+		mass -3
+
+		%% Melee Weapons
+		Melee 5
+		name <Thunder Knife>
+		scale 2
+		type <HAYWIRE>
+		mass -2
+
+		Melee 8
+		name <Thunder Rod>
+		scale 2
+		type <HAYWIRE>
+		mass -4
+
+		Melee 8
+		name <Thunder Mace>
+		scale 2
+		type <BRUTAL HAYWIRE>
+
+		Melee 12
+		name <Thunder Sword>
+		scale 2
+		type <HAYWIRE>
+		Speed 3
+		mass -6
+
+		Melee 11
+		name <Thunder Hammer>
+		scale 2
+		type <BRUTAL HAYWIRE>
+		Speed 3
+		mass -4
+
+		Melee 13
+		name <Thunder Axe>
+		scale 2
+		type <EXTEND BRUTAL HAYWIRE>
+		Speed 3
+		mass -7
+
+		Melee 15
+		name <Thunder Lash>
+		scale 2
+		type <EXTEND FLAIL HAYWIRE>
+		Acc -2
+		Speed 3
+		mass -9
+
+		Melee 10
+		name <Lightning Bolt>
+		scale 2
+		type <EXTEND THROWN RETURN HAYWIRE>
+		speed 3
+		mass -6
+
+		Melee 16
+		name <Thor's Hammer>
+		scale 2
+		type <THROWN RETURN BRUTAL>
+		Speed 3
+		mass -7
+
+		Melee 18
+		name <Gungnir>
+		scale 2
+		type <EXTEND ARMORPIERCING HAYWIRE>
+		Acc 5
+		Speed 3
+		mass -10
+
+
+		%% Missiles
+		MLauncher 2
+		scale 2
+		sub
+			STC SCRM-1
+			magazine 20
+		end
+
+		MLauncher 4
+		scale 2
+		sub
+			STC SCRM-1
+			magazine 40
+		end
+
+		MLauncher 10
+		scale 2
+		sub
+			STC SCRM-1
+			magazine 100
+		end
+
+		MLauncher 12
+		scale 2
+		sub
+			STC SCRM-1
+			magazine 120
+		end
+
+		MLauncher 18
+		scale 2
+		sub
+			STC SCRM-1
+			magazine 180
+		end
+
+		MLauncher 24
+		scale 2
+		sub
+			STC SCRM-1
+			magazine 240
+		end
+
+		MLauncher 4
+		scale 2
+		sub
+			STC INM-18
+			name <Mjolnir Missiles>
+			magazine 2
+		end
+
+		MLauncher 15
+		scale 2
+		sub
+			STC INM-18
+			name <Mjolnir Missiles>
+			magazine 8
+		end
+
+		MLauncher 18
+		scale 2
+		sub
+			STC INM-18
+			name <Mjolnir Missiles>
+			magazine 10
+		end
+
+		MLauncher 23
+		scale 2
+		sub
+			STC INM-18
+			name <Mjolnir Missiles>
+			magazine 12
+		end
+
+		%% Small Guns
+		BeamGun 2
+		Scale 2
+		name <Particle Pistol>
+		type <OVERLOAD>
+		Range 3
+		Recharge 2
+
+		BeamGun 2
+		Scale 2
+		name <Lightning Pistol>
+		type <OVERLOAD>
+		Range 4
+		Recharge 3
+
+		Gun 5
+		Scale 2
+		name <Thunderbolt Rifle>
+		caliber <15mm ferrous needle>
+		desc <This light railgun fires electrically charged needles, potentially disabling the target's control system.>
+		range 6
+		Acc 1
+		Speed 4
+		Mass -1
+		Magazine 20
+		sub
+			Ammo 5
+			caliber <15mm ferrous needle>
+			type <HAYWIRE>
+		end
+
+		Beamgun 4
+		name <Electrolaser>
+		scale 2
+		range 7
+		Acc 1
+
+		STC PAR-2
+
+		STC PAR-2
+		name <Lightning Cannon>
+		speed 4
+
+		Gun 9
+		name <Storm Caller>
+		caliber <158mm capacitor>
+		range 9
+		scale 2
+		speed 4
+		Magazine 24
+		sub
+			Ammo 9
+			caliber <158mm capacitor>
+			type <BLAST 3 OVERLOAD>
+		end
+
+		STC PAR-6
+
+		BeamGun 9
+		name <Jove Rifle>
+		desc <This cannon fires a stream of charged particles, hopefully disrupting the electrical systems of its target.>
+		scale 2
+		range 5
+		Speed 3
+		mass -1
+		type <HAYWIRE>
+
+		STC PAR-6
+		name <Heavy Lightning Cannon>
+		speed 3
+	end
+	%% End 11.Lightning
+
+Theme 12
+	name <Devil>
+	% This theme is evil. EEEEEVVVVIL! Just perfect for those outwardly villainous NPCs.
+	requires <(Villainous|REDMA)>
+
+	CUSTOMIZATION_ADJECTIVE_0 <Evil>
+	CUSTOMIZATION_ADJECTIVE_1 <Wicked>
+	CUSTOMIZATION_ADJECTIVE_2 <Cruel>
+	CUSTOMIZATION_ADJECTIVE_3 <Diabolical>
+	CUSTOMIZATION_ADJECTIVE_4 <Heartless>
+	CUSTOMIZATION_NOUN_0 <Devil>
+	CUSTOMIZATION_NOUN_1 <Satan>
+	CUSTOMIZATION_NOUN_2 <Demon>
+	CUSTOMIZATION_NOUN_3 <Hell>
+	CUSTOMIZATION_NOUN_4 <Moloch>
+
+	inv
+		%% Small Guns
+		BeamGun 3
+		name <Imp Laser>
+		scale 2
+		range 4
+		acc -1
+
+		Gun 7
+		Scale 2
+		name <Fiend Rifle>
+		Range 6
+		caliber <40mm ferrous>
+		Magazine 30
+		sub
+			Ammo 7
+			caliber <40mm ferrous>
+			type <SCATTER BRUTAL>
+		end
+
+		Gun 10
+		name <Corruptor>
+		caliber <Chemical>
+		range 5
+		Recharge 1
+		scale 2
+		type <Line>
+		Magazine 25
+		sub
+			Ammo 10
+			caliber <Chemical>
+			type <BRUTAL>
+		end
+
+		Gun 4
+		name <Malebranch Rifle>
+		caliber <30mm caseless>
+		Range 6
+		BV 2
+		speed 3
+		scale 2
+		mass -2
+		Magazine 60
+		sub
+			Ammo 4
+			caliber <30mm caseless>
+		end
+
+		Gun 7
+		name <Punishment Cannon>
+		caliber <30cm self-propelled>
+		range 8
+		scale 2
+		Speed 3
+		Magazine 24
+		sub
+			Ammo 7
+			caliber <30cm self-propelled>
+			type <BLAST 2 BURN BRUTAL>
+		end
+
+		Gun 6
+		name <Beast Cannon>
+		caliber <70mm shell>
+		mass -6
+		scale 2
+		range 6
+		acc -1
+		BV 5
+		magazine 90
+		sub
+			ammo 6
+			caliber <70mm shell>
+		end
+
+		Gun 9
+		name <Desecrator>
+		caliber <50cm self-propelled>
+		range 8
+		scale 2
+		Speed 3
+		Magazine 24
+		sub
+			Ammo 9
+			caliber <50cm self-propelled>
+			type <BLAST 2 BURN BRUTAL>
+		end
+
+		Gun 10
+		name <Spite Rifle>
+		caliber <20cm cannister>
+		range 8
+		scale 2
+		Speed 4
+		Acc 2
+		mass -5
+		Magazine 24
+		sub
+			Ammo 10
+			caliber <20cm cannister>
+			type <SCATTER BRUTAL HAYWIRE>
+		end
+
+		Gun 9
+		name <Diablo Shotgun>
+		caliber <150mm shell>
+		mass -5
+		scale 2
+		range 7
+		acc 2
+		Speed 4
+		type <BRUTAL>
+		magazine 30
+		sub
+			ammo 9
+			caliber <150mm shell>
+			type <SCATTER BURN>
+		end
+
+		Gun 8
+		name <Lord of Terror>
+		scale 2
+		caliber <30mm ferrous>
+		Range 6
+		BV 4
+		type <ARMORPIERCING>
+		Magazine 100
+		sub
+			Ammo 8
+			caliber <30mm ferrous>
+			mass -8
+
+			Melee 9
+			name <Bone Lash>
+			Integral
+			type <BURN BRUTAL EXTEND FLAIL>
+			mass -4
+			Acc -1
+		end
+
+
+		%% Big Guns
+		Gun 11
+		Scale 2
+		name <Hell Bomber>
+		caliber <40cm self-propelled>
+		Range 5
+		Recharge 1
+		Acc -1
+		Magazine 8
+		sub
+			Ammo 11
+			caliber <40cm self-propelled>
+			type <BLAST 2>
+		end
+
+		Gun 12
+		Scale 2
+		name <Rage Cannon>
+		caliber <70mm ferrous>
+		Range 7
+		Acc -2
+		Recharge 1
+		Magazine 16
+		sub
+			Ammo 12
+			name <Firestarter Shells>
+			caliber <70mm ferrous>
+			type <BURN>
+		end
+
+		Gun 13
+		name <Hell's Mouth>
+		caliber <Chemical>
+		range 4
+		Recharge 1
+		scale 2
+		type <Line>
+		Magazine 30
+		sub
+			Ammo 13
+			caliber <Chemical>
+			type <BURN>
+		end
+
+		Gun 11
+		Scale 2
+		name <Fiend Cannon>
+		Range 7
+		caliber <60mm ferrous>
+		Magazine 20
+		sub
+			Ammo 11
+			caliber <60mm ferrous>
+			type <SCATTER BRUTAL>
+		end
+
+		Gun 12
+		name <Wrath Cannon>
+		scale 2
+		caliber <40mm ferrous>
+		BV 1
+		range 6
+		Magazine 40
+		sub
+			Ammo 12
+			caliber <40mm ferrous>
+			type <BRUTAL>
+		end
+
+		Gun 17
+		name <Spite Cannon>
+		scale 2
+		caliber <160mm cannister>
+		range 7
+		Magazine 24
+		sub
+			Ammo 17
+			caliber <160mm cannister>
+			type <SCATTER HAYWIRE BRUTAL>
+		end
+
+		Gun 25
+		Scale 2
+		name <Dante Cannon>
+		Range 8
+		caliber <120mm ferrous>
+		Magazine 20
+		sub
+			Ammo 25
+			caliber <120mm ferrous>
+			type <SCATTER BRUTAL>
+		end
+
+		Gun 13
+		name <Hades Cannon>
+		scale 2
+		caliber <15cm self-propelled>
+		range 6
+		BV 2
+		type <SWARM>
+		Magazine 60
+		sub
+			Ammo 13
+			caliber <15cm self-propelled>
+			type <BURN>
+		end
+
+		Gun 18
+		name <Soul Destroyer>
+		caliber <80cm nuclear>
+		range 7
+		scale 2
+		Magazine 12
+		sub
+			Ammo 18
+			caliber <80cm nuclear>
+			type <ARMORPIERCING HYPER>
+		end
+
+		Gun 18
+		name <Soul Devourer>
+		caliber <80cm nuclear>
+		range 7
+		scale 2
+		Acc 2
+		Magazine 16
+		sub
+			Ammo 18
+			caliber <80cm nuclear>
+			type <ARMORPIERCING HYPER>
+		end
+
+		%% Melee Weapons
+		Melee 5
+		name <Scourge>
+		scale 2
+		type <FLAIL>
+		mass -3
+		Acc -2
+
+		Melee 13
+		name <Pitchfork>
+		scale 2
+		type <EXTEND>
+		mass -4
+
+		Melee 9
+		name <Lash>
+		scale 2
+		type <EXTEND FLAIL>
+		mass -4
+		Acc -1
+
+		Melee 9
+		name <Hell Lash>
+		scale 2
+		type <BURN EXTEND FLAIL>
+		mass -4
+		Acc -1
+
+		Melee 13
+		name <Trident>
+		scale 2
+		type <EXTEND THROWN RETURN>
+		mass -4
+
+		Melee 9
+		name <Bone Lash>
+		scale 2
+		type <BURN BRUTAL EXTEND FLAIL>
+		mass -4
+		Acc -1
+
+		Melee 13
+		name <Devil Trident>
+		scale 2
+		type <ARMORPIERCING EXTEND THROWN RETURN>
+		mass -4
+
+		Melee 13
+		name <Hell Trident>
+		scale 2
+		type <BURN EXTEND THROWN RETURN>
+		Acc 2
+		mass -4
+
+		Melee 9
+		name <Plague Lash>
+		scale 2
+		type <RUST EXTEND FLAIL>
+		mass -4
+		Acc -1
+
+		Melee 13
+		name <Asmodeus Trident>
+		scale 2
+		type <BURN ARMORPIERCING EXTEND THROWN RETURN>
+		Acc 2
+		mass -4
+
+		%% Missiles
+		MLauncher 3
+		scale 2
+		sub
+			STC HFR-3
+			magazine 10
+		end
+
+		MLauncher 6
+		scale 2
+		sub
+			STC HFR-3
+			magazine 20
+		end
+
+		MLauncher 9
+		scale 2
+		sub
+			STC HFR-3
+			magazine 30
+		end
+
+		MLauncher 12
+		scale 2
+		sub
+			STC HFR-3
+			magazine 40
+		end
+
+		MLauncher 15
+		scale 2
+		sub
+			STC HFR-3
+			magazine 50
+		end
+
+		MLauncher 18
+		scale 2
+		sub
+			STC HFR-3
+			magazine 60
+		end
+
+		MLauncher 24
+		scale 2
+		sub
+			STC HFR-3
+			magazine 80
+		end
+
+		MLauncher 3
+		scale 2
+		sub
+			Rockets 15
+			name <Torment Missile>
+			Acc 2
+			Range 8
+			type <HYPER>
+			magazine 2
+		end
+
+		MLauncher 5
+		scale 2
+		sub
+			Rockets 13
+			name <Damnation Missile>
+			Acc 2
+			Range 8
+			type <HYPER>
+			magazine 3
+		end
+
+		MLauncher 6
+		scale 2
+		sub
+			Rockets 13
+			name <Damnation Missile>
+			Acc 2
+			Range 8
+			type <HYPER>
+			magazine 4
+		end
+	end
+	%% End 12. Devil
+
+

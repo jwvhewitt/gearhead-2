@@ -1,0 +1,135 @@
+Gerwalk 4
+Name <Neko>
+Desig <MCI-74>
+SDL_Sprite <ger_neko.png>
+SDL_Portrait <item_neko.png>
+
+desc <Originally from Mars, the Neko is now a popular hybrid fighter throughout the solar system.>
+type <GROUND SPACE>
+factions <GENERAL>
+
+ROLE_ROCKE <GENERAL:COMMAND  DEFENSE:COMMAND  ASSAULT:COMMAND>
+ROLE_REDMA <GENERAL:TROOPER  ASSAULT:TROOPER>
+
+
+sub
+torso
+	Armor 3
+	Mass -4
+	sub
+		Mount
+		Name <Torso Mount>
+
+		CPit
+
+		Sensor 7
+		mass -1
+
+		Computer 3
+		mass -1
+		sub
+			Software 1
+			name <Cat's Eye Targeting>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 2
+			name <Assisted Dexterity System>
+			S_MVBoost
+			S_BoostScale 2
+		end
+
+
+		STC LAS-3
+		Name <AM Beamgun>
+		BV 4
+		Type <INTERCEPT>
+	end
+
+Arm
+	Name <Right Arm>
+	Size 2
+	Armor 3
+	Mass -4
+	sub
+		Hand
+		Name <Right Hand>
+		inv
+			STC PAR-6
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	Size 2
+	Armor 3
+	Mass -4
+	sub
+		Hand
+		Name <Left Hand>
+	end
+	inv
+		Shield 3
+		DefBonus -1
+	end
+
+Wing
+	Name <Right Wing>
+	Armor 2
+	size 3
+	Mass -2
+	sub
+		Mount
+		Name <Right Wing Mount>
+		inv
+			MLauncher 6
+			sub
+				STC ICM-5
+				Magazine 12
+			end
+		end
+
+		ArcJet 3
+	end
+
+Wing
+	Name <Left Wing>
+	Armor 2
+	size 3
+	Mass -2
+	sub
+		Mount
+		Name <Left Wing Mount>
+		inv
+			MLauncher 6
+			sub
+				STC ICM-5
+				Magazine 12
+			end
+		end
+
+		ArcJet 3
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 2
+	Mass -3
+	sub
+		Mount
+		Name <Right Leg Mount>
+
+		Flight 3
+	end
+
+Leg
+	Name <Left Leg>
+	Armor 2
+	Mass -3
+	sub
+		Mount
+		Name <Left Leg Mount>
+
+		Flight 3
+	end
+end

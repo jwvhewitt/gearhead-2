@@ -1,0 +1,200 @@
+%%
+%% Every faction that has "ArenaOK" in its type needs a list of NPCs. These NPCs are used to introduce missions,
+%% debrief the player, so on and so forth. The role of the NPC is determined by setting its persona number manually
+%% using the SetPersona command.
+%%
+%% It's important that all the NPCs listed here have the correct pictures, traits, and biographical data.
+%% Skills, equipment, and even faction aren't needed.
+%%
+%% Also note where the character can be found in the RPG campaign.
+%%
+%% ROLES:
+%% 1 = Faction Head, usually the PC won't interact with this character much
+%% 2 = Commander, the person the missions normally come from
+%% 3 = Mechanic, who will give damage reports
+%% 4 = Medic, who will give casulty reports
+%% 5 = Supply, who will tell the PC when new equipment becomes available
+%% 6 = Information, who will give intel reports and tell about earned rewards
+
+Set 2
+	name <Comet Metalworks NPCs>
+	inv
+		NPC Corporate Executive
+		name <Ute Leojo>
+		Age 28
+		job <Company President>
+		SDL_PORTRAIT <por_f_fashion(A--).png>
+		SDL_COLORS <234 180 88 150 112 89 199 188 162>
+		Chardesc Female Melancholy Sociable Pragmatic
+		SetPersona 1
+
+		NPC Corporate Executive
+		name <Jamil>
+		% ATLAS_L5Region, placed at Comet Tower
+		Age 6
+		SDL_PORTRAIT <por_m_guy3(AA-).png>
+		SDL_COLORS <234 180 88 255 212 195 1 75 67>
+		Chardesc Male Sociable Easygoing Pragmatic
+		SetPersona 2
+
+		NPC Mechanic
+		name <Dana>
+		% UNICON_Services.txt
+		Age 4
+		SDL_PORTRAIT <por_f_hunter(--Y).png>
+		SDL_COLORS <234 180 88 255 212 195 166 47 32>
+		Chardesc Female Sociable Passionate Pragmatic
+		SetPersona 3
+
+		NPC Corporate Executive
+		name <Bracett>
+		% UNICON_LocalContent, placed at Comet Tower
+		Age 12
+		job <Human Resources Manager>
+		SDL_PORTRAIT <por_m_guy2(-A-).png>
+		SDL_COLORS <234 180 88 255 212 195 50 50 50>
+		Chardesc Male Villainous Sociable Melancholy
+		SetPersona 4
+
+		NPC Mecha Pilot
+		name <Derrich>
+		% QUEST_ARENA_Challenger
+		Age 9
+		job <Foreman>
+		job_desig <LABOR>
+		CharDesc Male Sociable Easygoing Lawful
+		StatLine 13 17 14 13 14 12 9 11
+		SDL_Portrait <por_m_guy6(-P-).png>
+		SDL_Colors <234 180 88 255 212 195 10 50 100>
+		SetPersona 5
+
+		NPC Scientist
+		name <Hailey>
+		Age 4
+		job <Research Head>
+		SDL_PORTRAIT <por_f_smart(-P-).png>
+		SDL_COLORS <234 180 88 255 212 195 168 153 230>
+		Chardesc Female Sociable Cheerful Pragmatic
+		SetPersona 6
+	end
+
+Set 3
+	name <Silver Knights NPCs>
+	inv
+		NPC Knight
+		name <Gordon Valeus>
+		% ATLAS_L5Region, placed in Cesena Spinner/Fleet HQ
+		Age 52
+		job <Lord Master>
+		SDL_PORTRAIT <por_m_gordonvaleus(OAY).png>
+		SDL_COLORS <150 205 229 235 212 195 130 143 114>
+		chardesc Lawful Heroic Easygoing Shy Cheerful Male Renowned
+		statline 19 22 18 19 14 16 17 15
+		SetPersona 1
+
+		NPC Knight
+		name <Brianna>
+		Age 7
+		SDL_PORTRAIT <por_f_brianna(JAY).png>
+		SDL_COLORS <150 205 229 255 212 195 240 160 35>
+		Chardesc Female Lawful Heroic Sociable Spiritual
+		SetPersona 2
+
+		NPC Mechanic
+		name <Keefa>
+		% UNICON_LocalContent, Placed in Silver Fortress
+		Age 5
+		SDL_PORTRAIT <por_f_keefa(-P-).png>
+		SDL_COLORS <150 205 229 255 215 195 152 61 97>
+		CharDesc Female Lawful Shy Easygoing Pragmatic
+		SetPersona 3
+
+		NPC Cyberdoc
+		name <Gamaliel>
+		% UNICON_LocalContent, Placed in Silver Sanctum
+		Age 16
+		SDL_PORTRAIT <por_m_gamaliel(APY).png>
+		SDL_COLORS <150 205 229 123 63 0 55 25 81>
+		chardesc Pragmatic Melancholy Heroic Male
+		SetPersona 4
+
+		NPC Knight
+		name <Arleus>
+		% UNICON_LocalContent, Placed in Silver Sanctum
+		Age 19
+		SDL_PORTRAIT <por_f_arleus(AAY).png>
+		SDL_COLORS <150 205 229 150 112 89 103 3 45>
+		chardesc Passionate Shy Cheerful Lawful Heroic Female
+		SetPersona 5
+
+		NPC Knight
+		name <Marlowe>
+		% UNICON_LocalContent, Placed in Silver Sanctum
+		Age 22
+		chardesc Spiritual Easygoing Lawful Heroic Male
+		SDL_PORTRAIT <por_m_marlowe(-CY).png>
+		SDL_COLORS <150 205 229 255 212 195 65 121 119>
+		job <Chaplain>
+		SetPersona 6
+	end
+
+Set 6
+	name <Privateer NPCs>
+	inv
+		NPC Pirate
+		name <Everard>
+		Age 36
+		job <Privateer Lord>
+		SetPersona 1
+		SDL_PORTRAIT <por_m_elric(O-Y).png>
+		SDL_COLORS <20 90 130 205 162 141 166 47 32>
+		chardesc Male Criminal Shy Cheerful Passionate
+
+		NPC Privateer
+		name <Havelock>
+		% QUEST_MechaArena_Challenger
+		SetPersona 2
+		Age 5
+		SDL_PORTRAIT <por_m_ladipunk(JA-).png>
+		SDL_COLORS <20 90 130 142 62 39 234 180 88>
+		chardesc Male Cheerful Heroic Easygoing
+		StatLine 15 13 15 15 13 13 10 14
+
+		NPC Mechanic
+		name <Quinn>
+		Age 11
+		SDL_PORTRAIT <por_f_comicvikki(J-Y).png>
+		SDL_COLORS <20 90 130 255 212 195 123 63 0>
+		CharDesc Female Heroic Sociable Cheerful
+		SetPersona 3
+
+		NPC Doctor
+		name <Caralee>
+		Age 7
+		SDL_PORTRAIT <por_f_afro(-A-).png>
+		SDL_COLORS <20 90 130 142 62 39 255 105 180>
+		CharDesc Female Heroic Passionate Spiritual
+		SetPersona 4
+
+		NPC Privateer
+		name <Aveyhar>
+		% UNICON_LocalContent, placed in Maquise Spinner/Privateer Club
+		Age 23
+		job <Quartermaster>
+		SetPersona 5
+		CharDesc Lawful Pragmatic Passionate Male
+		SDL_PORTRAIT <por_m_comiccarter(OUY).png>
+		SDL_COLORS <20 90 130 150 112 89 168 153 230>
+
+		NPC Thief
+		name <Varuna>
+		Age 4
+		job <Spymaster>
+		SetPersona 6
+		CharDesc Male Criminal Heroic Shy Melancholy
+		SDL_PORTRAIT <por_m_ninja(Y-Y).png>
+		SDL_COLORS <20 90 130 255 212 195 66 121 119>
+	end
+
+
+

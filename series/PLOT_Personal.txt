@@ -1,0 +1,74 @@
+%%
+%%  ***************************
+%%  ***   PERSONAL  PLOTS   ***
+%%  ***************************
+%%
+%% These plots don't involve mecha, or missions, or things blowing up.
+%% Mostly they're just here to move the NPCs around a bit and maybe
+%% give the PC a few non-combat tasks.
+%%
+
+Plot
+	name <PLOT: Waiting For Repairs>
+	desc <A pilot is waiting for repairs. Maybe you can help.>
+	requires <*GENERAL>
+
+	% E1 is the NPC seeking repairs
+	% E2 is the garage where repairs are to be had
+	element1 <Character HasMecha -CRAFT>
+	element2 <Scene Public Garage>
+
+	% P1 = Initialization Counter/Time Limit
+	% P2 = Original Home of E1
+	update <if= P1 0 P= 1 ComTime P+ 1 10800 P+ 1 d10801 P= 2 NPCScene %1% MoveNPC %1% %2%>
+	start <ifG ComTime P1 MoveNPC %1% P2 EndPlot>
+	end <ifNPCDead %1% EndPlot>
+
+	sub
+		Persona 1
+		rumor <%name1%'s mecha is in the shop.>
+		% V1 = Have already interacted
+		greeting <if= V1 0 else GoCHat ifChatNPCInPlay else GoChat ifChatNPCArchEnemy else GoNoEnemy NewChat Say 1 Goto GoEndPlot>
+		GoChat <NewChat SayAnything>
+		GoNoEnemy <NewChat Say 1 AddChat 1 AddChat 2>
+		GoEndPlot <P= 1 1 V= 1 1>
+		*result1 <*BetterBeGoing GoEndPlot>
+		result2 <ifG d20 React else GoR2Accept ifConversation SkillTar %threat% else GoR2Fail Goto GoR2Accept>
+		GoR2Accept <EndChat Say 2 AddChat 3>
+		GoR2Fail <EndChat Say 3 Goto GoEndPlot>
+		result3 <Alert 4 Mental ifRepair SkillTar %threat% else GoR3Fail NewChat Say 5 AddReact d8 Goto GoEndPlot>
+		GoR3Fail <EndChat Say 6 AddReact -d4 Goto GoEndPlot>
+		Msg1 <My mecha's in the shop again. They're taking an awfully long time with it...>
+		Msg1_1 <Are you here for service too? They must be backed up pretty badly in there because I brought my mek in an hour ago and it's still not ready.>
+		CMsg1_1 <ifNPCSociable Accept>
+		Msg1_2 <Still not done... How long does it take to reattach a severed head, anyways?>
+		CMsg1_2 <ifNPCShy Accept>
+		Msg1_3 <Bored, bored, bored... I hope the mechanic hurries up and fixes my mek. I'm dying out here.>
+		CMsg1_3 <ifNPCCheerful Accept>
+		Msg1_4 <Stupid mechanic... still not finished with my mek.>
+		CMsg1_4 <ifNPCMelancholy Accept>
+		Msg1_5 <I'm just waiting for my mecha to get fixed. No idea how much longer it's going to be...>
+		CMsg1_5 <ifNPCEasygoing Accept>
+		Msg1_6 <I hate bringing my mek to the shop... if the techie messes up my paint job, somebody's going to pay.>
+		CMsg1_6 <ifNPCPassionate Accept>
+		Msg2_1 <Do you really think you can help? See what you can do.>
+		Msg2_2 <Hmmm. I don't let just anyone touch my mek, but I've been waiting for so long...>
+		Msg2_3 <Alright. Let's go take a look at it.>
+		Msg3_1 <No thanks, I'd rather have it examined by someone qualified.>
+		Msg3_2 <I'm trying to fix my mek, not break it even worse than it is now.>
+		Msg3_3 <I think I'll do fine without your help.>
+		Msg4 <You take a look at %name1%'s mecha.>
+		Msg5 <Hey, it's working again! Thanks for your help.>
+		Msg6 <That didn't go so well. I better wait for the real mechanic.>
+		Prompt1 <That's too bad.>
+		Prompt1_2 <Hopefully it'll be ready soon.>
+		Prompt1_3 <Them's the breaks.>
+		Prompt1_4 <Tell me about it.>
+		Prompt1_5 <I hate when that happens.>
+		Prompt2 <Maybe I can help you with that.>
+		CPrompt2 <ifPCHasSkill NAS_Repair Accept>
+		Prompt2_1 <Why don't I take a look at it for you?>
+		Prompt2_2 <Let me see if I can help.>
+		Prompt3 <[Attempt Repair]>
+	end
+

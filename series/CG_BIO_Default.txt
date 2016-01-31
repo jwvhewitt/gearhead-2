@@ -1,0 +1,39 @@
+%% Biography Event List
+%%
+%% The biography will introduce the personal conflict of this PC. It may also
+%% contribute some NPCs or other details to the egg.
+%%
+%%  CONFLICT TYPES:
+%%    	.General	The default
+%%	.Destitute	The PC's family is too poor
+
+Biography
+desc <You had a happy childhood.>
+requires <GENERAL>
+Cheerfulness 15
+
+Biography
+desc <You were a sickly and miserable child.>
+requires <GENERAL>
+Cheerfulness -15
+
+Biography
+desc <As a child you lacked ambition.>
+requires <GENERAL>
+Easygoingness 15
+
+Biography
+desc <From the day you were born, you dreamt of becoming an adventurer.>
+requires <GENERAL>
+Easygoingness -15
+
+Biography
+desc <As a child you were always surrounded by friends.>
+requires <GENERAL>
+Sociability 15
+
+Biography
+desc <As a child you were something of a loner.>
+requires <GENERAL>
+Sociability -15
+

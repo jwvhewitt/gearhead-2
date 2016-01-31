@@ -1,0 +1,184 @@
+Battroid 5
+Name <Zerosaiko>
+Desig <Z45-62>
+SDL_Sprite <btr_zerosaiko.png>
+SDL_Portrait <item_zerosaiko.png>
+desc <The Zerosaiko is known as the favorite mecha of professional duelists.>
+sdl_portrait <item_zerosaiko.png>
+factions <PDASS FEDER SOLAR>
+type <GROUND SPACE INSIDE>
+ReflexSystem
+
+sub
+Head
+	Size 4
+	Armor 5
+	mass -4
+	sub
+		Sensor 5
+    
+		Computer 4
+		mass -4
+		sub
+			Software 3
+			name <Range Zero Targeting System>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 1
+			name <Target Analyzer>
+			desc <Mecha identification and analysis software.>
+			Category <SOFTWARE MEXTRA>
+			Factions <GENERAL>
+			S_Information
+			SInfo_MechaDex
+		end
+	end
+	inv
+		HeadArmor 3
+		Mass -2
+		Fits <Battroid>
+	end
+
+Torso
+	Armor 5
+	mass -5
+	sub
+		CPit
+		Armor 2
+		mass -1
+
+		Gyro
+		Armor 1
+
+		MLauncher 3
+		sub
+			STC LR-1
+			Magazine 24
+		end
+
+		Computer 3
+		mass -3
+		sub
+			Software 3
+			name <ZeroG Movement System>
+			S_MVBoost
+			S_BoostScale 2
+		end
+    
+		ArcJet 3
+
+		Mount
+		Name <Right Collar Mount>
+
+		Mount
+		Name <Left Collar Mount>
+	end
+	inv
+		BodyArmor 5
+		Mass -5
+		Fits <Battroid>
+		sub
+			ArcJet 3
+		end
+	end
+
+Arm
+	Name <Right Arm>
+	Armor 5
+	mass -4
+	sub
+		Hand
+		inv
+			STC RG-8
+			name <Mass Driver>
+		end
+
+		Mount
+		Name <Right Arm Mount>
+
+		HeavyActuator 4
+		Mass -2
+	end
+	inv
+		ArmArmor 3
+		mass -2
+		sub
+			STC LAS-5
+			Name <Point Cannon>
+			Type <INTERCEPT>
+			mass -3
+		end
+
+		Shield 2
+		DefBonus -4
+	end
+
+Arm
+	Name <Left Arm>
+	Armor 5
+	mass -4
+	sub
+		Hand
+
+		Mount
+		Name <Left Arm Mount>
+		inv
+			EMelee 13
+			Speed 3
+			Name <Beam Sword>
+			UsesReflexes
+		end
+
+		HeavyActuator 4
+		Mass -2
+	end
+	inv
+		ArmArmor 3
+		mass -2
+		sub
+			STC LAS-5
+			Name <Point Cannon>
+			Type <INTERCEPT>
+			mass -3
+		end
+
+		Shield 2
+		DefBonus -4
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 5
+	mass -4
+	sub
+		ArcJet 5
+		HeavyActuator 1
+	end
+	inv
+		LegArmor 3
+		Fits <Battroid>
+		Mass -2
+		sub
+			ArcJet 2
+		end
+	end
+
+Leg
+	Name <Left Leg>
+	Armor 5
+	mass -4
+	sub
+		ArcJet 5
+		HeavyActuator 1
+	end
+	inv
+		LegArmor 3
+		Fits <Battroid>
+		Mass -2
+		sub
+			ArcJet 2
+		end
+	end
+end
+

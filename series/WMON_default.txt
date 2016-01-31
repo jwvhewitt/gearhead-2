@@ -1,0 +1,1150 @@
+%  ********************************
+%  ***  DEFAULT  MONSTER  LIST  ***
+%  ********************************
+
+%  STATS  REF BOD SPD PER CFT EGO KNO CHA
+
+ARCH Smog Monster
+roguechar <f>
+sdl_sprite <monster_fireworm.png>
+sdl_colors <122 88 193 70 121 119 208 30 50>
+type <mutant wasteland air dark>
+habitat <>
+statline 13 13 13 8 7 5 2 2
+MonsterTV 68
+RangedCombat 4
+CloseCombat 6
+Dodge 9
+Awareness 8
+Stealth 5
+Sealed
+sub
+torso
+	armor 2
+	sub
+		gear 4 0 7
+		name <Fangs>
+
+		BeamGun 9
+		name <Acidic Spittle>
+		type <BURN POISON SCATTER>
+		Range 4
+
+		PowerSource 9
+		name <Acid Gland>
+	end
+wing
+	armor 1
+	sub
+		MLauncher 1
+		range 6
+		name <Smog Bomb>
+		type <TOXIN BLAST 1>
+		sub
+			rockets 3
+			magazine 3
+		end
+		Flight 5
+	end
+wing
+	armor 1
+	sub
+		MLauncher 1
+		range 6
+		name <Smog Bomb>
+		type <TOXIN BLAST 1>
+		sub
+			rockets 3
+			magazine 3
+		end
+		Flight 5
+	end
+tail
+	armor 1
+	sub
+		BeamGun 3
+		name <Smoke Bomb>
+		type <SMOKE BLAST 1>
+		range 7
+		speed 1
+
+		PowerSource 3
+		name <Smoke Gland>
+	end
+end
+
+
+ARCH Stone Dragon
+roguechar <D>
+genepool <DRAGON>
+MonsterTV 110
+DomTarget 37
+type <Exotic Reptile Earth Cave Mountain>
+habitat <>
+statline 15 20 12 19 12 13 6 9
+*CLUE_SURVIVAL <*SURVIVAL_GetMeatOrDragonHeart 110 dragon>
+RangedCombat 5
+CloseCombat 5
+Dodge 10
+Awareness 3
+Initiative 3
+Vitality 7
+sealed
+sub
+head
+armor 6
+sub
+	Melee 5
+	name <Jaws>
+	type <BRUTAL>
+
+	Gun 12
+	name <Poison Gas>
+	range 7
+	type <POISON BLAST 2 GASATTACK>
+	recharge 1
+	caliber <STONE DRAGON GAS>
+	sub
+		% I'm limiting the shots of this breath attack...
+		ammo 12
+		magazine 3
+		caliber <STONE DRAGON GAS>
+	end
+end
+torso
+armor 6
+leg
+armor 5
+leg
+armor 5
+leg
+armor 5
+leg
+armor 5
+leg
+armor 5
+leg
+armor 5
+tail
+armor 5
+end
+
+ARCH Core Worm
+statline 13 19 16 2 11 5 2 2
+roguechar <W>
+type <BUG EARTH MUTANT>
+habitat <>
+sdl_sprite <monster_worm.png>
+sdl_colors <110 80 85 250 80 0 244 216 0>
+MonsterTV 80
+DomTarget 30
+RangedCombat 4
+CloseCombat 5
+Dodge 8
+Initiative 3
+Vitality 7
+sub
+head
+	armor 5
+	sub
+		Melee 4
+		name <Jaws>
+		type <BRUTAL>
+
+		BeamGun 6
+		name <Magma Spew>
+		type <SCATTER>
+		range 4
+		recharge 1
+	end
+torso
+	armor 5
+	sub
+		PowerSource 10
+		name <Flame Gland>
+	end
+tail
+	armor 4
+end
+
+ARCH World Maggot
+statline 16 22 21 10 19 20 17 2
+roguechar <W>
+type <BUG RUINS WASTELAND>
+habitat <>
+sdl_sprite <monster_worm.png>
+sdl_colors <180 155 88 245 213 150 208 0 51>
+MonsterTV 115
+RangedCombat 6
+CloseCombat 2
+Dodge 11
+Initiative 3
+Vitality 8
+sub
+head
+	armor 1
+	sub
+		Melee 9
+		name <Jaws>
+		type <BRUTAL>
+
+		BeamGun 4
+		name <Toxic Spit>
+		type <SCATTER BRUTAL>
+		range 3
+	end
+torso
+	armor 4
+	sub
+		BeamGun 3
+		name <Poison Spines>
+		range 7
+		BV 4
+		type <SWARM POISON>
+		recharge 3
+
+		Melee 5
+		name <Spikes>
+		recharge 3
+		type <Poison>
+	end
+tail
+	armor 4
+	sub
+		PowerSource 10
+		name <Venom Gland>
+	end
+end
+
+
+ARCH Sea Dragon
+roguechar <D>
+genepool <DRAGON>
+SDL_SPRITE <monster_seadragon.png>
+SDL_COLORS <1 75 67 238 180 88 66 121 119>
+MonsterTV 100
+DomTarget 25
+type <Exotic Reptile Water Sea>
+habitat <>
+statline 17 19 16 15 8 16 7 9
+*CLUE_SURVIVAL <*SURVIVAL_GetMeatOrFlameGlandOrDragonHeart 100 dragon>
+RangedCombat 4
+CloseCombat 9
+Dodge 10
+Initiative 1
+Vitality 3
+sub
+head
+armor 5
+sub
+	Melee 12
+	name <Jaws>
+	recharge 1
+
+	BeamGun 7
+	name <Flame Breath>
+	range 4
+	recharge 1
+	type <BURN SCATTER>
+end
+torso
+armor 5
+sub
+	PowerSource 10
+	name <Flame Gland>
+end
+tail
+name <Tentacle>
+armor 5
+sub
+	Melee 4
+	name <Hook>
+	type <ArmorPiercing Poison>
+end
+tail
+name <Tentacle>
+armor 5
+sub
+	Melee 4
+	name <Hook>
+	type <ArmorPiercing Poison>
+end
+tail
+name <Tentacle>
+armor 5
+sub
+	Melee 4
+	name <Hook>
+	type <ArmorPiercing Poison>
+end
+end
+
+ARCH Dune Dragon
+roguechar <D>
+sdl_sprite <monster_triceratops.png>
+sdl_colors <160 130 90 240 190 100 51 90 161>
+MonsterTV 84
+DomTarget 21
+genepool <DRAGON>
+type <Exotic Reptile Bright Fire Desert Lab>
+habitat <>
+statline 16 15 14 17 9 14 5 10
+*CLUE_SURVIVAL <*SURVIVAL_GetMeatOrFlameGlandOrDragonHeart 84 dragon>
+RangedCombat 4
+CloseCombat 5
+Dodge 8
+Initiative 1
+Vitality 3
+sub
+head
+armor 5
+sub
+	Melee 5
+	name <Jaws>
+	recharge 1
+	type <POISON>
+
+	Melee 5
+	name <Horns>
+	recharge 1
+	type <ARMORPIERCING>
+
+	BeamGun 4
+	name <Flame Breath>
+	range 4
+	type <BURN SCATTER>
+end
+torso
+armor 5
+sub
+	PowerSource 10
+	name <Flame Gland>
+end
+leg
+armor 3
+leg
+armor 3
+leg
+armor 3
+leg
+armor 3
+tail
+armor 3
+end
+
+
+ARCH Fire Worm
+roguechar <f>
+sdl_sprite <monster_fireworm.png>
+sdl_colors <127 45 35 250 50 100 244 244 30>
+type <mutant fire desert wasteland air>
+habitat <>
+statline 10 4 8 9 2 2 2 2
+*CLUE_SURVIVAL <*SURVIVAL_GetFlameGland 80 worm>
+MonsterTV 40
+RangedCombat 3
+CloseCombat 3
+Dodge 5
+sub
+torso
+	sub
+		Melee 3
+		name <Fangs>
+		Recharge 1
+
+		BeamGun 1
+		name <Flaming Spittle>
+		type <BURN>
+		Range 2
+
+		PowerSource 5
+		name <Flame Gland>
+	end
+wing
+	sub
+		Melee 1
+		name <Claw>
+	end
+wing
+	sub
+		Melee 1
+		name <Claw>
+	end
+tail
+end
+
+Arch Cyclops Progenitor
+statline 15 21 13 12 11 13 9 8
+Biotech
+scale 1
+MonsterTV 110
+type <Cyclops>
+habitat <>
+roguechar <Y>
+sdl_sprite <monster_cyclops.png>
+sdl_colors <150 112 89 199 188 162 100 200 0>
+sdl_portrait <por_x_cyclops.png>
+RangedCombat 7
+CloseCombat 7
+Dodge 13
+Toughness 10
+Initiative 10
+sealed
+sub
+head
+armor 4
+torso
+armor 4
+sub
+	Mount
+	name <Right Shoulder Mount>
+	inv
+		BeamGun 6
+		name <Bio-Laser>
+		recharge 4
+	end
+	Mount
+	name <Left Shoulder Mount>
+	inv
+		BeamGun 6
+		name <Bio-Laser>
+		recharge 4
+	end
+	PowerSource 20
+	name <Plasma Heart>
+end
+arm
+armor 4
+sub
+	hand
+end
+arm
+armor 4
+sub
+	hand
+end
+leg
+armor 4
+leg
+armor 4
+end
+
+Arch Cyclops Guard
+statline 15 21 13 12 11 13 9 8
+MonsterTV 95
+Biotech
+type <Cyclops>
+habitat <>
+roguechar <Y>
+sdl_sprite <monster_cyclops.png>
+sdl_colors <200 160 120 240 220 200 100 200 0>
+sdl_portrait <por_x_cyclops.png>
+CHAT_ATTACK1 <You have no chance to survive. Make your time.>
+CHAT_ATTACK2 <You will be exterminated.>
+RangedCombat 7
+CloseCombat 7
+Dodge 13
+Toughness 10
+Initiative 10
+sealed
+sub
+head
+armor 4
+torso
+armor 4
+sub
+	Mount
+	name <Right Shoulder Mount>
+	inv
+		Gun 4
+		name <Quill Cannon>
+		BV 4
+		range 7
+		magazine 120
+		mass -7
+		sub
+			ammo 4
+		end
+	end
+	Mount
+	name <Left Shoulder Mount>
+	inv
+		Gun 4
+		name <Quill Cannon>
+		BV 4
+		range 7
+		magazine 120
+		mass -7
+		sub
+			ammo 4
+		end
+	end
+	PowerSource 10
+	name <Plasma Heart>
+end
+arm
+armor 4
+sub
+	hand
+	inv
+		Melee 16
+		name <BioSword>
+		Mass -10
+		type <ARMORPIERCING>
+	end
+end
+arm
+armor 4
+sub
+	hand
+	inv
+		Melee 16
+		name <BioSword>
+		Mass -10
+		type <ARMORPIERCING>
+	end
+end
+leg
+armor 4
+leg
+armor 4
+end
+
+Arch Cyclops
+statline 14 19 13 10 13 7 9 8
+MonsterTV 60
+Biotech
+type <Cyclops>
+habitat <>
+roguechar <Y>
+sdl_sprite <monster_cyclops.png>
+sdl_colors <200 160 120 240 220 200 100 200 0>
+sdl_portrait <por_x_cyclops.png>
+RangedCombat 4
+CloseCombat 4
+Dodge 9
+sealed
+sub
+head
+armor 4
+torso
+armor 4
+sub
+	PowerSource 5
+	name <Plasma Heart>
+end
+arm
+armor 4
+sub
+	hand
+end
+arm
+armor 4
+sub
+	hand
+end
+leg
+armor 4
+leg
+armor 4
+end
+
+ARCH Hunter-Destroyer
+roguechar <H>
+sdl_sprite <monster_hx3.png>
+sdl_colors <152 70 97 122 88 193 208 228 21>
+MonsterTV 115
+Biotech
+Sealed
+type <Synth Dark Hunter-X>
+habitat <>
+genepool <HUNTER-X>
+statline 23 25 12 17 8 12 10 4
+RangedCombat 7
+CloseCombat 4
+Dodge 12
+Initiative 6
+Vitality 8
+sub
+arm
+armor 6
+sub
+	BeamGun 6
+	name <Bio-Plasma>
+	range 10
+	BV 2
+	type <SCATTER BRUTAL>
+end
+arm
+armor 6
+sub
+	BeamGun 6
+	name <Bio-Plasma>
+	range 10
+	BV 2
+	type <SCATTER BRUTAL>
+end
+torso
+armor 5
+sub
+	BeamGun 4
+	name <Multi-Blaster>
+	range 5
+	BV 5
+	type <ARMORPIERCING>
+
+	Melee 9
+	name <Extendable Jaws>
+	type <EXTEND>
+
+	PowerSource 20
+	name <Plasma Heart>
+end
+leg
+armor 6
+leg
+armor 6
+leg
+armor 6
+leg
+armor 6
+end
+
+ARCH Hunter-Berserker
+MonsterTV 110
+Biotech
+Sealed
+roguechar <H>
+sdl_sprite <monster_hx4.png>
+sdl_colors <152 70 97 122 88 193 8 239 51>
+genepool <HUNTER-X>
+type <Synth Dark Hunter-X>
+habitat <>
+statline 19 17 16 15 6 7 5 4
+Regen
+CloseCombat 7
+RangedCombat 7
+Dodge 13
+Initiative 5
+Vitality 8
+sub
+head
+armor 5
+sub
+	Melee 10
+	name <Extendable Jaws>
+	type <EXTEND POISON>
+end
+torso
+armor 5
+sub
+	BeamGun 7
+	name <Multi-Blaster>
+	range 5
+	BV 5
+
+	PowerSource 20
+	name <Plasma Heart>
+end
+leg
+armor 5
+leg
+armor 5
+leg
+armor 5
+leg
+armor 5
+end
+
+ARCH Hunter-Slayer
+roguechar <H>
+sdl_sprite <monster_hx2.png>
+sdl_colors <152 70 97 122 88 193 208 39 51>
+MonsterTV 105
+Biotech
+Sealed
+genepool <HUNTER-X>
+type <Synth Dark Hunter-X>
+habitat <>
+statline 22 17 16 15 5 8 8 4
+RangedCombat 7
+CloseCombat 7
+Dodge 10
+Initiative 2
+Vitality 4
+SpotWeakness 7
+sub
+torso
+armor 4
+sub
+	Melee 9
+	name <Extendable Jaws>
+	type <EXTEND>
+
+	BeamGun 7
+	name <Bio-Plasma>
+	range 10
+	BV 3
+	type <SCATTER>
+
+	PowerSource 20
+	name <Plasma Heart>
+end
+leg
+armor 5
+leg
+armor 5
+tail
+armor 4
+sub
+	Melee 7
+	recharge 6
+	name <Tail Scythe>
+	Type <ArmorPiercing>
+end
+end
+
+ARCH Hunter-Killer
+MonsterTV 85
+Biotech
+Sealed
+genepool <HUNTER-X>
+roguechar <H>
+sdl_sprite <monster_hx1.png>
+sdl_colors <152 70 97 122 88 193 208 39 51>
+EvolveAt 25000
+type <Synth Dark Hunter-X>
+habitat <>
+statline 18 15 15 14 7 5 13 4
+CloseCombat 5
+RangedCombat 7
+Dodge 9
+Initiative 1
+Vitality 2
+sub
+head
+armor 4
+sub
+	Melee 6
+	name <Jaws>
+end
+torso
+armor 4
+sub
+	BeamGun 5
+	name <Bio-Laser>
+	range 5
+
+	PowerSource 20
+	name <Plasma Heart>
+end
+leg
+armor 4
+leg
+armor 4
+leg
+armor 4
+leg
+armor 4
+end
+
+ARCH Hunter-Drone
+MonsterTV 72
+Biotech
+Sealed
+roguechar <H>
+sdl_sprite <monster_hx1.png>
+sdl_colors <105 90 110 150 112 89 166 47 32>
+genepool <HUNTER-X>
+EvolveAt 15000
+type <Synth Dark Hunter-X>
+habitat <>
+statline 16 15 16 10 6 5 7 4
+CloseCombat 5
+Dodge 8
+sub
+head
+armor 3
+sub
+	Melee 5
+	name <Jaws>
+end
+torso
+armor 3
+leg
+armor 3
+leg
+armor 3
+leg
+armor 3
+leg
+armor 3
+end
+
+ARCH Hunter-Scout
+MonsterTV 56
+Biotech
+Sealed
+roguechar <H>
+genepool <HUNTER-X>
+sdl_sprite <monster_hx1.png>
+sdl_colors <60 110 118 150 112 89 166 47 32>
+EvolveAt 10000
+type <Synth Dark Hunter-X>
+habitat <>
+statline 16 14 18 17 7 5 8 4
+CloseCombat 5
+Dodge 7
+Awareness 5
+Stealth 7
+sub
+head
+armor 3
+sub
+	Melee 4
+	name <Jaws>
+end
+torso
+armor 3
+leg
+armor 3
+leg
+armor 3
+leg
+armor 3
+leg
+armor 3
+end
+
+ARCH Hunter-Larva
+MonsterTV 30
+Biotech
+Sealed
+roguechar <H>
+type <Hunter-X>
+habitat <>
+genepool <HUNTER-X>
+sdl_Sprite <monster_larva.png>
+sdl_colors <155 70 100 170 160 230 241 210 30>
+EvolveAt 5000
+DomTarget 22
+statline 7 13 13 6 1 2 1 2
+CloseCombat 4
+Dodge 5
+sub
+head
+armor 2
+sub
+	Melee 4
+	name <Jaws>
+	type <STONE>
+	recharge 4
+end
+torso
+armor 2
+tail
+armor 2
+end
+
+ARCH Morlock
+roguechar <M>
+type <mutant ruins devo>
+habitat <>
+statline 13 15 12 13 10 11 7 10
+sdl_sprite <monster_morlock.png>
+sdl_colors <115 95 85 170 160 130 112 50 50>
+MonsterTV 52
+RangedCombat 2
+CloseCombat 5
+Dodge 7
+Awareness 7
+sub
+head
+torso
+arm
+	name <Right Arm>
+	sub
+		hand
+		inv
+			melee 11
+			mass 3
+			name <Stone Axe>
+			type <EXTEND BRUTAL>
+		end
+	end
+arm
+	name <Left Arm>
+	sub
+		hand
+	end
+	inv
+		Shield 2
+		name <Leather Shield>
+		mass 2
+	end
+leg
+	name <Right Leg>
+leg
+	name <Left Leg>
+end
+
+ARCH Morlock
+roguechar <M>
+type <mutant ruins devo>
+habitat <>
+statline 13 15 12 13 10 11 7 10
+sdl_sprite <monster_morlock.png>
+sdl_colors <115 95 85 170 160 130 112 50 50>
+MonsterTV 44
+RangedCombat 2
+CloseCombat 5
+Dodge 7
+Awareness 7
+sub
+head
+torso
+arm
+	name <Right Arm>
+	sub
+		hand
+		inv
+			melee 8
+			mass 2
+			name <Stone Spear>
+			type <THROWN>
+		end
+	end
+arm
+	name <Left Arm>
+	sub
+		hand
+	end
+	inv
+		Shield 2
+		name <Leather Shield>
+		mass 2
+	end
+leg
+	name <Right Leg>
+leg
+	name <Left Leg>
+end
+
+ARCH Morlock
+roguechar <M>
+type <mutant ruins devo>
+habitat <>
+sdl_sprite <monster_morlock.png>
+sdl_colors <115 95 85 170 160 130 112 50 50>
+statline 13 15 12 13 10 11 7 10
+MonsterTV 40
+RangedCombat 2
+CloseCombat 5
+Dodge 7
+Awareness 7
+sub
+head
+torso
+arm
+	name <Right Arm>
+	sub
+		hand
+	end
+arm
+	name <Left Arm>
+	sub
+		hand
+	end
+leg
+	name <Right Leg>
+leg
+	name <Left Leg>
+end
+
+ARCH Corpse Eater
+SDL_SPRITE <monster_leech.png>
+SDL_COLORS <84 97 85  191 205 229  244 206 48>
+roguechar <C>
+type <mutant bug dark cave city swamp ruins>
+habitat <>
+statline 12 15 10 15 4 7 1 1
+MonsterTV 48
+CloseCombat 5
+Dodge 5
+Vitality 6
+Awareness 4
+SpotWeakness 3
+sub
+head
+	armor 3
+	sub
+		Melee 2
+		name <Tendrils>
+		type <ArmorPiercing Poison>
+		Melee 4
+		name <Beak>
+	end
+torso
+end
+
+ARCH BioSentry
+SDL_SPRITE <monster_drone.png>
+SDL_COLORS <225 136 170 242 110 25 220 0 240>
+roguechar <b>
+type <synth factory guard>
+habitat <>
+statline 10 10 10 10 10 10 10 10
+MonsterTV 30
+Biotech
+RangedCombat 3
+Dodge 5
+Awareness 3
+sub
+head
+	armor 2
+	sub
+		BeamGun 5
+		name <Bio-Laser>
+		acc 1
+	end
+torso
+	armor 2
+	sub
+		PowerSource 20
+		name <Reactor Heart>
+	end
+leg
+	armor 2
+leg
+	armor 2
+leg
+	armor 2
+leg
+	armor 2
+end
+
+ARCH Gremlin
+roguechar <g>
+sdl_sprite <monster_monkey.png>
+sdl_colors <70 121 119 49 91 159 244 215 28>
+type <synth factory ruins dark vermin>
+habitat <>
+statline 11 5 13 9 16 8 7 6
+MonsterTV 22
+Biotech
+CloseCombat 1
+Dodge 1
+Repair 1
+DomTarget 17
+sub
+head
+torso
+arm
+sub
+	hand
+end
+arm
+sub
+	hand
+end
+leg
+leg
+end
+
+ARCH Flying Polyp
+roguechar <j>
+SDL_SPRITE <monster_jelly.png>
+SDL_COLORS <235 150 0 208 30 90 0 0 0>
+statline 13 15 9 10 2 2 1 1
+MonsterTV 82
+RangedCombat 5
+CloseCombat 7
+Dodge 9
+Initiative 5
+Vitality 3
+Toughness 4
+Sealed
+type <Air Mutant Asteroid>
+habitat <>
+sub
+torso
+	sub
+		BeamGun 1
+		name <Brain Beam>
+		range 6
+		type <STONE STUN LINE ARMORIGNORE MYSTERY>
+
+		Melee 7
+		name <Tendril>
+		Type <FLAIL RUST EXTEND ARMORPIERCING>
+
+		Melee 7
+		name <Tendril>
+		Type <FLAIL RUST EXTEND ARMORPIERCING>
+
+		PowerSource 20
+		name <Neurocortex>
+	end
+end
+
+ARCH Green Jelly
+SDL_SPRITE <monster_blob.png>
+SDL_COLORS <136 141 80  244 216 28  244 216 28>
+roguechar <j>
+type <mutant cave earth>
+habitat <>
+statline 8 14 4 7 1 1 1 1
+MonsterTV 52
+CloseCombat 5
+Dodge 1
+Initiative 3
+Vitality 10
+Toughness 15
+NoCorpse
+Sealed
+sub
+torso
+	sub
+		Melee 5
+		stat 1 2
+		name <Tendril>
+		type <FLAIL POISON>
+		Melee 5
+		stat 1 2
+		name <Tendril>
+		type <FLAIL POISON>
+		Melee 5
+		stat 1 2
+		name <Tendril>
+		type <FLAIL POISON>
+	end
+end
+
+ARCH Icky Slime
+SDL_SPRITE <monster_blob.png>
+SDL_COLORS <168 153 230  166 47 32  166 47 32>
+roguechar <j>
+type <mutant cave>
+habitat <>
+statline 5 6 7 5 1 1 1 1
+MonsterTV 25
+CloseCombat 1
+Toughness 10
+NoCorpse
+Sealed
+sub
+torso
+	sub
+		Melee 1
+		name <Tendril>
+		type <FLAIL>
+		Melee 1
+		name <Tendril>
+		type <FLAIL>
+		Melee 1
+		name <Tendril>
+		type <FLAIL>
+	end
+end
+
+

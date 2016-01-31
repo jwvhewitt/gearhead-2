@@ -1,0 +1,82 @@
+Plot
+	name <Bounty Hunt>
+	requires <*GENERAL>
+
+	PayRate 75
+
+	%% This is a fairly easy bounty hunting job. The target should be captured
+	%% alive- no disintegrations.
+
+	% E1 is the character offering the mission.
+	% E2 is the town scene
+	% E3 is the target
+	Element1 <Character Bounty Hunter Recharged>
+	Element2 <Scene Town>
+	Element3 <NewNPC 0 2 Criminal>
+
+	%% P1 = Timer/Initialization Indicator
+
+	update <if= PlotStatus %plotid% 0 if= P1 0  P= 1 ComTime P+ 1 86400>
+	Start <if= PlotStatus %plotid% 0 ifNPCOK %1% else GoDelete ifG P1 0  ifG ComTime P1   Goto GoDelete>
+	GoDelete <EndPlot>
+
+	% For timeout, delete the target here. The CatchMinorNPC and LoseMinorNPC
+	% subplots will deal with the target on their ends.
+	.%id1%_%plotid1%_GoWin  <PMemo %plotid% %id%01  SetPlotStatus %plotid2% %id2%>
+	.%id1%_%plotid1%_GoLoss <PMemo %plotid% %id%02  SetPlotStatus %plotid3% %id3%>
+	.%id1%_%plotid1%_GoTimeOver <DeleteNPC %3%  SetPlotStatus %plotid4% %id4%>
+
+	Msg%id%01 <You have completed %name1%'s mission. You should go see \OPR %1% at \EXACT_SCENE NPCScene %1% .>
+	Msg%id%02 <You have lost %name1%'s mission. You should go see \OPR %1% at \EXACT_SCENE NPCScene %1% .>
+
+	% SubPlot1 is Capture the Target.
+	% SubPlot2 is the Win Task
+	% SubPlot3 is the Lose Task
+	% SubPlot4 is the Time Over condition
+	SubPlot1 <*:BH_CaptureTarget 3>
+	SubPlot2 <*BH_CatchMinorNPC 1 3>
+	SubPlot3 <*BH_LoseMinorNPC 1 3>
+	SubPlot4 <*Util_TimeOver 1>
+
+	sub
+		Persona 1
+		rumor0 <%name1% is offering a bounty for a wanted criminal.>
+		&FullRate <* 3 Reward %threat% PayRate>
+		greeting <if= PlotStatus %plotid% 0 else GoRemind  Goto GoFirstTime>
+		*GoRemind <*GenericMissionReminder>
+		*GoFirstTime <*AutoMissionTest&Chara GoMissionBriefing GoRejectMission GoCheckSkill na na>
+		*GoCheckSkill <*GenericMissionTest&Chara  GoMissionBriefing GoEnd GoRejectMission na na %threat%>
+		*GoRejectMission <*RejectMission GoEnd>
+		GoEnd <EndPlot>
+		GoMissionBriefing <NewChat Say 1   AddChat 1 AddChat 2>
+
+		*result1 <*GoodLuckOnMission&NoEnemyFac GoR1Final ChatNPCFac na>
+		GoR1Final <SetPlotStatus %plotid% %id% SetPlotStatus %plotid1% %id1% PMemo %plotid% 2>
+		result2 <Goto GoRejectMission>
+
+		Msg1 <I need you to locate and aprehend a criminal named %name3%. Bring \OPR %3% in alive and you'll earn $ \VAL &FullRate .>
+		Msg1_1 <>
+		CMsg1_1 <ifNPCSociable Accept>
+		Msg1_2 <>
+		CMsg1_2 <ifNPCShy Accept>
+		Msg1_3 <>
+		CMsg1_3 <ifNPCEasygoing Accept>
+		Msg1_4 <>
+		CMsg1_4 <ifNPCPassionate Accept>
+		Msg1_5 <>
+		CMsg1_5 <ifNPCCheerful Accept>
+		Msg1_6 <>
+		CMsg1_6 <ifNPCMelancholy Accept>
+
+		Msg2 <%name1% hired you to capture %name3%, a wanted criminal.>
+
+		Prompt1 <Okay, I'll do it.>
+		Prompt1_1 <Alright, I'll be back when I'm finished.>
+		Prompt1_2 <Don't worry, they won't get away.>
+		Prompt2 <You'll have to find someone else for this mission.>
+		Prompt2_1 <This sounds way too clandestine for me.>
+		Prompt2_2 <Sorry, I don't want to get involved.>
+
+	end
+
+

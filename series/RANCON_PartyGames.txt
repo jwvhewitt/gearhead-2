@@ -1,0 +1,339 @@
+%%
+%% *PartyGame Content
+%%
+%%	PARAM: The difficulcy level of the party, measured as Renown
+%%
+%% For a party of business conference, these content fragments represent the PC's
+%% chance to make friends and influence people. The party games will typically be
+%% added to the foyer of the building and so should not have minimaps.
+
+Content
+	%% Broken Stereo
+	%% The music for the party is broken.
+	% L%id%01 = Performance Counter
+	% L%id%02 = Have earned party point
+
+	Element1 <Prefab>
+
+	APPLAUSE <if= V%id%02 0 else %pop% V+ %id%01 1 ifG V%id%01 4 else %pop% WinPartyPoint Print %id%01 V= %id%02 1 Goto %pop%>
+
+	Msg%id%01 <Your music has improved the mood of the party.>
+
+	inv
+		STC TV
+		% V1 = Have repaired it
+		use <if= V1 0 else GoAlreadyRepaired Print 1>
+		GoAlreadyRepaired <Print 2>
+		Clue_REPAIR <ifRepair SkillTar %param% else GoFail Goto GoWin>
+		CLUE_SCIENCE <ifScience HardSkillTar %param% else GoFail Goto GoWin>
+		GoWin <V= 1 1 L= %id%02 1 Print 3 XPV 50 WinPartyPoint>
+		GoFail <Print 4>
+
+		Msg1 <This stereo is broken. That must be why there's no music at this party.>
+		msg2 <The stereo is working correctly now.>
+		Msg3 <You repair the stereo.>
+		Msg4 <You can't repair this stereo at your current skill level.>
+	end
+
+Content
+	%% Uncool Jerk
+	%% There's an obnoxious person at the party. Go PC! Browbeat
+	%% him into silence!
+	requires <*PartyGame ~Static>
+
+	Element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <pass>
+
+	sub
+		Persona 1
+		% V1 = Have earned party point counter
+		Greeting <if= V1 0 else GoChat NewChat Say 1 AddChat 1 AddChat 2 AddChat 3>
+		*GoChat <*MISC_CHATTER>
+		GoWinPoint <AddPartyPoint RunAway ChatNPCID  V= 1 1>
+		result1 <NewChat Say 2 AddChat 4 AddChat 5>
+		result2 <NewChat Say 3 AddChat 4 AddChat 5>
+		result3 <NewChat Say 4 AddChat 6 AddChat 7>
+		result4 <ifIntimidation SkillTar %param% else GoR4Fail Goto GoR4Win>
+		GoR4Win <EndChat Say 5 Goto GoWinPoint>
+		GoR4Fail <NewChat Say 6 AddChat 8>
+		result5 <ifConversation HardSkillTar %param% else GoR5Fail Goto GoR5Win>
+		GoR5Win <NewChat Say 7 Goto GoWinPoint>
+		GoR5Fail <NewChat Say 8 AddChat 4 AddChat 8>
+		result6 <EndChat Say 9 AddEasygoing d10   Goto GoWinPoint>
+		result7 <EndChat Say 10 AddCheerful -d6   Goto GoWinPoint>
+		*result8 <*InsultContest GoR8Win GoR8Fail %param%>
+		GoR8Win <EndChat Say 9 Goto GoWinPoint>
+		*GoR8Fail <*BrushOff>
+		Msg1 <Look at this- I didn't know vagrants were allowed into this party. Why don't you take it outside where the stink won't bother the rest of us?>
+		Msg2 <Yes, I'm quite sure the police have been putting up your posters all over town, but that's not quite the same thing as being famous. Now why don't you be a good morlock and see if they need help in the kitchen.>
+		Msg3 <Yes, and I'm doing quite a good job of it, too. Look, I really have better things to do than chat with the hired help, but next time you see your boss tell him to buy you some soap.>
+		Msg4 <Hey, I'm talking to you! What, are you deaf or something!?>
+		Msg5 <Er... I had not considered that, no... I think I better be leaving now...>
+		Msg6 <They say that violence is the last resort of the incompetent. In my experience, it's usually the first.>
+		Msg7 <Really? Er... sorry, no offense meant, I've had a few drinks and thought I'd have a bit of fun with you, is all...>
+		Msg8 <As if I even care. Stay out of my face and maybe we can both be happy.>
+		Msg9 <How rude! Well, if that's the way I'm going to be treated around here, I might as well go home.>
+		Msg10 <You dare talk to me like that!? That's it... this party isn't fun any more. I'm going home.>
+		Prompt1 <I'll have you know that I'm a famous adventurer!>
+		Prompt2 <Are you trying to insult me!?>
+		Prompt3 <Yeah, whatever.>
+		CPrompt3 <ifG PCEasygoingness %param% Accept>
+		Prompt4 <You do know I could kill you, right?>
+		Prompt5 <I'm a guest here!>
+		Prompt6 <Oh, were you talking to me?>
+		Prompt7 <I'm ignoring you, moron. Can't you tell?>
+		Prompt8 <You're the rudest person I ever met!>
+	end
+	inv
+		NPC Citizen
+		CharDesc Sociable Passionate Melancholy Wangtta
+	end
+
+Content
+	%% Urban Sophisticate
+	%% The PC will meet a sophisticated person of some type.
+	requires <*PartyGame ~Static>
+
+	Element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <pass>
+
+	sub
+		Persona 1
+		% V1 = Have earned party point counter
+		% V4 = Dance Counter
+		*Greeting <*NiceToMeetYou GoInteract>
+		GoInteract <if= V1 0 else GoChat NewChat Say 1 AddChat 1 AddChat 2 AddChat 3>
+		*GoChat <*MISC_CHATTER>
+		GoWinPoint <AddPartyPoint V= 1 1>
+		result1 <ifG PCRenown %param% else GoR1CheckInt NewChat Say 2 Goto GoWinPoint>
+		GoR1CheckInt <ifIntimidation SkillTar %param% else GoR1Fail Goto GoR1Win>
+		GoR1Win <NewChat Say 3 Goto GoWinPoint>
+		GoR1Fail <NewChat Say 4>
+		result2 <ifConversation HardSkillTar %param% else GoR2Fail Goto GoR2Win>
+		GoR2Win <NewChat Say 5 Goto GoWinPoint>
+		GoR2Fail <NewChat Say 6>
+		result3 <EndChat Say 7 AddChat 4>
+		result4 <V= 4 1 ifDancing SkillTar %param% else GoR3Fail AddPartyPoint V= 1 1  Goto GoR3Win>
+		*GoR3Win <*YouDanceWell>
+		*GoR3Fail <*YouDanceTerribly>
+		Msg1 <It's an interesting party, don't you think?>
+		Msg1_1 <This party has been better than most. I wonder what the host has planned next.>
+		Msg1_2 <Now that we're here, what shall we do?>
+		Msg2 <No need to tell, \PC . Your adventures are famous. It's been a pleasure meeting such a renowned pilot... we really must meet again someday.>
+		Msg2_1 <I already know about your adventures, \PC , and if I may say so it's a thrill to meet a famous cavalier like you.>
+		Msg3 <You've had an interesting life, \PC . As for me I prefer the comforts of my city home.>
+		Msg3_1 <How very interesting... You really have had some fabulous adventures, \PC . Thank you for sharing them with me.>
+		Msg4 <If you had any adventures worth reporting, I surely would have heard of you already.>
+		Msg4_1 <Odd, I've never heard of you before. If you were really a famous adventurer then surely I would have.>
+		Msg4_2 <I'm not interested. Come back and tell me of your adventures when you've actually had some worth telling.>
+		Msg5 <My favorite thing to do is meet new people and hear their stories... Fortunately for me, yours has been interesting, so far.>
+		Msg5_1 <What I like to do most is meet people and talk. I'm lucky to be speaking with you now... That guy over there won't stop going on about his mecha.>
+		Msg5_2 <I enjoy talking with people, learning new things... I've enjoyed speaking with you very much. We'll have to do this again.>
+		Msg6 <Right now what I'd like to do is be alone.>
+		Msg6_1 <Right now I think I'd like to be talking with someone else...>
+		Msg7 <That's a spendid idea. Let's do it.>
+		Msg7_1 <Sounds like fun. Okay, let's do it.>
+		Prompt1 <Let me tell you about my adventures.>
+		Prompt1_1 <I could tell you all about my adventures.>
+		Prompt1_2 <I'll regale you with tales of adventure.>
+		Prompt2 <What do you like to do at parties?>
+		Prompt2_1 <So, what do you want to do?>
+		Prompt2_2 <What do you usually do at parties?>
+		Prompt3 <Shall we dance?>
+		Prompt3_1 <Would you like to dance with me?>
+		CPrompt3 <ifChatNPCSexy if= V4 0 Accept>
+		Prompt4 <[Dance]>
+	end
+	inv
+		NPC Citizen
+		CharDesc Renowned
+	end
+
+Content
+	%% Excited Plebian
+	%% The PC has a chance to impress this person with epic tales of adventure. Or not.
+	requires <*PartyGame ~Static>
+
+	Element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <pass>
+
+	sub
+		Persona 1
+		% V1 = Have earned party point counter
+		*Greeting <*NiceToMeetYou GoInteract>
+		GoInteract <if= V1 0 else GoChat NewChat Say 1 AddChat 1 AddChat 2 AddChat 3>
+		*GoChat <*MISC_CHATTER>
+		GoWinPoint <AddPartyPoint V= 1 1>
+		result1 <ifIntimidation HardSkillTar %param% else GoR1Fail Goto GoR1Win>
+		GoR1Win <NewChat Say 2 AddRenown 1 Goto GoWinPoint>
+		GoR1Fail <NewChat Say 3 AddChat 4 AddChat 5>
+		result2 <ifG -%param% PCCheerfulness else GoR2Fail NewChat Say 4 Goto GoWinPoint>
+		GoR2Fail <NewChat Say 5>
+		result3 <ifConversation SkillTar %param% else GoR3Fail Goto GoR3Win>
+		GoR3Win <NewChat Say 6 Goto GoWinPoint>
+		GoR3Fail <NewChat Say 7>
+		result4 <ifIntimidation SkillTar %param% else GoR4Fail Goto GoR4Win>
+		GoR4Win <NewChat Say 8 Goto GoWinPoint>
+		GoR4Fail <NewChat Say 9>
+		result5 <ifTaunt SkillTar %param% else GoR5Fail Goto GoR5Win>
+		GoR5Win <NewChat Say 10 Goto GoWinPoint>
+		GoR5Fail <NewChat Say 11>
+		Msg1 <Wow... A real-life cavalier! You must have all kinds of adventures and stuff... Think you could tell me about it?>
+		Msg1_1 <Are you a cavalier? That must be so much fun! Tell me all about your exciting adventures...>
+		CMsg1_1 <ifNPCCheerful Accept>
+		Msg1_2 <You're a cavalier, aren't you? Must be exciting... nothing very interesting ever happens to me. So what's it like?>
+		CMsg1_2 <ifNPCMelancholy Accept>
+		Msg1_3 <Imagine that, a real live cavalier, right here in front of me... I guess you must be having exciting adventures and stuff all the time, huh?>
+		CMsg1_3 <ifNPCEasygoing Accept>
+		Msg1_4 <Wow, you're a cavalier! I can tell just from looking at you... What's it like? You must have all kinds of great stories!>
+		CMsg1_4 <ifNPCPassionate Accept>
+		Msg1_5 <Well, you're a cavalier, aren't you? That's so exciting... I'd really like to get to know you better. Really.>
+		CMsg1_5 <ifChatNPCSexy Accept>
+		Msg2 <You've had such fantastic adventures. I wish I could live like that, but I'm too afraid of dying... I can't believe that I just met you!>
+		Msg2_1 <Cool! You must be the greatest mecha pilot in the universe! It's a great honor to be able to meet you!>
+		Msg2_2 <Woah. That's incredible... I only hope that this party doesn't get attacked by the countless enemies you've indoubitably made.>
+		Msg3 <You can't be serious... You're just making that up.>
+		Msg3_1 <That's not true. You just made that up.>
+		Msg3_2 <Do you expect me to believe that story? You must be lying.>
+		Msg4 <Wow... Not only are you a cavalier, you're all dark and brooding... that's so cool.>
+		Msg4_1 <Ooh... a dark, brooding warrior... that's so cool.>
+		Msg5 <I can't believe it... If you don't want to tell me about your exciting adventures, you just have to say so.>
+		Msg5_1 <Not exciting? That's impossible. Maybe you just don't want to talk to me...>
+		Msg5_2 <Maybe you don't think it's exciting, but it's certainly more interesting than my life...>
+		Msg6 <You want to hear about me? Wow... I wouldn't know where to begin. Let's chat for a while.>
+		Msg6_1 <I was born around here, went to school, worked at some odd jobs... Wow, I can't believe that you're talking to me!>
+		Msg6_2 <There's not much to tell about me, honestly, but I'm thrilled that you'd even ask!>
+		Msg7 <No, you wouldn't be interested...>
+		Msg7_1 <I don't think you'd find my life story interesting... and I don't know any rumors either...>
+		Msg8 <Wow. That's simply amazing. You'll have to tell me more of your adventures someday.>
+		Msg8_1 <So it all really did happen? Cool. You're fantastic.>
+		Msg8_2 <You mean, that all really happened? Wow. You're even cooler than I thought!>
+		Msg9 <Either you're lying or you're just not a very good storyteller. Either way, I'm going to go get some nachos.>
+		Msg9_1 <You know, you could've just told me honestly about your adventures and I would've thought that was swell. You didn't have to go making up stuff.>
+		Msg9_2 <I don't know... Your story just doesn't seem believable to me...>
+		Msg10 <Hah! Well, anyways, it was a good story... We'll have to talk again some time.>
+		Msg10_1 <Well, it doesn't matter if it was true or not, because it was a good story. Thanks for telling it to me. We'll have to chat again someday.>
+		Msg10_2 <That's quite a story. Even if it wasn't entirely true, I'm glad you told it to me!>
+		Msg11 <I knew it.>
+		Msg11_1 <I figured that you weren't telling the truth, but I'm not a cavalier myself so I had no way to be sure.>
+		Msg11_2 <Honestly, you've never had that kind of exciting adventure, have you?>
+		Prompt1 <I've defeated a dozen enemies at a time!>
+		Prompt1_1 <My name is feared across the solar system.>
+		Prompt1_2 <To my enemies, I am the angel of death.>
+		Prompt2 <Really, it's not that exciting.>
+		Prompt2_1 <Truth be told, I'm just like anyone else.>
+		Prompt2_2 <Honestly, it's not that great.>
+		Prompt3 <Enough about me, tell me about yourself.>
+		Prompt3_1 <I'd much rather find out about you.>
+		Prompt3_2 <Why don't you tell me about yourself?>
+		Prompt4 <No way! It's all true.>
+		Prompt4_1 <I never lie. At least not about stuff like this.>
+		Prompt4_2 <You dare to doubt me!?>
+		Prompt5 <Yeah, I'm pulling your leg.>
+		Prompt5_1 <I may have exaggerated for dramatic purposes.>
+		Prompt5_2 <It's a good story either way, isn't it?>
+
+	end
+	inv
+		NPC Citizen
+		CharDesc Sociable Wangtta
+	end
+
+Content
+	%% Bored Mercenary
+	requires <*PartyGame ~Static>
+
+	Element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <pass>
+
+	sub
+		Persona 1
+		% V1 = Have earned party point counter
+		*Greeting <*NiceToMeetYou GoInteract>
+		GoInteract <if= V1 0 else GoChat NewChat Say 1 AddChat 1 AddChat 2 AddChat 3 AddChat 4>
+		*GoChat <*MISC_CHATTER>
+		GoWinPoint <AddPartyPoint V= 1 1>
+		result1 <ifDancing SkillTar %param% else GoR1Fail EndChat Say 2 AddChat 5  Goto GoWinPoint>
+		GoR1Fail <NewChat Say 6 AddChat 2 AddChat 3 AddChat 4>
+		result2 <ifIntimidation SkillTar %param% else GoR2Fail  NewChat Say 3 Goto GoWinPoint>
+		GoR2Fail <NewChat Say 7 AddChat 1 AddChat 3 AddChat 4>
+		result3 <ifRepair SkillTar %param% else GoR3Fail  NewChat Say 4 Goto GoWinPoint>
+		GoR3Fail <NewChat Say 8 AddChat 2 AddChat 1 AddChat 4>
+		result4 <ifConversation HardSkillTar %param% else GoR4Fail  NewChat Say 5 Goto GoWinPoint>
+		GoR4Fail <NewChat Say 9 AddChat 2 AddChat 3 AddChat 1>
+		*result5 <*YouDanceWell>
+		Msg1 <I'll be honest with you... parties like this aren't exactly my mug of beer, if you get what I'm saying. Still, I'm supposed to be making some contacts, so here I am...>
+		Msg1_1 <This party is pretty good, isn't it? I'm sure I can make some contacts here... It's very imporatnt for a mercenary to have contacts.>
+		CMsg1_1 <ifNPCCheerful Accept>
+		Msg1_2 <Man, I hate parties. I'm supposed to be here making contacts but if one more jerk starts talking about "Love Magnet" I may have to kill someone...>
+		CMsg1_2 <ifNPCMelancholy Accept>
+		Msg1_3 <This party... This really isn't what I'm usually into, you know? The only thing is that I have to make some contacts around here and figured this would be the best place to try.>
+		CMsg1_3 <ifNPCEasygoing Accept>
+		Msg1_4 <>
+		CMsg1_4 <ifNPCPassionate Accept>
+		Msg2 <Now there's an offer I can't refuse... all right, let's do it.>
+		Msg2_1 <Okay, that might get me in a party mood. Let's do it!>
+		Msg3 <That's the problem, isn't it? People like us need action, not words. I like you... I only wish there were more people here I could really talk with.>
+		Msg3_1 <>
+		CMsg3_1 <ifNPCCheerful Accept>
+		Msg3_2 <>
+		CMsg3_2 <ifNPCMelancholy Accept>
+		Msg3_3 <>
+		CMsg3_3 <ifNPCEasygoing Accept>
+		Msg3_4 <>
+		CMsg3_4 <ifNPCPassionate Accept>
+		Msg4 <It's good to meet someone who knows mecha. Most of the people here don't know a battroid from a hole in their head. Let's chat for a while.>
+		Msg4_1 <Wow, you know your stuff! It's great to talk with someone who really knows about mecha. I'm hoping to upgrade mine, soon, but I'm waiting for the fall models to come out.>
+		CMsg4_1 <ifNPCCheerful Accept>
+		Msg4_2 <>
+		CMsg4_2 <ifNPCMelancholy Accept>
+		Msg4_3 <>
+		CMsg4_3 <ifNPCEasygoing Accept>
+		Msg4_4 <>
+		CMsg4_4 <ifNPCPassionate Accept>
+		Msg5 <The usual. I do some convoy support, and civil defense whenever it comes up... I should probably apply for a corporate contract but I don't know if I want to tie myself down like that.>
+		Msg5_1 <All kinds of missions, you name it... I've done convoy guarding, civil defense, bounty hunting, corporate sabotage... I love it all.>
+		CMsg5_1 <ifNPCCheerful Accept>
+		Msg5_2 <My missions? Ah, the pain and destruction that I've helped to spread throughout the solar system... Still, it's a dirty job, somebody had to do it...>
+		CMsg5_2 <ifNPCMelancholy Accept>
+		Msg5_3 <I'll take any mission I can get. I hear that it's easier to get missions when you have some friends- that's why I really ought to come places like this more often.>
+		CMsg5_3 <ifNPCEasygoing Accept>
+		Msg5_4 <I don't take any mission that doesn't look like a challenge. That's probably going to get me killed some day, but for now the rewards are worth it.>
+		CMsg5_4 <ifNPCPassionate Accept>
+		Msg5_5 <Don't let this get around, but when missions are slow I have been known to engage in a bit of piracy and smuggling. Most employers don't want to know that but when going through a dry patch they really help out.>
+		CMsg5_5 <ifNPCCriminal Accept>
+		Msg6 <Naah, I don't feel like dancing...>
+		Msg6_1 <Nah, I'm not in the mood...>
+		Msg7 <I don't think you really know what it's like... you don't seem the type who'd know.>
+		Msg7_1 <Please, I get enough trash talk on the battlefield, I don't need any more here.>
+		Msg8 <Are you sure you know what those words mean?>
+		Msg8_1 <I don't think you know as much about mecha as you think you do.>
+		Msg9 <The usual. You know.>
+		Msg9_1 <I don't want to talk about it. It's not very interesting.>
+		Prompt1 <Don't be so boring. Let's dance!>
+		CPrompt1 <ifChatNPCSexy Accept>
+		Prompt1_1 <I know what would liven up the party... Dancing!>
+		Prompt1_2 <If it's fun you're after, they how about a dance?>
+		Prompt2 <I agree. I'd much rather be out fighting.>
+		Prompt2_1 <Yeah, I'd rather be in my mecha right now.>
+		Prompt2_2 <Fighting's a whole lot easier than talking.>
+		Prompt2_3 <This party needs some action... like an invasion.>
+		Prompt3 <Say, have you heard about the new model Vadel?>
+		Prompt3_1 <What kind of mecha are you currently using?>
+		Prompt3_2 <How do you like the new spring '62 meks?>
+		Prompt3_3 <Ever driven a saddle reflex cockpit before?>
+		Prompt4 <So what kind of work do you usually do?>
+		Prompt4_1 <Tell me, what's it like being a mercenary?>
+		Prompt4_2 <What kind of mission is your favorite?>
+		Prompt4_3 <How's the merc business treating you?>
+		Prompt5 <[DANCE]>
+	end
+	inv
+		NPC Mercenary
+		CharDesc Shy
+	end
+

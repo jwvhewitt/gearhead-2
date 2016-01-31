@@ -1,0 +1,537 @@
+%%
+%%  DRAMATIC CHOICES
+%%
+%% At the end of each episode, the PC gets to make a dramatic choice.
+%%
+%%  DESIG: Must have a unique designation.
+%%
+%%  REQUIRES: The pre-requsites for this choice to appear.
+%%   Previous choices can be added with a ":" plus their designation.
+%%
+%%  PROMPT: The menu text the player will select. Add various options
+%%   to account for the different possible story states.
+%%  REPLY: What the NPC you're speaking to says after you make the choice.
+%%  ALERT: What the alert message says after you make the choice.
+%%
+%%  CHOICE: The script label to be called when this choice is made.
+%%   This script should set the StoryNote.
+%%
+
+
+%%
+%%  *************************
+%%  **   DEFENSE  TRACK   ***
+%%  *************************
+%%
+%% Complete this track to get more allies in the final battle.
+%%
+
+Choice 1
+	name <Defense 1: They need help in city>
+	desc <Complete this option track to earn more reinforcements in final battle.>
+	desig <DEF_1>
+	requires <-!Ex>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2>
+
+	Prompt <I'm going to see if anyone else needs my help.>
+	Reply <I hear they could use some help in %name1%. Good luck.>
+	Alert <You decide to go seek work in %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to go defend %name1%.>
+
+Choice 2
+	name <Defense 2>
+	desc <Complete this option track to earn more reinforcements in final battle.>
+	desig <DEF_2>
+	requires <:DEF_1 -!Ex>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2>
+
+	Prompt <I hear they could use some help in %name1%.>
+	Reply <Good luck with that.>
+	Alert <You decide to go seek work in %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to go defend %name1%.>
+
+Choice 3
+	name <Defense 3>
+	desc <Complete this option track to earn more reinforcements in final battle.>
+	desig <DEF_3>
+	requires <:DEF_2 -!Ex>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2>
+
+	Prompt <%name1% must be protected.>
+	Reply <Good luck with that.>
+	Alert <You decide to go protect %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to protect %name1%.>
+
+Choice 4
+	name <Defense 4>
+	desc <Complete this option track to earn more reinforcements in final battle.>
+	desig <DEF_4>
+	requires <:DEF_3 -!Ex P:++>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2>
+
+	Prompt <I'll defend %name1%.>
+	Prompt_1 <%name1% is probably \PERSONA &EnemyNPC 's next target.>
+	CPrompt_1 <ifNPCOK &EnemyNPC Accept>
+	Prompt_2 <%name1% must be protected from \FACTION &EnemyFac .>
+	CPrompt_2 <ifFactionExists &EnemyFac Accept>
+	Reply <Good luck with that.>
+	Alert <You decide to go protect %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to protect %name1%.>
+
+Choice 5
+	name <Defense 5>
+	desc <Complete this option track to earn more reinforcements in final battle.>
+	desig <DEF_5>
+	requires <:DEF_4 -!Ex P:++ F:++>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2>
+
+	Prompt <I'll defend %name1% from \FACTION &EnemyFac .>
+	Prompt_1 <%name1% is probably \PERSONA &EnemyNPC 's next target.>
+	CPrompt_1 <ifNPCOK &EnemyNPC Accept>
+	Prompt_2 <%name1% must be protected from \FACTION &EnemyFac .>
+	Reply <Good luck with that.>
+	Alert <You decide to go protect %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to protect %name1% from \FACTION &EnemyFac .>
+
+%%
+%%  *************************
+%%  **   OFFENSE  TRACK   ***
+%%  *************************
+%%
+%% Complete this track to weaken the enemies in the final battle.
+%%
+
+Choice 6
+	name <Offense 1>
+	desc <Complete this option tract to weaken the enemy forces in final battle.>
+	desig <OFF_1>
+	requires <-!Ex>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2 -Safe>
+
+	Prompt <I'll be heading to wherever the action is.>
+	Reply <Good luck with that. You know, I hear that they could use someone with your talents in %name1%. You might want to try looking for work there.>
+	Alert <You decide to go seek work in %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to follow the action to %name1%.>
+
+Choice 7
+	name <Offense 2>
+	desc <Complete this option tract to weaken the enemy forces in final battle.>
+	desig <OFF_2>
+	requires <:OFF_1 -!Ex>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2 -Safe>
+
+	Prompt <I need some more action.>
+	Prompt_1 <I want to keep fighting \PERSONA &EnemyNPC .>
+	CPrompt_1 <ifNPCOK &EnemyNPC Accept>
+
+	Reply <Good luck with that. You know, I hear that they could use someone with your talents in %name1%. You might want to try looking for work there.>
+	Alert <You decide to go seek work in %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to follow the action to %name1%.>
+
+Choice 8
+	name <Offense 3>
+	desc <Complete this option tract to weaken the enemy forces in final battle.>
+	desig <OFF_3>
+	requires <:OFF_2 -!Ex>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2 -Safe>
+
+	Prompt <I'll be heading to wherever the action is.>
+	Prompt_1 <\PERSONA &EnemyNPC must be stopped.>
+	CPrompt_1 <ifNPCOK &EnemyNPC Accept>
+	Prompt_2 <I'll keep fighting \FACTION &EnemyFac .>
+	CPrompt_2 <ifFactionExists &EnemyFac Accept>
+
+	Reply <Good luck with that. You know, I hear that they could use someone with your talents in %name1%. You might want to try looking for work there.>
+	Alert <You decide to go seek work in %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to follow the action to %name1%.>
+
+Choice 9
+	name <Offense 4>
+	desc <Complete this option tract to weaken the enemy forces in final battle.>
+	desig <OFF_4>
+	requires <:OFF_3 -!Ex F:++>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2 -Safe>
+
+	Prompt <I'll just keep on fighting.>
+	Prompt_1 <\PERSONA &EnemyNPC needs a proper arse-kicking.>
+	CPrompt_1 <ifNPCOK &EnemyNPC Accept>
+	Prompt_2 <I'll take the fight to \FACTION &EnemyFac .>
+	CPrompt_2 <ifFactionExists &EnemyFac Accept>
+
+	Reply <Good luck with that. You know, I hear that they could use someone with your talents in %name1%. You might want to try looking for work there.>
+	Alert <You decide to go seek work in %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to follow the action to %name1%.>
+
+Choice 10
+	name <Offense 5>
+	desc <Complete this option tract to weaken the enemy forces in final battle.>
+	desig <OFF_5>
+	requires <:OFF_4 -!Ex F:++>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2 -Safe>
+
+	Prompt <It's time to put aside the bubblegum and get serious.>
+	Prompt_1 <I'm going to stop \PERSONA &EnemyNPC .>
+	CPrompt_1 <ifNPCOK &EnemyNPC Accept>
+	Prompt_2 <I plan to stop \FACTION &EnemyFac .>
+	CPrompt_2 <ifFactionExists &EnemyFac Accept>
+
+	Reply <Good luck with that. You know, I hear that they could use someone with your talents in %name1%. You might want to try looking for work there.>
+	Alert <You decide to go seek work in %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to follow the action to %name1%.>
+
+%%
+%%  ***************************
+%%  ***   REWARD  CHOICES   ***
+%%  ***************************
+%%
+%%  Choices 11 through 20 are the Reward Choices. Each of these will result
+%%  in an immediate reward for the PC. Note that only one RC will appear in
+%%  the choice menu; this is hardcoded into the menu generator, so these
+%%  choice indicies should not be reassigned. Also, they don't need a "requires"
+%%  field.
+%%
+
+Choice 11
+	name <Reward 1: Seek Training 1>
+	desc <Take this option to earn immediate benefits for the PC.>
+	desig <R_EXP>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2>
+
+	Prompt <I need to work on my skills.>
+	Reply <I hear that you could do that in %name1%.>
+	Alert <You decide to seek training in %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to seek training in %name1%.>
+
+Choice 12
+	name <Reward 2: Seek Mecha 1>
+	desc <Take this option to earn immediate benefits for the PC.>
+	desig <R_MEK>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2>
+
+	Prompt <I need to upgrade my mecha.>
+	Reply <I hear that you could do that in %name1%.>
+	Alert <You decide to seek a new mecha in %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to seek a new mecha in %name1%.>
+
+Choice 13
+	name <Reward 3: Seek Money 1>
+	desc <Take this option to earn immediate benefits for the PC.>
+	desig <R_MON>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2>
+
+	Prompt <I need to earn some more money.>
+	Reply <I hear that you could do that in %name1%.>
+	Alert <You decide to seek money in %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to seek money in %name1%.>
+Choice 14
+	name <Reward 4: Seek Equipment 1>
+	desc <Take this option to earn immediate benefits for the PC.>
+	desig <R_EQP>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2>
+
+	Prompt <I need to get some better equipment.>
+	Reply <I hear that you could do that in %name1%.>
+	Alert <You decide to upgrade your equipment in %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to upgrade your equipment in %name1%.>
+Choice 15
+	name <Reward 5: Seek Lancemate 1>
+	desc <Take this option to earn immediate benefits for the PC.>
+	desig <R_LAN>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2>
+
+	Prompt <I ought to recruit a new lancemate.>
+	Reply <If you're looking to meet a skilled cavalier, %name1% is the place to go... or so I've heard.>
+	Alert <You decide to seek a new lancemate in %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to seek a new lancemate in %name1%.>
+
+
+Choice 16
+	name <Reward 6: Seek Training 2>
+	desc <Take this option to earn immediate benefits for the PC.>
+	desig <R_EXP>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2>
+
+	Prompt <I need to work on my skills even more.>
+	Reply <I hear that you could do that in %name1%.>
+	Alert <You decide to seek training in %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to seek training in %name1%.>
+
+Choice 17
+	name <Reward 7: Seek Mecha 2>
+	desc <Take this option to earn immediate benefits for the PC.>
+	desig <R_MEK>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2>
+
+	Prompt <I need an even better mecha.>
+	Reply <I hear that you could do that in %name1%.>
+	Alert <You decide to seek a new mecha in %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to seek a new mecha in %name1%.>
+
+Choice 18
+	name <Reward 8: Seek Money 2>
+	desc <Take this option to earn immediate benefits for the PC.>
+	desig <R_MON>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2>
+
+	Prompt <I need to earn a lot more money.>
+	Reply <I hear that you could do that in %name1%.>
+	Alert <You decide to seek money in %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to seek money in %name1%.>
+Choice 19
+	name <Reward 9: Seek Equipment 2>
+	desc <Take this option to earn immediate benefits for the PC.>
+	desig <R_EQP>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2>
+
+	Prompt <I need to get even better equipment.>
+	Reply <I hear that you could do that in %name1%.>
+	Alert <You decide to upgrade your equipment in %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to upgrade your equipment in %name1%.>
+Choice 20
+	name <Reward 10: Seek Lancemate 2>
+	desc <Take this option to earn immediate benefits for the PC.>
+	desig <R_LAN>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2>
+
+	Prompt <I want to recruit another new lancemate.>
+	Reply <If you're looking to meet a skilled cavalier, %name1% is the place to go... or so I've heard.>
+	Alert <You decide to seek a new lancemate in %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to seek a new lancemate in %name1%.>
+
+%%
+%%  ******************************
+%%  ***   EASY  MONEY  TRACK   ***
+%%  ******************************
+%%
+%% You've heard that there's no such thing as a free lunch? There's no such
+%% thing as easy money, either... These plots allow you to indulge your criminal
+%% tendencies at the cost of increased peril.
+%%
+%% Complete all 5 choices to unlock the Pirate God ending.
+%%
+
+Choice 21
+	name <Easy Money 1>
+	desc <The PC will partake in some criminal fundraising.>
+	desig <EMO_1>
+	requires <(P:--|P:CRIME|P:PRIVA) -!Ex>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 -Lawful>
+
+	Prompt <Some good old fashioned pillaging and looting.>
+	Reply_1 <What!? I don't know about that... although they do say there's been a lot of crime in %name1% recently.>
+	CReply_1 <ifG ChatNPCLaw -1 Accept>
+	Reply_2 <Good idea. They say there are a lot of easy targets in %name1%; you might want to try there.>
+	CReply_2 <ifG 0 ChatNPCLaw Accept>
+
+	Alert <You decide to seek easy money in %name1%.>
+
+	Choice <StoryNote %id%01  AddLawful -3  &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to seek easy money in %name1%.>
+
+
+%%
+%%  **************************************
+%%  ***   SPECIALS  (BUT  I  WANNA!)   ***
+%%  **************************************
+%%
+%% Choices the PC can make which steer the direction of the core story, but
+%% which don't neccessarily lead to any direct benefit. These options may be
+%% useful if you want to achieve one of the special endings, or if you just
+%% want to move the campaign in that particular direction.
+%%
+
+%%
+%%  Choice S_PCF
+%%
+%% The PC is going to select an ally faction.
+%%
+
+Choice 101
+	name <Join The Army/Police/Whatevs>
+	desc <You'll bring the problem to someone's attention, and gain an AllyFac.>
+	desig <S_PCF>
+	requires <P:-- F:++ -!Ex>
+
+	% E1 is the city for the next episode.
+	% E2 is the faction to inform
+	Element1 <Scene City !Far -7 !Comrade -7 !XClude -2>
+	Element2 <Faction (POLIT|POLIC|MILIT) !Ally 1 !Enemy -2 -Enemy>
+
+	Prompt_1 <%name2% must be told about this.>
+	Prompt_2 <I should get %name2% involved.>
+	Reply <%name1%'s the place you want to go for that.>
+	Alert <You decide to inform %name2% about \FACTION &EnemyFac in %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1% &SetAllyFac %2%>
+
+	Msg%id%01 <You decided to seek %name2% in %name1%.>
+
+Choice 102
+	name <Negotiate For Peace>
+	desc <You'll attempt to negotiate a peace treaty with the enemy faction.>
+	desig <S_PEA>
+	% This choice is needed for the Peace & Love ending. Note the faction
+	% restrictions below- these will match the faction restrictions of the
+	% ending.
+	requires <(P:MILIT|P:POLIT|P:POLIC|P:CRIHN) (F:MILIT|F:POLIT|F:CRIHN|F:REDMA) :DEF_4 -:OFF_3 -!Ex -!Ne -!Lo>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Okay -2>
+
+	Prompt_1 <We should give diplomacy a chance.>
+	Prompt_2 <If I could just speak with the leaders of \FACTION &EnemyFac ...>
+	Reply <Do you think there's any point in negotiation? If you're serious, head to %name1%. You should be able to find one of their representatives there.>
+	Alert <You decide to negotiate with \FACTION &EnemyFac in %name1%.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to hold peace talks in %name1%.>
+
+%%
+%%  *******************
+%%  ***   ENDINGS   ***
+%%  *******************
+%%
+%% At the end of the game you get to make one final choice.
+
+Choice 2001
+	name <Default Ending>
+	desc <The final battle.>
+	desig <FINAL>
+	requires <!Ex>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2>
+
+	Prompt <It's time to finish things.>
+	Reply <In that case you should head to %name1%. Good luck.>
+	Alert <You decide to finish things in %name1%.>
+
+	Choice <SMemo %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You will finish things in %name1%.>
+
+Choice 2002
+	name <Peace and Love Ending>
+	desc <The final battle may yet be avoided.>
+	desig <F_PAL>
+	%% Note the faction restrictions below- these must match the "Negotiate
+	%% for Peace" requirements above.
+	requires <!Ex :DEF_5 :S_PEA -:OFF_4 C:MORAL (P:MILIT|P:POLIT|P:POLIC|P:CRIHN) (F:MILIT|F:POLIT|F:CRIHN|F:REDMA)>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Okay -7 !Ally -3 !Enemy -2>
+
+	Prompt <There's still a chance to solve this peacefully.>
+	Reply <If you really think so, you should head to %name1%. I heard that \FACTION &EnemyFac will be launching a massive attack there.>
+	Alert <You decide to make one last attempt at peace in %name1%.>
+
+	Choice <SMemo %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You will make one last try for peace in %name1%.>
+
+
+

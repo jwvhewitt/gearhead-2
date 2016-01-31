@@ -1,0 +1,176 @@
+Battroid 5
+Name <Ramuh>
+SDL_Sprite <>
+SDL_Portrait <item_ramuh.png>
+Desig <CMS-04>
+desc <The Ramuh is a true all-purpose battroid, reflecting the Comet Metalworks emphasis on versatility.>
+TYPE <GROUND SPACE INSIDE>
+FACTIONS <COMET PRIVA MAQUI FCOMS RISHI>
+ROLE_MAQUI <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_COMET <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_PRIVA <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+
+sub
+Head
+	size 4
+	Armor 5
+	Mass -4
+	sub
+		Sensor 6
+		mass -1
+
+		ECM 5
+
+		STC LAS-3
+		name <Intercept Laser>
+		type <INTERCEPT>
+		mass -2
+	end
+	inv
+		HeadArmor 2
+		name <Ramuh Helmet>
+		mass -3
+		fits <Battroid>
+	end
+
+Torso
+	Armor 5
+	Mass -4
+	sub
+		CPit
+		Armor 1
+
+		Flight 6
+
+		Mount
+		name <Right Torso Mount>
+		inv
+			MLauncher 2
+			sub
+				STC HWM-4
+				Magazine 5
+			end
+		end
+
+		Mount
+		name <Left Torso Mount>
+		inv
+			MLauncher 2
+			sub
+				STC HWM-4
+				Magazine 5
+			end
+		end
+
+		Sensor 2
+
+		Computer 2
+		mass -3
+		sub
+			Software 1
+			name <Zoneseek Targeting>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 1
+			name <Siren Song Defensenet>
+			S_MVBoost
+			S_BoostScale 2
+		end
+	end
+	inv
+		BodyArmor 3
+		name <Ramuh Armor>
+		mass -3
+		fits <Battroid>
+		sub
+			Flight 2
+			Integral
+		end
+	end
+
+Arm
+	name <Right Arm>
+	Armor 5
+	Mass -3
+	sub
+		Hand
+		name <Right Hand>
+		inv
+			STC PAR-6
+		end
+
+		Mount
+		name <Right Arm Mount>
+		inv
+			EMelee 8
+			name <Plasma Blade>
+		end
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		ArmArmor 2
+		mass -2
+	end
+
+Arm
+	name <Left Arm>
+	Armor 5
+	Mass -3
+	sub
+		Hand
+		name <Left Hand>
+
+		Mount
+		name <Left Arm Mount>
+
+		PowerSource 2
+		mass -2
+	end
+	inv
+		Shield 3
+		name <Storm Shield>
+		mass -2
+		sub
+			STC MAC-4
+			Integral
+		end
+
+		ArmArmor 2
+		mass -2
+	end
+
+Leg
+	name <Right Leg>
+	Armor 5
+	Mass -3
+	sub
+		Mount
+		name <Right Leg Mount>
+
+		Flight 5
+	end
+	inv
+		LegArmor 2
+		mass -2
+	end
+
+Leg
+	name <Left Leg>
+	Armor 5
+	Mass -3
+	sub
+		Mount
+		name <Left Leg Mount>
+
+		Flight 5
+	end
+	inv
+		LegArmor 2
+		mass -2
+	end
+
+end
+

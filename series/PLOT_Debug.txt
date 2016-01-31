@@ -1,0 +1,206 @@
+% ***
+% *** Debugging and utility plots.
+% ***
+% *** Load them into the adventure via the "}" command.
+% ***
+
+Content
+	name <Debug: TestSolo>
+	desc <The lancemate has a personal job to complete. You can join it or let the LM go alone.>
+
+	% E1 is the lancemate in question
+	% E2 is the root scene
+	Element1 <Character !Lancemate>
+	Element2 <Scene Town>
+
+	start <ifNPCOK %1% else .%id%_GoEndPlot   ifNPCLancemate %1% else .%id%_GoEndPlot  ifScene .%id%_scenetype if= P%id%01 0     P= %id%01 1  Alert %id%01  SetPlotStatus %plotid1% %id1%>
+	.%id%_scenetype <outdoors>
+	.%id%_GoEndPlot <EndPlot>
+
+	Msg%id%01 <%name1% goes off on a solo mission.>
+
+	% SubPlot1 is the solo mission- if the PC refuses to come along
+	SubPlot1 <*LM_GoSolo 1 2>
+
+
+Plot
+	name <AA_TestCarve>
+	% Used for generating isometric sprites of the prop meshes.
+	% Back up three clicks exactly before taking the snap.
+
+	Element1 <Scene CavClub>
+	Element2 <Prefab>
+	Place2 <1>
+
+	update <if= V1 0 V= 1 1 Exit %2%>
+
+	sub
+		MetaScene 2
+		MapWidth 40
+		MapHeight 40
+		Param <Carve 14 0 13>
+		special <SHOWALL ADDEXIT>
+
+		start <if= V1 0 V= 1 1 EndPlot MagicMap>
+	end
+	inv
+		Encounter
+	end
+
+
+Plot
+	name <ZZZ Debug Criminal Investigation>
+
+	Element1 <Scene Building Public>
+	Element2 <Prefab>
+	Place2 <1 (Citizens) pass>
+	Element3 <Scene Town>
+
+	update <if= PlotStatus %plotid1% 0  SetPlotStatus %plotid1% %id1% Alert 1>
+	Msg1 <Go investigate %name2% at \EXACT_SCENE %1% .>
+
+	SubPlot1 <*:CriminalInvestigation 2 3>
+
+	inv
+		NPC Corporate Executive
+		name <Bruce>
+		chardesc Villainous
+
+		STC CORE-ACTIVATABLE
+		name <the debugging scene>
+	end
+
+
+Plot
+	name <AA_RenderBuildings>
+	% Used for generating isometric sprites of the prop meshes.
+	% Back up three clicks exactly before taking the snap.
+
+	Element1 <Scene CavClub>
+	Element2 <Prefab>
+	Place2 <1>
+
+	update <if= V1 0 V= 1 1 Exit %2%>
+
+	sub
+		MetaScene 2
+		MapWidth 40
+		MapHeight 40
+		BoxMap
+
+		start <if= V1 0 V= 1 1 EndPlot MagicMap>
+		param <Fill 1 0>
+
+		sub
+			Void
+			param <Fill 23 0>
+			minimap <1.2.3...............4.5.6>
+			FloorType 23
+			Width 15
+			Height 15
+			inv
+				StairsUp
+				MiniMapComponent 1
+
+				Building
+				Altitude 3
+				NAtt 19 1 21
+				MiniMapComponent 2
+
+				Building
+				Altitude 2
+				NAtt 19 1 19
+				MiniMapComponent 3
+
+				Building
+				Altitude 1
+				NAtt 19 1 20
+				MiniMapComponent 4
+				PDir 1
+
+				Building
+				Altitude 1
+				NAtt 19 1 15
+				MiniMapComponent 5
+				PDir 3
+
+				Building
+				Altitude 1
+				NAtt 19 1 16
+				MiniMapComponent 6
+				PDir 5
+			end
+		end
+	end
+	inv
+		Encounter
+	end
+
+
+Plot
+	name <AA_RenderProp>
+	% Used for generating isometric sprites of the prop meshes.
+	% Back up two clicks or so before taking the snap.
+
+	Element1 <Scene CavClub>
+	Element2 <Prefab>
+	Place2 <1>
+
+	update <if= V1 0 V= 1 1 Exit %2%>
+
+	sub
+		MetaScene 2
+		MapWidth 30
+		MapHeight 30
+		BoxMap
+
+		start <if= V1 0 V= 1 1 EndPlot>
+		param <Fill 1 0>
+
+		sub
+			Void
+			param <Fill 23 0>
+			minimap <1.5.2.....7...6.....3.8.4>
+			Width 5
+			Height 5
+			inv
+				STC TEST-ITEM
+				MiniMapComponent 1
+				PDir 0
+
+				STC TEST-ITEM
+				MiniMapComponent 2
+				PDir 2
+
+				STC TEST-ITEM
+				MiniMapComponent 3
+				PDir 4
+
+				STC TEST-ITEM
+				MiniMapComponent 4
+				PDir 6
+
+				STC TEST-ITEM
+				MiniMapComponent 5
+				PDir 1
+
+				STC TEST-ITEM
+				MiniMapComponent 6
+				PDir 3
+
+				STC TEST-ITEM
+				MiniMapComponent 7
+				PDir 5
+
+				STC TEST-ITEM
+				MiniMapComponent 8
+				PDir 7
+			end
+		end
+	end
+	inv
+		Encounter
+	end
+
+
+

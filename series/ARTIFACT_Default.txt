@@ -1,0 +1,346 @@
+%% DEFAULT ARTIFACTS LIST
+%%
+%% Every artifact must be given a threat rating, one of:
+%%
+%%   !Ex, !Hi, !Md, !Lo, or !Ne
+%%
+%% Extreme, High, Medium, Low, Negligible.
+%% The threat rating must be included in the REQUIRES attribute and also
+%% minus the exclamation point in the CONTEXT.
+%%
+%% ITEM_DESC: A sentance describing the artifact
+%% ITEM_HISTORY: A sentance describing the history of the artifact
+%% ITEM_USAGE: A sentance describing how it can be used
+%%
+
+
+Treasure
+Fudge 20000
+name <Crystal Skull>
+requires <ITEM PREZERO !Ne>
+SDL_PORTRAIT <item_crystalskull.png>
+Context <TL_Ne>
+desc <A mysterious quartz skull said to date from the stone age.>
+ITEM_DESC <It's a skull made from transparent crystal.>
+ITEM_HISTORY <Supposedly it was created in the distant past by unknown methods.>
+ITEM_USAGE <It's a priceless work of art.>
+% V1 = Meditation recharge timer
+CLUE_MEDICINE <Print 1>
+CLUE_SCIENCE <Print 2>
+CLUE_MYSTICISM <ifG ComTime V1 else GoNotYet V= 1 ComTime V+ 1 86400 ifUMysticism 12 else GoFail Print 5 XPV 20 AddCheerful -d3>
+GoFail <Mental Print 6>
+GoNotYet <Print 4>
+CLUE_INSIGHT <Print 3>
+Msg1 <Though quite good, this skull is not entirely true to anatomy.>
+Msg2 <Research has suggested that this skull was made sometime following the industrial revolution.>
+Msg3 <You discover that the jaw detaches. Cool!>
+Msg4 <You have already meditated upon the skull today.>
+Msg5 <You meditate upon the skull. Your mind is filled with images of death.>
+Msg5_1 <You meditate upon the skull. All life must sometime end.>
+Msg5_2 <You meditate upon the skull. You reflect on the inevitable mortality of us all.>
+Msg5_3 <You meditate upon the skull. You feel the cold hand of death brush your spine.>
+Msg5_4 <You meditate upon the skull. You, too, will someday die.>
+Msg6 <You try to meditate upon the skull but your concentration fails.>
+mass 1
+
+Treasure
+name <Cube of Koeneke>
+Fudge 15000
+requires <ITEM PREZERO !Ne>
+Context <TL_Ne>
+desc <A puzzle box from the previous age. Once this game was very popular, but today very few working copies remain.>
+ITEM_DESC <It was a very popular mechanical puzzle during the age of superpowers.>
+ITEM_HISTORY <Billions of these cubes must have been produced, but today only a few remain.>
+ITEM_USAGE <Well, it's a game, isn't it?>
+% V1 = Number of attempts to solve; if V1<0 then cube already solved
+% V2 = Target number to solve
+% V3 = Failure counter
+% Default skill for solving is Science
+use <ifG V1 -1 else GoSolved  Mental       V= 2 25 V+ 2 -V1 V+ 1 1 ifUScience       V2 else GoLose   Goto GoWin>
+CLUE_SCIENCE <Goto use>
+CLUE_CODEBREAKING <ifG V1 -1 else GoSolved   Mental   V= 2 25 V+ 2 -V1 V+ 1 1 ifUCodeBreaking  V2 else GoLose   Goto GoWin>
+CLUE_MYSTICISM <Print 4>
+CLUE_INSIGHT <ifG V1 -1 else GoSolved   Mental   V= 2 25 V+ 2 -V1 V+ 1 1 ifUInsight V2 else GoLose   Goto GoWin>
+GoSolved <Print 1>
+GoLose <V+ 3 1 ifG V3 d100 else GoJustLose Print 3 V= 3 0 PCMoraleDmg 10>
+GoJustLose <Print 2>
+GoWin <Print 1   V= 1 -1   PCMoraleDmg -50   ifG V2 4 XPV * V2 10>
+Msg1 <You open the cube. The holographic image of a crown is projected into the air, and a victory song plays.>
+Msg2 <You attempt to open the cube, but fail.>
+Msg3 <You attempt to open the cube, but fail. This puzzle is incredibly fustrating.>
+Msg4 <You meditate upon the cube... but no, this is not a Lament Configuration.>
+
+PowerSource 3
+name <Biskup Engine>
+requires <ITEM PREZERO !Ne>
+Context <TL_Ne>
+SDL_PORTRAIT <item_biskupengine.png>
+desc <A sphere made of hard, green stone.>
+ITEM_DESC <It's an experimental, possibly biological, power source.>
+ITEM_HISTORY <It was created in an orbital lab right before the night of fire.>
+ITEM_USAGE <It could be a source of great scientific knowledge.>
+SDL_PORTRAIT <item_biskupengine.png>
+Mass -4
+Fudge 300
+Biotech
+CLUE_SCIENCE <Print 1>
+Msg1 <This is a PreZero organic power source. The device it was supposed to be connected to was never finished.>
+
+Gun 8
+Name <Peacemaker Revolver>
+desc <A very old chemical pistol. This weapon is said to have been owned by a famous police officer.>
+ITEM_DESC <It's an archaic style pistol dating to before the age of superpowers.>
+ITEM_HISTORY <This pistol was owned by a succession of police officers, each of whom died in the line of duty.>
+ITEM_USAGE <Supposedly it was a very powerful weapon in its day.>
+caliber <.45 Revolver>
+requires <ITEM PREZERO !Ne Weapon>
+SDL_PORTRAIT <item_peacemakerrevolver.png>
+Context <TL_Ne>
+Mass -7
+Range 3
+Acc -2
+Speed 1
+Fudge 500
+magazine 6
+sub
+	Ammo 8
+	name <Revolver Cartridge>
+	caliber <.45 Revolver>
+end
+
+
+Melee 16
+Scale 0
+name <Atomic War Club>
+desc <A big, nasty looking technological club.>
+ITEM_DESC <It's a fusion powered melee weapon of some kind.>
+ITEM_HISTORY <It went missing during its first field test and hasn't been seen since.>
+ITEM_USAGE <We could learn a lot about power generation by examining it.>
+type <Blast 7 Brutal ArmorPiercing Burn Mystery>
+requires <ITEM PREZERO !Lo Weapon>
+Context <TL_Lo>
+SDL_PORTRAIT <item_mace.png>
+Acc -1
+mass -7
+
+Melee 10
+Scale 0
+name <Szczerbiec Sword>
+desc <An ancient, finely crafted sword of European design.>
+requires <ITEM PREZERO !Lo Weapon>
+context <TL_Lo>
+Fudge 10000
+ITEM_DESC <Szczerbiec is an ancient sword associated with Pax Europa.>
+ITEM_HISTORY <Originally created over a thousand years ago, Szczerbiec was rebuilt and enhanced by Pax Europa.>
+ITEM_USAGE <According to legend, the bearer of this weapon is rightful heir to Pax Europa.>
+category <WEAPON MELEE>
+SDL_PORTRAIT <item_longsword.png>
+Acc 1
+Speed 5
+Mass -7
+
+HeadArmor 5
+name <Chitin Helm>
+requires <ITEM PREZERO !Lo Armor>
+context <TL_Lo>
+desc <An ornate helmet, apparently made of bone. It feels warm to the touch.>
+ITEM_DESC <It's an organic helmet made of a bonelike material.>
+ITEM_HISTORY <These helmets were produced in great numbers for Pax Europa commanders.>
+ITEM_USAGE <One could learn a lot about biotechnology from examining this helmet.>
+Biotech
+Hardened
+mass -9
+
+BodyArmor 5
+name <Chitin Breastplate>
+requires <ITEM PREZERO !Lo Armor>
+context <TL_Lo>
+desc <An ornate breastplate, apparently made of bone. It feels warm to the touch.>
+ITEM_DESC <It's armor made from a bonelike, organic material.>
+ITEM_HISTORY <These breastplates were originally constructed for Pax Europa military commanders.>
+ITEM_USAGE <It would be possible to learn a lot about PreZero science from this armor.>
+Biotech
+Hardened
+mass -7
+
+Treasure
+name <MAGNUS Emerald>
+Fudge 1000000
+SDL_PORTRAIT <item_biskupengine.png>
+desc <This is a rectangular prism of dark green crystal.>
+ITEM_DESC <Although it resembles a gem, it is actually an ancient computer.>
+ITEM_HISTORY <It was the control center of an Imperator Zeta weapons factory.>
+ITEM_USAGE <There are many secrets that could be extracted from the Emerald.>
+requires <ITEM PREZERO !Md>
+Context <TL_Md>
+
+Melee 20
+Scale 0
+name <Bonesword>
+desc <A sword made of an organic, bonelike material.>
+ITEM_DESC <It's a sword made of bone.>
+ITEM_HISTORY <These swords were created for the military brass of Pax Europa.>
+ITEM_USAGE <It must be an incredible weapon, even by today's standards.>
+type <ArmorPiercing Mystery>
+requires <ITEM PREZERO !Md Weapon>
+Context <TL_Md>
+SDL_PORTRAIT <item_bonesword.png>
+mass -12
+Biotech
+UsesReflexes
+Acc 2
+Speed 5
+
+Grenade 25
+name <Fire of Heaven>
+mass 8
+Fudge 250000
+requires <ITEM PREZERO !Md>
+Context <TL_Md>
+type <Blast 7 Mystery Hyper Armorpiercing Brutal Burn Haywire>
+desc <An intricately detailed glowing orb.>
+ITEM_DESC <It's a microfusion generator, one of the earliest examples known.>
+ITEM_HISTORY <It was created to power a new weapon system, but as far as we know that weapon was never completed.>
+ITEM_USAGE <It's an important scientific artifact.>
+CLUE_SCIENCE <Print 1>
+Msg1 <This appears to be a primitive but extremely powerful microfusion reactor. You better handle it carefully or it could explode.>
+
+HeadArmor 7
+name <Zeron Helmet>
+requires <ITEM PREZERO !Hi Armor>
+Context <TL_Hi>
+Biotech
+mass -12
+scale 0
+desc <A strangely biological helmet>
+ITEM_DESC <It's a prototype symbiotic armor created during the age of superpowers.>
+ITEM_HISTORY <According to legend, only one suit of Zeron Armor was ever produced.>
+ITEM_USAGE <The armor is supposed to be very powerful, though its exact characteristics aren't known.>
+CLUE_SCIENCE <Print 1>
+Msg1 <A helmet crafted of living tissue. It appears to be powered by feeding off its wearer's blood.>
+Sealed
+Memo
+Hardened
+Perception 10
+
+BodyArmor 8
+scale 0
+mass -4
+name <Zeron Armor>
+requires <ITEM PREZERO !Hi Armor>
+Context <TL_Hi>
+Biotech
+desc <A suit of strangely biological armor.>
+ITEM_DESC <It's a prototype symbiotic armor created during the age of superpowers.>
+ITEM_HISTORY <According to legend, only one suit of Zeron Armor was ever produced.>
+ITEM_USAGE <The armor is supposed to be very powerful, though its exact characteristics aren't known.>
+CLUE_SCIENCE <Print 1>
+Msg1 <A bodysuit crafted of living tissue. It appears to be powered by feeding off its wearer's blood.>
+sealed
+hardened
+sub
+	gear 4 3 20
+	name <Mega Smasher>
+	type <LINE BURN STRAIN MYSTERY>
+	UsesEgo
+	scale 0
+	mass 2
+	Range 6
+	Acc -2
+	Recharge 1
+end
+
+ArmArmor 7
+name <Zeron Sleeve>
+requires <ITEM PREZERO !Hi Armor>
+Context <TL_Hi>
+scale 0
+mass -2
+Biotech
+desc <A strangely organic gauntlet.>
+ITEM_DESC <It's a prototype symbiotic armor created during the age of superpowers.>
+ITEM_HISTORY <According to legend, only one suit of Zeron Armor was ever produced.>
+ITEM_USAGE <The armor is supposed to be very powerful, though its exact characteristics aren't known.>
+CLUE_SCIENCE <Print 1>
+Msg1 <A gauntlet crafted of living tissue. It appears to be powered by feeding off its wearer's blood.>
+sealed
+hardened
+sub
+	Melee 12
+	name <High Frequency Blade>
+	type <BRUTAL ARMORPIERCING>
+	recharge 1
+	mass -4
+end
+
+LegArmor 7
+name <Zeron Legging>
+requires <ITEM PREZERO !Hi Armor>
+Context <TL_Hi>
+mass -2
+scale 0
+Biotech
+desc <A strangely organic legging.>
+ITEM_DESC <It's a prototype symbiotic armor created during the age of superpowers.>
+ITEM_HISTORY <According to legend, only one suit of Zeron Armor was ever produced.>
+ITEM_USAGE <The armor is supposed to be very powerful, though its exact characteristics aren't known.>
+CLUE_SCIENCE <Print 1>
+Msg1 <A legging crafted of living tissue. It appears to be powered by feeding off its wearer's blood.>
+sealed
+hardened
+sub
+        Flight 7
+end
+
+ArmArmor 7
+name <Zeron Sleeve>
+requires <ITEM PREZERO !Hi Armor>
+Context <TL_Hi>
+scale 0
+mass -2
+Biotech
+desc <A strangely organic gauntlet.>
+ITEM_DESC <It's a prototype symbiotic armor created during the age of superpowers.>
+ITEM_HISTORY <According to legend, only one suit of Zeron Armor was ever produced.>
+ITEM_USAGE <The armor is supposed to be very powerful, though its exact characteristics aren't known.>
+CLUE_SCIENCE <Print 1>
+Msg1 <A gauntlet crafted of living tissue. It appears to be powered by feeding off its wearer's blood.>
+sealed
+hardened
+sub
+	Melee 12
+	name <High Frequency Blade>
+	type <BRUTAL ARMORPIERCING>
+	recharge 1
+	mass -4
+end
+
+LegArmor 7
+name <Zeron Legging>
+requires <ITEM PREZERO !Hi Armor>
+Context <TL_Hi>
+mass -2
+scale 0
+Biotech
+desc <A strangely organic legging.>
+ITEM_DESC <It's a prototype symbiotic armor created during the age of superpowers.>
+ITEM_HISTORY <According to legend, only one suit of Zeron Armor was ever produced.>
+ITEM_USAGE <The armor is supposed to be very powerful, though its exact characteristics aren't known.>
+CLUE_SCIENCE <Print 1>
+Msg1 <A legging crafted of living tissue. It appears to be powered by feeding off its wearer's blood.>
+sealed
+hardened
+sub
+        Flight 7
+end
+
+Treasure
+name <IRIA Ruby>
+Fudge 25000000
+desc <This is a hexagonal prism of blood red crystal.>
+ITEM_DESC <It's a PreZero computer core.>
+ITEM_HISTORY <It was one of the most important computers in Imperator Zeta.>
+ITEM_USAGE <The Ruby contains invaluable lost knowledge... much of which would be dangerous in the wrong hands.>
+requires <ITEM PREZERO !Ex>
+Context <TL_Ex>
+

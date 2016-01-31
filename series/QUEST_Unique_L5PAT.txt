@@ -1,0 +1,2718 @@
+%%
+%%  *:Q_UNIQUE_[city designation]_[identifier] Content
+%%  *Q_UNIQUE_[city designation]_[identifier] Content
+%%
+%% For guaranteed quests. Some of these will have their own PlotIDs, while
+%% others will use the parent PlotID.
+%%
+
+Content
+	name <Climbing the Ladder, Fourth Rung>
+	desc <Theles Spinner is divided into regions based on social class. The PC has a chance to climb the ladder.>
+	requires <*Q_UNIQUE_THESP_Rung4>
+
+	% For the final level, the PC will meet the gardener behind Theles Spinner and
+	% be given a choice that could end the game.
+	% E1 is the third level. This is needed to open up the pathways after finishing
+	%   the fourth level.
+	% E2 is the fourth level itself.
+	% E3 is the gardener.
+	% E4 is the meme
+	Element3 <Prefab>
+	Place3 <2 (Citizens) SD>
+	Element4 <Prefab>
+
+	sub
+		Persona 3
+		special <UNLISTED NOPLOTS>
+		% V1 = Have been told to get in the pod.
+		greeting <if= V1 1 else GoFirstTime NewChat Say 1 AddChat 1 AddChat 2>
+		GoFirstTime <NewChat Say 2 AddChat 3>
+		result1 <NewChat Say 3>
+		result2 <EndChat Say 4 SoloAttack %3%>
+		result3 <NewChat Say 5 AddChat 4>
+		result4 <NewChat Say 6 AddChat 5>
+		result5 <NewChat Say 7 AddChat 6>
+		result6 <NewChat Say 8 AddChat 7>
+		result7 <NewChat Say 9 QMemo %plotid% 10 V= 1 1 AddChat 8 AddChat 9 AddChat 10>
+		result8 <NewChat Say 11 L= 3 1>
+		result9 <NewChat Say 12 L= 3 1>
+		result10 <EndChat Say 13 SoloAttack %3%>
+		Msg1 <Yes, are you having trouble finding the cell?>
+		Msg2 <Hello \PC . I've been watching you, watching you from way up here. I see that you've bloomed into a beautiful flower.>
+		Msg3 <You really shouldn't dawdle. The administration of Theles Spinner is a serious business... it makes me glad that I'm simply a gardener.>
+		Msg4 <My, but that was the wrong answer. Wilted flowers must be pruned, before they infect the rest of the garden. I'm so sorry.>
+		Msg5 <This is the fourth level of Theles Spinner, the home of the supreme technocrats. I am merely a humble gardener. My purpose is to keep everything running.>
+		Msg6 <They are the technocrats, of course, the fruits of Theles Spinner, those people who have proven themselves smarter, more competitive, far more ruthless than the rabble below.>
+		Msg7 <Leaders such as these, giants if I may say, cannot be expected to work together under normal circumstances. Luckily we've found a way to let them share. They are dreaming.>
+		Msg8 <Yes, dreaming. Their subconscious minds send orders to the levels below. If their orders result in energy profit for the colony, their brains are granted exquisite pleasure. If they result in energy loss... well, let's not mention that.>
+		Msg9 <Why, to add you to the garden, of course! You have proven that you belong here.>
+		Msg10 <%name3% offered you a position as technocrat of Theles Spinner, as long as you don't mind spending the rest of your life in a tube.>
+		Msg11 <There's an empty biotank around here someplace. Just climb inside, and all the worries of this life will pass from your mind.>
+		Msg12 <Don't be so hasty. Take a look around the garden, see how peaceful they are. Make your decision then.>
+		Msg13 <Oh, so you are a weed, not a flower at all. I think we both know what happens to them.>
+		Prompt1 <I'll go there in a minute.>
+		Prompt2 <I've decided that I don't want to.>
+		Prompt3 <Who are you? What is this place?>
+		Prompt4 <Who are these people in the tanks?>
+		Prompt5 <Why are they in those containment tanks?>
+		Prompt6 <Dreaming?>
+		Prompt7 <Why did you call me here?>
+		Prompt8 <I accept your offer.>
+		Prompt9 <I'm not going to spend my life in a fishtank.>
+		Prompt10 <Actually I came here to destroy the technocracy.>
+
+		MetaScene 2
+		% L1 = Initialization Counter
+		% L2 = Can use elevator
+		% L3 = Can use biotank
+		% L4 = Have killed Gardener
+		Faint%3% <SetPlotStatus %plotid% -1 if= L4 0 L= 4 1 Alert 5 History 3 XPV 100 L= 2 1 L= 3 0 ActivateMeme %4% RootSceneID SceneVar= %1% 1 1 SceneVar= RootSceneID 2 1 SceneVar= %1% 12 1>
+		Surrender%3% <Print 4 KillNPC %3%>
+		start <if= L1 0 else GoBeenBefore L= 1 1 SetPlotStatus %plotid% %id% Alert 1>
+		GoBeenBefore <Print 2>
+		Msg1 <You enter the fourth level. The area is brightly illuminated by reflected sunlight. In the distance, an old man tends to the plants.>
+		Msg2 <You enter Theles Spinner fourth level.>
+		Msg3 <You killed the gardener of Theles Spinner.>
+		Msg4 <%name4% crumples over and dies.>
+		Msg5 <With the gardener gone, you wonder what is going to happen to Theles Spinner. Is this the beginning of a better tomorrow, or of a new age of chaos?>
+		sub
+			rect
+			minimap <      ...  .2.  ...      >
+			inv
+				trapdoor
+				MiniMapComponent 2
+				use <if# L2 0 else GoAccessDenied Print 1 Exit RootSceneID>
+				GoAccessDenied <Print 101>
+				Msg101 <You can't open this trapdoor right now.>
+			end
+		end
+	end
+	inv
+		NPC Soldier
+		Biotech
+		job <Gardener>
+		job_desig <ACADE>
+		Age -20
+		chardesc male
+		CHAT_ATTACK_1 <It's strange fruit we grow in Theles Spinner... very strange.>
+		CHAT_ATTACK_2 <This garden must to be weeded!>
+		CHAT_SAFE_1 <It's strange fruit we grow in Theles Spinner... very strange.>
+		CHAT_SAFE_2 <How pretty... so pretty...>
+
+		Meme
+		MaxMemeViews 10
+		Msg_1 <What's going to happen to Theles Spinner without the technocrats?>
+		Msg_2 <Did you hear? Someone went all the way to the top level and killed the technocrats!>
+		Msg_10 <This is the time when we should band together. Free from the technocrats, we can make Theles Spinner a normal place, like all the others.>
+		CMsg_10 <ifNPCSociable Accept>
+		Msg_11 <Stay away from me.>
+		CMsg_11 <ifNPCShy Accept>
+		Msg_12 <With the technocrats we had chaos. Now with them gone we have chaos. Big deal.>
+		CMsg_12 <ifNPCEasygoing Accept>
+		Msg_13 <Time to get ours, before the FCS security forces arrive and put their boots to our heads.>
+		CMsg_13 <ifNPCPassionate Accept>
+		Msg_14 <Maybe with the technocrats gone, we can build a better society for ourselves!>
+		CMsg_14 <ifNPCCheerful Accept>
+		Msg_15 <The FCS is going to declare martial law while they clean up the mess made by the last technocrats. I get a feeling the new boss isn't going to be much different from the old one.>
+		CMsg_15 <ifNPCMelancholy Accept>
+		Msg_16 <Pillage and burn! The city belongs to us now!>
+		CMsg_16 <ifNPCCriminal Accept>
+		Msg_17 <This isn't going to change anything. Theles Spinner is sick to its core.>
+		CMsg_17 <ifNPCVillainous Accept>
+		Msg_18 <I wonder what the death of the technocrats is going to mean for my job...>
+		CMsg_18 <ifNPCLawful Accept>
+		Msg_20 <I hear there's a riot on the upper level! I'm gonna go join it!>
+		CMsg_20 <ifNPCSociable Accept>
+		Msg_21 <Keep away from me... with society breaking down, the crazies are more dangerous than ever.>
+		CMsg_21 <ifNPCShy Accept>
+		Msg_22 <I got exiled here for being a slacker. Hopefully the new technocrats aren't going to kick people out for not working like my last spinner did.>
+		CMsg_22 <ifNPCEasygoing Accept>
+		Msg_23 <It's about time someone brought a taste of the city floor up to the top level!>
+		CMsg_23 <ifNPCPassionate Accept>
+		Msg_24 <Hooray! Did you hear? The technocrats are dead! I grabbed myself a vidscreen during the riot!>
+		CMsg_24 <ifNPCCheerful Accept>
+		Msg_25 <The technocracy has been beaten, but life down here stays the same.>
+		CMsg_25 <ifNPCMelancholy Accept>
+		Msg_26 <It's great that the technocrats are gone, but if the new bosses decide to close the doors I wonder where all of the exiles will be able to go.>
+		CMsg_26 <ifNPCCriminal Accept>
+		Msg_27 <When the FCS installs a new technocrat and brings law to this place, that's going to be the end of our fun.>
+		CMsg_27 <ifNPCVillainous Accept>
+		Msg_28 <I wanted to see the technocrats gone, but is this anarchy really any better?>
+		CMsg_28 <ifNPCHeroic Accept>
+	end
+
+Content
+	name <Climbing the Ladder, Third Rung>
+	desc <Theles Spinner is divided into regions based on social class. The PC has a chance to climb the ladder.>
+	requires <*Q_UNIQUE_THESP_Rung3>
+
+	% For the third level, the PC will be given a chance to crush the anti-technocrat
+	% rebellion... or become a part of it.
+	% E1 is the third level. Unlike the previous two, this is not an outdoors scene.
+	% E2 is the mission-giver. If the PC accepts the offer, the path back down to the
+	%  second level is opened.
+	% E3 is the leader of the rebellion, who the PC needs to find. Actually he's not
+	%  much better than the technocrats...
+	% E4 is E3's hideout
+	% E5 is the final spire
+	% E6 is the fourth layer
+	% E7 is the environs scene for E4
+	% E8 is the entrance for E4
+	Element2 <Prefab>
+	Place2 <1 (Citizens) sd>
+	Element3 <Prefab>
+	Place3 <4 (Rebels) sd>
+	Element4 <QuestScene>
+	Place4 <7>
+	Element5 <QuestScene>
+	Place5 <1>
+	Element6 <QuestScene>
+	Place6 <5>
+	Element7 <Scene Space Environs>
+	Element8 <Prefab>
+	Place8 <7>
+
+	% SubQuest1 is the task to locate the rebel hideout
+	% SubQuest2 is the final rung of this quest
+	SubPlot1 <*:Q_RevealEncounter 4 7>
+	SubPlot2 <*Q_UNIQUE_THESP_Rung4 #90 1 6>
+
+	sub
+		Persona 2
+		special <UNLISTED NOPLOTS>
+		%%  V1 = Have accepted mission
+		greeting <if= PlotStatus %plotid% %id% else GoChat if# V1 2 else GoChat if= V1 1 else GoOfferMission NewChat Say 2 AddChat 1 AddChat 2 AddChat 3>
+		GoChat <NewChat SayAnything>
+		GoStartMission <V= 1 1 SceneVar= %1% 1 1 SetPlotStatus %plotid1% %id1% QMemo %plotid% 1>
+		GoOfferMission <NewChat Say 3 AddChat 4 AddChat 5>
+		GoAttack <TeamAttack 2 QMemo %plotid% 0 TeamAttack 3 SceneVar= %1% 12 1 SceneVar= %1% 1 0>
+		result1 <NewChat Say 4>
+		result2 <NewChat Say 5 AddChat 6 AddChat 7>
+		result3 <EndChat Say 6 AddChat 8  SceneVar= %1% 1 0>
+		result4 <NewChat Say 7 AddChat 9 AddChat 10>
+		result5 <NewChat Say 8 Goto GoStartMission>
+		result6 <NewChat Say 4>
+		result7 <EndChat Say 9 Goto GoAttack>
+		result8 <NewChat Say 10 QMemo %plotid% 11 SceneVar= %1% 2 1 SceneVar= %1% 1 0 V= 1 2 UpdateProps AddChat 11 AddChat 12>
+		result9 <Goto result5>
+		result10 <NewChat Say 12 QMemo %plotid% 0 SceneVar= %1% 1 1 SceneVar= %1% 12 1>
+		result11 <NewChat Say 13>
+		result12 <NewChat Say 14>
+		Msg1 <Technocrat %name2% sent you back to the lower levels to find and eliminate a rebel movement.>
+		Msg2 <Have you dealt with the insurgents yet? The Technocrats demand progress.>
+		Msg3 <We've been waiting for a long time. Let me give you the details of your task...>
+		Msg4 <Don't come back until the rebels have been dealt with.>
+		Msg5 <I don't have time to play games, \PC , so I'd advise that you think very carefully about what you say. Are you going to complete this mission or will we find some other purpose for you?>
+		Msg6 <So, I guess you really are as good as the tests indicated. You've even attracted the attention of the fourth level.>
+		Msg7 <You? A technocrat? Don't make me laugh. You were brought here because we intend to use your abilities, though if you prove yourself there's a chance that you could be promoted to join our ranks.>
+		Msg8 <There's a rebellion brewing on the lower levels. Certain residents dislike the way Theles Spinner is run. Your task is to destroy their mecha and eliminate their leader. Return here when the task has been completed.>
+		Msg9 <You were given every chance. If you will not serve your purpose in life, then your body will serve us in death.>
+		Msg10 <The door in the southeast corner of the room will now be open to you. I suppose I should warn you that... no, it will be more fun if you discover on your own.>
+		Msg11 <Technocrat %name2% informed you that you've been granted access to Theles level four.>
+		Msg12 <I can see that the testing has been for nothing. You are not suited to be one of us; you may leave any time you desire.>
+		Msg13 <It doesn't make any difference what I was going to say. Your fate from this point onwards is sealed.>
+		Msg14 <You are ignorant of how things operate in Theles. What would be the point of a third level, if not for a fourth?>
+		Prompt1 <I'm still working on it.>
+		Prompt2 <I've decided that I'm not going to help you.>
+		CPrompt2 <if= SceneVar %4% 2 0 Accept>
+		Prompt3 <The rebels have been dealt with.>
+		CPrompt3 <if= SceneVar %4% 2 1 Accept>
+		Prompt4 <Wait, I'm a technocrat now, you can't order me...>
+		Prompt5 <Tell me what I must do.>
+		Prompt6 <I'll do the mission.>
+		Prompt7 <You can take this mission and burn it.>
+		Prompt8 <[Continue]>
+		Prompt9 <Fine. Tell me what you want.>
+		Prompt10 <I'm not your slave to boss around.>
+		Prompt11 <Wait, what were you going to say?>
+		Prompt12 <There's a fourth level? Isn't this the top?>
+
+		Persona 3
+		special <UNLISTED>
+		% V1 = Have joined rebellion
+		greeting <if= PlotStatus %plotid% %id% else GoCheck if= V1 0 else GoChat ifChatNPCSurrendered else GoChallenge NewChat Say 1 AddChat 1 AddChat 2>
+		GoCheck <if= V1 1 else GoChat if= SceneVar RootSceneID 2 1 else GoChat PCAlly %3% NewChat Say 14>
+		GoChat <NewChat SayAnything>
+		GoChallenge <NewChat Say 2 AddChat 3 AddChat 4>
+		Result1 <EndChat Say 3 Print 4 KillNPC %3%>
+		Result2 <EndChat Say 5 History 6 FreezeNPC %3% Trigger0 NU2 ifNPCHeroic else GoMakeEnemy PCAlly %3%>
+		GoMakeEnemy <PCEnemy %3%>
+		Result3 <EndChat Say 7  TeamAttack 2>
+		Result4 <NewChat Say 8 AddChat 5>
+		Result5 <NewChat Say 9 AddChat 6 AddChat 7 AddChat 8>
+		result6 <NewChat Say 10 V= 1 1 QMemo %plotid% 11 AddReact d30>
+		result7 <EndChat Say 12  TeamAttack 2>
+		result8 <NewChat Say 13 AddChat 3 AddChat 9>
+		*result9 <*GOODBYE>
+		Msg1 <Please, you have defeated me, spare my life...>
+		Msg2 <You've come to a dangerous place. What do you hope to find here?>
+		Msg3 <Then I'll die of my own free will, and not at the hand of their slave!>
+		Msg4 <%name3% kills \PPR %3% self.>
+		Msg5 <Thank you... we will probably meet again, though as friends or enemies I couldn't say.>
+		Msg6 <You spared the life of rebel leader %name3%.>
+		Msg7 <You aren't the first one they've sent, and I doubt you'll be the last. Kill the intruder!>
+		Msg8 <The people of Theles Spinner are regarded as living waste! It's the fault of the technocrats- these abuses would never be tolerated in any other spinner.>
+		Msg9 <We have a two part plan. First, the technocracy must be eliminated. Second, the shipment of criminals and slackers from the other colonies will be stopped.>
+		Msg10 <Great! We could always use more members. Look, just see what kind of trouble you can make for the technocrats. I'll be here administrating.>
+		Msg11 <You joined %name3%'s rebellion against the technocrats. %name2% isn't going to be happy.>
+		Msg12 <Another slave of the technocrats, I should have known... Destroy the intruder!>
+		Msg13 <What are you doing asking questions like that!? It's as though you don't want this rebellion to succeed. Tell me, where do your loyalties lie?>
+		Msg14 <They say you had something to do with getting rid of the technocrats. I salute you!>
+		Prompt1 <No. The technocrats ordered your death.>
+		Prompt2 <Fine. Leave this place, and never come back.>
+		Prompt3 <The technocrats sent me to kill you.>
+		Prompt4 <I want to learn about the rebellion.>
+		Prompt5 <What do you plan to do about it?>
+		Prompt6 <I want to join your rebellion!>
+		Prompt7 <I think it's time that I kill you.>
+		Prompt8 <But how will you keep the colony operating?>
+		Prompt9 <I'm not going to oppose you... yet.>
+
+		MetaScene 2
+		% L1 = PC can return to the lower levels from this level
+		% L2 = Granted entrance to Level 4
+		% L11 = Initialization Counter
+		% L12 = Re-entry denied; PC will not be allowed to return to this level
+		start <if= L11 0 else %pop% L= 11 1 SetPlotStatus %plotid% %id% Monologue %2% 11 Goto %pop%>
+		Surrender%2% <Print 12 KillNPC %2%>
+		Msg11 <It's about time you arrived. Get over here.>
+		Msg12 <%name2% suddenly drops dead!>
+		sub
+			Room
+			minimap <.......1............#---#>
+			special <SHAREDPALETTE>
+			desig <HOME>
+		end
+		inv
+			Elevator
+			desig <Entrance %5%>
+			XPos 38
+			YPos 12
+
+			STC FOOD-1
+			XPos 37
+			YPos 13
+
+			STC FOOD-1
+			XPos 37
+			YPos 14
+
+			STC FOOD-1
+			XPos 39
+			YPos 13
+
+			STC FOOD-1
+			XPos 39
+			YPos 14
+		end
+
+		MetaScene 4
+		name <%name3%'s Lair>
+		type <Lair Private>
+		terrain <GROUND>
+		special <NOEXIT>
+		BoxMap
+		MapWidth 17
+		MapHeight 17
+		% V1 = First time entry counter
+		% V2 = Have defeated all rebels
+		start <Print 1 if= V1 0 ForceChat %3% V= 1 1 WMonster 2 %threat% 150>
+		nu2 <if= T2 0 if= V2 0 V= 2 1 XPV 100 QMemo %plotid% 2>
+		Msg1 <You enter the rebel microstation.>
+		Msg2 <You have defeated the rebels and should report back to %name2%.>
+		sub
+			Team 1
+
+			Team 2
+			name <Rebels>
+			type <Criminal Guard City>
+
+			Room
+			sub
+				Trapdoor
+				Destination -1
+			end
+		end
+
+		MetaScene 5
+		name <Final Spire>
+		special <SOLO NOEXIT NORESCUE>
+		type <DUNGEON Industrial>
+		dentrance <*GoUp>
+		mapwidth 40
+		mapheight 40
+		MonkeyMap
+		LockedDoorChance 5
+		SecretDoorChance 15
+		IndustrialTiles
+		NeededCells 3
+		DifficultyLevel 90
+		start <Print 1>
+		msg1 <You enter \SCENE SceneID .>
+		sub
+			Room
+			ForGoalLevel
+			sub
+				StairsUp
+				desig <Entrance %6%>
+			end
+
+			Team 1
+			SetEnemy 2
+
+			Team 2
+			name <Monster>
+			type <Robot Vermin Mutant>
+			SetEnemy 1
+			Stat 2 1
+
+			room
+			width 3
+			height 3
+			sub
+				StairsDown
+				Destination -1
+			end
+		end
+
+		MetaScene 6
+		name <Theles Spinner Fourth Level>
+		type <complex private>
+		special <NOEXIT NORESCUE SOLO UNSAFE SHOWALL>
+		PalaceParkTiles
+		MapWidth 32
+		MapHeight 22
+		BoxMap
+		FloorType 1
+		sub
+			team 1
+
+			team 2
+			name <Citizens>
+			SetAlly 3
+
+			team 3
+			name <Guards>
+			SetAlly 2
+
+			rect
+			minimap <      ###  #1#  ...      >
+			inv
+				Elevator
+				MiniMapComponent 1
+				Destination -1
+				use <Print 11>
+				Msg11 <This elevator doesn't respond.>
+			end
+
+			rect
+			minimap <......1#2..###..3#4......>
+			special <SHAREDPALETTE>
+			inv
+				STC BIOTANK
+				use <Print 1>
+				Msg1 <This tank contains a human being floating in a foetal position.>
+				MiniMapComponent 1
+
+				STC BIOTANK
+				use <Print 1>
+				Msg1 <This tank contains a human being floating in a foetal position.>
+				MiniMapComponent 2
+
+				STC BIOTANK
+				use <Print 1>
+				Msg1 <This tank contains a human being floating in a foetal position.>
+				MiniMapComponent 3
+
+				STC BIOTANK
+				use <Print 1>
+				Msg1 <This tank contains a human being floating in a foetal position.>
+				MiniMapComponent 4
+			end
+
+			rect
+			minimap <......1#2..###..3#4......>
+			special <SHAREDPALETTE>
+			inv
+				STC BIOTANK
+				use <Print 1>
+				Msg1 <This tank contains a human being floating in a foetal position.>
+				MiniMapComponent 1
+
+				STC BIOTANK
+				use <Print 1>
+				Msg1 <This tank contains a human being floating in a foetal position.>
+				MiniMapComponent 2
+
+				STC BIOTANK
+				use <Print 1>
+				Msg1 <This tank contains a human being floating in a foetal position.>
+				MiniMapComponent 3
+
+				STC BIOTANK
+				use <Print 1>
+				Msg1 <This tank contains a human being floating in a foetal position.>
+				MiniMapComponent 4
+			end
+
+			rect
+			minimap <......1#2..###..3#4......>
+			special <SHAREDPALETTE>
+			inv
+				STC BIOTANK
+				name <Empty Biotank>
+				MiniMapComponent 1
+				use <if= L3 0 else GoMaybeDie Print 1>
+				GoMaybeDie <ifYesNo 2 3 4 else GoDontDie Alert 5 Alert 6 History 8 KillPC Victory>
+				GoDontDie <Print 7>
+				Msg1 <This tank appears to be empty.>
+				Msg2 <You find the empty tank that the gardener mentioned.>
+				Msg3 <Enter the container.>
+				Msg4 <Don't do it.>
+				Msg5 <You climb inside the biotank and close the door. Relaxing music begins to play as a pleasantly smelling gas fills the chamber.>
+				Msg6 <You drift into a strange dream from which you never awaken.>
+				Msg7 <You leave it alone.>
+				Msg8 <You became part of the collective consciousness which runs Theles Spinner.>
+
+				STC BIOTANK
+				use <Print 1>
+				Msg1 <This tank contains a human being floating in a foetal position.>
+				MiniMapComponent 2
+
+				STC BIOTANK
+				use <Print 1>
+				Msg1 <This tank contains a human being floating in a foetal position.>
+				MiniMapComponent 3
+
+				STC BIOTANK
+				use <Print 1>
+				Msg1 <This tank contains a human being floating in a foetal position.>
+				MiniMapComponent 4
+			end
+			forest
+			forest
+			forest
+			forest
+			forest
+			lake
+			lake
+		end
+	end
+	inv
+		NPC Scientist
+		job <Technocrat>
+		Combatant
+		chardesc melancholy villainous shy
+
+		NPC Soldier
+		job <Rebel Leader>
+		chardesc melancholy criminal passionate
+
+		STC QUEST-MAPMARKER-STATIONARY-DEFENDED
+		name <Rebel Station>
+		desig <ENTRANCE %4%>
+	end
+
+
+Content
+	name <Climbing the Ladder, Second Rung>
+	desc <Theles Spinner is divided into regions based on social class. The PC has a chance to climb the ladder.>
+	requires <*Q_UNIQUE_THESP_Rung2>
+	% For the second rung, the PC must prove his or her worth to the technocracy
+	% in order to gain access to the third level. This can be done by completing
+	% a series of quests for the residents of the second level.
+	% E1 is the second level outdoors scene.
+	% E2 is the second gateman at the Ascension Complex.
+	% E3 is the Ascension Complex
+	% E4 is the NPC at the shopping center who will offer a quest
+	% E5 is the shopping center
+	% E6 is the NPC at the factory control who will offer a quest
+	% E7 is the factory control office
+	% E8 is the third level
+	% E9 is the NPC at the population control who will offer a quest
+	% E10 is the population control office
+	Element2 <Prefab>
+	Place2 <3 (Citizens) pass>
+	Element3 <QuestScene>
+	Place3 <1>
+	Element4 <Prefab>
+	Place4 <5 (Citizens) pass>
+	Element5 <QuestScene>
+	Place5 <1>
+	Element6 <Prefab>
+	Place6 <7 (Citizens) pass>
+	Element7 <QuestScene>
+	Place7 <1>
+	Element8 <QuestScene>
+	Place8 <3>
+	Element9 <Prefab>
+	Place9 <10 (Citizens) pass>
+	Element10 <QuestScene>
+	Place10 <1>
+
+	% SubQuest1 is E4's mission
+	% SubQuest2 is E6's mission
+	% SubQuest3 is E9's mission
+	% SubQuest4 is the third rung
+	SubPlot1 <*:Q_MinorMission #50 4>
+	SubPlot2 <*:Q_MinorMission #50 6>
+	SubPlot3 <*:Q_MinorMission #50 9>
+	SubPlot4 <*Q_UNIQUE_THESP_Rung3 #70 8>
+
+	sub
+		Persona 2
+		rumor%id% <people granted access to level three never return to the lower levels.>
+		% V1 = Asked for work counter
+		greeting <if= PlotStatus %plotid% %id% else GoChat NewChat Say 1 AddChat 1 AddChat 2>
+		GoChat <NewChat SayAnything>
+		result1 <NewChat Say 2 AddChat 3>
+		result2 <NewChat Say 3 v= 1 1 AddChat 4>
+		result3 <NewChat Say 4 AddChat 4>
+		result4 <NewChat Say 5 AddChat 5>
+		result5 <NewChat Say 6>
+		Msg1 <This is the Ascension Complex. It is our job to enact the orders of the technocrats above on the city floor below.>
+		Msg2 <All residents of level two are expected to file periodic reports for the technocrat council. You can enclose your questions or comments with this report.>
+		Msg3 <Let me check the databoard... No specific orders for you have come from level three, but if you ask around I'm sure you'll find things which need doing.>
+		Msg4 <I'm afraid that's not possible. The technocrats never come down to the lower levels. When they choose to interact directly with the rest of us, which isn't very often, they do so via phone or holopresence.>
+		Msg5 <Sometimes residents of the second level are promoted into the ranks of the technocrats. If you want to advance you should work hard and prove your value to Theles Spinner, though I should warn you that it might not be a good idea.>
+		Msg6 <I've seen loads of people go into that door, but I've never seen anyone come back out. I don't know what happens to the people who become technocrats but I do know that they never leave.>
+		Prompt1 <I want to speak with the technocrats.>
+		Prompt2 <I was told you'd have some work for me?>
+		CPrompt2 <if= V1 0 Accept>
+		Prompt3 <No, I mean I want to speak with them in person.>
+		Prompt4 <How do I gain access to level three myself?>
+		Prompt5 <Why do you say that?>
+
+		Persona 4
+		% V%id%01 = Have given reward
+		greeting <if= PlotStatus              %plotid1% -1   else GoCheckLoss if= v%id%01 0 else GoWin v= %id%01 1  CashPrize Reward %threat% 200  QMemo %plotid% 0 Goto GoWin>
+		GoCheckLoss <if= PlotStatus           %plotid1% -2   else GoCheckFirst Goto GoLose>
+		GoCheckFirst <if= PlotStatus          %plotid1%  0   else GoChat if= PlotStatus %plotid% %id% else GoChat Goto GoOfferMission>
+		*GoOfferMission <*AreYouHereAboutJob  .%id1%_GoInit>
+		GoEnd <SetPlotStatus                  %plotid1% -3>
+		GoChat <NewChat SayAnything>
+		*GoLose <*MissionWasFailure GoEnd na na>
+		*GoWin <*MissionWasSuccess&Reward GoEnd na na>
+
+		Persona 6
+		% V%id%01 = Have given reward
+		greeting <if= PlotStatus              %plotid2% -1   else GoCheckLoss if= v%id%01 0 else GoWin v= %id%01 1  CashPrize Reward %threat% 200  QMemo %plotid% 0 Goto GoWin>
+		GoCheckLoss <if= PlotStatus           %plotid2% -2   else GoCheckFirst Goto GoLose>
+		GoCheckFirst <if= PlotStatus          %plotid2%  0   else GoChat if= PlotStatus %plotid% %id% else GoChat Goto GoOfferMission>
+		*GoOfferMission <*AreYouHereAboutJob  .%id2%_GoInit>
+		GoEnd <SetPlotStatus                  %plotid2% -3>
+		GoChat <NewChat SayAnything>
+		*GoLose <*MissionWasFailure GoEnd na na>
+		*GoWin <*MissionWasSuccess&Reward GoEnd na na>
+
+		Persona 9
+		% V%id%01 = Have given reward
+		greeting <if= PlotStatus              %plotid3% -1   else GoCheckLoss if= v%id%01 0 else GoWin v= %id%01 1  CashPrize Reward %threat% 200  QMemo %plotid% 0 Goto GoWin>
+		GoCheckLoss <if= PlotStatus           %plotid3% -2   else GoCheckFirst Goto GoLose>
+		GoCheckFirst <if= PlotStatus          %plotid3%  0   else GoChat if= PlotStatus %plotid% %id% else GoChat Goto GoOfferMission>
+		*GoOfferMission <*AreYouHereAboutJob  .%id3%_GoInit>
+		GoEnd <SetPlotStatus                  %plotid3% -3>
+		GoChat <NewChat SayAnything>
+		*GoLose <*MissionWasFailure GoEnd na na>
+		*GoWin <*MissionWasSuccess&Reward GoEnd na na>
+
+		MetaScene 2
+		% V11 = surprise message counter
+		start <if= L11 1 else %pop% ifNPCOK %2% else %pop% Monologue %2% 11 L= 11 2>
+		Msg11 <Well, there's a first time for everything!>
+		sub
+			Room
+			minimap <##2##............1..#---#>
+			special <SHAREDPALETTE NOGO>
+			desig <HOME>
+			inv
+				Elevator
+				% V1 = Have used the elevator already				MiniMapComponent 2
+				desig <ENTRANCE %8%>
+				MiniMapComponent 2
+				use <if= V1 1 else GoCheckEligibility  if= SceneVar %8% 12 0 else GoAccessDenied Print -1 Exit Destination>
+				%% There are two ways to gain access to L3: First, the PC
+				%% can simply obtain a lot of renown and money, and the door
+				%% will magically open. Second, the player can complete all
+				%% the miniquests on this level, in which case the door will
+				%% also open.
+				GoCheckEligibility <ifG PCRenown 60 else GoCheckM1 ifG PC$ 1000000 else GoCheckM1 Goto GoAccessGranted>
+				GoCheckM1 <if= PlotStatus %plotid1% -1 else GoAccessDenied if= PlotStatus %plotid2% -1 else GoAccessDenied if= PlotStatus %plotid3% -1 else GoAccessDenied Goto GoAccessGranted>
+				GoAccessGranted <ifYesNo 2 3 4 V= 1 1 XPV 100 SetPlotStatus %plotid% %id4% L= 11 1 Print -1 Exit Destination>
+				GoAccessDenied <Print 1>
+				Msg1 <You have not been authorized to use this elevator.>
+				Msg2 <The door of the elevator opens as you approach. You think back on the stories you've heard- people who go to level three never return to the lower levels.>
+				Msg3 <Go to level three.>
+				Msg4 <Stay right here.>
+			end
+		end
+
+		MetaScene 3
+		name <Ascension Complex>
+		Entrance <*SPACEPORT>
+		type <building private rich>
+		mapwidth 15
+		mapheight 15
+		MallMap
+		special <ADDEXIT>
+		Start <Print 1>
+		Msg1 <You enter the Ascension Complex.>
+		sub
+			team 1
+
+			team 2
+			name <Citizens>
+			SetAlly 1
+			Passive
+
+			team 3
+			name <Guards>
+			SetAlly 2
+
+			room
+			name <Foyer>
+			desig <EntranceGrid>
+			Content <Some 1 20 Here *URBAN_X>
+			Content2 <Some 1 100 Here *ANTI_ATTACK_SECURITY 3>
+		end
+
+		MetaScene 5
+		name <Second Tier Armory>
+		requires <*THESP_Armory>
+		type <building private rich>
+		entrance <*DEPARTMENTSTORE>
+		mapwidth 15
+		mapheight 15
+		MallMap
+		special <ADDEXIT UNREGULATED>
+		Tolerance 10
+		Start <Print 1>
+		Msg1 <You enter the Second Tier Armory.>
+		NeededCells 2
+		Content3 <Some 1 100 Sub *WEAPON_SHOP     na>
+		Content4 <Some 1 100 Sub *ARMOR_SHOP      na>
+		Content9 <Fill Sub *SHOP_RANDOM           na>
+		sub
+			team 1
+
+			team 2
+			name <Citizens>
+			SetAlly 1
+			Passive
+
+			team 3
+			name <Guards>
+			SetAlly 2
+
+			room
+			name <Foyer>
+			desig <EntranceGrid>
+			Content <Some 2 50 Here *URBAN_X>
+			Content2 <Some 1 100 Here *ANTI_ATTACK_SECURITY 3>
+		end
+
+		MetaScene 7
+		name <Theles Industrial>
+		entrance <*GARAGE>
+		type <building private rich>
+		mapwidth 15
+		mapheight 15
+		MallMap
+		special <ADDEXIT UNREGULATED>
+		Tolerance 10
+		Start <Print 1>
+		Msg1 <You enter the Theles Industrial Control Center.>
+		NeededCells 2
+		Content3 <Some 1 100 Sub *MECHANIC_SHOP   na>
+		Content6 <Some 1 100 Sub *MECHA_SHOP      na>
+		Content9 <Fill Sub *SHOP_RANDOM           na>
+		sub
+			team 1
+
+			team 2
+			name <Citizens>
+			SetAlly 1
+			Passive
+
+			team 3
+			name <Guards>
+			SetAlly 2
+
+			room
+			name <Foyer>
+			desig <EntranceGrid>
+			Content <Some 2 50 Here *URBAN_X>
+			Content2 <Some 1 100 Here *ANTI_ATTACK_SECURITY 3>
+		end
+
+		MetaScene 8
+		name <Theles Spinner Third Level>
+		type <building private>
+		map <MAP_Theles3F.txt>
+		special <NOEXIT UNREGULATED NORESCUE SOLO UNSAFE>
+		Tolerance 15
+		% L1 = If nonzero, this level may be exited.
+		Start <Print 1>
+		Msg1 <You enter the Theles Spinner third level.>
+		5Min <ifTeamHostile 3 MonsterUp 3 d10>
+		sub
+			team 1
+
+			team 2
+			name <Citizens>
+			SetAlly 3
+			Passive
+
+			team 3
+			name <Guards>
+			type <ROBOT>
+			SetAlly 2
+			Stat 2 50
+
+			room
+			name <Foyer>
+			desig <EntranceGrid>
+			Content2 <Some 1 100 Here *ANTI_ATTACK_SECURITY 3>
+		end
+		inv
+			Elevator
+			use <if# L1 0 else GoNoElevator  Print 1 Exit Destination>
+			GoNoElevator <Print 11>
+			Msg11 <This elevator doesn't respond.>
+			Destination -1
+			XPos 2
+			YPos 9
+
+			STC ELEVATOR_TO_NOWHERE
+			XPos 3
+			YPos 3
+
+			STC ELEVATOR_TO_NOWHERE
+			XPos 3
+			YPos 16
+
+			STC ELEVATOR_TO_NOWHERE
+			XPos 36
+			YPos 4
+
+			STC ONESHOTDOOR
+			update <if# L2 0 SetStat STAT_Lock 0>
+			XPos 30
+			YPos 14
+			Lock 14
+		end
+
+		MetaScene 10
+		name <Population Control>
+		entrance <*HOSPITAL>
+		type <building private rich>
+		mapwidth 15
+		mapheight 15
+		MallMap
+		special <ADDEXIT UNREGULATED>
+		Tolerance 10
+		Start <Print 1>
+		Msg1 <You enter the Theles Industrial Control Center.>
+		NeededCells 2
+		Content2 <Fill Sub *HOSPITAL_X>
+		sub
+			team 1
+
+			team 2
+			name <Citizens>
+			SetAlly 1
+			Passive
+
+			team 3
+			name <Guards>
+			SetAlly 2
+
+			room
+			name <Foyer>
+			desig <EntranceGrid>
+			Content <Some 2 50 Here *URBAN_X>
+			Content2 <Some 1 100 Here *ANTI_ATTACK_SECURITY 3>
+		end
+	end
+	inv
+		NPC Soldier
+		job <Gateman>
+
+		NPC Shopkeeper
+		job <Production Manager>
+
+		NPC Mechanic
+		job <Production Manager>
+
+		NPC Politician
+		job <Security Chief>
+	end
+
+
+Content
+	name <Ronald McComet Must Die>
+	requires <*Q_UNIQUE_FUCSP_Part1>
+
+	%%
+	%% Fuchal Spinner is known for its culinary excellence... and also
+	%% for CometBurger. A certain food critic would like to destroy
+	%% the ubiquitous fast food giant. In this first episode, the PC
+	%% gets to choose sides: with good taste, or with Comet (and the
+	%% law, of course).
+	%%
+
+	% Param1 is the culinary terrorist.
+	% Param2 is the L5Law officer investigating.
+	% Param3 is the CometBurger building
+	% E4 is the burger vat level
+	% E5 is the bac-bomb
+	% E6 is the meme
+	% E7 is the robotic factory level
+	% E8 is the CometBurger home restaurant
+	% E9 is the Perfect Sandwich
+	Element4 <QuestScene>
+	Place4 <7>
+	Element5 <Prefab>
+	Place5 <1>
+	Element6 <Prefab>
+	Element7 <QuestScene>
+	Place7 <3>
+	Element8 <Prefab>
+	Place8 <3 (Citizens) Pass>
+	Element9 <Prefab>
+	Place9 </>
+
+	%% P1 = CometBurger recharge; if nonzero, production has halted
+	%% P%id%01 = Have finished stage one, waiting for stage two
+
+	%% FAIL CONDITIONS:
+	%% - E1 and E2 both die
+	end <ifNPCDead %1% ifNPCDead %2% LoseSubPlot %plotid%>
+
+	sub
+		Persona 1
+		% V1 = Have given quest
+		% V2 = Have offered quest over the phone
+		rumor0 <%name1% has a vendetta against Comet Burger.>
+		KeyWords <TERRORIST>
+		greeting <if= P%id%01 0 else GoChat if# PlotStatus %plotid% %id% else GoDoQuest if# PlotStatus %plotid% 0 else GoDoQuest Goto GoNoQuest>
+		GoChat <NewChat SayAnything>
+		GoDoQuest <if= V1 1 else GoOfferQuest NewChat Say 1 AddChat 1 AddChat 2 AddChat 3>
+		GoNoQuest <NewChat Say 17>
+		% If the PC has accepted the job offer from E2, getting the job offer here will
+		% be more difficult.
+		GoOfferQuest <ifItemOK %5% else GoRuinQuest if= V2 0 else GoAutoOffer if= PlotStatus %plotid% %id% else GoPlainOffer NewChat Say 13 AddChat 12 AddChat 13>
+		GoAutoOffer <NewChat Say 19 AddChat 7 AddChat 8 AddChat 9>
+		GoPlainOffer <NewChat Say 5 AddChat 5 AddChat 6>
+		GoRuinQuest <SetPlotStatus %id% -2 NewChat SayAnything>
+		result1 <EndChat Say 2 AddChat 4>
+		result2 <NewChat Say 3>
+		result3 <SetPlotStatus %plotid% -2 Goto GoR3Finish>
+		*GoR3Finish <*YouLostItem>
+		result4 <NewChat Say 20 GiveItem %9% QMemo %plotid% 0 P= %id%01 1 P= 1 ComTime P+ 1 432000 AddLawful -5 AddEasygoing -10 AddReact 20 History 4 DeleteItem %5% XPV 100 ActivateMeme %6% RootSceneID>
+		result5 <EndChat Say 6>
+		result6 <NewChat Say 7 AddChat 7 AddChat 8 AddChat 9>
+		result7 <ifChatNPCInPlay else GoR7NotHere NewChat Say 8 QMemo %plotid% 9 V= 1 1 SetPlotStatus %plotid% %id% GiveItem %5%>
+		GoR7NotHere <NewChat Say 18 V= 2 1>
+		result8 <NewChat Say 10>
+		result9 <NewChat Say 11 AddChat 10 AddChat 11>
+		result10 <Goto result7>
+		result11 <NewChat Say 12>
+		result12 <ifIntimidation SkillTar %threat% else GoR12Fail NewChat Say 14 AddChat 10 AddChat 8 AddChat 9>
+		GoR12Fail <NewChat Say 15>
+		result13 <ifConversation SkillTar %threat% else GoR13Fail NewChat Say 14 AddChat 10 AddChat 8 AddChat 9>
+		GoR13Fail <NewChat Say 16>
+		Msg1 <Have you planted the Bac-Bomb in the CometBurger basement yet?>
+		Msg2 <Bwa ha ha! When I press this button to detonate the bomb, Comet Burger will be forced to close! At the very least they'll be forced to throw out lots of patties and detoxify the area, which should eat into their profits quite a bit!!!>
+		Msg3 <Every minute you waste is another two hundred bland mass-produced hamburgers sold to unwitting consumers!>
+		Msg4 <You helped %name1% attack the CometBurger main office.>
+		Msg5 <Do you like Comet Burger?>
+		Msg6 <They say that repeated consumption dulls your taste buds and rots your brain... it may already be too late to save you.>
+		Msg7 <Do you hate Comet Burger with the same passion I feel? Do you hate them enough to cross the law and risk your very life to bring them down?>
+		Msg8 <Then take this device- sneak the bacteria bomb into the sub-basement of CometBurger's main office, then come back here and we can detonate it remotely. No people will be hurt but all their patties will be ruined!>
+		Msg9 <%name1% in \SCENE NPCScene %1% gave you a bacteria bomb to detonate in the sub-basement of the CometBurger main office.>
+		Msg10 <That's the trouble these days- people no longer care about the food they eat! It's all CometBurger's fault for lowering the bar!>
+		Msg11 <Why? Because they are an affront to all that is good and pure in the world. Their mass-produced flavorless slop is an insult to true cuisine. Now, are you going to help me destroy them, or are you one of the enemy?>
+		Msg12 <I tried that. It didn't work.>
+		Msg13 <What are you looking at? I'm a very busy person... I don't have time to waste talking to crazies.>
+		Msg14 <I'm plotting the destruction of CometBurger! Their loathsome fast food must be stopped, and if the law won't do anything it's up to us to do it ourselves! Are you with me or against me?>
+		Msg15 <You don't sound like you really mean that... the burger sauce must have rotted your brain...>
+		Msg16 <I'm not telling you my plan... You might be one of them!>
+		Msg17 <The price we pay for good food is eternal vigilance and sometimes violence.>
+		Msg18 <Come see me in \SCENE NPCScene %1% then. I can't do everything over the phone!>
+		Msg19 <Are you ready to help me unleash culinary justice upon the abomination that is CometBurger!?>
+		Msg20 <As for you, my fellow food-lover, I know that no cash award or customized mecha could ever serve to repay your help. Instead, I present you with this- the world's perfect sandwich. Eat it with the mustard of sweet, sweet justice.>
+		Prompt1 <It has been done.>
+		CPrompt1 <if= ItemScene %5% %4% Accept>
+		Prompt2 <Uh, no, not yet.>
+		Prompt3 <I sort of lost the bomb.>
+		CPrompt3 <ifItemDestroyed %5% Accept>
+		Prompt4 <[Continue]>
+		Prompt5 <Yes I do. It's great!>
+		Prompt6 <No, not particularly.>
+		Prompt7 <Yes, absolutely!>
+		Prompt8 <No, I don't care that much.>
+		Prompt9 <Why don't you like Comet Burger?>
+		Prompt10 <I'll help you!>
+		Prompt11 <What you need is psychological help...>
+		Prompt12 <I hate Comet Burger!>
+		Prompt13 <What are you doing?>
+
+		Persona 2
+		% V1 = Have given quest
+		rumor0 <%name2% is investigating a culinary terrorist.>
+		greeting <if= P%id%01 0 else GoChat if# PlotStatus %plotid% %id% else GoDoQuest if# PlotStatus %plotid% 0 else GoDoQuest Goto GoNoQuest>
+		GoChat <NewChat SayANything>
+		GoDoQuest <if= V1 1 else GoOfferQuest  NewChat Say 1 AddChat 1 AddChat 2 AddChat 3>
+		*GoNoQuest <*MISC_CHATTER>
+		*GoOfferQuest <*ENEMY_CHECK GoRealOffer 9 na>
+		% If the PC has accepted the job offer from E2, giving the Bac-Bomb to E2 will be
+		% a bit of a letdown.
+		GoRealOffer <if= PlotStatus %plotid% %id% else GoPlainOffer NewChat Say 4 AddChat 4 AddChat 8>
+		GoPlainOffer <NewChat Say 6 AddChat 5 AddChat 6>
+		result1 <NewChat Say 12 RandomMecha .mek %threat% AddReact d10 FreezeNPC %1% PCEnemy %1% History 2 DeleteItem %5% AddLawful 1 QMemo %plotid% 0 P= %id%01 1>
+		.mek <GENERAL COMET>
+		result2 <NewChat Say 3>
+		result3 <SetPlotStatus %plotid% -2 Goto GoR3Finish>
+		*GoR3Finish <*YouLostItem>
+		result4 <NewChat Say 5 DeleteItem %5% FreezeNPC %1% PCEnemy %1% History 2  AddReact 10  QMemo %plotid% 0 P= %id%01 1>
+		result5 <NewChat Say 7 QMemo %plotid% 8 V= 1 1 SetPlotStatus %plotid% %id% AddChat 7>
+		result6 <NewChat Say 9>
+		result7 <NewChat Say 10>
+		result8 <NewChat Say 11>
+		Msg1 <Have you collected any evidence against %name1% yet?>
+		Msg2 <You helped %name2% stop %name1% from attacking CometBurger HQ.>
+		Msg3 <Well then, see what you can manage.>
+		Msg4 <We've received a tip that a culinary terrorist is planning to strike against this building. Unfortunately we don't yet have any evidence with which to make a case.>
+		Msg5 <Thank you... I'm not sure exactly what it is, but the lab guys will find out. I'm sure this might be an object of particular significance.>
+		Msg6 <There have been reports about a culinary terrorist planning to strike this building, but the police have everything under control.>
+		Msg7 <It's certainly possible. Our main suspect is %name1%, but so far we haven't been able to find any evidence implicating \OPR %1% . If you could obtain something like that it would really help our investigation.>
+		Msg8 <%name2% sent you to find evidence that %name1% in \SCENE NPCScene %1% is planning an attack against CoometBurger.>
+		Msg9 <Good. It's nice to know that we have the trust of the public.>
+		Msg10 <Reports indicate that \OPR %1% can be found at \SCENE NPCScene %1% . Good luck.>
+		Msg11 <Great! Come to the CometBurger building so I can examine it myself.>
+		Msg12 <Ah, yes... With this evidence, we'll be able to put %name1% away no problem. Thanks for your help, \PC . The fine people at Comet Metalworks have asked me to give you this mecha as a token of their gratitude.>
+		Prompt1 <I have \PPR %1% Bac-Bomb right here.>
+		CPrompt1 <ifKeyItem %5% ifChatNPCInPlay Accept>
+		Prompt2 <Still working on that.>
+		Prompt3 <I think the evidence has been destroyed.>
+		CPrompt3 <ifItemDestroyed %5% Accept>
+		Prompt4 <I have some evidence. [give Bac-Bomb]>
+		CPrompt4 <ifKeyItem %5% ifChatNPCInPlay Accept>
+		Prompt5 <Is there anything I could do to help?>
+		Prompt6 <I'm not too worried about it.>
+		Prompt7 <Where can I find %name1%?>
+		Prompt8 <I have some evidence.>
+		CPrompt8 <ifKeyItem %5% if# SceneID %3% Accept>
+
+		Persona 8
+		*greeting <*NiceToMeetYou GoShop>
+		GoShop <ifG P1 ComTime else GoOpenShop NewChat Say 5>
+		GoOpenShop <NewChat ifChatNPCInPlay else GoNotHere Say 1 AddChat 1 AddChat 2 AddChat 3 AddChat 4>
+		*GoBye <*GOODBYE>
+		Keywords <FOOD RESTAURANT>
+		GoNotHere <Say 4>
+		% This particular CometBurger, being the HQ and all, is slightly better than most.
+		result1 <NewChat ifG PC$ 79 else GoNoMoney Say 2 PCEat PCMoraleDmg -3 Cash+ -80>
+		GoNoMoney <NewChat Say %id%03>
+		result2 <Goto GoBye>
+		result3 <Goto result1>
+		result4 <Goto result1>
+		Msg1 <This is CometBurger. My name is \ChatNPC , and I will be your meal coordinator today. All items on our extra-value menu are $80.>
+		Msg2 <Enjoy your meal and have a Comet Happy Fun day.>
+		Msg3 <Sorry, you don't have enough money to pay for this order. I can't let you have it for free. That's a company policy.>
+		Msg4 <Hello? This is Comet Burger. I'm not supposed to be using this phone for personal calls.>
+		Msg5 <This is CometBurger. I am sorry, but we are currently experiencing technical difficulties. Please come back again later.>
+		Prompt1 <I'll have a CometBurger.>
+		CPrompt1 <ifG PCHunger 10 Accept>
+		Prompt2 <No thanks.>
+		Prompt3 <I'll have an order of CometNuggets.>
+		CPrompt3 <ifG PCHunger 10 Accept>
+		Prompt4 <I'll have some CometRings.>
+		CPrompt4 <ifG PCHunger 10 Accept>
+
+		MetaScene 4
+		name <the Burger Garden>
+		type <Basement Private>
+		terrain <GROUND>
+		special <NOEXIT>
+		BoxMap
+		MapWidth 17
+		MapHeight 17
+		IndustrialTiles
+		start <Print 1>
+		msg1 <You enter the Burger Garden.>
+		sub
+			Team 1
+
+			Team 2
+
+			Room
+			sub
+				StairsUp
+				Destination -1
+			end
+
+			Room
+			minimap<......2.3.......4.5......>
+			special <SHAREDPALETTE>
+			inv
+				STC BIOTANK
+				use <Print 1>
+				msg1 <You can see thousands of cometburger patties floating in the nutrient solution.>
+				MiniMapComponent 2
+				SetTeam 2
+
+				STC BIOTANK
+				use <Print 1>
+				msg1 <You can see thousands of cometburger patties floating in the nutrient solution.>
+				MiniMapComponent 3
+				SetTeam 2
+
+				STC BIOTANK
+				use <Print 1>
+				msg1 <You can see thousands of cometburger patties floating in the nutrient solution.>
+				MiniMapComponent 4
+				SetTeam 2
+
+				STC BIOTANK
+				use <Print 1>
+				msg1 <You can see thousands of cometburger patties floating in the nutrient solution.>
+				MiniMapComponent 5
+				SetTeam 2
+			end
+
+			Room
+			minimap<......2.3.......4.5......>
+			special <SHAREDPALETTE>
+			inv
+				STC BIOTANK
+				use <Print 1>
+				msg1 <You can see thousands of cometburger patties floating in the nutrient solution.>
+				MiniMapComponent 2
+				SetTeam 2
+
+				STC BIOTANK
+				use <Print 1>
+				msg1 <You can see thousands of cometburger patties floating in the nutrient solution.>
+				MiniMapComponent 3
+				SetTeam 2
+
+				STC BIOTANK
+				use <Print 1>
+				msg1 <You can see thousands of cometburger patties floating in the nutrient solution.>
+				MiniMapComponent 4
+				SetTeam 2
+
+				STC BIOTANK
+				use <Print 1>
+				msg1 <You can see thousands of cometburger patties floating in the nutrient solution.>
+				MiniMapComponent 5
+				SetTeam 2
+			end
+
+			Room
+			minimap<......2.3.......4.5......>
+			special <SHAREDPALETTE>
+			inv
+				STC BIOTANK
+				use <Print 1>
+				msg1 <You can see thousands of cometburger patties floating in the nutrient solution.>
+				MiniMapComponent 2
+				SetTeam 2
+
+				STC BIOTANK
+				use <Print 1>
+				msg1 <You can see thousands of cometburger patties floating in the nutrient solution.>
+				MiniMapComponent 3
+				SetTeam 2
+
+				STC BIOTANK
+				use <Print 1>
+				msg1 <You can see thousands of cometburger patties floating in the nutrient solution.>
+				MiniMapComponent 4
+				SetTeam 2
+
+				STC BIOTANK
+				use <Print 1>
+				msg1 <You can see thousands of cometburger patties floating in the nutrient solution.>
+				MiniMapComponent 5
+				SetTeam 2
+			end
+		end
+
+		MetaScene 7
+		name <the CometBurger Factory>
+		special <NOEXIT>
+		type <factory>
+		mapwidth 30
+		mapheight 30
+		MonkeyMap
+		IndustrialTiles
+		LockedDoorChance 15
+		SecretDoorChance 20
+		NeededCells 3
+		start <Print 1>
+		msg1 <You enter the CometBurger Factory.>
+		sub
+			Team 1
+			SetEnemy 2
+
+			Team 2
+			name <Monster>
+			type <Robot>
+			SetEnemy 1
+			Stat 2 1
+
+			room
+			width 3
+			height 3
+			sub
+				StairsUp
+				Destination -1
+			end
+
+			Room
+			minimap <#...#.......2.......#...#>
+			special <SHAREDPALETTE>
+			inv
+				StairsDown
+				MiniMapComponent 2
+				desig <ENTRANCE %4%>
+				Hide
+				update <if# PlotStatus %plotid% 0  SetStat STAT_MetaVisibility 0>
+			end
+		end
+
+
+		MetaScene 8
+		%% The furnishings of CometBurger
+		sub
+			Room
+			minimap <....2.......1.......#---#>
+			desig <HOME>
+			content <Optional *URBAN_X na Local>
+			inv
+				STC TV
+				PDir 2
+				MiniMapComponent 2
+			end
+
+			Room
+			minimap <.......2............##+##>
+			special <SHAREDPALETTE NOGO>
+			sub
+				Door
+				use <if= v1 0 else GoJustUse ifYesNo 101 102 103 else GoLeaveDoor V= 1 1 Goto GoJustUse>
+				GoJustUse <ifG -99 MetaPass else GoCloseDoor  if= StatVal STAT_Lock 0 else GoDoorLocked Print 1  SetStat STAT_Pass 0  Transform 1>
+				GoLeaveDoor <Print 104>
+				Msg101 <WARNING: Factory level contains unsupervised workbots. Enter at own risk.>
+				Msg102 <Open the door>
+				Msg103 <Leave it alone>
+				Msg104 <You leave the door alone.>
+			end
+			inv
+				TrapDoor
+				MiniMapComponent 2
+				desig <ENTRANCE %7%>
+			end
+		end
+	end
+	inv
+		Treasure
+		name <Bac-Bomb>
+		desc <A home-made bacteriological bomb. There is no obvious way to trigger it.>
+
+		Meme
+		MaxMemeViews 3
+		Msg <Did you hear that someone set off a bomb in the CometBurger factory? I never thought it could happen here...>
+		Msg_1 <Everybody's talking about the bomb that went off at CometBurger. I wonder who could have done something like that...>
+		CMsg_1 <ifNPCSociable Accept>
+		Msg_2 <I think I know who planted the bomb at CometBurger, but I can't say until I find some evidence.>
+		CMsg_2 <ifNPCShy Accept>
+		Msg_3 <How could anyone do such a crappy thing to CometBurger? I mean, everybody loves the food there!>
+		CMsg_3 <ifNPCEasygoing Accept>
+		Msg_4 <It's terrible what happened at CometBurger headquarters... but a part of me thinks they brought it on themselves for serving crappy food.>
+		CMsg_4 <ifNPCPassionate if# ChatNPCFac 2 Accept>
+		Msg_5 <>
+		CMsg_5 <ifNPCCheerful Accept>
+		Msg_6 <>
+		CMsg_6 <ifNPCMelancholy Accept>
+		Msg_7 <Somebody bombed CometBurger! Oh yeah, stickin' it to the man!>
+		CMsg_7 <ifNPCCriminal if# ChatNPCFac 2 Accept>
+		Msg_8 <This attack must have been carried out by our enemies. The strange thing is, if it were MUGL the bomb would have been painted pink, and if it were Hoeller they would have just sent mecha.>
+		CMsg_8 <if= ChatNPCFac 2 Accept>
+
+		NPC Cook
+		chardesc young
+		SetFaction 2
+
+		Food 50
+		name <Perfect Sandwich>
+		desc <This sandwich is just simply perfect. It would almost be a shame to eat it.>
+		FoodMorale 5
+		Mass -8
+		FoodXP:Vitality
+		FoodXPAmount 100
+	end
+
+Content
+	name <Gaos Nightlife, Part Two>
+	requires <*Q_UNIQUE_GAOSP_NewResort>
+
+	%%
+	%% Parshall's plan is to build a hot springs resort and casino on an
+	%% asteroid just outside the station. Unfortunately, the construction
+	%% has stalled.
+	%%
+
+	% Param1 is Parshall himself
+	% E2 is the construction site
+	% E3 is Parshall's sister, Ritzi
+	% E4 is the casino
+	% E5 is the spa "bubble"
+	% E6 is the exterior scene
+	% E7 is the success meme
+	Element2 <QuestScene>
+	Place2 <6>
+	Element3 <Prefab>
+	Place3 <2 (Guards) sd>
+	Element4 <QuestScene>
+	Place4 <2>
+	Element5 <QuestScene>
+	Place5 <4>
+	Element6 <Scene Environs>
+	Element7 <Prefab>
+
+	% P%id%01 = Initialization Counter
+	update <if= P%id%01 0 P= %id%01 1 SetEncounterActive %2% SetPlotStatus %plotid1% %id1%>
+	end <ifNPCDead %1% LoseSubPlot %plotid%>
+
+	% SubPlot1 is the construction problem proper.
+	SubPlot1 <*:Q_ConstructionProblem 1 2>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% ifSubPlotWon %plotid1% else .%id%_GoPassBuck WinSubPlot %plotid% if= P1 0 else .%id%_GoBigPrize NewChat Say %id%03 History %id%06 RandomMecha .%id%_mecha %threat% ActivateMeme %7% RootSceneID>
+		.%id%_GoBigPrize <NewChat Say %id%04 History %id%05 RandomMecha .%id%_mecha %threat% CashPrize Reward %threat% 5000 ActivateMeme %7% RootSceneID>
+		.%id%_mecha <GENERAL FCOMS>
+		.%id%_GoPassBuck <NewChat Say %id%01 ifSubPlotLost %plotid1% AddChat %id%01>
+		result%id%01 <NewChat Say %id%02 LoseSubPlot %plotid%>
+		Msg%id%01 <Please, speak to %name3% about the development. I cannot be bothered to manage every tiny detail by myself.>
+		Msg%id%02 <What are you saying? So that's how it is...>
+		Msg%id%03 <My asteroid spa will be opening soon. You've done a lot of work to get us here, \PC ... not as much as I have, but still considerable. Here's a brand new mecha for your troubles. Remember to drop by the casino when it opens.>
+		Msg%id%04 <Our new asteroid spa will be opening soon. You've done a lot of work to get us here, \PC ... It's going to be a while before we can expect regular earnings, but here's your cut of the initial profits and a new mecha.>
+		Msg%id%05 <You opened an asteroid resort with Parshall.>
+		Msg%id%06 <You helped Parshall open an asteroid resort.>
+		Prompt%id%01 <Um, things aren't going so well...>
+
+		Persona 3
+		% V1 = Have spoken before
+		greeting <ifSubPlotWon %plotid% else GoCheckProgress NewChat Say %id%01>
+		GoCheckProgress <if= PlotStatus %plotid% %id% else GoChat if= V1 1 else GoFirstTime NewChat Say %id%04 AddChat %id%03 AddChat %id%04>
+		GoChat <NewChat SayANything>
+		GoFirstTime <NewChat Say %id%02 AddChat %id%01 AddCHat %id%02 AddChat %id%03 AddChat %id%04>
+		result%id%01 <NewChat Say %id%03 AddChat %id%05 AddChat %id%06 V= 1 1>
+		result%id%02 <NewChat Say %id%05 AddChat %id%05 AddChat %id%06 V= 1 1>
+		result%id%03 <NewChat Say %id%06>
+		result%id%04 <NewChat Say %id%07 LoseSubPlot %plotid%>
+		result%id%05 <NewChat Say %id%08>
+		result%id%06 <NewChat Say %id%09 AddChat %id%07 AddChat %id%08 AddReact d10>
+		result%id%07 <NewChat Say %id%10>
+		result%id%08 <NewChat Say %id%11 AddChat %id%09 AddReact -d10>
+		result%id%09 <NewChat Say %id%08>
+		Msg%id%01 <Welcome to Gaos Casino and Spa. Please enjoy your stay.>
+		Msg%id%01_1 <Welcome to Gaos Casino and Spa. Please try not to break anything.>
+		Msg%id%01_2 <Welcome to Gaos Casino and Spa. No, you will not find any artifacts in our gift shop.>
+		Msg%id%02 <Hello! Welcome to Gaos Casino and Spa. We are not yet open for business, but please enjoy a look around our fully furnished construction site. Thank you and please come again!>
+		Msg%id%03 <[sigh] It's about bloody time that idiot sent someone. They're having some kind of problem on the upper levels. It was supposed to be finished by now, but it's not, and someone deserves to get fired.>
+		Msg%id%04 <Welcome to Gaos Casino and Spa. Well, that's what it's going to be if it ever gets finished.>
+		Msg%id%05 <I just told you- Gaos Casino and Spa. Parshall had the bright idea to build an upscale resort on the inside of an asteroid; of course like most of his ideas this one's gone to ash. Construction has haled on the upper levels.>
+		Msg%id%06 <Really? I never expected this project to actually succeed... %name1%'s going to want to hear about this himself. You better go there and tell him.>
+		Msg%id%07 <I was expecting this. You can go... I'll tell %name1% myself.>
+		Msg%id%08 <Don't get your hopes up.>
+		Msg%id%09 <Actually he's my brother... but yeah, he can be a bit of a jerk.>
+		Msg%id%10 <I guess at this point in time I should ask you to go see if you can solve our construction problem, but honestly I just couldn't be bothered...>
+		Msg%id%11 <I DESIGNED THIS COSTUME MYSELF, ASH-BRAIN!>
+		Prompt%id%01 <%name1% sent me to check up on things.>
+		Prompt%id%02 <Wow, what is this place?>
+		Prompt%id%03 <I've solved your construction problem.>
+		CPrompt%id%03 <ifSubPlotWon %plotid1% Accept>
+		Prompt%id%04 <I'm afraid construction has halted...>
+		CPrompt%id%04 <ifSubPlotLost %plotid1% Accept>
+		Prompt%id%05 <I'll see what I can find out.>
+		Prompt%id%06 <I'll bet Parshall is a real jerk of a boss, right?>
+		Prompt%id%07 <I see.>
+		Prompt%id%08 <Why is your brother making you wear a bunny costume?>
+		Prompt%id%09 <Um... I'll go see if I can solve that problem, now...>
+
+		STC QS_ConstructionSite
+		name <%name1%'s Project>
+		entrance <*QUEST-INACTIVE>
+		SetID 2
+		RockyTiles
+		sub
+			room
+			minimap <......&&&..&1&...........>
+			inv
+				Elevator
+				name <To Casino>
+				MiniMapComponent 1
+				use <ifSubPlotWon %plotid% else GoNotYet Exit Destination>
+				GoNotYet <Print 2>
+				Msg2 <This area hasn't been finished yet.>
+				desig <ENTRANCE %4%>
+			end
+		end
+
+		MetaScene 4
+		name <Gaos Casino>
+		type <Building Private Meeting Casino Legit>
+		special <UNREGULATED NOEXIT>
+		Tolerance 10
+		ClubMap
+		PalaceParkTiles
+		MapWidth 31
+		MapHeight 26
+		start <Print 1>
+		Msg1 <You enter the Gaos Casino.>
+		NeededCells 3
+		Content1 <Some 1 100 Sub *RESTAURANT            na>
+		Content1 <Some 1 100 Sub *SHOP_CASINO           na>
+		Content3 <Fill       Sub *CASINO_CELLS          na>
+		sub
+			team 1
+
+			team 2
+			name <Citizens>
+			SetAlly 1
+			Passive
+
+			team 3
+			name <Guards>
+			SetAlly 2
+
+			Boxroom
+			desig <EntranceGrid>
+			Content <Some 5 45 Here *URBAN_X>
+			Content2 <Some 1 100 Here *ANTI_ATTACK_SECURITY 2>
+			Content3 <Fill Sub *CASINO_FLOOR na>
+			sub
+				Room
+				sub
+					StairsDown
+					Destination -1
+				end
+			end
+
+			room
+			minimap <############1###...##...#>
+			inv
+				Elevator
+				MiniMapComponent 1
+				desig <ENTRANCE %5%>
+			end
+		end
+
+		MetaScene 5
+		name <Gaos Spa>
+		type <Park Private Meeting Spa Legit>
+		special <NOEXIT SHOWALL>
+		ArenaMap
+		MapWidth 30
+		MapHeight 30
+		PalaceParkTiles
+		WallType 26
+		GapFill <-4>
+		% V1 = First Time Visit Counter
+		start <if= V1 0 else GoBeenBefore Alert 1>
+		GoBeenBefore <Print 2>
+		TMOVE1 <ifTeamNotHostile 2 ifTeamNotHostile 3 ifTeamNotHostile 4 PCMoraleDmg -d3>
+		Msg1 <The spa level is built within a clear dome on the outside of the asteroid. Hot water bubbles up from a natural-looking hot spring. You feel at peace.>
+		Msg2 <You enter Gaos Spa.>
+		Content <Some 5 45 Here *URBAN_X>
+		Content2 <Some 1 100 Here *ANTI_ATTACK_SECURITY 2>
+		sub
+			team 1
+
+			team 2
+			name <Citizens>
+			SetAlly 1 5
+			Passive
+
+			team 3
+			name <Guards>
+			SetAlly 2 5
+
+			team 5
+			name <Exotics>
+			type <Exotic Water>
+			SetAlly 2 3
+			Stat 2 1
+
+			Lake
+			Width 15
+			Height 15
+
+			rect
+			Width 5
+			Height 5
+			minimap <      ...  &1&  ###      >
+			inv
+				Elevator
+				MiniMapComponent 1
+				destination -1
+			end
+		end
+		inv
+			%% Steam for the spa
+			STC SMOKE-2
+			STC SMOKE-2
+			STC SMOKE-2
+			STC SMOKE-2
+			STC SMOKE-2
+			STC SMOKE-2
+			STC SMOKE-2
+			STC SMOKE-2
+			STC SMOKE-2
+			STC SMOKE-2
+		end
+	end
+	inv
+		NPC Shopkeeper
+		name <Ritzi>
+		job <Hostess>
+		SDL_Portrait <por_f_ladilolita(YC-).png>
+		SDL_Colors <67 73 100 255 244 208 113 175 98>
+		Combatant
+		Intimidation
+		Age 8
+		chardesc female Sociable Melancholy Easygoing Pragmatic
+		statline 9 8 13 11 9 12 12 15
+
+		Meme
+		MaxMemeViews 3
+		MemeTimeLimit
+		Msg_1 <Have you been to Parshall's new casino yet? I never thought we'd get something like that in Gaos Spinner.>
+		CMsg <if# ChatNPCID %1% if# ChatNPCID %3% Accept>
+		Msg_2 <You know, Gaos Spinner wasn't originally built as a holiday destination, but as long as we've got it we should hang onto it.>
+		Msg_3 <I don't know about this new casino... On the one hand it's going to create a lot of jobs, but on the other hand don't those things attract crime?>
+		Msg_4 <Wow, I won $50000 at the casino! Good thing I quit while I was ahead.>
+		Msg_5 <Parshall's new spa has a menagerie of exotic animals imported from Earth. I hear you can pose for pictures with them.>
+		Msg_6 <The new casino is really fun, but the woman in the bunny suit scares me...>
+	end
+
+Content
+	name <Gaos Nightlife, Part One>
+	requires <*:Q_UNIQUE_GAOSP_Parshall>
+
+	%%
+	%% Gaos Spinner isn't nearly so ritzy as it once was. Parshall will hire
+	%% the PC to go spice up a party.
+	%%
+
+	% E1 is the Prince Hotel
+	% E2 is Parshall
+	% E3 is the Prince Ballroom
+	Element1 <Scene Hotel Public>
+	Element2 <Prefab>
+	Place2 <1 (Citizens) pass>
+	Element3 <QuestScene>
+	Place3 <1>
+
+	% P%id%01 = Have accepted mission
+	end <ifNPCDead %2%   LoseSubPlot %plotid%>
+
+	% SubPlot1 = Building the Resort
+	SubPlot1 <*Q_UNIQUE_GAOSP_NewResort #70 2>
+
+	sub
+		Persona 2
+		rumor%id% <there's a fancy party going on at the Prince Hotel.>
+		% V1 = Have chatted before (original dialog)
+		greeting <if= PlotStatus %plotid% %id% else GoChat if= P%id%01 1 else .%id%_GoOfferMission NewChat Say %id%10 AddChat %id%10 AddChat %id%11 AddChat %id%12>
+		*.%id%_GoOfferMission <*INeedYourHelp&PCSpecifically .%id%_GoMissionBriefing .%id%_GoHasslePC>
+		.%id%_GoHasslePC <NewChat Say %id%01 AddChat %id%01>
+		.%id%_GoMissionBriefing <NewChat Say %id%02 AddChat %id%02 AddChat %id%03 AddChat %id%04 AddChat %id%05>
+		result%id%01 <Goto .%id%_GoMissionBriefing>
+		result%id%02 <NewChat Say %id%03 AddChat %id%06>
+		result%id%03 <NewChat Say %id%04 AddChat %id%07 AddChat %id%08 AddChat %id%09>
+		result%id%04 <NewChat Say %id%05 QMemo %plotid% %id%06 P= %id%01 1>
+		result%id%05 <NewChat Say %id%07 LoseSubPlot %plotid%>
+		result%id%06 <Goto result%id%03>
+		result%id%07 <Goto result%id%04>
+		result%id%08 <Goto result%id%05>
+		result%id%09 <NewChat Say %id%08 History %id%09 QMemo %plotid% %id%06 P= %id%01 1 P= 1 1>
+		result%id%10 <NewChat Say %id%11>
+		result%id%11 <NewChat Say %id%12>
+		result%id%12 <NewChat Say %id%13 QMemo %plotid% %id%14 XPV 100 AddReact d10 SetPlotStatus %plotid1% %id1%>
+		Msg%id%01 <All of the abuse I've put up with from you over the years, and now you won't even listen when I'm inviting you to a party? The nerve! What irresponsible rudeness!>
+		Msg%id%02 <I know about the good you did for Galena Hodges, and I think that a heroic adventurer like you would make the perfect "face" for Gaos Spinner's rebranding.>
+		Msg%id%03 <You seem to be ignorant of the finer points of marketing. It doesn't matter where you're from or who you are, just that we have a famous name attached to our brand. It's like that time Tai did the ad for Cyber-Hoagies.>
+		Msg%id%04 <Our image is stale, boring, family-oriented... We're losing tourist creds to Athera, Yatate, even Clund Rock. I want to make Gaos young and exciting again. The first step is building the image, then we make it reality.>
+		Msg%id%05 <Wonderful. There's a party going on in the Prince Ballroom right now. Go there, see if you can impress the guests.>
+		Msg%id%06 <%name2% asked you to attend a party at the Prince Ballroom. He's trying to rebrand Gaos Spinner as a hip, exciting tourist destination.>
+		Msg%id%07 <Obviously not. Fine, then, go... I'm sure I can find someone more suited to the role.>
+		Msg%id%08 <Hmmm. You aren't as stupid as you look... Fine, a share in the profits, once this development is complete. First, though, the promotion. There's a party in the ballroom right now. Go there, see if you can impress the guests.>
+		Msg%id%09 <You negotiated a share of the profits from Parshall's new development.>
+		Msg%id%10 <Hello, Gaos Prince Hotel. So, \PC , how is the party going?>
+		Msg%id%11 <It must be better than okay. It must be perfect. Get back in there and do something entertaining.>
+		Msg%id%12 <You are supposed to be the life of the party. Maybe you are not yet famous enough... Try speaking to the guests instead of just standing around.>
+		Msg%id%13 <You see? I knew that my plan was brilliant. It is now time for phase two... outside of the station I am working on a new attraction. Could you go there and see how construction is progressing?>
+		Msg%id%14 <%name2% asked you to check up on the construction of his new attraction in Gaos Spinner Exterior.>
+		Prompt%id%01_1 <Did you just say "party"?>
+		CPrompt%id%01_1 <ifChatNPCKnown Accept>
+		Prompt%id%01_2 <This is the first time we've met...>
+		CPrompt%id%01_2 <ifChatNPCUnknown Accept>
+		Prompt%id%02 <But I'm not even from Gaos Spinner!>
+		CPrompt%id%02 <if# PCHomeTown RootSceneID Accept>
+		Prompt%id%03 <What kind of rebranding are you thinking about?>
+		Prompt%id%04 <It would be an honor to serve Gaos Spinner.>
+		Prompt%id%05 <Really, this is not my kind of thing.>
+		Prompt%id%06 <I see...>
+		Prompt%id%07 <Alright, I'll help you with this.>
+		Prompt%id%08 <Sorry, I don't want to get involved.>
+		Prompt%id%09 <I'll help you, but I want a cut from whatever you're planning.>
+		CPrompt%id%09 <ifShopping HardSkillTar %threat% Accept>
+		Prompt%id%10 <It's okay, I guess.>
+		CPrompt%id%10 <ifG 3 ScenePartyScore %3% Accept>
+		Prompt%id%11 <I don't really know what I'm supposed to do.>
+		CPrompt%id%11 <ifG 1 ScenePartyScore %3% Accept>
+		Prompt%id%12 <It's a blast!>
+		CPrompt%id%12 <ifG ScenePartyScore %3% 2 Accept>
+		%% The original persona for Parshall, sequestered off down here.
+		GoChat <if= V1 1 else GoFirstTime NewChat Say 1>
+		GoFirstTime <NewChat Say 2 AddChat 1>
+		result1 <NewChat Say 3 V= 1 1>
+		Msg1 <Hello, Gaos Prince Hotel.>
+		Msg1_1 <Hello, Gaos Prince Hotel. I guess you still don't want anything.>
+		Msg1_2 <Hello, Gaos Prince Hotel. I don't know where your arch-enemy is but I'm sure he's perfectly dreadful.>
+		Msg1_3 <Hello, Gaos Prince Hotel. Please excuse me; we may have some customers who actually want to stay here.>
+		Msg1_4 <Hello, Gaos Prince Hotel. May I help... oh, it's you.>
+		Msg1_5 <Hello, Gaos Prince Hotel. Why aren't you out cleaning sewers now?>
+		Msg1_6 <Hello, Gaos Prince Hotel. Please check your weapons at the front desk before attempting to open the minibar.>
+		Msg1_7 <Hello, Gaos Prince Hotel. No, I don't have any jobs for a mecha pilot.>
+		Msg1_8 <Hello, Gaos Prince Hotel. Please stop stealing from our rooms.>
+		CMsg1_8 <ifPCCriminal Accept>
+		Msg2 <Hello, welcome to the Gaos Prince Hotel. Would you like to reserve a suite for this evening?>
+		Msg3 <That's what I heard about cavaliers... they all sleep in the driver's seat of their mecha.>
+		Prompt1 <No thanks, I never seem to need one.>
+
+
+		MetaScene 2
+		sub
+			room
+			MFX 2
+			MFY 2
+			Width 5
+			Height 5
+			name <Reception Area>
+			minimap <...#..1.#.---#...........>
+			desig <HOME>
+
+			room
+			minimap <###########&2&##...##...#>
+			inv
+				Elevator
+				name <Private Ballroom>
+				desig <ENTRANCE %3%>
+				use <if= P%id%01 1 else GoNoUse Exit Destination>
+				GoNoUse <Print 2>
+				Msg2 <There's nothing interesting happening in here right now.>
+				MiniMapComponent 2
+			end
+		end
+
+		MetaScene 3
+		name <the Prince Ballroom>
+		type <Private Ballroom Meeting>
+		mapwidth 21
+		mapheight 21
+		PalaceParkTiles
+		BoxMap
+		special <AddEXIT>
+		NeededCells 5
+		Applause <AddPartyPoint>
+
+		start <Print 1>
+		5min <ifG 3 PartyScore if= d3 1 ifTeamNotHostile 2 ifG T2 0 ifG PCRenown %threat% ifG PCCharm d20 TeamMonologue 2 2 AddPartyPoint>
+		Msg1 <You enter the Prince Ballroom.>
+		Msg2_1 <Oh look, isn't that the famous cavalier \PC ?>
+		Msg2_2 <I never knew that Gaos Spinner had such a fabulous nightlife.>
+		Msg2_3 <Isn't \SPR 0 the cavalier who found a home for all those orphans?>
+		Msg2_4 <Have you tried the cocktail sausage? It's brilliant!>
+		Msg2_5 <I can't believe how many celebrities there are here...>
+
+		Content1 <Some 1 100 Here *ANTI_ATTACK_SECURITY 2>
+		Content2 <Variety 3 5 Here *PartyGames %threat%>
+		Content3 <Some 3  55 Here *URBAN_X na>
+
+		sub
+			team 1
+
+			team 2
+			name <Citizens>
+			SetAlly 3
+			Passive
+
+			team 3
+			name <Guards>
+			SetAlly 2
+		end
+	end
+	inv
+		NPC Shopkeeper
+		name <Parshall>
+		job <Manager>
+		SDL_Portrait <por_m_guy3(AA-).png>
+		SDL_Colors <67 73 100 255 244 208 113 175 98>
+		Age 14
+		chardesc male Sociable Melancholy Easygoing Lawful
+		statline 11 10 11 9 10 13 11 10
+	end
+
+Content
+	name <Charity Orphanage>
+	requires <*Q_UNIQUE_GAOSP_Galena>
+
+	%%
+	%% This subplot is activated the first time the PC speaks to Galena Hodges.
+	%%
+	%% There are a lot of orphans in Gaos Spinner. There really ought to be an
+	%% orphanage, but that's going to take money.
+	%%
+
+	% Param1 is the hospital
+	% Param2 is Galena Hodges
+	% E3 is one of the orphans
+	% E4 is another of the orphans
+	% E5 is the third, since mecha series orphans only come in threes
+	Element3 <Prefab>
+	Place3 <1 (Guards) sd ally>
+	Element4 <Prefab>
+	Place4 <1 (Citizens) pass ally>
+	Element5 <Prefab>
+	Place5 <1 (Citizens) pass ally>
+
+	end <ifNPCDead %2% LoseSubPlot %plotid%>
+
+	% SubPlot1 is the search for cash
+	SubPlot1 <*:Q_FindMoney.Charity 2>
+
+	sub
+		Persona 2
+		rumor0 <Galena Hodges has been helping the poor for nearly a century.>
+		greeting <if= PlotStatus %plotid% %id% else GoCheckFirst NewChat Say 7 AddChat 6 AddChat 3>
+		*GoCheckFirst <*NiceToMeetYou GoOfferQuest>
+		GoOfferQuest <if= PlotStatus %plotid% 0 else GoChat NewChat Say 1 AddChat 1 AddChat 2 AddChat 3 QMemo %plotid% 3 SetPlotStatus %plotid% %id% SetPlotStatus %plotid1% %id1%>
+		*GoChat <*MISC_CHATTER>
+		result1 <NewChat Say 2>
+		result2 <NewChat Say 4 SetPlotStatus %plotid% -2 SetPlotStatus %plotid1% -2>
+		result3 <NewChat Say 5 AddChat 4 AddChat 5>
+		result4 <NewChat Say 9  Cash+ -5000000 AddHeroic 5 AddReact 10 AddRenown 1 XPV 100  CancelSubPlot %plotid1%  WinSubPlot %plotid%>
+		result5 <NewChat Say 6>
+		result6 <NewChat Say 8 AddHeroic 1 WinSubPlot %plotid%>
+		Msg1 <This city desperately needs a new orphanage. We are caring for many children here at %name1%, but they lack adequate housing and support...>
+		Msg2 <Could you do that? Any help would be greatly appreciated.>
+		Msg3 <%name2% in %name1% needs money to build a new orphanage.>
+		Msg4 <It's a sad day for the world when we cast off our own children, and nobody cares...>
+		Msg5 <Building a new orphanage isn't cheap... it would cost at least five million credits. Are you certain you're willing to do that?>
+		Msg6 <Please do your best.>
+		Msg7 <There are so many needy, but I fear we don't yet have the resources to help them all.>
+		Msg8 <Oh, this is wonderful news! Thank you so much for your help; I only wish I had a reward to give you.>
+		Msg9 <Oh, my. I don't know what to say... Thank you, thank you so much for this generous gift. I promise that we will put this money to good use.>
+		Prompt1 <I could help you find the money.>
+		Prompt2 <I don't care about your stinky orphans.>
+		Prompt3 <Why don't I just buy you an orphanage myself?>
+		CPrompt3 <ifG PC$ 4999999 Accept>
+		Prompt4 <Sure. I'm good for it. [give $5M]>
+		Prompt5 <I'll see if I can find anything else first.>
+		Prompt6 <I've found a sponsor for your orphanage.>
+		CPrompt6 <ifSubPlotWon %plotid1% Accept>
+
+		Persona 3
+		%% V1 = Have offered to aid PC
+		greeting <ifSubplotWon %plotid% else GoChat ifG PCHeroism -1 else GoChat if= V1 0 else GoChat PCAlly %3% V= 1 1 NewChat Say 1 History 2>
+		GoChat <NewChat SayAnything>
+		Msg1 <Thanks for helping out us orphans. You know, I'd like to be a cavalier too, someday.>
+		Msg2 <%name3% thanked you for helping the orphans of Gaos Spinner.>
+
+		MetaScene 3
+		sub
+			Room
+			minimap <5..1.....32........4##+##>
+			desig <HOME>
+			inv
+				STC BED-1
+				PDir 0
+				MiniMapComponent 5
+
+				STC BED-1
+				PDir 0
+				MiniMapComponent 2
+
+				STC BED-1
+				PDir 4
+				MiniMapComponent 3
+
+				STC BED-1
+				PDir 4
+				MiniMapComponent 4
+			end
+		end
+	end
+	inv
+		NPC Student
+		Combatant
+		Age -2
+
+		NPC Student
+		Age -3
+
+		NPC Student
+		Age -4
+	end
+
+Content
+	name <Could Be Lupus>
+	requires <*:Q_UNIQUE_XIASP_Venus>
+
+	%%
+	%% There's a Vesuvian trading ship at the spaceport. The ship is actually
+	%% a living being; unfortunately, en route to L5 it developed an autoimmune
+	%% disorder and its antibodies are now wreaking havoc on the engineering
+	%% level. The PC will be hired to enter the ship and deactivate its defenses.
+	%%
+
+	% E1 is the spaceport
+	% E2 is the first officer
+	% E3 is the engineering level itself
+	% E4 is the "magic pill" reward
+	% E5 is the elevator
+	Element1 <Scene Spaceport>
+	Element2 <Prefab>
+	Place2 </>
+	Element3 <QuestScene>
+	Place3 <1>
+	Element4 <Prefab>
+	Place4 </>
+	Element5 <Prefab>
+	Place5 <1>
+
+	%% P%id%01 = Initialization Counter
+	%% P%id%02 = Have accepted quest
+	%% P%id%03 = Have shut down defenses
+	%% P%id%04 = Have destroyed neurocore
+
+	update <if= P%id%01 0 P= %id%01 1 MoveNPC %2% %1% SetNPCTeam %2% 2>
+	end <ifNPCDead %2% LoseSubPlot %plotid%>
+
+	sub
+		Persona 2
+		rumor%id% <there's something wrong with %name2%'s ship.>
+		greeting <if= PlotStatus %plotid% %id% else GoChat if= P%id%03 1 else GoCheckQuest   NewChat Say 9 WinSubPlot %plotid%  GiveItem %4%  AddReact d10  if= P%id%04 1 else GoLowPrize PCFriend %2%  CashPrize Reward %threat% 1000>
+		GoLowPrize <CashPrize Reward %threat% 500>
+		GoCheckQuest <if= P%id%02 1 else GoFirstTime NewCHat Say 8>
+		GoChat <NewChat SayAnything>
+		*GoFirstTime <*INeedYourHelp&PCSpecifically GoBriefing GoRefuse>
+		GoBriefing <NewChat Say 2 AddChat 1>
+		GoRefuse <NewChat Say 1 LoseSubPlot %plotid%>
+		result1 <NewChat Say 3 AddChat 2 AddChat 3 AddChat 4>
+		result2 <NewChat Say 4 P= %id%02 1 QMemo %plotid% 5>
+		result3 <NewChat Say 6 AddChat 5 AddChat 6>
+		result4 <Goto GoRefuse>
+		result5 <NewChat Say 7 P= %id%02 1 QMemo %plotid% 5>
+		result6 <Goto GoRefuse>
+		Msg1 <I regret that you will not be able to help us. May the mother guide your steps.>
+		Msg2 <My name is %name2%; I am first officer of the Zuryo Maru, a trading ship from Venus. We have heard of your adventures and believe that you can help us.>
+		Msg3 <Our ship is malfunctioning. It is... ill. The automated defense system has turned on itself. We have confined the problem to the engineering deck, but our technicians dare not enter since it is far too dangerous.>
+		Msg4 <Exactly. You can find our ship at the private dock. I should warn you that the defense system is adaptative; it will detect your presence and try to destroy you.>
+		Msg5 <%name5% asked you to stop the malfunctioning defense system of the Vesuvian spaceship Zuryo Maru; \spr %2% mentioned something about the system being adaptative.>
+		Msg6 <On Venus we make use of living technology. The Zuryo Maru is a living being. Unlike the vulgar biomonsters of old Earth, Vesuvian technology has only peaceful applications. Please, it needs your help...>
+		Msg7 <Thank you. All you need to do is locate the neurocortex and disable that part. You can find our ship at the private dock; I should warn you beforehand that the defense system will adapt to your presence. Be careful.>
+		Msg8 <Please do your best. May the green mother protect you.>
+		Msg9 <The problem has been solved; thank you so much for your help. In thanks, I'd like you to have this special plant nectar from Venus. Save it for when you really need it.>
+		Prompt1 <What seems to be the problem?>
+		Prompt2 <So you want me to go in there and disable it?>
+		Prompt3 <Wait, what do you mean "ill"?>
+		Prompt4 <Sorry, this job sounds way too dangerous for me.>
+		Prompt5 <Alright, I'll help you to fix it.>
+		Prompt6 <I don't want to mess around with biotechnology.>
+
+		MetaScene 5
+		sub
+			Room
+			minimap <########1####....+....#&&>
+			desig <HOME>
+			special <NOGO>
+			sub
+				Door
+				update <if= V1 0 else GoCheckQuest V= 1 1 SetStat STAT_Lock HardSkillTar %threat% Goto GoCheckQuest>
+				GoCheckQuest <if# P%id%02 0 SetStat STAT_Lock 0>
+			end
+		end
+
+		MetaScene 3
+		name <the Zuryo Maru>
+		special <NOEXIT>
+		type <spaceship>
+		mapwidth 50
+		mapheight 50
+		MonkeyMap
+		Ceiling
+		LockedDoorChance 35
+		SecretDoorChance 25
+		OrganicTiles
+		FloorType 1
+		% L1 = Deactivation counter
+		% L2 = Monster initialization counter
+		% L3 = First time counter
+		start <if= L3 0 else GoBeenBefore Alert 4 L= 3 1 Goto GoInitMonsters>
+		GoBeenBefore <Print 1 Goto GoInitMonsters>
+		GoInitMonsters <if= L2 0 L= 2 1   if= PlotStatus %plotid% %id%   MonsterSet 2 %threat%  MonsterUp 2 -20>
+		end <L= 2 0>
+		5Min <if= L1 0 ifStealth SkillTar %threat% else GoMonsterUp>
+		GoMonsterUp <MonsterUp 2 d3>
+		nu3 <if= T3 0 P= %id%04 1 if= L1 0 L= 1 1 Alert 2 QMemo %plotid% 3 XPV 100 P= %id%03 1 TeamNeutral 2>
+		msg1 <You enter the Zuryo Maru.>
+		msg2 <As you destroy the neurocore, the inside of the ship suddenly goes quiet.>
+		msg3 <You deactivated the neurocore of the Zuryo Maru. You should go inform %name2% at Xianzai Spaceport.>
+		msg4 <You enter the Zuryo Maru. The tunnels of the engineering level look like the guts of some colossal beast. You wonder what secrets may be hidden within.>
+		sub
+			Team 1
+			SetEnemy 2
+
+			Team 2
+			name <Monster>
+			type <Antibody Synth>
+			SetEnemy 1
+			SetAlly 2
+			Stat 2 1
+
+			Team 3
+			name <Brains>
+			SetEnemy 1
+			SetAlly 2
+
+			rect
+			minimap <      ###  #2#  ...      >
+			inv
+				Elevator
+				Destination -1
+				MiniMapComponent 2
+			end
+
+			rect
+			MarbleType 2
+			minimap < ... ..,...,,,...,.. ... >
+
+			rect
+			MarbleType 2
+			minimap < ... ..,...,,,...,.. ... >
+
+			rect
+			minimap <      1#%  &^%  %^.      >
+			inv
+				STC BioTank
+				MiniMapComponent 1
+				%% V1 = Have repaired tank
+				use <if= V1 0 else GoRepaired Print 1>
+				GoRepaired <Print 2>
+				CLUE_REPAIR <if= V1 0 else GoRepaired Mental ifURepair SkillTar %threat% else GoFail Print 3 XPV 50 V= 1 1>
+				GoFail <Print 4>
+				Msg1 <This specimen tank has been destroyed.>
+				Msg2 <This specimen tank has been repaired.>
+				Msg3 <You patch up the specimen tank.>
+				Msg4 <You don't quite manage to fix this tank.>
+			end
+
+			rect
+			minimap <      1#.  &#2  3#.      >
+			inv
+				STC BioTank
+				MiniMapComponent 1
+				%% V1 = Have obtained jade disc
+				use <ifSelfOK if= L1 0 else GoDone if= V1 0 else GoDone Print 1>
+				GoDone <Print 2>
+				CLUE_SCIENCE <ifSelfOK if= V1 0 else GoDone V= 1 1 Mental ifScience SkillTar %threat% else GoFail Alert 3 GiveSTC .item XPV 50>
+				.item <Jade Disc>
+				GoFail <Alert 4 SkillXP NAS_Science 100>
+				Msg1 <This tank contains an Exorg Floater suspended in a viscous liquid.>
+				Msg2 <This tank contains nothing but fibrous sediment.>
+				Msg3 <You activate the machine. Robotic arms unfold from the top and quickly dissect the Exorg. They place a green sphere in the specimen tray.>
+				Msg4 <You activate the machine. Robotic arms unfold from the top and quickly dissect the Exorg.>
+
+				STC BioTank
+				MiniMapComponent 3
+				%% V1 = Have obtained jade disc
+				use <ifSelfOK if= L1 0 else GoDone if= V1 0 else GoDone Print 1>
+				GoDone <Print 2>
+				CLUE_SCIENCE <ifSelfOK if= V1 0 else GoDone V= 1 1 Mental ifScience SkillTar %threat% else GoFail Alert 3 GiveSTC .item XPV 50>
+				.item <Jade Disc>
+				GoFail <Alert 4 SkillXP NAS_Science 100>
+				Msg1 <This tank contains an Exorg Creeper suspended in a viscous liquid.>
+				Msg2 <This tank contains nothing but fibrous sediment.>
+				Msg3 <You activate the machine. Robotic arms unfold from the top and quickly dissect the Exorg. They place a green sphere in the specimen tray.>
+				Msg4 <You activate the machine. Robotic arms unfold from the top and quickly dissect the Exorg.>
+
+				STC COMPUTER-1
+				% V1 = Have deciphered code
+				% V2 = Have perused database
+				MiniMapComponent 2
+				use <ifSelfOK if= L1 0 else GoNoPower if= V1 0 else GoDeciphered Print 1>
+				GoNoPower <Print 2>
+				GoDeciphered <if= V2 1 else GoFirstTime Print 3>
+				GoFirstTime <ifYesNo 5 6 7 Alert 9 Alert 10 Alert 11 Alert 12 Alert 13 V= 2 1 XPV 100 Mental Time 150 MonsterUp 2 d12 SkillXP NAS_Science 150 SkillXP NAS_Survival 150>
+				CLUE_CODEBREAKING <ifSelfOK if= L1 0 else GoNoPower if= V1 0 else GoDeciphered Mental ifCodeBreaking SkillTar %threat% else GoFail V= 1 1 Alert 4 XPV 50 Goto GoDeciphered>
+				CLUE_SCIENCE <ifSelfOK if= L1 0 else GoNoPower if= V1 0 else GoDeciphered Mental      ifScience  HardSkillTar %threat% else GoFail V= 1 1 Alert 4 XPV 50 Goto GoDeciphered>
+				GoFail <Print 8>
+				Msg1 <The computer is covered in blinking lights.>
+				Msg2 <The computer terminal is dark.>
+				Msg3 <This computer contains an anatomical database of the mutant fungi and space monsters of the L5 region.>
+				Msg4 <You decipher the holographic interface used by this computer. It appears to be a scientific reference of the mutant fungi and space monsters of the L5 region.>
+				Msg5 <Would you like to peruse the database?>
+				Msg6 <Yes, please.>
+				Msg7 <Not right now.>
+				Msg8 <You can't make sense of this computer's interface.>
+				Msg9 <[FUNGI] 68 species observed. Evolved from earthbound types, possibly with the assistance of transgenetic contamination. Gene sequencing suggests ancestral link with Vesuvian megaflaura.>
+				Msg10 <[WORMS] 104 species observed. Although commonly linked with fungi, may have bacterial origin. Simple body plan and largely undifferentiated cellular mass reminiscent of protypes.>
+				Msg11 <[ABERATA] 12 species observed. The question of lineage cannot yet be resolved, though polyps found in deep space are closely related to those found planetside. Possibly feralized bioweapon.>
+				Msg12 <[CYBIOTA] 0 species observed. Reports of self-replicating inorganic lifeforms left unconfirmed. May be related to composite being "AIGAION".>
+				Msg13 <[EXORG] 17 species observed. More information required.>
+			end
+
+			Rect
+			minimap <      #.#  .2.  #.#      >
+			inv
+				CombatProp 25
+				name <Neurocore>
+				roguechar <=>
+				SDL_SPRITE <prop_displaycase.png>
+				SetTeam 3
+				MiniMapComponent 2
+				RangedCombat 13
+				CloseCombat 9
+				Initiative 13
+				ElectronicWarfare 10
+				Biotech
+				CLUE_SCIENCE <ifSelfOK else GoDead  if= P%id%03 0 else GoDone   Mental  ifUScience SkillTar %threat% else GoFail     Goto GoRepair>
+				CLUE_REPAIR <ifSelfOK else GoDead   if= P%id%03 0 else GoDone   Mental  ifURepair HardSkillTar %threat% else GoFail  Goto GoRepair>
+				GoDead <Print 1>
+				GoDone <Print 2>
+				GoFail <Print 3 MonsterUp 2 d8>
+				GoRepair <Alert 4 QMemo %plotid% 5 XPV 100 SkillXP NAS_Science 100 SkillXP NAS_Repair 100 P= %id%03 1 TeamNeutral 2 TeamNeutral 3 L= 1 1>
+				Msg1 <There's nothing else you can do for the neurocore.>
+				Msg2 <You've already fixed the neurocore.>
+				Msg3 <It's difficult to repair this thing while it's trying to kill you!>
+				Msg4 <You reboot the neurocore. The inside of the ship suddenly goes quiet.>
+				Msg5 <You repaired the neurocore of the Zuryo Maru. You should go inform %name2% at Xianzai Spaceport.>
+				sub
+					Turret
+					name <Eye>
+					size 5
+					armor 5
+					sub
+						BeamGun 8
+						name <Bio-Plasma>
+						range 8
+						type <BRUTAL>
+					end
+
+					Tail
+					name <Tendril>
+					Size 5
+					Armor 5
+
+					ECM 5
+					name <Defense Cortex>
+				end
+			end
+		end
+	end
+	inv
+		NPC Scientist
+		job <First Officer>
+		chardesc sociable spiritual easygoing lawful heroic
+		SDL_Colors <77 156 131 250 183 139 211 224 230>
+
+		Food 0
+		name <Neural Regenerator>
+		FoodFX:CureStatus
+		FoodMod 22
+		desc <A special medicine from Venus. It's a highly effective treatment for spinal injury.>
+		Category <MEDICINE>
+		SDL_PORTRAIT <item_pills.png>
+		Fudge 1000000
+
+		Elevator
+		name <Private Spacedock>
+		desig <ENTRANCE %3%>
+		use <if= P%id%02 1 else GoNoUse Print 1 Exit Destination>
+		GoNoUse <Print 2>
+		CLUE_CodeBreaking <Print 3>
+		MiniMapComponent 2
+		Msg1 <You ride the elevator to the Vesuvian spaceship.>
+		Msg2 <This elevator does not respond to your commands.>
+		Msg3 <You can't see any way to hack this elevator.>
+	end
+
+Content
+	name <Matthias agaisnt the pirates>
+	requires <*Q_UNIQUE_XIASP_Matthias>
+
+	%% Param1 is Matthias
+	%% E2 is the exterior scene
+	%% E3 is the pirate encounter
+	%% E4 is the black market
+	%% E5 is the pirate captain
+	%% E6 is the pirate faction
+	%% E7 is the Nomos Blade
+	%% E8 is E5's mission
+	%% E9 is the trucker being sought
+	%% E10 is the Demios Blade
+	Element2 <Scene Environs>
+	Element3 <Prefab>
+	Place3 <2>
+	Element4 <QuestScene>
+	Element5 <Prefab>
+	Place5 <4 (Guards) SD>
+	Element6 <Faction (CRIHN|REDMA)>
+	Element7 <Prefab>
+	Place7 </>
+	Element8 <Prefab>
+	Place8 <2>
+	Element9 <Prefab>
+	Place9 </>
+	Element10 <Prefab>
+	Place10 </>
+
+	%%
+	%% Matthias warns the player to watch out- there are pirates in the area.
+	%% From this point onwards the PC may get attacked by pirates in Xianzai
+	%% Station Exterior. Each time they are defeated, the PC can return to
+	%% Matthias for a reward. Doing so resets the pirates for another attack
+	%% the next day.
+	%%
+	%% When this quest is activated, a black market is also activated. If the
+	%% player travels there they can meet a pirate captain. Drive away the
+	%% captain and the mecha attacks stop immediately, and the PC can claim a
+	%% special reward from Matthias. Alternatively, the player can do a mission
+	%% for the pirate captain, which earns a different reward.
+	%%
+
+	%% P%id%01 = Initialization Counter
+	%% P%id%02 = Pirate lances destroyed
+	%% P%id%03 = Have eliminated E5
+	%% P%id%04 = Have accepted E5's mission
+
+	%% FAIL CONDITIONS:
+	%% - Matthias dies
+	end <ifNPCDead %1% LoseSubPlot %plotid% DeleteItem %3%>
+
+	%% Killing or forcing the surrender of the pirate captain will cause the
+	%% pirates to retreat.
+	Faint%5% <if= P%id%03 0  P= %id%03 1  QMemo %plotid% %id%03   XPV 100>
+	Surrender%5% <if= P%id%03 0  Monologue %5% %id%01  QMemo %plotid% %id%03  XPV 100  History %id%02  P= %id%03 1 FreezeNPC %5% PCEnemy %5%>
+
+	update <if= P%id%01 0 P= %id%01 1 SetPlotStatus %plotid1% %id1% ItemVar= %3% 1 ComTime ItemVar= %3% 2 5 SetNPCFaction %5% %6% SetSceneFaction %4% %6%>
+
+	Msg%id%01 <Alright, you win- I'll get out of Xianzai Spinner. Don't think this means you've seen the last of me, though...>
+	Msg%id%02 <You drove the pirate captain %name5% out of Xianzai Spinner.>
+	Msg%id%03 <You defeated the pirate captain %name5%. Matthias will want to hear about this.>
+
+	%% SubPlot1 is the black market entrance
+	SubPlot1 <*:Q_ENT_BlackMarket #25 4>
+
+	sub
+		Persona 1
+		%% V%id%02 = Rewards received
+		greeting <if= PlotStatus %plotid% %id% else %pop% NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+		result%id%01 <ifG ItemVar %3% 2 %threat% else .%id%_GoSmallReward Goto .%id%_GoSmallEnding>
+		.%id%_mecha <GENERAL L5LAW COMET HOELL MUGLE>
+		.%id%_GoSmallReward <NewChat Say %id%02  AddReact d5  CashPrize Reward ItemVar %3% 2 250  V= %id%02 P%id%02  QMemo %plotid% %id%03 ItemVar= %3% 1 ComTime ItemVar+ %3% 1 43200 ItemVar+ %3% 1 d86400    ItemVar+ %3% 2 d10>
+		.%id%_GoSmallEnding <NewChat Say %id%04  CustomMecha .%id%_mecha %threat%  Goto .%id%_GoWinQuest>
+		result%id%02 <ifPCLawful else .%id%_GoSmallEnding  NewChat Say %id%05   CashPrize Reward %threat% 500  RandomMecha .%id%_mecha %threat%  GiveItem %7%  Goto .%id%_GoWinQuest>
+		  %% Winning the quest gives 2 points of lawful, deletes the encounters, and if
+		  %% the PC agreed to do E5's quest turns E5 into an enemy.
+		.%id%_GoWinQuest <AddLawful 2   AddReact d10   DeleteItem %3%  DeleteItem %8%   WinSubPlot %plotid% ifNPCOK %5% ifG P%id%04 0 FreezeNPC %5% PCEnemy %5%>
+		result%id%03 <AddLawful 1  Goto .%id%_GoSmallEnding>
+		Msg%id%01 <Pirates are still operating in Xianzai Spinner.>
+		Msg%id%02 <Good work \PC . There are still a lot of pirates out there, though... Come back later if you happen to defeat any more.>
+		Msg%id%03 <%name1% in Xianzai Spinner told you that there's a reward for fighting pirates outside of the colony.>
+		Msg%id%04 <Good job. The pirate threat appears to be over, for the time being. On behaf of the trade authority I'd like to present you with this custom mecha in thanks for your help.>
+		Msg%id%05 <Amazing work, \PC . On behaf of Xianzai Spinner I'm authorized to present you with this mecha in thanks for your help, and since you did such a great job I'd also like for you to have this blade. Use it well.>
+		Prompt%id%01 <There's fewer of them now.>
+		CPrompt%id%01 <ifG P%id%02 V%id%02 Accept>
+		Prompt%id%01_1 <Not as many as there were yesterday...>
+		Prompt%id%01_2 <I've defeated one of their lances.>
+		Prompt%id%02 <Not any more, they aren't.>
+		CPrompt%id%02 <if# P%id%03 0 Accept>
+		Prompt%id%03 <The pirate captain is %name5%. I can tell you all about \OPR %5% .>
+		CPrompt%id%03 <ifG P%id%04 0 ifNPCOK %5% Accept>
+
+		Persona 5
+		special <UNLISTED>
+		% V%id%01 = Have spoken first time
+		greeting <if= PlotStatus %plotid% %id% else .%id%_GoChat   if= P%id%04 2 else .%id%_GoCheckMission NewChat Say %id%01 WinSubPlot %plotid% CustomMecha .%id%_mecha %threat% AddReact d10  DeleteItem %3% ifG React 30 GiveItem %10% Print %id%02>
+		.%id%_mecha <GENERAL COMET HOELL MUGLE \FACTION_DESIG ChatNPCFac>
+		.%id%_GoCheckMission <if= P%id%04 1 else .%id%_GoGreet NewChat Say %id%03 AddChat %id%01 AddChat %id%02>
+		.%id%_GoGreet <if= v%id%01 0 else .%id%_GoConfront NewChat Say %id%04 AddChat %id%03 AddChat %id%04>
+		.%id%_GoChat <NewChat SayAnything>
+		.%id%_GoConfront <NewChat Say %id%05 AddChat %id%05 AddChat %id%06 AddChat %id%07 AddChat %id%08 AddChat %id%04>
+		result%id%01 <NewChat Say %id%06>
+		result%id%02 <NewChat  Say %id%07  P= %id%04 -1  AddReact -d10>
+		result%id%03 <NewChat Say %id%08 V= %id%01 1 AddChat %id%05 AddChat %id%06 AddChat %id%07 AddChat %id%08>
+		*result%id%04 <*GoodBye>
+		result%id%05 <NewChat Say %id%09 AddChat %id%09 AddChat %id%10>
+		*result%id%06 <*InsultContest .%id%_GoR6Succeed .%id%_Go678Fail %threat%>
+		.%id%_GoR6Succeed <NewChat Say %id%10 AddCHat %id%11 AddChat %id%12 AddChat %id%13>
+		.%id%_Go678Fail <EndChat Say %id%11 FreezeNPC %5%>
+		result%id%07 <ifConversation SkillTar %threat% else .%id%_Go678Fail  NewChat Say %id%12 AddCHat %id%12 AddChat %id%13>
+		result%id%08 <ifIntimidation SkillTar %threat% else .%id%_Go678Fail  NewChat Say %id%13 AddCHat %id%11 AddChat %id%13>
+		result%id%09 <NewChat Say %id%14 QMemo %plotid% %id%15 P= %id%04 1 ItemVar= %8% 1 ComTime AddLawful -1>
+		result%id%10 <EndChat Say %id%11 P= %id%04 -1>
+		result%id%11 <ifConversation HardSkillTar %threat% else .%id%_Go1112Fail  EndChat Say %id%16  Goto .%id%_GoRunAway>
+		result%id%12 <ifIntimidation HardSkillTar %threat% else .%id%_Go1112Fail  EndChat Say %id%17  Goto .%id%_GoRunAway>
+		.%id%_Go1112Fail <EndChat Say %id%18 L= 11 1 TeamAttack 3>
+		.%id%_GoRunAway <FreezeNPC %5% PCEnemy %5% P= %id%04 -1 P= %id%03 1 XPV 100>
+		result%id%13 <EndChat Say %id%19 L= 11 1 TeamAttack 3>
+		Msg%id%01 <Arr, you did a fine job capturing that shipment. In thanks I'll let you have the best pieces of loot from the haul.>
+		Msg%id%02 <You receive the Demios Blade.>
+		Msg%id%03 <My mates still haven't found that convoy. How's your own luck been holding out?>
+		Msg%id%04 <Yeah, what do you want?>
+		Msg%id%05 <Back again to pester me... Well, spit it out. What do you want this time?>
+		Msg%id%06 <Don't bother to come back until you find it, then.>
+		Msg%id%07 <Is that so? Well go on then, off with you... It's not like you were much help to begin with.>
+		Msg%id%08 <I know all kinds of things about them, I'm their captain! You don't look like you're real pleased to hear that.>
+		Msg%id%09 <Well, I have been losing a lot of pilots these days... We're looking for a particular convoy passing through the area. Help us catch it, and you can share in the booty.>
+		Msg%id%10 <Heh, that's a good one... now tell me one reason why I shouldn't kill you on the spot.>
+		Msg%id%11 <You annoy me. Get out of here before I have you removed permanently.>
+		Msg%id%12 <You think I should, huh? So why do you think I shouldn't kill you right now?>
+		Msg%id%13 <You barge into my place of business and threaten me? Tell me, why should I let an ignorant little piece of filth like yourself walk out of here alive?>
+		Msg%id%14 <Welcome to the team. The captain of the freighter is named %name9%; you should know it when you see it. Come back here when you're done and we'll split everything up nice and fair.>
+		Msg%id%15 <%name5% asked you to capture a freighter in Xianzai Spinner exterior in exchange for a share of the loot.>
+		Msg%id%16 <You don't say. Alright, I can see there's no use in fighting. Me and my mates will leave Xianzai Spinner... but don't think we'll forget your part in this.>
+		Msg%id%17 <I can see this isn't the right place for a fight... I'll leave Xianzai Spinner, but you and me can finish things some other time.>
+		Msg%id%18 <You must think I'm awful stupid to fall for a line like that. Now, you're going to die!>
+		Msg%id%19 <I hope you realize that made no sense whatsoever. In any case, you're going to die!>
+		Prompt%id%01 <I'm still looking for it.>
+		Prompt%id%02 <Really, I don't want this job anymore.>
+		Prompt%id%03 <What do you know about those pirates outside the station?>
+		Prompt%id%04 <Nothing...>
+		Prompt%id%05 <Say, are you looking for more pilots?>
+		CPrompt%id%05 <if# P%id%04 -1 Accept>
+		Prompt%id%06 <You're the ugliest pirate I've ever seen.>
+		Prompt%id%07 <I think you and your men should get out of Xianzai.>
+		Prompt%id%08 <Your men attacked me. I'm here to return the favor.>
+		Prompt%id%09 <Sounds good. I'm in.>
+		Prompt%id%10 <I'm not going to do your dirty work.>
+		Prompt%id%11 <Because L5Law knows where you are. I'm your only hope to live.>
+		Prompt%id%12 <Think you're up for it? You're free to try.>
+		Prompt%id%13 <Because when I tell Matthias where you are, you're history.>
+
+		Persona 9
+		special <UNLISTED NOESCAPE>
+		greeting <if= PlotStatus %plotid% %id% else .%id%_GoChat EndChat Say 1 AddChat 1 AddChat 2 Return>
+		.%id%_GoChat <NewCHat SayAnything>
+		result1 <EndChat Say 2 History 3 P= %id%04 2 DeleteItem %8% PCEnemy %9% QMemo %plotid% 6>
+		result2 <EndChat Say 2 LoseSubPlot %plotid%  DeleteItem %3% DeleteItem %8%  PCEnemy %9% History 4 CashPrize Reward %threat% 3000 CustomMecha .%id%_mecha %threat% GiveItem %10% Print 5 XPV 200 AddLawful -10 ifNPCOK %5% FreezeNPC %5% PCEnemy %5%>
+		.%id%_mecha <GENERAL FCOMS COMET HOELL MUGLE>
+		Msg1 <Our ship is at your mercy. What is it that you want?>
+		Msg2 <There's no point in resisting... but don't think I'm just going to forget this.>
+		Msg3 <You captured %name9%'s convoy for the pirate %name5%.>
+		Msg4 <You double-crossed %name5%, taking %name9%'s cargo for yourself.>
+		Msg5 <You receive the Demios Blade.>
+		Msg6 <You should report back to %name5% at %name4%.>
+		Prompt1 <I claim your cargo in the name of %name5%!>
+		CPrompt1 <ifNPCOK %5% Accept>
+		Prompt2 <I claim your cargo in the name of myself!>
+
+		STC QS_BlackMarket
+		SetID 4
+		%% V11 = Have started fight with guards
+		start <if= L11 0 else GoGone Print 1>
+		GoGone <Print 2 Retreat 2 Retreat 3>
+		end <ifTeamHostile 3 L= 11 1 P= %id%04 -1>
+		Msg1 <You enter \SCENE %4% .>
+		Msg2 <You enter \SCENE %4% . It appears to be deserted now.>
+	end
+	inv
+		Encounter
+		name <Pirates>
+		Special <NoMSID>
+		%% This encounter will attack once per day. If the PC defeats the pirates, then this encounter
+		%% needs to be reset by Matthias before it will appear again.
+		% V1 = Visibility Clock. If ComTime > V1 and V1 <> 0, encounter is active
+		% V2 = Difficulcy Rating. Increases by one each time the PC defeats the pirates.
+		update <if# V1 0 else GoHide ifG 1 P%id%04 else GoHide ifG ComTime V1 else GoHide  SetStat STAT_MetaVisibility 0  Goto GoSetOrders>
+		% Sets this encounter's orders to Passive
+		GoSetOrders <GrabSource GSetNAtt NAG_EpisodeData NAS_Orders 3>
+		use <ifG StatVal STAT_MetaVisibility -1  Print -1  Goto GoStartCombat>
+		ATTACK <ifG StatVal STAT_MetaVisibility -1    ifUStealth 15 else GoAutoAttack ifYesNo -3 -4 -5 else GoAvoidAttack Goto GoAutoAttack>
+		GoAutoAttack <Alert -2 Goto GoStartCombat>
+		GoAvoidAttack <Print -6 AddSociable -1>
+		GoStartCombat <V= 1 0  SavePos Dynamic 2 V2 100 .nu1 .nu2 ComposeD Msg1 .Msg1 DynaFaction %6%>
+		.nu1 <if= T1 0  Return   if= L1 0  L= 1 1  LoseRenown  ItemVar= %3% 1 ComTime ItemVar+ %3% 1 d86400 ItemVar+ %3% 1 43200>
+		.nu2 <if= T2 0           if= L1 0  L= 1 1  Alert 1 XPV 100    P+ %id%02 1   QMemo %plotid% 1>
+		EncounterMove 50
+		Msg-1 <You attack the pirates!>
+		Msg-2 <You are attacked by pirates!>
+		.Msg1 <You defeated some pirates. Matthias will want to hear about this.>
+
+		NPC Pirate
+		job <Pirate Captain>
+		chardesc Criminal Villainous
+
+		Melee 10
+		name <Nomos Blade>
+		desc <A rare gunsword given to you by Matthias.>
+		Speed 4
+		Acc 1
+		mass -8
+		type <ARMORPIERCING>
+		sub
+			Gun 9
+			Name <Rocket Pistol>
+			caliber <8mm self-propelled>
+			Integral
+			Mass -7
+			Range 5
+			Acc 2
+			Speed 4
+			magazine 20
+			sub
+				Ammo 9
+				name <Rocket Pistol Clip>
+				caliber <8mm self-propelled>
+				SDL_PORTRAIT <item_ammoclip.png>
+				type <ARMORPIERCING>
+			end
+		end
+
+		Encounter
+		name <%name5%'s Mission>
+		Special <NoMSID>
+		%% This encounter will attack once per day until defeated.
+		% V1 = Visibility Clock. If ComTime > V1 and V1 <> 0, encounter is active
+		update <if= P%id%04 1 else GoHide if# V1 0 else GoHide ifG ComTime V1 else GoHide  SetStat STAT_MetaVisibility 0  Goto GoSetOrders>
+		% Sets this encounter's orders to Passive
+		GoSetOrders <GrabSource GSetNAtt NAG_EpisodeData NAS_Orders 3>
+		use <ifG StatVal STAT_MetaVisibility -1  Print 1  Goto GoStartCombat>
+		ATTACK <ifG StatVal STAT_MetaVisibility -1    ifG PCRenown %threat%   ifYesNo 3 4 5 else GoAvoidAttack Goto GoAutoAttack>
+		GoAutoAttack <Alert 1 Goto GoStartCombat>
+		GoAvoidAttack <Print 6>
+		GoStartCombat <V= 1 0  SavePos Dynamic 2 %threat% 150 .nu1 .nu2 ComposeD Msg1 .Msg1>
+		.nu1 <if= T1 0  Return   if= L1 0  L= 1 1  LoseRenown  ItemVar= %3% 1 ComTime ItemVar+ %8% 1 d86400 ItemVar+ %8% 1 43200>
+		.nu2 <if= T2 0           if= L1 0  L= 1 1  AddLawful -5  if= PlotStatus %plotid% %id% Alert 1 XPV 100  ForceChat %9%  AddRenown 1>
+		EncounterMove 50
+		Msg1 <You attack the convoy!>
+		Msg3 <You spot a group of mecha escorting a cruiser. This must be the convoy that %name5% was talking about.>
+		Msg4 <Attack them.>
+		Msg5 <Leave them alone.>
+		Msg6 <You decide to finish this job later.>
+		.Msg1 <You have defeated the escort. The freighter is yours.>
+
+		NPC Trucker
+		Combatant
+
+		Melee 10
+		name <Demios Blade>
+		desc <A rare gunsword stolen from %name9%'s convoy.>
+		Speed 4
+		Acc 1
+		mass -8
+		type <STONE>
+		sub
+			Gun 9
+			Name <Rocket Pistol>
+			caliber <8mm self-propelled>
+			Integral
+			Mass -7
+			Range 5
+			Acc 2
+			Speed 4
+			magazine 20
+			sub
+				Ammo 9
+				name <Rocket Pistol Clip>
+				caliber <8mm self-propelled>
+				SDL_PORTRAIT <item_ammoclip.png>
+				type <ARMORPIERCING>
+			end
+		end
+	end
+
+
+Content
+	name <McCabe's Construction Project>
+	requires <*Q_UNIQUE_TOHSP_McCabe1>
+
+	%% Param1 is McCabe
+	%% Param2 is the new building under construction
+
+	%% FAIL CONDITIONS:
+	%% - McCabe dies
+	update <ifNPCDead %1% LoseSubPlot %plotid%>
+
+	% SubPlot1 is the construction problem
+	SubPlot1 <*:Q_ConstructionProblem 1 2>
+
+	sub
+		Persona 1
+		rumor%id% <%name1%'s reconstruction effort has hit a problem.>
+		%% V%id%01 = Victory counter
+		greeting <if= PlotStatus %plotid% %id% else %pop% if= V%id%01 1 else GoCheckVictory Goto %pop%>
+		GoCheckVictory <ifSubPlotWon %plotid1% else GoCheckResult NewChat Say 5 History 12 QMemo %plotid% 0 P= 1 1 V= %id%01 1 AddReact 10 XPV 100 MechaPrize .%id%_mektype %threat% 4 2>
+		.%id%_mektype <FCOMS MUGLE COMET HOELL>
+		GoCheckResult <if# PlotStatus %plotid1% 0 else GoCheckEnemy NewChat Say 3 AddChat 3 AddChat 2>
+		*GoCheckEnemy <*ENEMY_CHECK GoOfferQuest ChatNPCFac GoMakeEnemy>
+		GoMakeEnemy <LoseSubPlot %plotid%>
+		*GoOfferQuest <*NiceToMeetYou GoExplainQuest>
+		GoExplainQuest <NewChat Say 1 AddChat 4 AddChat 5 AddChat 1>
+		Result1 <NewChat Say 9 AddChat 8>
+		Result2 <NewChat Say 4 LoseSubPlot %plotid%>
+		Result3 <NewChat Say 6>
+		Result4 <NewChat Say 7 AddChat 6 AddChat 7  AddSociable -d10    SetPlotStatus %plotid1% %id1%  QMemo %plotid% 2>
+		Result5 <NewChat Say 8 AddChat 6 AddChat 7                      SetPlotStatus %plotid1% %id1%  QMemo %plotid% 2>
+		result6 <NewChat Say 10  LoseSubPlot %plotid%  QMemo %plotid% 0>
+		result7 <NewChat Say 11>
+		Result8 <NewChat Say 13 AddChat 6 AddChat 7                     SetPlotStatus %plotid1% %id1%  QMemo %plotid% 2>
+		Msg1 <As you probably know, we're still rebuilding from the damage we suffered in the impact. I'm in charge of the reconstruction efforts.>
+		Msg2 <%name1% is in charge of reconstruction in Tohru Spinner. Unfortunately, one of her projects has hit a problem.>
+		Msg3 <Do you have any good news for me about the reconstruction work?>
+		Msg4 <This is just what we need; hasn't our city suffered enough?>
+		Msg5 <I hear that you've solved our construction problem. Congratulations. Here, I'd like for you to have this mecha. It may be an industrial model but that doesn't mean that it can't kick arse.>
+		Msg6 <Please do. The citizens of Tohru Spinner are counting on this.>
+		Msg7 <Maybe not, but you might be interested to know that there's been a problem at one of the reconstruction sites. I'm offering a reward to anyone who can get the project back on track.>
+		Msg8 <Not so well, I'm afraid. There's been a problem at one of the reconstruction sites; work has all but halted. If you could find out what's going wrong and fix it, it would be a great help to us.>
+		Msg9 <Our station is close to the dusty ring, and it got hit by an asteroid that somehow made it through the sensor net. That's why you can see a big crack running across the skyfield. A lot of people got killed...>
+		Msg10 <No worries. With unemployment at an all-time high, I shouldn't have any trouble finding someone more qualified than you.>
+		Msg11 <Thanks. Let me know when the situation has been resolved and I'll have a special present for you.>
+		Msg12 <You helped McCabe with the rebuilding of Tohru Spinner.>
+		Msg13 <You might be interested to know that there's been a problem at one of the reconstruction sites. I'm offering a reward to anyone who can get the project back on track.>
+		Prompt1 <Wait, could you tell me about the impact?>
+		Prompt2 <The reconstruction has halted.>
+		CPrompt2 <ifSubPlotLost %plotid1% Accept>
+		Prompt3 <I'll be back when I have something to report.>
+		Prompt4 <I don't care; I don't live here.>
+		CPrompt4 <if# PCHomeTown RootSceneID Accept>
+		Prompt5 <How is the work coming along?>
+		Prompt6 <Forget it, I'm not interested.>
+		Prompt7 <Alright. I'll be back when it's fixed.>
+		Prompt8 <I see.>
+	end
+
+Content
+	name <First Contact>
+	requires <*:Q_Unique_CAYLE_Caves>
+
+	%% Param1 is the Cayley Caves dungeon
+	% Element2 is the ghost dog
+	% Element3 is the watcher
+
+	Element2 <Prefab>
+	Place2 </>
+	Element3 <Prefab>
+	Place3 <1 (Exorg) SD enemy>
+
+	% P%id%01 = Ghost dog counter
+	% P%id%02 = Final level message counter
+	% P%id%03 = Ghost dog likes the PC
+
+	% Get on good terms with the ghost dog, and you get on good terms with the watcher. Not that
+	% it's going to help much if you plan on visiting Cayley Core.
+	start <if= SceneID %1% if= P%id%02 0 P= %id%02 1 Alert %id%01 WinSubPlot %plotid%  if= P%id%03 1 TeamNeutral 3>
+	Msg%id%01 <As you enter this level, you have the distinct feeling of being watched.>
+
+	sub
+		MetaScene 1
+		% The encounter with the ghost dog should happen within a half
+		% hour of entering the caves.
+		5min <if= P%id%01 0  if= d4 1  P= %id%01 1 ifItemOK %3% Alert 11 ForceChat %2%>
+		Msg11 <Suddenly, the ghostly apparition of a large dog appears before you. You hear its voice clearly through your helmet speakers.>
+
+		Persona 2
+		special <NOPLOTS NOESCAPE>
+		greeting <EndChat Say 1 AddChat 1 AddChat 2 AddChat 3>
+		result1 <EndChat ifG PCHeroism %threat% else GoFail Alert 4 Say 5 P= %id%03 1>
+		GoFail <Alert 2 Say 3>
+		result2 <Goto result1>
+		result3 <Goto result1>
+		Msg1 <Rowr?>
+		Msg2 <The ghost dog seems to dislike the sound of your voice. It begins to fade away.>
+		Msg3 <Grrr...>
+		Msg4 <The ghost dog seems to like the sound of your voice. It begins to fade away.>
+		Msg5 <Ruff ruff.>
+		Prompt1 <Nice doggy...>
+		Prompt2 <What the blazes!?>
+		Prompt3 <Greetings. My name is \PC .>
+	end
+	inv
+		NPC Citizen
+		%% Just use a character blank, and fill it with our needed info
+		name <Ghost Dog>
+		job <Apparition>
+		SDL_PORTRAIT <por_x_ghostdog.png>
+		SDL_COLORS <172 225 175 172 225 175 255 255 80>
+		age -20
+		statline 17 19 16 22 15 20 12 14
+
+		Monster Exorg Watcher
+	end
+
+Content
+	name <Exorg Laboratory>
+	requires <*:Q_Unique_CAYLE_Core>
+
+	%% Param1 is the Cayley Core dungeon
+	% Element2 is the laboratory
+	% Element3 is the data slate
+	% Element4 is a local public scene
+	% Element5 is a specific faction
+	% Element6 is the person searching for the data core
+	% Element7 is a holder for the data core
+	Element2 <QuestScene>
+	Place2 <1>
+	Element3 <Prefab>
+	Place3 <7>
+	Element4 <Scene Building Public>
+	Element5 <Faction AEGIS>
+	Element6 <NewNPC 5 4>
+	Place6 </>
+	Element7 <Prefab>
+	Place7 <2>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have accepted E6's mission
+
+	update <if= P%id%01 0 P= %id%01 1 MoveNPC %6% %4%>
+	end <ifItemDestroyed %3% else .%id%_GoCheckDeath CancelSubPlot %plotid% if= P%id%02 1 PCEnemy %6% PCFEnemy %5% FreezeNPC %6% History %id%01>
+	.%id%_GoCheckDeath <ifNPCDead %6% CancelSubPlot %plotid%>
+
+	Msg%id%01 <You failed to retrieve the dataslate for %name6%.>
+
+	sub
+		Persona 6
+		rumor%id% <%name6% is looking for something from the bottom of the mine.>
+		greeting <if= PlotStatus %plotid% %id% else GoChat if= P%id%02 1 else GoOfferQuest NewChat Say 1 AddChat 1 AddChat 2 AddChat 3 AddChat 4>
+		GoChat <NewChat SayAnything>
+		*GoOfferQuest <*DoYouWantAJob&Chara GoBriefing>
+		GoBriefing <EndChat Say 2 AddChat 5>
+		GoNotHere <NewChat Say 4>
+		result1 <NewChat Say 3>
+		result2 <ifChatNPCinPlay else GoNotHere NewChat Say 5 History 8 WinSubPlot %plotid% DeleteItem %3% CashPrize Reward %threat% 500 CustomMecha .fac %threat%>
+		.fac <FCOMS RISHI HOELL MUGLE ROCKE>
+		result3 <ifFactionEnemy %5% else GoR3Warn EndChat Say 6 History 9 PCEnemy %6% FreezeNPC %6% LoseSubPlot %plotid%>
+		GoR3Warn <NewChat Say 7 AddChat 6 AddChat 7>
+		result4 <NewChat Say 10 AddChat 8 AddChat 9>
+		result5 <NewChat Say 11 AddChat 10 AddChat 11 P= %id%02 1 QMemo %plotid% 12>
+		result6 <Goto result2>
+		result7 <EndChat Say 13 History 9 PCEnemy %6% FreezeNPC %6% LoseSubPlot %plotid%>
+		result8 <NewChat Say 14 AddChat 1 AddCHat 2 AddChat 3 AddChat 12>
+		result9 <NewChat Say 15 AddChat 1 AddCHat 2 AddChat 3 AddChat 13>
+		result10 <NewChat Say 16>
+		result11 <NewChat Say 17 LoseSubPlot %plotid% AddRenown -d6>
+		result12 <NewChat Say 18 AddChat 1 AddChat 2 AddChat 3 AddChat 9>
+		result13 <NewChat Say 19 AddChat 1 AddChat 2 AddChat 3 AddChat 8>
+		Msg1 <Have you found the dataslate yet?>
+		Msg2 <I've been searching for information about a brilliant yet reclusive scientist who used to live on Cayley Rock. Apparently she constructed a private research station at the bottom of Old Wynter's Mine.>
+		Msg3 <Come back here when you have it.>
+		Msg4 <You're going to have to come to %name4% for that.>
+		Msg5 <Yes, this is exactly what I wanted. The information on this dataslate will make our research far easier... in thanks, I'd like for you to have this money and a brand new mecha.>
+		Msg6 <It is... regretable that you have chosen this path. My employers will be most displeased.>
+		Msg7 <Are you certain that you want to do this? My employers are quite powerful, and if you displease them they would not hesitate to destroy you.>
+		Msg8 <You gave the scientist's dataslate to %name6%.>
+		Msg9 <You refused to give the scientist's dataslate to %name6%.>
+		Msg10 <Certainly. What is it that you want to know?>
+		Msg11 <I want you to find this research station and bring me back a dataslate located there. Anything else that you find in the cave is yours to keep.>
+		Msg12 <%name6% in %name4% asked you to recover a dataslate from a secret research station at the bottom of Old Wynter's Mine.>
+		Msg13 <Clearly so, but I think you'll find that you aren't nearly powerful enough.>
+		Msg14 <She was studying the Exorg space fungi, which she believed to be alien invaders from the Andromeda galaxy. Crazy, perhaps, but defintely brilliant. Now, about that dataslate...?>
+		Msg15 <I am working for a technology company that specializes in anti-fungal station defenses. Exorgs have evolved resistance to standard laser systems, making them far more difficult to exterminate than spaceworms.>
+		Msg16 <Thank you. Bring me the dataslate when you have it, and I promise you'll be amply rewarded.>
+		Msg17 <Understood. I will find someone else for this mission.>
+		Msg18 <You believe those stories? There's no evidence for that, just a lot of conspiracy theories and wild speculation. Getting back to the subject of the dataslate...>
+		Msg19 <Unlikely. Exorgs aren't particularly aggressive; I mean, they chew up power lines and will attack if you get too close, but they're no worse than regular bugs. I believe we were talking about the dataslate?>
+		Prompt1 <I'm still working on it.>
+		Prompt2 <I have it right here. [Give Slate]>
+		CPrompt2 <ifKeyItem %3% Accept>
+		Prompt3 <I found it, and I've decided to keep it.>
+		CPrompt3 <ifKeyItem %3% Accept>
+		Prompt4 <I'd like to ask a few questions, first.>
+		Prompt5 <[Continue]>
+		Prompt6 <Alright, you can have it...>
+		Prompt7 <Hey, I'm quite powerful too.>
+		Prompt8 <Who was this scientist?>
+		Prompt9 <Who are you working for?>
+		Prompt10 <I'll be back when I have it.>
+		Prompt11 <Sorry, but I don't think I can do that.>
+		Prompt12 <Don't you think that they might really be aliens?>
+		Prompt13 <Maybe they're some kind of biomonster.>
+
+		MetaScene 2
+		name <Exorg Laboratory>
+		%% Lab originally used by Jane Modo years ago
+		type <Private Complex Laboratory>
+		special <NOEXIT UNSAFE>
+		BoxMap
+		RockyTiles
+		entrance <*GoDown>
+		MapWidth 17
+		MapHeight 17
+		% V1 = First time entry
+		Start <if= V1 0 else GoBeenBefore Alert 2 V= 1 1>
+		GoBeenBefore <Print 1>
+		Msg1 <You enter the mysterious laboratory.>
+		Msg2 <At the bottom of the caves, you discover a secret laboratory. It seems to have been abandoned some time ago.>
+		content <Fill Sub *STORAGE_X na>
+		sub
+			Team 1
+
+			Team 2
+			name <Citizens>
+
+			Team 3
+			name <Guards>
+			SetAlly 2
+
+			Room
+			minimap <......#&#..&#&..#1#......>
+			inv
+				Elevator
+				name <Airlock>
+				Msg1 <You enter the airlock.>
+				Destination -1
+				MiniMapComponent 1
+			end
+
+			room
+			minimap <......&&&..&&&..&&&......>
+
+			room
+			minimap <......&&&..&&&..&&&......>
+
+			room
+			minimap <............1............>
+			inv
+				STC BIOTANK
+				name <Empty Specimen Tank>
+				MiniMapComponent 1
+				use <Print 1>
+				CLUE_SCIENCE <Print 2>
+				CLUE_INSIGHT <Print 2>
+				Msg1 <This specimen tank is ruptured. Whatever was once in it is now long gone.>
+				Msg2 <It's possible that this tank contained the Watcher you encountered earlier.>
+			end
+
+			room
+			minimap <............1............>
+			inv
+				STC BIOTANK
+				name <Specimen Tank>
+				MiniMapComponent 1
+				use <if= V1 0 else GoBeenBefore ifYesNo 1 2 3 V= 1 1 Alert 4 OpenInv>
+				GoBeenBefore <OpenInv>
+				Msg1 <You can see misty shapes floating in this specimen tank.>
+				Msg2 <Open it up and reach inside.>
+				Msg3 <Leave it alone.>
+				Msg4 <You reach inside...>
+				inv
+					BeamGun 14
+					name <Exorg Rifle>
+					desc <A mysterious beamgun recovered from a secret laboratory.>
+					CLUE_SCIENCE <Print 1>
+					CLUE_INSIGHT <Print 1>
+					Msg1 <This rifle appears to be made from the same material as the Exorgs themselves.>
+					UsesReflexes
+					Range 8
+					Acc 1
+					Recharge 3
+					mass -9
+					Biotech
+					inv
+						item Jade Disc
+					end
+				end
+			end
+
+			room
+			minimap <............1............>
+			inv
+				STC BIOTANK
+				name <Specimen Tank>
+				MiniMapComponent 1
+				use <if= V1 0 else GoBeenBefore ifYesNo 1 2 3 V= 1 1 Alert 4 OpenInv>
+				GoBeenBefore <OpenInv>
+				Msg1 <You can see misty shapes floating in this specimen tank.>
+				Msg2 <Open it up and reach inside.>
+				Msg3 <Leave it alone.>
+				Msg4 <You reach inside...>
+				inv
+					Shield 8
+					name <Exorg Shield>
+					desc <A mysterious shield recovered from a secret laboratory.>
+					CLUE_SCIENCE <Print 1>
+					CLUE_INSIGHT <Print 1>
+					Msg1 <This shield appears to be made from the same material as the Exorgs themselves.>
+					DefBonus 2
+					mass -7
+					Biotech
+					AntiBeam
+					sub
+						EMelee 13
+						name <Beam Blade>
+						type <EXTEND BRUTAL>
+						Recharge 3
+						UsesReflexes
+						inv
+							item Jade Disc
+						end
+					end
+				end
+			end
+		end
+
+		MetaScene 7
+		% Hold the bedroom, which holds the endtable, which holds the data slate
+		sub
+			Room
+			minimap <...........321..###......>
+			desig <HOME>
+			inv
+
+				STC BED-1
+				MiniMapComponent 2
+
+				STC ENDTABLE-1
+				PDir 6
+				use <OpenInv>
+				MiniMapComponent 3
+				inv
+					item Antiseptic Ointment
+					item Super Glue
+					item Biotech Lab Set
+				end
+			end
+		end
+	end
+	inv
+		item Mediabook
+		name <Data Slate>
+		desc <A data slate previously owned by whoever built the lab in Cayley Core. It's marked with the initials "JM".>
+		% V1 = Have overcome encryption
+		use <ifYesNo 1 2 3 moretext .fname>
+		.fname <TEXT_CCLJMD.txt>
+		CLUE_CODEBREAKING <if= V1 0 else GoAlreadyBroken ifCodeBreaking HardSkillTar 100 else use Mental Mental Alert 4 XPV 100   SkillXP NAS_Medicine 200  SkillXP NAS_Repair 200  SkillXP NAS_Science 200   V= 1 1>
+		GoAlreadyBroken <Print 5>
+		Msg1 <This dataslate contains someone's diary. Do you want to read it?>
+		Msg2 <Yes I do.>
+		Msg3 <No, thanks.>
+		Msg4 <You discover an encrypted file containing detailed anatomical and biochemical information about the Exorgs. Reading it makes your head hurt.>
+		Msg5 <You've already viewed the encrypted file.>
+
+		STC ENDTABLE-1
+		PDir 6
+		use <OpenInv>
+	end
+

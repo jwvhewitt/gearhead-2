@@ -1,0 +1,156 @@
+%%
+%% *REWARD missions
+%%
+%% Don't let the name fool you- these missions aren't rewards in themselves;
+%% rather, they present an opportunity for the PC to earn a significant reward.
+%% The reward missions are typically more difficult than regular missions.
+%%
+%% The General rewards don't require a coupon, and consequently don't give
+%% rationed rewards.
+
+ArenaMission
+	name <Corporate Misconduct>
+	requires <*REWARD -!Ne (Military|Police)>
+	desc <You must stop a downtown battle between %name1% and %name2%.>
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 700
+
+	CityBlockMap
+	terrain <GROUND>
+
+	Element1 <Faction Corporate>
+	Element2 <Faction Corporate !Enemy 1>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	% L3 = Mecha Renown
+	Start <if= L1 0  CommanderSays 1  L= 1 1>
+	nu1 <if= T1 0 Return if= L2 0 L= 2 1 Alert 2 LoseArenaMission>
+	nu2 <if= T2 0 if= T4 0 if= L2 0 L= 2 1 Alert 3 Salvage XPV 200 WinArenaMission ifG T3 0 IntelDebriefing 4  L= 3 ArenaRenown L+ 3 d12 RandomMecha .faction L3>
+	nu4 <Goto nu2>
+	.faction <\FACTION_DESIG %1% GENERAL>
+
+	Msg1 <A factory belonging to %name1% is under attack by %name2%. Attempt to defend it, and eliminate the hostile mecha.>
+	Msg2 <The mission is a failure.>
+	Msg3 <The mission is a success.>
+	Msg4 <As a reward for defending their factory, %name1% has provided us with a free mecha.>
+
+	sub
+		Team 1
+		SetEnemy 2
+		SetAlly 3
+		home <The Clearing>
+
+		Team 2
+		SetAlly 4
+		SetEnemy 1 3
+		Deploy <SetSelfFaction M2 WMecha 2 ArenaRenown 400>
+		ParaX 45
+		ParaY 5
+
+		Team 3
+		SetEnemy 2 4
+		SetAlly 1
+
+		Team 4
+		SetAlly 2
+		SetEnemy 1 3
+		Deploy <SetSelfFaction M2 WMecha 4 ArenaRenown 100>
+		ParaX 40
+		ParaY 45
+
+		rect
+		name <The Clearing>
+		desig <NW>
+
+		rect
+		name <The Factory>
+		desig <SE>
+		sub
+			SuperProp
+			requires <*Fortress>
+			SetTeam 3
+		end
+	end
+
+ArenaMission
+	name <Factory Raid>
+	requires <*REWARD -!Ne -!Lo>
+	desc <Lead a raid against a mecha factory owned by %name1%.>
+
+	AsteroidMap
+	terrain <GROUND>
+	RockyTiles
+	Vacuum
+	SpaceBackdrop
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 500
+
+	Element1 <Faction Enemy>
+	Element2 <Prefab>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	% L3 = Number of mecha to award
+	Start <if= L1 0  CommanderSays 1  L= 1 1>
+	nu1 <if= T1 0 if= L2 0 L= 2 1 Alert 2 LoseArenaMission>
+	nu2 <if= T2 0 if= L2 0 Salvage Return XPV 200 L= 2 1 Alert 3 L= 3 T3 Goto GoMechaFactory>
+	GoMechaFactory <ifG L3 0 else GoWinMission L+ 3 -1 RandomMecha .faction ArenaRenown Goto GoMechaFactory>
+	.faction <\FACTION_DESIG %1% GENERAL>
+	GoWinMission <WinArenaMission>
+
+	Msg1 <Disable the guards surrounding this factory. Try to leave the buildings intact, if possible.>
+	Msg2 <The mission is a failure.>
+	Msg3 <The mission is a success.>
+
+	sub
+		Team 1
+		SetEnemy 2 3
+		ParaX 5
+		ParaY 15
+
+		Team 2
+		SetEnemy 1
+		SetAlly 3
+		Deploy <SetSelfFaction %1%   WMecha 2 ArenaRenown 600>
+		ParaX 45
+		ParaY 45
+
+		Team 3
+		home <The Factory>
+		SetEnemy 1
+		SetAlly 2
+
+		rect
+		name <The Factory>
+		MFX 35
+		MFY 35
+		Height 8
+		Width 8
+		FloorType 6
+	end
+	inv
+		NPC Mecha Pilot
+		SetFaction -1
+		SetTeam 2
+
+		STC BUNKER-1
+		name <Factory>
+		SetTeam 3
+
+		STC BUNKER-1
+		name <Factory>
+		SetTeam 3
+
+		STC BUNKER-1
+		name <Factory>
+		SetTeam 3
+	end
+
+

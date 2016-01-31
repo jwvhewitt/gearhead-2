@@ -1,0 +1,56 @@
+%%
+%% *CORE_FINAL Conclusion
+%%
+%%  All conclusions start the same: with a stub. This plot doesn't do anything by
+%%  itself, but sets the mood and invokes the following subplots:
+%%      *CS_END_Intro
+%%      *:CS_END_RallyDefenses
+%%
+%%  It must have the following macros defined:
+%%      &RallyDefenses
+%%      &ifDefensesRallied
+%%
+
+Plot
+	name <Conclusion Stub>
+	desc <This stub just holds all the conclusion subplots and sets the mood.>
+	requires <(*CORE_FINAL|*CORE_F_PAL) F:++>
+
+	% Element1 is the mood for the conclusion
+	Element1 <Prefab>
+
+	% P%id%01 = Defense Counter
+
+	% Everything starts when the PC enters the episode scene.
+	start <if= PlotStatus %plotid% 0 if= RootSceneID &EpisodeScene  Alert %id%01 History %id%02  SetPlotStatus %plotid1% %id1% SetPlotStatus %plotid2% %id2% SetPlotStatus %plotid3% %id3% SetPlotStatus %plotid4% %id4%  SetMood %1% &EpisodeScene>
+
+	&RallyDefenses <P= %id%01 1>
+	&ifDefensesRallied <if= P%id%01 1>
+
+	Msg%id%01 <As you enter \SCENE &EpisodeScene , you experience a distinct feeling of dread. Something big is about to happen here.>
+	Msg%id%02 <You found \SCENE &EpisodeScene under the control of \FACTION &EnemyFac .>
+
+	% SubPlot1 is the confrontation intro
+	%     This will handle the arch-enemy and load the other subplots
+	% SubPlot2 is the rally defenses subplot
+	SubPlot1 <*CS_END_Intro 1>
+	SubPlot2 <*:CS_END_RallyDefenses>
+
+	inv
+		Mood 5
+		name <Conclusion Mood>
+		plot_type <*FactionRampage>
+		Element1 <Grab -2>
+		Update <if= v1 0 V= 1 1   News 1>
+		Msg1_1 <%city% under siege as \PERSONA &EnemyNPC 's personal forces take control.>
+		Msg1_2 <Mecha from \FACTION &EnemyFac take control of %city% under the orders of \PERSONA &EnemyNPC .>
+		Msg1_3 <\PERSONA &EnemyNPC has begun a purge of \PPR &EnemyNPC enemies from %city%; authorities powerless to stop the destruction.>
+		% Meme Messages
+		Msg_1 <When will the trouble with %me_name1% end?>
+		CMsg_1 <if# ChatNPCFac %me_1% Accept>
+		Msg_2 <Someone really ought to do something about %me_name1%... They must be stopped!>
+		CMsg_2 <if# ChatNPCFac %me_1% Accept>
+		Msg_3 <What did %city% do to deserve this? Those jerks from %me_name1% are acting like they own the place.>
+		CMsg_3 <if# ChatNPCFac %me_1% Accept>
+	end
+

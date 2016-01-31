@@ -1,0 +1,48 @@
+%% PC Goals list
+%%
+%% "What is your character's goal?"
+
+Biography
+name <Revenge>
+context <+Gre>
+
+Biography
+name <Wealth>
+context <+Gmo>
+
+Biography
+name <Fame>
+context <+Gfa>
+
+Biography
+name <World Peace>
+context <+Gpe>
+
+Biography
+name <Adventure>
+Easygoingness -10
+
+Biography
+name <Nothing much>
+Easygoingness 10
+
+Biography
+name <Power>
+context <+Gpo>
+
+Biography
+name <Knowledge>
+context <+Gkn>
+Pragmatism 10
+
+Biography
+name <Enlightenment>
+context <+Gkn>
+Pragmatism -10
+
+Biography
+name <Love>
+context <+Glo>
+
+
+

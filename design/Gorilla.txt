@@ -1,0 +1,85 @@
+Battroid 5
+Name <Gorilla>
+desig <Crihna>
+type <GROUND SPACE INSIDE>
+desc <This is the main raiding mecha used by the Blades of Crihna. Its massive claws are useful for smashing through bulkheads and carrying away loot.>
+sdl_portrait <item_gorilla.png>
+factions <CRIHN>
+ROLE_CRIHN <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+
+sub
+Head
+	Armor 5
+	sub
+		CPit
+		Armor 1
+
+		Sensor 4
+	end
+
+Torso
+	Armor 5
+	sub
+		Mount
+		name <Body Mount>
+		inv
+			MLauncher 8
+			sub
+				STC SWM-2
+				Magazine 40
+			end
+		end
+
+		HoverJet 2
+	end
+
+Arm
+	Name <Right Arm>
+	size 6
+	Armor 5
+	sub
+		Hand
+		inv
+			STC MAC-4
+		end
+
+		Melee 14
+		name <Claw>
+		type <Brutal>
+		Integral
+
+		HoverJet 1
+	end
+
+Arm
+	Name <Left Arm>
+	size 6
+	Armor 5
+	sub
+		Hand
+
+		Melee 14
+		name <Claw>
+		type <Brutal>
+		Integral
+
+		HoverJet 1
+	end
+
+Leg
+	Name <Right Leg>
+	size 4
+	Armor 4
+	sub
+		HoverJet 3
+	end
+
+Leg
+	Name <Left Leg>
+	size 4
+	Armor 4
+	sub
+		HoverJet 3
+	end
+end
+

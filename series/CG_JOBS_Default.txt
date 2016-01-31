@@ -1,0 +1,451 @@
+%% Jobs List
+%%
+%% JOB DESIGNATIONS
+%%   ACADE: Academic
+%%   ADVEN: Adventurer
+%%   CORPO: Merchant, Corporate, White Collar
+%%   CRAFT: Craftsman
+%%   FAITH: Monk, Priest, etc
+%%   LABOR: Skilled or unskilled labor
+%%   MEDIA: Media, Performance, etc
+%%   MEDIC: Medical
+%%   MILIT: Military
+%%   POLIT: Politician
+%%   POLIC: Police
+%%   THIEF: Criminal
+%%   TRADE: Shopkeepers and merchants
+%%
+%% NPC-ONLY JOBS:
+%%   MOOK_: Designated low-level henchman of villain
+%%   
+
+Job
+name <Scientist>
+desig <ACADE>
+requires <CITY>
+% Science
+Science
+Pragmatism 15
+
+Job
+name <Teacher>
+desig <ACADE>
+requires <GENERAL>
+% Conversation
+Conversation
+
+Job
+name <Arena Pilot>
+desig <ADVEN>
+requires <GENERAL>
+SetFaction 5
+% Mecha Gunnery, Mecha Fighting, Mecha Piloting
+MechaGunnery
+MechaFighting
+MechaPiloting
+
+Job
+name <Bounty Hunter>
+desig <ADVEN>
+requires <GENERAL>
+% Ranged Combat, Dodge, Intimidation
+RangedCombat
+Dodge
+Intimidation
+
+Job
+name <Explorer>
+desig <ADVEN>
+requires <GENERAL -SAFE>
+% Awareness, Survival
+Awareness
+Survival
+Sociability -10
+
+Job
+name <Martial Artist>
+desig <ADVEN>
+requires <GENERAL>
+% Close Combat, Dodge, Spot Weakness
+CloseCombat
+Dodge
+SpotWeakness
+
+Job
+name <Mercenary>
+desig <ADVEN>
+requires <TARGET>
+% Dodge, Mecha Piloting
+Dodge
+MechaPiloting
+
+Job
+name <Test Pilot>
+desig <ADVEN>
+requires <Industrial>
+% Mecha Piloting, Dodge, Toughness
+Dodge
+MechaPiloting
+Toughness
+Easygoingness -10
+
+Job
+name <Banker>
+desig <CORPO>
+requires <financial>
+% Shopping
+Shopping
+
+Job
+name <Corporate Executive>
+desig <CORPO>
+requires <CITY>
+special <NeedsFaction>
+% Shopping
+Shopping
+Easygoingness 10
+
+Job
+name <Corporate Pilot>
+desig <CORPO>
+requires <CITY>
+special <NeedsFaction>
+% Mecha Gunnery, Mecha Fighting, Mecha Piloting
+MechaGunnery
+MechaFighting
+MechaPiloting
+Easygoingness 5
+
+Job
+name <Architect>
+desig <CRAFT>
+requires <CITY>
+% Spot Weakness
+SpotWeakness
+
+Job
+name <Computer Programmer>
+desig <CRAFT>
+requires <CITY>
+% CodeBreaking
+CodeBreaking
+Pragmatism 5
+
+Job
+name <Engineer>
+desig <CRAFT>
+requires <Industrial>
+% Repair, Mecha Engineering
+Repair
+MechaEngineering
+Pragmatism 5
+
+Job
+name <Mecha Designer>
+desig <CRAFT>
+requires <Industrial>
+% Mecha Engineering, Science
+MechaEngineering
+Science
+
+Job
+name <Mechanic>
+desig <CRAFT>
+requires <GENERAL>
+% Mecha Piloting, Mecha Repair
+MechaPiloting
+Repair
+
+Job
+name <Monk>
+desig <FAITH>
+requires <GENERAL>
+% Close Combat, Dodge, Mysticism
+CloseCombat
+Dodge
+Mysticism
+Pragmatism -10
+
+Job
+name <Priest>
+desig <FAITH>
+requires <GENERAL>
+% Conversation, Mysticism
+Conversation
+Mysticism
+Pragmatism -15
+
+Job
+name <Construction Worker>
+desig <LABOR>
+requires <GENERAL>
+% Mecha Fighting, Mecha Piloting, General Repair
+MechaFighting
+MechaPiloting
+Repair
+
+Job
+name <Miner>
+desig <LABOR>
+requires <MINE>
+% Mecha Weapons, Mecha Piloting, Vitality, Weight Lifting, Resistance
+MechaFighting
+MechaPiloting
+Toughness
+
+Job
+name <Trucker>
+desig <LABOR>
+requires <GENERAL>
+% Mecha Piloting, Mecha Repair, Conversation
+MechaPiloting
+Repair
+Conversation
+
+Job
+name <Actor>
+desig <MEDIA>
+requires <CITY>
+% Conversation
+Conversation
+Sociability 20
+
+Job
+name <Athlete>
+desig <MEDIA>
+requires <GENERAL>
+% Toughness
+Toughness
+
+Job
+name <Comedian>
+desig <MEDIA>
+requires <CULTURE>
+% Performance, Taunt
+Performance
+Taunt
+Cheerfulness 15
+
+Job
+name <Dancer>
+desig <MEDIA>
+requires <CULTURE>
+% Performance
+Performance
+
+Job
+name <Journalist>
+desig <MEDIA>
+requires <CITY>
+% Awareness, Conversation, Insight
+Awareness
+Conversation
+Insight
+
+Job
+name <Singer>
+desig <MEDIA>
+requires <GENERAL>
+% Performance
+Performance
+Sociability 10
+
+Job
+name <Cyberdoc>
+desig <MEDIC>
+requires <CITY>
+% Medicine, Science
+Medicine
+Science
+Pragmatism 25
+
+Job
+name <Doctor>
+desig <MEDIC>
+requires <GENERAL>
+% Medicine
+Medicine
+Pragmatism 10
+
+Job
+name <Firefighter>
+desig <MEDIC>
+requires <GENERAL>
+% Mecha Piloting, Medicine, Toughness
+MechaPiloting
+Medicine
+Toughness
+Heroism 2
+Renown 5
+
+Job
+name <Nurse>
+desig <MEDIC>
+requires <GENERAL>
+% Medicine, Conversation
+Medicine
+Conversation
+
+Job
+name <Paramedic>
+desig <MEDIC>
+requires <GENERAL>
+% Mecha Piloting, Medicine
+MechaPiloting
+Medicine
+
+Job
+name <Combat Pilot>
+desig <MILIT>
+requires <TARGET>
+% Mecha Gunnery, Mecha Fighting, Mecha Piloting
+MechaGunnery
+MechaFighting
+MechaPiloting
+
+Job
+name <Knight>
+desig <MILIT>
+requires <MAQUI>
+SetFaction 3
+% Mecha Piloting, Spot Weakness, Electronic Warfare
+MechaPiloting
+SpotWeakness
+ElectronicWarfare
+Lawfulness 10
+Heroism 5
+Renown 10
+
+Job
+name <Recon Pilot>
+desig <MILIT>
+requires <VILLAGE>
+% Mecha Piloting, Awareness, Stealth
+MechaPiloting
+Awareness
+Stealth
+Sociability -5
+
+Job
+name <Soldier>
+desig <MILIT>
+requires <TARGET>
+special <NeedsFaction>
+% Close Combat, Ranged Combat, Dodge
+CloseCombat
+RangedCombat
+Dodge
+
+Job
+name <Diplomat>
+desig <POLIT>
+requires <CAPITOL>
+% Conversation, Intimidation
+Conversation
+Intimidation
+sociability 15
+
+Job
+name <Lawyer>
+desig <POLIT>
+requires <LAWFUL>
+% Conversation
+Conversation
+
+Job
+name <Politician>
+desig <POLIT>
+requires <CITY>
+special <NeedsFaction>
+% Conversation
+Conversation
+
+Job
+name <Police Officer>
+desig <POLIC>
+requires <GENERAL>
+special <NeedsFaction>
+% Ranged Combat, Spot Weakness, Insight
+RangedCombat
+SpotWeakness
+Insight
+Lawfulness 5
+
+Job
+name <Forensic Investigator>
+desig <POLIC>
+requires <CITY>
+special <NeedsFaction>
+% Conversation, Science, Insight
+Conversation
+Science
+Insight
+Lawfulness 5
+Pragmatism 15
+
+Job
+name <Hacker>
+desig <THIEF>
+requires <GENERAL>
+% Stealth, Code Breaking
+Stealth
+CodeBreaking
+Lawfulness -5
+Pragmatism 10
+
+Job
+name <Smuggler>
+desig <THIEF>
+requires <tradehub>
+% Conversation, Shopping, Stealth
+Conversation
+Shopping
+Stealth
+Lawfulness -5
+Sociability 10
+
+Job
+name <Pirate>
+desig <THIEF>
+requires <(SPINNER|ASTEROID)>
+% Mecha Piloting, Stealth, Taunt
+MechaPiloting
+Stealth
+Taunt
+Lawfulness -5
+
+Job
+name <Spy>
+desig <THIEF>
+requires <CAPITOL>
+% Awareness, Stealth, Code Breaking
+Awareness
+Stealth
+CodeBreaking
+Sociability -25
+
+Job
+name <Chef>
+desig <TRADE>
+requires <Cuisine>
+% Close Combat, Shopping
+CloseCombat
+Shopping
+
+Job
+name <Shopkeeper>
+desig <TRADE>
+requires <GENERAL>
+% Shopping, General Repair
+Shopping
+Repair
+
+Job
+name <Trader>
+desig <TRADE>
+requires <tradehub>
+% Conversation, Shopping
+Conversation
+Shopping
+Sociability 10
+

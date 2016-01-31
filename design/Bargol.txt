@@ -1,0 +1,178 @@
+Battroid 7
+Name <Bargol>
+Desig <RMR-??>
+type <GROUND SPACE INSIDE>
+sdl_sprite <>
+SDL_PORTRAIT <>
+Desc <A technologically advanced battroid recently introduced by the Red Mask Raiders.>
+
+factions <REDMA>
+ROLE_REDMA <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+
+sub
+Head
+	size 6
+	Armor 8
+	Mass -8
+	sub
+		CPit
+		Armor 2
+		mass -1
+
+		Sensor 6
+		mass -1
+
+		ECM 6
+		mass -1
+
+		STC LAS-5
+		name <Intercept Laser>
+		Speed 3
+		type <INTERCEPT>
+	end
+
+Torso
+	Armor 8
+	Mass -10
+	sub
+		Sensor 4
+
+		Engine 7
+		Armor 2
+		Mass -1
+		HighOutput
+
+		Computer 5
+		mass -5
+		sub
+			Software 2
+			name <BAS Reflex Control>
+			S_MVBoost
+			S_BoostScale 2
+
+			Software 3
+			name <BAS Firing Interface>
+			S_TRBoost
+			S_BoostScale 2
+		end
+
+		PowerSource 4
+		mass -4
+
+		Mount
+		Name <Right Shoulder Mount>
+		inv
+			STC RG-16
+		end
+
+		Mount
+		Name <Left Shoulder Mount>
+		inv
+			mlauncher 10
+			sub
+				Rockets 25
+				name <Nightfall Missiles>
+				magazine 4
+				range 8
+				type <Blast 2 Blind>
+			end
+		end
+
+		HeavyActuator 3
+	end
+
+Arm
+	Name <Right Arm>
+	Size 8
+	Armor 8
+	Mass -10
+	sub
+		Hand
+		name <Right Hand>
+
+		Mount
+		name <Right Arm Mount>
+		inv
+			Melee 15
+			name <Hellfire Chain>
+			type <FLAIL EXTEND BURN BRUTAL>
+			desc <A powerful flail which dispenses Napalm-X when it hits.>
+			UsesSpeed
+			Speed 2
+			Mass -9
+		end
+
+		BeamGun 10
+		name <Plasma Fist>
+		Range 5
+		type <LINE BRUTAL>
+		Integral
+
+		HeavyActuator 2
+	end
+
+Arm
+	Name <Left Arm>
+	Size 8
+	Armor 8
+	Mass -10
+	sub
+		Hand
+		name <Left Hand>
+
+		Mount
+		name <Left Arm Mount>
+		inv
+
+		end
+
+		BeamGun 13
+		Name <Plasma Gatling Cannon>
+		Type <BRUTAL>
+		Integral
+		mass -4
+		Speed 2
+		BV 2
+		Range 7
+
+		HeavyActuator 2
+	end
+
+Leg
+	Name <Right Leg 1>
+	size 6
+	Armor 6
+	Mass -8
+	sub
+		HoverJet 7
+	end
+
+Leg
+	Name <Left Leg 1>
+	size 6
+	Armor 6
+	Mass -8
+	sub
+		HoverJet 7
+	end
+
+Leg
+	Name <Right Leg 2>
+	size 6
+	Armor 6
+	Mass -8
+	sub
+		HoverJet 7
+	end
+
+Leg
+	Name <Left Leg 2>
+	size 6
+	Armor 6
+	Mass -8
+	sub
+		HoverJet 7
+	end
+
+end
+

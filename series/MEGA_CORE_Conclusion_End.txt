@@ -1,0 +1,266 @@
+%%
+%% *:CS_END_TheEnd
+%%
+%%  Upon activation this subplot calls all the *CS_END_ENDING macros.
+%%  This subplot should be supply two macros: &EndCompleteVictory and
+%%  &EndPartialVictory.
+%%
+%%  PARAM1: The Enemy NPC
+%%
+
+Content
+	name <Game Conclusion Stub>
+	requires <*:CS_END_TheEnd>
+	% This ending mechanism is a bit kludgier looking than I'd like, but it works.
+
+	% P%id%01 = Complete or partial victory achieved
+	% P%id%02 = Can only win the game once counter
+
+	&EndCompleteVictory <SetPlotStatus %plotid% %id% P= %id%01 1>
+	&EndPartialVictory <SetPlotStatus %plotid% %id% P= %id%01 -1>
+	update <if= P%id%02 0 P= %id%02 1 if= p%id%01 1 else .%id%_GoPartialVictory Goto .%id%_GoCompleteVictory>
+
+	.%id%_GoPartialVictory  <&ENDING_Propp_Partial  &ENDING_Enemy_Partial   XPV 500   Goto .%id%_GoEndStory>
+	.%id%_GoCompleteVictory <&ENDING_Propp_Complete &ENDING_Enemy_Complete  XPV 1000  Goto .%id%_GoEndStory>
+	.%id%_GoEndStory <EndPlot EndStory Victory>
+
+	% SubPlot1 is the Propp state ending
+	% SubPlot2 is the Enemy NPC ending
+	subplot1 <*CS_END_ENDING_Propp 1>
+	subplot2 <*CS_END_ENDING_Enemy 1>
+
+%%
+%% *CS_END_ENDING Content
+%%
+%%  These are not proper subplots. They are merely containers for
+%%  macros which get called when the player wins the final battle.
+%%
+%%  Each macro should show an alert, and it should probably add something
+%%  to the history list as well.
+%%
+
+
+%%
+%% *CS_END_ENDING_Propp
+%%
+%%  The Propp ending tells what happens regarding
+%%  the E:P story state.
+%%
+%%  It needs the following macros:
+%%   &ENDING_Propp_Complete	( for kicking the enemy's arse soundly )
+%%   &ENDING_Propp_Partial	( defeated NPC, but failed other objectives )
+%%
+%%  PARAM1: The Enemy NPC
+%%
+
+Content
+	name <CRIHN: Terror Averted>
+	requires <*CS_END_ENDING_Propp F:CRIHN (F:P.---|P:POLIT|P:MILIT|P:POLIC)>
+
+	&ENDING_Propp_Complete <Alert %id%01 History %id%01>
+	&ENDING_Propp_Partial <Alert %id%02 History %id%02>
+
+	Msg%id%01 <Their forces decimated, the Blades of Crihna are forced to withdraw. It will take many years before they can once again field such a massive force.>
+	Msg%id%01_1 <With %name1% out of the way, less fanatical captains rise to power and the Blades of Crihna begin to move away from the path of vengeance.>
+	CMsg%id%01_1 <ifNPCDead %1% Accept>
+	Msg%id%02 <Their defeat today just makes the Blades of Crihna even more desperate for revenge. Thousands more will die before a lasting peace is reached.>
+
+Content
+	name <REDMA: Ambitions Quashed>
+	requires <*CS_END_ENDING_Propp F:REDMA>
+
+	&ENDING_Propp_Complete <Alert %id%01 History %id%01>
+	&ENDING_Propp_Partial <Alert %id%02 History %id%02>
+
+	Msg%id%01 <Their ambitions quashed, it will be years before the Red Mask Raiders are once again a threat to the security of the L5 colonies.>
+	Msg%id%01_1 <With %name1% dead, \PPR %1% lieutenants war amongst themselves and inadvertently decimate the last of the Red Mask forces. It will be years before they are a serious threat again.>
+	CMsg%id%01_1 <ifNPCDead %1% Accept>
+	Msg%id%02 <Though they are no longer a major threat, the surviving forces of the Red Mask Raiders continue to provide plenty of work for freelance mecha pilots such as yourself.>
+	Msg%id%02_1 <With %name1% dead, the surviving lieutenants stake out territories and start a pirate war. Hundreds more will die before they are finally eliminated.>
+	CMsg%id%02_1 <ifNPCDead %1% Accept>
+
+Content
+	name <MUGLE: Haiho in the big time>
+	requires <*CS_END_ENDING_Propp P:MUGLE ~F:CORPO>
+
+	&ENDING_Propp_Complete <Alert %id%01 History %id%01>
+	&ENDING_Propp_Partial <Alert %id%02 History %id%02>
+
+	Msg%id%01 <Having proved itself in battle, the MUGL Enterprises mecha division is finally recognized as one of the premier design houses in the solar system.>
+	Msg%id%02 <Due to your performance in the battle, MUGL Enterprises offers you a permanent position in their marketing department. You politely decline.>
+
+Content
+	name <Life can return to peace>
+	requires <*CS_END_ENDING_Propp F:++>
+
+	&ENDING_Propp_Complete <Alert %id%01 History %id%01>
+	&ENDING_Propp_Partial <Alert %id%02 History %id%02>
+
+	Msg%id%01 <With \FACTION &EnemyFac defeated, life slowly returns to normal. \SCENE &EpisodeScene begins the process of rebuilding from the battle.>
+	Msg%id%02 <With \FACTION &EnemyFac still active, you resolve to spend the rest of your life fighting them. \SCENE &EpisodeScene begins the slow process of rebuilding.>
+
+
+%%
+%% *CS_END_ENDING_Enemy
+%%
+%%  This ending tells what happens to the enemy NPC after the battle. If the NPC
+%%  is dead, there may still be something to tell.
+%%
+%%  It needs the following macros:
+%%   &ENDING_Enemy_Complete	( for kicking the enemy's arse soundly )
+%%   &ENDING_Enemy_Partial	( for being semi-victorious )
+%%
+%%  PARAM1: The Enemy NPC
+%%
+
+Content
+	name <REDMA: The Queen is Displeased>
+	requires <*CS_END_ENDING_Enemy F:REDMA>
+
+	&ENDING_Enemy_Complete <Alert %id%01 History %id%01>
+	&ENDING_Enemy_Partial <Alert %id%02 History %id%02>
+
+	Msg%id%01_1 <Having failed her one too many times, Queen Madas marks %name1% for death; \SPR %1% spends the rest of \PPR %1% life in hiding.>
+	CMsg%id%01_1 <ifNPCOK %1% Accept>
+	Msg%id%01_2 <When Queen Madas hears that you killed %name1%, she puts a price on your head. None of the assassins she sends succeed.>
+	CMsg%id%01_2 <ifNPCDead %1% Accept>
+	Msg%id%02_1 <Following this defeat, %name1% spends the rest of \PPR %1% life trying to regain the favor of Queen Madas; \SPR %1% doesn't succeed.>
+	CMsg%id%02_1 <ifNPCOK %1% Accept>
+	Msg%id%02_2 <%name1% becomes even more popular in death than \SPR %1% was while alive. Wayward teens across the solar system idolize \OPR %1% as the ultimate example of the "live fast, die young, blow lots of things up" pirate lifestyle.>
+	CMsg%id%02_2 <ifNPCDead %1% Accept>
+
+Content
+	name <Justice is Served>
+	requires <*CS_END_ENDING_Enemy (C:POLIC|P:POLIC) (E:THIEF|F:CRIME)>
+
+	&ENDING_Enemy_Complete <Alert %id%01 History %id%01>
+	&ENDING_Enemy_Partial <Alert %id%02 History %id%02>
+
+	Msg%id%01_1 <Following the battle, %name1% is arrested and sentenced to three consecutive life terms.>
+	CMsg%id%01_1 <ifNPCOK %1% Accept>
+	Msg%id%01_2 <%name1% died in battle, thereby saving taxpayers the cost of a lengthy investigation and trial.>
+	CMsg%id%01_2 <ifNPCDead %1% Accept>
+	Msg%id%02_1 <%name1% slips away after the battle and avoids arrest; \SPR %1% returns to plague you several times over the years.>
+	CMsg%id%02_1 <ifNPCOK %1% Accept>
+	Msg%id%02_2 <Even though %name1% died in the battle, you feel that justice was not truly served.>
+	CMsg%id%02_2 <ifNPCDead %1% Accept>
+
+
+Content
+	requires <*CS_END_ENDING_Enemy>
+
+	&ENDING_Enemy_Complete <Alert %id%01 History %id%01>
+	&ENDING_Enemy_Partial <Alert %id%02 History %id%02>
+
+	Msg%id%01_1 <Humiliated by \PPR %1% defeat, %name1% sinks into obscurity and is never heard from again.>
+	CMsg%id%01_1 <ifNPCOK %1% Accept>
+	Msg%id%01_2 <Having been thoroughly defeated, %name1%'s name is quickly forgotten by all but \PPR %1% most fervent supporters.>
+	CMsg%id%01_2 <ifNPCDead %1% Accept>
+	Msg%id%02_1 <%name1% never forgives you for this defeat, and returns to plague you numerous times in the years to come.>
+	CMsg%id%02_1 <ifNPCOK %1% Accept>
+	Msg%id%02_2 <%name1% is revered as a martyr by \PPR %1% followers. Fortunately, they never again gain the level of power that they once had.>
+	CMsg%id%02_2 <ifNPCDead %1% Accept>
+
+%%
+%% *CS_END_PEACE_Enemy
+%%
+%%  This ending tells how the battle is resolved when things happen peacefully.
+%%
+%%  It needs the following macros:
+%%   &ENDING_Enemy_Peace
+%%
+%%  PARAM1: The Enemy NPC
+%%
+
+Content
+	name <E-PEACE: Heroic>
+	requires <*CS_END_PEACE_Enemy 1:good_ -1:family -1:lover>
+	&ENDING_Enemy_Peace <Alert %id%01 History %id%01 PCAlly %1%>
+	Msg%id%01_1 <%name1%'s forces withdraw from the battlefield. During the subsequent peace negotiations \SPR %1% becomes the chief diplomat for \FACTION &EnemyFac .>
+	CMsg%id%01_1 <if# 0 &EnemyFac Accept>
+	Msg%id%01_2 <%name1%'s forces withdraw from the battlefield. During the subsequent peace negotiations \SPR %1% works hard to resolve old wounds and to create a better future for all sides.>
+	CMsg%id%01_2 <if= 0 &EnemyFac Accept>
+
+Content
+	name <E-PEACE: Non-Villainous>
+	requires <*CS_END_PEACE_Enemy -1:evil_>
+	&ENDING_Enemy_Peace <Alert %id%01 History %id%01>
+	Msg%id%01 <%name1%'s forces lower their weapons and withdraw to neutral territory. Shortly thereafter, the peace negotiations begin in earnest.>
+
+Content
+	name <E-PEACE: Villainous>
+	requires <*CS_END_PEACE_Enemy 1:evil_>
+	&ENDING_Enemy_Peace <Alert %id%01 History %id%01 DeleteNPC %1%>
+	Msg%id%01_1 <%name1% leaves the field of battle and shortly thereafter quits \FACTION &EnemyFac ; \SPR %1% is never heard from again.>
+	CMsg%id%01_1 <if# 0 &EnemyFac Accept>
+	Msg%id%01_2 <%name1% exits the field of battle, leaving peace negotiations to \PPR %1% subordinates ; \SPR %1% never returns to trouble you again.>
+	CMsg%id%01_2 <if= 0 &EnemyFac Accept>
+
+
+%%
+%% *:CS_END_Special_PAL
+%%
+%% The PC has achieved the special "Peace and Love" ending. Resolve things.
+%%
+%%  PARAM1: The Enemy NPC
+%%
+
+Content
+	name <"Peace and Love": Blades vs Aegis>
+	requires <*:CS_END_Special_PAL (F:CRIHN|F:BOHEM) (P:AEGSF|P:AEGIS)>
+	% Solid state ending
+	% P%id%02 = Can only win the game once counter
+	update <if= P%id%02 0 P= %id%02 1 &ENDING_Enemy_Peace  Alert %id%01 History %id%01  Alert %id%02 History %id%02   XPV 1000   Goto .%id%_GoEndStory>
+	.%id%_GoEndStory <Return L= 1 1 EndPlot EndStory Victory>
+
+	Msg%id%01 <You order an investigation into the Space Force's role at Crihna Rock. War crimes are uncovered, and public opinion forces Rishiri Spinner to pay reparations to the survivors.>
+	Msg%id%02 <The Aegis Council is obviously displeased by your actions, but due to your sudden popularity they do not remove you from office. For the rest of your career you are stationed in L5 where you can presumably do the least amount of damage.>
+
+	% SubPlot1 is the Enemy state ending
+	subplot1 <*CS_END_PEACE_Enemy 1>
+
+Content
+	name <"Peace and Love": Blades vs Rishiri Axis>
+	requires <*:CS_END_Special_PAL (F:CRIHN|F:BOHEM) (P:L5LAW|P:RISHI|P:FCOMS|P:AEGSF|P:ROCKE)>
+	% Solid state ending
+	% P%id%02 = Can only win the game once counter
+	update <if= P%id%02 0 P= %id%02 1 &ENDING_Enemy_Peace  Alert %id%01 History %id%01   ifUInsight HardSkillTar StoryDL else .%id%_GoPartialVictory Alert %id%02 History %id%02 Goto .%id%_GoEndStory>
+	.%id%_GoPartialVictory <Alert %id%03 History %id%03  Goto .%id%_GoEndStory>
+	.%id%_GoEndStory <XPV 1000   Return L= 1 1 EndPlot EndStory Victory>
+
+	Msg%id%01 <The Blades of Crihna disavow their original mission of revenge, instead repositioning themselves as the defenders of the Bohemian colonies. Peace proves to be good for everyone.>
+	Msg%id%02 <You personally launch an investigation into the destruction of Crihna Rock, uncovering evidence of incompetence and conspiracy. Your findings help to heal the divisions among the L5 colonies.>
+	Msg%id%03 <You push for an investigation into the destruction of Crihna Rock. The results are inconclusive, leaving many people dissatisfied. Still, things appear to be headed towards reconciliation.>
+
+	% SubPlot1 is the Enemy state ending
+	subplot1 <*CS_END_PEACE_Enemy 1>
+
+Content
+	name <"Peace and Love": Blades vs Anyone Else>
+	requires <*:CS_END_Special_PAL (F:CRIHN|F:BOHEM) -P:L5LAW -P:RISHI -P:FCOMS -P:AEGSF -P:ROCKE -P:AEGIS>
+	% Solid state ending
+	% P%id%02 = Can only win the game once counter
+	update <if= P%id%02 0 P= %id%02 1 &ENDING_Enemy_Peace  Alert %id%01 History %id%01   XPV 1000   Goto .%id%_GoEndStory>
+	.%id%_GoEndStory <Return L= 1 1 EndPlot EndStory Victory>
+
+	Msg%id%01 <The Blades of Crihna disavow their original mission of revenge, instead repositioning themselves as the defenders of the Bohemian colonies. Peace proves to be good for everyone.>
+
+	% SubPlot1 is the Enemy state ending
+	subplot1 <*CS_END_PEACE_Enemy 1>
+
+
+Content
+	name <"Peace and Love": Red Mask Raiders>
+	requires <*:CS_END_Special_PAL F:REDMA>
+	% Solid state ending
+	% P%id%02 = Can only win the game once counter
+	update <if= P%id%02 0 P= %id%02 1 &ENDING_Enemy_Peace  Alert %id%01 History %id%01  Alert %id%02 History %id%02   XPV 1000   Goto .%id%_GoEndStory>
+	.%id%_GoEndStory <Return L= 1 1 EndPlot EndStory Victory>
+
+	Msg%id%01 <Queen Madas conducts the peace negotiations via holopresence. She agrees to all the demands of \FACTION &AllyFac , saying they have no more need to fight. The Red Mask Raiders effectively disappear from L5.>
+	Msg%id%02 <Several months later the second Martian Civil War begins. The Red Masks lead the insurgent forces, killing tens of thousands of innocent civilians... but by then, at least, they are no longer your problem.>
+
+	% SubPlot1 is the Enemy state ending
+	subplot1 <*CS_END_PEACE_Enemy 1>
+
+

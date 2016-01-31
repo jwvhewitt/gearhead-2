@@ -1,0 +1,1016 @@
+%%
+%%  *:Q_LocalQuest Content
+%%
+%% This file contains the quest frameworks for the cities of the L5 Region.
+%%
+%% The requires field should include *:Q_LocalQuest and the designation of the
+%% city to which this quest applies.
+%%
+
+Content
+	name <Clund Rock/Ruined Factories>
+	requires <*:Q_LocalQuest "CLUND">
+
+	% E1 is the exterior scene
+	% E2 is the Memorial Land entry dome
+	% E3 is the Memorial Land main dome
+	% E4 is the property manager who can open the door to the ruins.
+	% E5 is the ruin surface (the Boneyard)
+	% E6 is the main ruin dungeon
+	% E7 is the lower ruin dungeon
+	Element1 <Scene Outdoors>
+	Element2 <QuestScene>
+	Place2 <1>
+	Element3 <QuestScene>
+	Place3 <2>
+	Element4 <Prefab>
+	Place4 <3 (Citizens) pass>
+	Element5 <QuestScene>
+	Place5 <1>
+	Element6 <QuestScene>
+	Place6 <5>
+%	Element7 <QuestScene>
+%	Place7 <6>
+
+	% SubPlot1 = Upper Ruins Quest
+	SubPlot1 <*:Q_DungeonQuest #40 6>
+
+	sub
+		MetaScene 2
+		name <Memorial Land>
+		type <building public meeting amusement>
+		special <ADDEXIT>
+		entrance <*Building SHORT>
+		ClubMap
+		MapWidth 22
+		MapHeight 22
+		PalaceParkTiles
+
+		% L1 = First time entry counter
+		start <if= L1 0 else GoBeenBefore Alert 2 L= 1 1>
+		GoBeenBefore <Print 1>
+		Msg1 <You enter Memorial Land.>
+		Msg2 <You enter Memorial Land. This amusement park was built above the factories destroyed by the Rishiri Space Force. It now serves as the dusty ring's premier edutainment attraction.>
+
+		NeededCells 4
+		Content1 <Some 1 100 Sub *RESTAURANT>
+		Content2 <Variety 3 3 Sub *CLUND_MLP_Content>
+		Content5 <Fill Sub *SHOP_RANDOM>
+		sub
+			team 1
+
+			team 2
+			name <Citizens>
+			SetAlly 1
+			Passive
+
+			team 3
+			name <Guards>
+			SetAlly 2
+
+			room
+			minimap <############2###...##...#>
+			special <SHAREDPALETTE NOGO>
+			inv
+				Elevator
+				MiniMapComponent 2
+				desig <ENTRANCE %3%>
+				% V1 = Admission Timer
+				use <ifG V1 ComTime else GoBuyTicket Exit Destination>
+				GoBuyTicket <ifYesNo 2 3 4 ifG PC$ 4999 else GoNoMoney Cash+ -5000  V= 1 ComTime  V+ 1 86401  Exit Destination>
+				GoNoMoney <Print 5>
+				CLUE_INSIGHT <Print 1>
+				Msg1 <The admission fee is apparently $5000.>
+				Msg2 <Memorial Land Garden- where the horrors of yesterday become the thrills of tomorrow! A one day pass is $5000.>
+				Msg3 <Enter the park. [Pay $5000]>
+				Msg4 <That's too much for me.>
+				Msg5 <You don't have enough money to enter the park.>
+			end
+
+			room
+			name <Foyer>
+			desig <EntranceGrid>
+			Content <Some 4 65 Here *URBAN_X>
+			Content2 <Some 1 100 Here *ANTI_ATTACK_SECURITY 2>
+		end
+
+		MetaScene 3
+		name <Memorial Land Garden>
+		type <building public meeting amusement>
+		special <ADDEXIT>
+		BoxMap
+		MapWidth 22
+		MapHeight 22
+		FloorType 1
+		PalaceParkTiles
+
+		% L1 = Have unlocked the ruins.
+		% L2 = Number of games won.
+
+		start <Print 1>
+		Msg1 <You enter Memorial Land Garden.>
+
+		NeededCells 4
+
+		Content <Variety 4 4 Sub *CLUND_MLP2_Content na>
+		Content2 <Some 4 65 Here *URBAN_X>
+		Content3 <Some 1 100 Here *ANTI_ATTACK_SECURITY 2>
+
+		sub
+			team 1
+
+			team 2
+			name <Citizens>
+			SetAlly 1
+			Passive
+
+			team 3
+			name <Guards>
+			SetAlly 2
+
+			rect
+			forest
+			forest
+		end
+
+		Persona 4
+		*greeting <*NiceToMeetYou GoCheckGate>
+		GoCheckGate <if= SceneID %3% else GoChat if= SceneVar %3% 1 0 else GoChat NewChat Say 1 AddChat 1 AddChat 2>
+		GoChat <NewChat SayAnything>
+		GoOpenRuins <History 5 Print 6 L= 1 1 XPV 100>
+		result1 <NewChat Say 2>
+		result2 <NewChat Say 3 AddChat 3 AddChat 4 AddChat 5>
+		result3 <NewChat Say 4 Goto GoOpenRuins>
+		result4 <NewChat Say 7 AddChat 3 AddChat 5>
+		result5 <NewChat Say 8 Cash+ -10000 Goto GoOpenRuins>
+		Msg1 <If you have any problems here in the park just let me know. I'm the one who keeps this place running.>
+		Msg2 <Good to hear. You have a good time, now.>
+		Msg3 <Yeh, they said there's a safety problem, some tourists never came back from down there. No big problem. There's plenty of other rides you can take.>
+		Msg4 <Hmph. I guess I can't fault you for wanting to get in, then. I'll open the gate for you, but make sure you've got a proper suit before going down... and you might also want to pack a gun.>
+		Msg5 <%name4% opened the Ruins of Terror for you on Clund Rock.>
+		Msg6 <%name4% opens the Ruins of Terror.>
+		Msg7 <And I want you to shut up, but we don't always get what we want now do we? There's plenty of other stuff to do here, go do that.>
+		Msg8 <Hmm... Now, you realize that I can't vouch for your safety down there, don't you? Make sure you've got a good suit before heading down, and you'll probably also want to take a gun...>
+		Prompt1 <No problems, thanks. Everything's fine.>
+		Prompt2 <Uh, the Ruins of Terror are locked.>
+		Prompt3 <I'm bored with all the rides. I want the ruins!>
+		CPrompt3 <ifG L2 3 Accept>
+		Prompt4 <But I wanna see the ruins now!>
+		Prompt5 <I'll pay $10000 to get in. [Give $10000]>
+		CPrompt5 <ifG PC$ 9999 ifShopping HardSkillTar 35 Accept>
+
+		MetaScene 4
+		% The home for the property manager
+		sub
+			rect
+			desig <HOME>
+			minimap <      ###  #2#  ..1      >
+			inv
+				Elevator
+				name <Ruins of Terror>
+				MiniMapComponent 2
+				desig <ENTRANCE %6%>
+				use <if# L1 0 else GoLocked Exit Destination>
+				GoLocked <Alert 1>
+				CLUE_CodeBreaking <if= L1 0 else GoUnLocked Mental ifCodeBreaking HardSkillTar 35 else GoNoGood Print 4 L= 1 1 XPV 50>
+				GoUnlocked <Print 2>
+				GoNoGood <Print 3>
+				Msg1 <You attempt to enter the Ruins of Terror, but the door is locked. A small sign indicates that this attraction has been closed for maintenance.>
+				Msg2 <This door isn't locked anymore.>
+				Msg3 <The lock on this door is beyond your ability to pick.>
+				msg4 <You pick the lock on this door. Inside, you find what appears to be an airlock.>
+			end
+		end
+
+		MetaScene 5
+		name <the Boneyard>
+		type <asteroid ruin>
+		terrain <SPACE>
+		habitat <SPACE.ASTER>
+		entrance <*Building SHORT>
+		% Suffocation effect...
+		Vacuum
+		Ceiling
+		mapwidth 50
+		mapheight 50
+		AsteroidMap
+		RockyTiles
+		SpaceBackdrop
+		DifficultyLevel 20
+		% L1 = First time entry counter
+		% L2 = Have discovered trapdoor
+		start <if= L1 0 else GoBeenBefore Alert 1 L= 1 1>
+		GoBeenBefore <Print 2>
+		msg1 <Many years ago this was the site of a fierce battle between the Rishiri Space Force and the Bohemians. Today the landscape is scarred with ruined buildings and twisted metal.>
+		msg2 <You enter the boneyard.>
+		sub
+			Team 1
+			SetEnemy 2
+
+			Team 2
+			name <Monster>
+			type <Ruins Exorg Fungus Asteroid>
+			SetEnemy 1
+			Stat 2 1
+
+			rect
+			width 5
+			height 5
+			mfx 1
+			mfy 1
+			special <STARTHERE>
+
+			room
+			width 5
+			height 5
+			minimap <      1..  .2.  ...      >
+			inv
+				STC RUBBLE-INDESTRUCTIBLE
+				CLUE_SCIENCE <Print 1>
+				CLUE_SURVIVAL <Print 1>
+				MiniMapComponent 1
+				CLUE_INSIGHT <if= L2 0 else GoDone ifInsight HardSkillTar 35 else GoFail Print 2 XPV 50 L= 2 1 UpdateProps>
+				GoFail <Print 3>
+				GoDone <Print 4>
+				Msg1 <This pile of rubble doesn't appear to have been naturally formed.>
+				Msg2 <You locate a hidden switch in this pile of rubble. Pressing it opens a concealed trapdoor.>
+				Msg3 <You can't see anything special about this rubble.>
+				Msg4 <This rubble is of no use to you.>
+
+				TrapDoor
+				MiniMapComponent 2
+				desig <ENTRANCE %6%>
+				Hide -1
+				update <if# L2 0 SetStat STAT_MetaVisibility 0>
+			end
+		end
+
+		MetaScene 6
+		name <the Ruins of Terror>
+		special <NOEXIT>
+		type <DUNGEON asteroid cave ruins>
+		terrain <SPACE>
+		habitat <SPACE.ASTER>
+		dentrance <*GoDown>
+		content1 <Some 1 45 Sub *DUNGEON_THREAT>
+		content2 <Some 1 40 Sub *DUNGEON_DECOR>
+		content3 <Some 1 30 Sub *DUNGEON_REWARD>
+		% Suffocation effect...
+		Vacuum
+		Ceiling
+		mapwidth 30
+		mapheight 30
+		CaveMap
+		RockyTiles
+		NeededCells 3
+		start <Print 1 if= PlotStatus %plotid1% 0 SetPlotStatus %plotid1% %id1%>
+		DifficultyLevel 36
+		msg1 <You enter \SCENE SceneID .>
+		sub
+			Team 1
+			SetEnemy 2
+
+			Team 2
+			name <Monster>
+			type <Cave Exorg Fungus Asteroid Ruins>
+			SetEnemy 1
+			Stat 2 1
+
+			room
+			width 3
+			height 3
+			sub
+				StairsUp
+				Destination -1
+				% The stairs up here will reveal the trapdoor if entering the Boneyard
+				use <Print 1 Exit Destination if= Destination %5% SceneVar= %5% 2 1>
+			end
+
+			room
+			width 3
+			height 3
+			ForEntryLevel
+			sub
+				StairsUp
+				desig <ENTRANCE %3%>
+				% The stairs here will unlock the attraction if entering Memorial Land Garden
+				use <Print 1 Exit Destination SceneVar= %3% 1 1>
+			end
+		end
+	end
+	inv
+		NPC Trucker
+		job <Property Manager>
+	end
+
+
+Content
+	name <Theles Spinner/Climbing the Ladder, First Rung>
+	desc <Theles Spinner is divided into regions based on social class. The PC has a chance to climb the ladder.>
+	requires <*:Q_LocalQuest "THESP">
+
+	% The first rung is pretty simple- the player can either buy his way into
+	% the top level, or complete a grueling dungeon.
+	% E1 is the "gateman"
+	% E2 is the theles control office
+	% E3 is the dungeon leading to the top
+	% E4 is the middle layer of the spinner
+	% E5 is the urban level
+	Element1 <Prefab>
+	Place1 <2 (Citizens) pass>
+	Element2 <QuestScene>
+	Place2 <5>
+	Element3 <QuestScene>
+	Place3 <2>
+	Element4 <QuestScene>
+	Place4 <3>
+	Element5 <Scene City Urban>
+
+	% SubPlot1 is rung two: the journey from the middle layer to joining the ranks of the technocrats.
+	SubPlot1 <*Q_UNIQUE_THESP_Rung2 #50 4>
+
+	sub
+		Persona 1
+		% V1 = Threat Counter
+		greeting <if= PlotStatus %plotid% 0 else GoChat NewChat Say 1 AddChat 1 AddChat 2>
+		GoChat <NewChat SayAnything>
+		result1 <ifG PCRenown %threat% else GoR1Fail ifG PCLaw -1 else GoR1Fail NewChat Say 2 AddChat 3 AddChat 4 AddChat 5>
+		GoR1Fail <NewChat Say 3 AddChat 4>
+		result2 <NewChat Say 4>
+		result3 <NewChat Say 5 SetPlotStatus %plotid% %id1% XPV 100 Cash+ -500000>
+		result4 <NewChat Say 6 V= 1 1>
+		result5 <NewChat Say 7>
+		Msg1 <Access to the second level is restricted to those with SecTag Beta. I'm afraid that I can't let you pass.>
+		Msg2 <In order to weed out the scum and the riffraff, applicants for SecTag Beta must perform a demonstration of their industriousness and determination. This demonstration takes the form of a $500,000 fee.>
+		Msg3 <I'm sorry, but you are strictly inelgible for this security clearance. The technocrats only allow those who have proven their ability, drive, and strength of character to advance.>
+		Msg4 <Of course not! You don't think the technocrats would be stupid enough to allow that, do you? Even just wondering about such things is treasonous...>
+		Msg5 <This money proves your worth to Theles Spinner. When you step into the elevator, your brain-pattern will be scanned and added to the database. On level two you should head to the Ascension Complex; they'll probably have work for you there.>
+		Msg6 <It's not up to me, I just explain how things work. The real decision is made by the Ascension Complex. If an unauthorized person attempts to board the elevator, instead of going to the second level it goes straight to a plasma furnace.>
+		Msg7 <Be seeing you.>
+		Prompt1 <How do I get this "SecTag Beta"?>
+		Prompt2 <Isn't there any other way up there?>
+		Prompt3 <No problem. [Give $500000]>
+		CPrompt3 <ifG PC$ 499999 Accept>
+		Prompt4 <Let me in now, or else.>
+		CPrompt4 <if= V1 0 Accept>
+		Prompt5 <I'll be back later.>
+
+		MetaScene 1
+		sub
+			Room
+			minimap <##2##............1..#---#>
+			special <SHAREDPALETTE NOGO>
+			desig <HOME>
+			inv
+				Elevator
+				MiniMapComponent 2
+				desig <ENTRANCE %4%>
+				use <if# PlotStatus %plotid% 0 else GoAccessDenied Print 3 Exit Destination>
+				GoAccessDenied <Print 1>
+				CLUE_CODEBREAKING <Print 2>
+				CLUE_INSIGHT <Print 2>
+				Msg1 <You have not been authorized to use this elevator.>
+				Msg2 <This elevator has no control panel or interface of any kind.>
+				Msg3 <The elevator doors open as you approach.>
+			end
+
+			Room
+			minimap <##2###...###?###3.4###=##>
+			special <SHAREDPALETTE NOGO>
+			sub
+				Door
+				use <if= StatVal STAT_Lock 0 else GoDoorLocked if= v1 0 else GoJustUse ifYesNo 101 102 103 else GoLeaveDoor V= 1 1 Goto GoJustUse>
+				GoJustUse <ifG -99 MetaPass else GoCloseDoor  if= StatVal STAT_Lock 0 else GoDoorLocked Print 1  SetStat STAT_Pass 0  Transform 1>
+				GoLeaveDoor <Print 104>
+				Msg101 <Central life support and mechanicals. Access strictly prohibited.>
+				Msg102 <Open the door>
+				Msg103 <Leave it alone>
+				Msg104 <You leave the door alone.>
+			end
+			inv
+				Elevator
+				MiniMapComponent 2
+				desig <ENTRANCE %3%>
+
+				STC Crate
+				MiniMapComponent 3
+				PDir 1
+
+				STC Crate
+				MiniMapComponent 4
+				PDir 3
+			end
+		end
+
+		MetaScene 2
+		name <Theles Control Office>
+		type <building public>
+		entrance <*BUILDING>
+		mapwidth 15
+		mapheight 15
+		MallMap
+		Ceiling
+		SetFaction 10
+		special <ADDEXIT>
+		NeededCells 2
+		content <Some 2 70 Sub *GOV_MILITARY na>
+		sub
+			team 1
+
+			team 2
+			name <Citizens>
+			SetAlly 1
+			Passive
+
+			team 3
+			name <Guards>
+			SetAlly 2
+
+			room
+			name <Foyer>
+			desig <EntranceGrid>
+			Content <Some 3 50 Here *URBAN_X>
+			Content2 <Some 1 100 Here *ANTI_ATTACK_SECURITY 3>
+		end
+
+
+		MetaScene 3
+		name <Theles Spire>
+		special <NOEXIT NORESCUE>
+		type <DUNGEON Industrial>
+		dentrance <*GoUp>
+		content1 <Some 2 35 Sub *DUNGEON_THREAT>
+		content2 <Some 1 10 Sub *DUNGEON_DECOR>
+		mapwidth 35
+		mapheight 35
+		MonkeyMap
+		Ceiling
+		LockedDoorChance 30
+		SecretDoorChance 5
+		IndustrialTiles
+		NeededCells 3
+		start <Print 1>
+		msg1 <You enter \SCENE SceneID .>
+		sub
+			Team 1
+			SetEnemy 2
+
+			Team 2
+			name <Monster>
+			type <Robot Vermin Mutant>
+			SetEnemy 1
+			Stat 2 1
+
+			room
+			width 3
+			height 3
+			sub
+				StairsDown
+				Destination -1
+			end
+
+			Room
+			minimap <............2............>
+			special <SHAREDPALETTE>
+			ForGoalLevel
+			inv
+				StairsUp
+				use <Print 1 Exit %4% SeekGate %2%>
+				MiniMapComponent 2
+				update <SetDestination %4%>
+			end
+		end
+
+		MetaScene 4 3
+		name <Theles Spinner Second Level>
+		requires <*THESP_SecondLevel>
+		special <NOEXIT SHOWALL SOLO>
+		type <Private>
+		MegaCityMap
+		MapWidth 15
+		MapHeight 8
+		Start <Print 1 if= PlotStatus %plotid% 0 SetPlotStatus %plotid% %id1% Alert 11 XPV 100>
+		Msg1 <You enter the Theles Spinner second layer.>
+		Msg11 <[Voice]: You have proven yourself worthy of level two clearance. Please report to Ascension Complex immediately or face termination.>
+		inv
+			STC Building
+			name <Theles Control Office>
+			desig <ENTRANCE %2%>
+		end
+	end
+	inv
+		NPC Soldier
+		job <Gateman>
+	end
+
+
+Content
+	name <Fuchal Spinner/CometBurger Sequence>
+	requires <*:Q_LocalQuest "FUCSP">
+
+	% E1 is CometBurger
+	% E2 is Not CometBurger
+	% E3 is the police officer
+	% E4 is the food critic
+	Element1 <Scene CometBurger>
+	Element2 <Scene Building Public -CometBurger>
+	Element3 <Prefab>
+	Place3 <1 (Guards) sd ally>
+	Element4 <Prefab>
+	Place4 <2 (Citizens) pass ally>
+
+	%% SubPlot1 is the initial CometBurger confrontation-
+	%%       this one will determine which of the two NPCs the PC will get all remaining
+	%%       missions from.
+	%% SubPlot2 is the CometBurger extermination.
+	%% SubPlot3 is the bit where we TAKE OVER THE WORLD!!!
+	SubPlot1 <*Q_UNIQUE_FUCSP_Part1 #15 4 3 1>
+
+	inv
+		NPC Police Officer
+		SetFaction 9
+
+		NPC Cook
+		Combatant
+		CharDesc Criminal Passionate
+		job <Food Critic>
+		job_desig <ADVEN>
+	end
+
+Content
+	name <Gaos Spinner/Galena Hodges>
+	requires <*:Q_LocalQuest "GAOSP">
+
+	% E1 is the hospital
+	% E2 is Galena Hodges
+	Element1 <Scene hospital public>
+	Element2 <Prefab>
+	Place2 <1 (Citizens) pass>
+
+	%% P1 = Have negotiated a share of profits from Parshall
+
+	Start <if= PlotStatus %plotid2% 0 else GoCheckSP3 ifG PCRenown 35 SetPlotStatus %plotid2% %id2%>
+	GoCheckSP3 <if= PlotStatus %plotid3% 0 ifSubPlotWon %plotid% ifG PCRenown 60  SetPlotStatus %plotid3% %id3%>
+
+	% SubPlot1 is the Galena Hodges/Money for Orphanage quest (15)
+	% SubPlot2 is a side story (40)
+	% SubPlot3 is the Prince Hotel party (65)
+	SubPlot1 <*Q_UNIQUE_GAOSP_Galena #15 1 2>
+	SubPlot2 <*:Q_SideStory #40>
+	SubPlot3 <*:Q_UNIQUE_GAOSP_Parshall #65>
+
+	sub
+		MetaScene 2
+		sub
+			room
+			desig <HOME>
+			name <Office>
+			minimap <.23.........1..#&+&##...#>
+			inv
+				STC BED-1
+				PDir 2
+				MiniMapComponent 2
+
+				STC ENDTABLE-1
+				PDir 2
+				MiniMapComponent 3
+			end
+		end
+	end
+	inv
+		NPC Doctor
+		name <Galena Hodges>
+		Age 98
+		SetTeam 2
+		Statline 7 6 8 13 18 16 23 12
+		chardesc Female Heroic Heroic Heroic Sociable Spiritual
+		SDL_PORTRAIT <>
+		SDL_COLORS <90 150 80 199 188 162 190 210 230>
+		SetTeam 2
+		MiniMapComponent 1
+	end
+
+Content
+	name <Xianxai Spinner/Trade Regulation>
+	requires <*:Q_LocalQuest "XIASP">
+
+	% E1 is the trade authority building
+	% E2 is Matthias
+	Element1 <Scene building public legit police>
+	Element2 <Prefab>
+	Place2 <1 (Guards) sd ally>
+
+	%% P%id%01 = Initialization Counter
+	%% P%id%02 = Start Venus mission counter
+	%% Begin the Vesuvian Freighter task at Renown = 65
+	start <ifSubPlotWon %plotid% ifG PCRenown 65 if= P%id%02 0 P= %id%02 1 SetPlotStatus %plotid2% %id2%>
+	update <if= P%id%01 0 P= %id%01 1 NPCLevel %2% 65>
+
+	% SubPlot1 is the pirates/black market task
+	% SubPlot2 is the Vesuvian Freighter task- activates at Renown 60 if 
+	%       the PC won the previous task.
+	SubPlot1 <*Q_UNIQUE_XIASP_Matthias #50 2>
+	SubPlot2 <*:Q_UNIQUE_XIASP_Venus #75>
+
+	sub
+		Persona 2
+		rumor0 <Matthias has his hands full dealing with all the pirate attacks we've had.>
+		greeting <if= PlotStatus %plotid% 0 else GoChat NewChat Say 1 QMemo %plotid% 2 SetPlotStatus %plotid1% %id1%>
+		GoChat <NewChat SayAnything>
+		Msg1 <If you're planning to fly around outside the station, you should know that there have been a lot of pirate attacks recently. I'm offering a reward for anyone who can help get rid of them.>
+		Msg2 <%name2% in %name1% told you that there's a reward for fighting pirates outside of the colony.>
+
+		MetaScene 2
+		sub
+			room
+			name <Office>
+			special <HOME>
+			minimap <2....1..............#&+##>
+			inv
+				STC TV
+				MiniMapComponent 2
+				PDir 1
+			end
+		end
+	end
+	inv
+		NPC Police Officer
+		name <Matthias>
+		chardesc Male Lawful Shy Passionate Pragmatic Renowned
+		SDL_PORTRAIT <por_m_serious(J--).png>
+		SDL_COLORS <30 30 90 150 112 89 35 45 22>
+		SetFaction 9
+		Age 10
+	end
+
+Content
+	name <Tohru Spinner/Reconstruction>
+	requires <*:Q_LocalQuest "TOHSP">
+
+	% E1 is Jiason Factory
+	% E2 is McCabe
+	% E3 is the urban scene
+	% E4 is McCabe's building project
+	% E5 is the new shopping center, opened when McCabe's quest succeeds
+	% E6 is the mood for the shopping center opening
+	Element1 <Scene building garage factory public>
+	Element2 <Prefab>
+	Place2 <1 (Guards) SD ally>
+	Element3 <Scene Urban>
+	Element4 <QuestScene>
+	Place4 <3>
+	Element5 <QuestScene>
+	Place5 <4>
+	Element6 <Prefab>
+
+	%%  P1 = McCabe quest status
+	%%       1: Have completed construction quest
+	%%       2: Have opened the shopping center
+	%%  P2 = Timer; shopping center opens after 24 hours
+
+	start <if= PlotStatus %plotid1% 0 else GoCheckSP2 SetPlotStatus %plotid1% %id1%>
+	GoCheckSP2 <if= PlotStatus %plotid2% 0 ifG PCRenown 30 SetPlotStatus %plotid2% %id2%>
+
+	PUMPNEWS <if= P1 1 P+ 2 1 ifG P2 3  P= 1 2  SetMood %6% %3%>
+
+	% SubPlot1 = McCabe's new building
+	% SubPlot2 = Side Story
+	SubPlot1 <*Q_UNIQUE_TOHSP_McCabe1 #10 2 4>
+	SubPlot2 <*:Q_SideStory #30>
+
+	sub
+		Persona 2
+		greeting <NewChat SayAnything>
+
+		STC QS_ConstructionSite
+		name <McCabe's Project>
+		entrance <*BUILDING>
+		SetID 4
+		sub
+			room
+			minimap <............1............>
+			inv
+				TrapDoor
+				MiniMapComponent 1
+				Hide
+				update <if= P1 2  SetStat STAT_MetaVisibility 0>
+				desig <ENTRANCE %5%>
+			end
+		end
+
+		MetaScene 5
+		name <# Shopping Center>
+		type <building mall meeting>
+		MallMap
+		MapWidth 23
+		MapHeight 15
+		start <Print 1>
+		Msg1 <You enter \SCENE %5% .>
+		NeededCells 4
+		Content3 <Some 1 100 Sub *WEAPON_SHOP       na>
+		Content4 <Some 1 100 Sub *ARMOR_SHOP        na>
+		Content9 <Fill Sub *SHOP_RANDOM             na>
+		sub
+			team 1
+
+			team 2
+			name <Citizens>
+			SetAlly 1
+			Passive
+
+			team 3
+			name <Guards>
+			SetAlly 2
+
+			room
+			name <Foyer>
+			desig <EntranceGrid>
+			Content <Some 3 50 Here *URBAN_X>
+			Content2 <Some 1 100 Here *ANTI_ATTACK_SECURITY 2>
+			sub
+				StairsUp
+				Destination -1
+			end
+		end
+	end
+	inv
+		NPC Construction Worker
+		name <McCabe>
+		SetFaction 10
+		SDL_PORTRAIT <por_f_allisonnewver(J--).png>
+		SDL_COLORS <239 198 58  250 183 139  6 42 120>
+		CharDesc Female Melancholy Easygoing Pragmatic Heroic
+		Combatant
+		Age 16
+
+		Mood 5
+		name <New Shopping Center>
+		%% Essentially, this is a copy of the standard "Boom Times" mood.
+		MoodTimeLimit 86400
+		% V1 = Initialization Counter
+		update <if= V1 0 V= 1 1 News 1>
+		Msg1_1 <New shopping center opens in %city%.>
+		% Meme Messages
+		Msg_1 <McCabe's rebuilding project is starting to shape up. They've already opened the shops in the basement level.>
+		CMsg_1 <if# ChatNPCID %2% if# SceneID %5% Accept>
+		Msg_2 <Have you been to %name5% yet? They've got a lot of new shops there.>
+		CMsg_2 <if# SceneID %5% Accept>
+		Msg_3 <%name5% has opened for business. This is the first new building to open since the disaster.>
+		Msg_4 <There are shops in the basement of the new building, now. You really ought to go check them out!>
+		CMsg_4 <if# SceneID %5% Accept>
+		Msg_5 <A shopping center has opened in the basement of the new building. Hopefully, the next thing they'll fix is that giant crack running across the sky.>
+		CMsg_5 <if# SceneID %5% Accept>
+	end
+
+
+Content
+	name <Cayley Rock/Old Wynter's Mine>
+	requires <*:Q_LocalQuest "CAYLE">
+
+	% E1 is the exterior scene
+	% E2 is the mine entrance
+	% E3 is Wynter's Mine
+	% E4 is Lower Wynter's Mine
+	% E5 is the blocked level
+	% E6 is Cayley Caves
+	% E7 is Cayley Core
+	% E8 is the root scene
+	% E9 is the disaster mood, following the earthquake
+	Element1 <Scene Outdoors>
+	Element2 <QuestScene>
+	Place2 <1>
+	Element3 <QuestScene>
+	Place3 <2>
+	Element4 <QuestScene>
+	Place4 <3>
+	Element5 <QuestScene>
+	Place5 <4>
+	Element6 <QuestScene>
+	Place6 <5>
+	Element7 <QuestScene>
+	Place7 <6>
+	Element8 <.>
+	Element9 <Prefab>
+
+	% P1 = Elevator Repair Counter (From main building to mine bottom)
+	%      0: Broken, 1: Repaired
+	% P2 = Initialization Counter
+
+	% Activate the Wynter's Mine and Lower Wynter's Mine quests right away.
+	update <if= P2 0 P= 2 1 SetPlotStatus %plotid1% %id1% SetPlotStatus %plotid2% %id2%>
+
+	% Activate the lower quests some time after the PC reaches Renown 50.
+	PUMPNEWS <if= PlotStatus %plotid3% 0  ifG PCRenown 50  if= d8 1  SetPlotStatus %plotid3% %id3% SetPlotStatus %plotid4% %id4% SetMood %9% %8% if= RootSceneID %8% Goto GoEarthQuake>
+	GoEarthQuake <Alert 1 History 2 Stamina Mental>
+
+	Msg1 <All of a sudden, the ground shakes with incredible force!>
+	Msg2 <You were on Cayley Rock when an earthquake occurred.>
+
+	% SubPlot1 = Wynter's Mine Quest
+	% SubPlot2 = Lower Wynter's Mine Quest
+	% SubPlot3 = Cayley Caves Quest
+	% SubPlot4 = Cayley Core Quest
+	SubPlot1 <*:Q_DungeonQuest #10 3>
+	SubPlot2 <*:Q_DungeonQuest #30 4>
+	SubPlot3 <*:Q_Unique_CAYLE_Caves #55 6>
+	SubPlot4 <*:Q_Unique_CAYLE_Core #85 7>
+
+	sub
+		MetaScene 2
+		name <Old Wynter's Mine>
+		type <building ruin mine !Ne open>
+		terrain <SPACE>
+		habitat <SPACE.ASTER>
+		entrance <*Building>
+		MonkeyMap
+		MapWidth 21
+		MapHeight 21
+		special <AddExit>
+		IndustrialTiles
+
+		NeededCells 1
+		content <Some 1 100 Sub *DUNGEON_DECOR>
+
+		% V1 = First time entry indicator.
+
+		Start <if= V1 0 else GoBeenBefore V= 1 1 Print 2 Alert 1>
+		GoBeenBefore <Print 2>
+
+		Msg1 <This old building was obviously abandoned some time ago. The power generator still works on this upper level, and the air seems breathable enough.>
+		Msg2 <You enter Old Wynter's Mine.>
+
+		sub
+			Team 1
+			SetEnemy 2
+
+			Team 2
+			name <Monster>
+			type <Mine Fungus Asteroid>
+			SetEnemy 1
+
+			room
+			sub
+				trapdoor
+				desig <ENTRANCE %3%>
+				use <if= StatVal STAT_Lock 0 else GoLocked if= V1 1 else GoFirstTime Print 1 Exit StatVal 4>
+				GoFirstTime <ifYesNo 101 102 103  V= 1 1  Print 1 Exit StatVal 4 MonsterUp 2 10>
+				Msg101 <This is an airlock. There's still power here, but no guarantee there will be power in the mines.>
+				Msg102 <Enter the mine.>
+				Msg103 <Don't enter the mine.>
+			end
+
+			room
+			minimap <......###..#1#...........>
+			inv
+				elevator
+				desig <ENTRANCE %5%>
+				MiniMapComponent 1
+				use <if= P1 1 else GoBroken Print 1 Exit Destination>
+				GoBroken <Print 101>
+				CLUE_REPAIR <if= P1 0 else GoWorking ifRepair HardSkillTar 50 else GoRepairFail Mental Print 104 XPV 50 P= 1 1>
+				CLUE_INSIGHT <if= P1 0 else GoWorking Print 103>
+				GoRepairFail <Print 103>
+				GoWorking <Print 102>
+				Msg101 <This elevator isn't working.>
+				Msg102 <You can't find any damage to fix.>
+				Msg103 <The problem with this elevator appears to be at the other end.>
+				Msg104 <You repair the elevator. It should be usable now.>
+			end
+		end
+
+		STC QS_Dungeon_AsteroidMine
+		SetID 3
+		name <Wynter's Mine>
+		DifficultyLevel 10
+
+		STC QS_Dungeon_AsteroidMine
+		SetID 4
+		name <Lower Wynter's Mine>
+		entrance <*GoDown>
+		DifficultyLevel 30
+
+		STC QS_Dungeon_AsteroidMine
+		SetID 5
+		name <Wynter's Mine Bottom>
+		type <asteroid mine>
+		entrance <*GoDown>
+		DifficultyLevel 40
+		sub
+			Room
+			minimap <......###..#1#...... ... >
+			width 5
+			height 5
+			inv
+				Elevator
+				desig <ENTRANCE %2%>
+				MiniMapComponent 1
+				use <if= P1 0 else GoAlreadyWorking ifYesNo 101 102 103 Print 104 Stamina P= 1 1 XPV 50>
+				GoAlreadyWorking <Print 1 Exit Destination>
+				CLUE_REPAIR <if= P1 0 else GoNoDamage Print 106>
+				GoNoDamage <Print 105>
+				CLUE_INSIGHT <Print 107>
+				Msg101 <This elevator has been clogged by debris.>
+				Msg102 <Clean it out.>
+				Msg103 <Leave it alone.>
+				Msg104 <You clean out the elevator. It should be usable now.>
+				Msg105 <You can't find any damage to fix.>
+				Msg106 <The only way to repair this elevator is to clear out the rubble.>
+				Msg107 <This elevator probably connects to the one in the minehouse above.>
+			end
+
+			Room
+			width 5
+			height 5
+			sub
+				StairsDown
+				desig <ENTRANCE %6%>
+				use <if# PlotStatus %plotid3% 0 else GoBlocked Print 1 Exit Destination>
+				GoBlocked <Print 2>
+				CLUE_REPAIR <Print 3>
+				CLUE_SURVIVAL <Print 3>
+				CLUE_SCIENCE <Print 3>
+				CLUE_INSIGHT <Print 3>
+				CLUE_MYSTICISM <Print 4>
+				Msg2 <This passage is blocked by rubble. You can't get through.>
+				Msg3 <There's no way through. You'd need a Haiho to move that rubble.>
+				Msg4 <You have a premonition that something truly unnatural lies buried behind this rubble.>
+			end
+		end
+
+		STC QS_Dungeon_AsteroidCave
+		SetID 6
+		name <Cayley Caves>
+		DifficultyLevel 65
+		sub
+			Team 3
+			name <Exorg>
+			SetAlly 2
+			SetEnemy 1
+
+			room
+			%% The expansion generator
+			width 5
+			height 5
+			ForEntryLevel
+			minimap < %%% %%^&%^%1&%^%%^% %^% >
+			inv
+				STC MACHINE-1
+				% V1 = Science XP counter
+				% V2 = Insight XP counter
+				MiniMapComponent 1
+				name <Destroyed Machine>
+				use <Print 1>
+				CLUE_SCIENCE <if= V1 0 else GoSciBefore ifScience HardSkillTar 65 else GoSciFail Alert 2 Alert 3 XPV 100 SkillXP NAS_Science 500 V= 1 1>
+				GoSciBefore <Print 2>
+				GoSciFail <Print 4>
+				CLUE_REPAIR <Print 5>
+				CLUE_INSIGHT <if= V2 0 else GoInsightBefore ifInsight SkillTar 60 else GoInsightFail Alert 6 Alert 7 V= 2 1 XPV 100>
+				GoInsightBefore <Print 6>
+				GoInsightFail <Print 4>
+				CLUE_MYSTICISM <Print 8>
+				Msg1 <You stand within the wreckage of a huge machine.>
+				Msg2 <This appears to be the wreckage of an expansion generator, a theoretical construct needed to generate a subspace pocket for a faster than light engine.>
+				Msg3 <As far as you know, nobody in this solar system is even close to building one.>
+				Msg4 <You can't figure out what this machine might have been for.>
+				Msg5 <Repairing this device is beyond your skill level. You suspect that it's beyond anyone's skill level.>
+				Msg6 <Judging by the surroundings, the explosion of this machine may have been the cause of the Cayley earthquake.>
+				Msg7 <Inexplicably, the core of the machine is practically undamaged.>
+				Msg8 <The core of this destroyed machine has an otherworldly feel to it.>
+			end
+		end
+
+		STC QS_Dungeon_AsteroidCave
+		SetID 7
+		name <Cayley Core>
+		entrance <*GoDown>
+		DifficultyLevel 85
+	end
+	inv
+		Mood 2
+		name <Cayley Earthquake Mood>
+		plot_type <*Disaster>
+		MoodTimeLimit
+		% V1 = Initialization Counter
+		Update <if= v1 0 V= 1 1   News 1>
+		Msg1_1 <Disaster in %city% as station is rocked by mysterious quake.>
+		Msg1_2 <Technocrats say swamp gas responsible for %city% earthquake.>
+		% Meme Messages
+		Msg_1 <It's a wonder more people weren't killed when the quake hit.>
+		Msg_2 <In all the time I've been living here, we've never had an earthquake until now.>
+		Msg_3 <I wonder if there's going to be another earthquake, later on...?>
+		Msg_11 <Why do you think the earthquake happened? I heard that it may have been a meteor collision.>
+		CMsg_11 <ifNPCSociable Accept>
+		Msg_12 <I'm still shaken up...>
+		CMsg_12 <ifNPCShy Accept>
+		Msg_13 <I thought earthquakes were only supposed to happen on planets, but I guess I was wrong.>
+		CMsg_13 <ifNPCEasygoing Accept>
+		Msg_14 <The earth moved! It was incredible!>
+		CMsg_14 <ifNPCPassionate Accept>
+		Msg_15 <Were you here when the earthquake hit? It was the most exciting thing to happen in Cayley Rock for ages.>
+		CMsg_15 <ifNPCCheerful Accept>
+		Msg_16 <I heard someone claim that the mines are collapsing. If the rock breaks up, we're all going to be in a lot of trouble.>
+		CMsg_16 <ifNPCMelancholy Accept>
+	end
+
+
+

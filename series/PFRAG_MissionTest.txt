@@ -1,0 +1,961 @@
+%%% MISSION TEST FRAGMENTS
+%%%
+%%% The PC will be put through some kind of test to see if he'll be offered
+%%% a mission or not. These tests frequently involve either Renown or React.
+
+
+% Refile this test later...
+
+	Persona
+	requires <*REFILE>
+	start <NewChat Say %id%01  AddChat %id%01  AddChat %id%02>
+	result%id%01 <ifG Conversation 12 else .%id%_GoR1NoCon   Goto .%id%_GoR1Pass>
+	.%id%_GoR1NoCon <ifG React 50 else .%id%_GoR1Fail        Goto .%id%_GoR1Pass>
+	.%id%_GoR1Fail <NewChat Say %id%03 Goto %2%>
+	.%id%_GoR1Pass <NewChat Say %id%04 AddChat %id%03 AddChat %id%04>
+	result%id%02 <NewChat   Say %id%02   AddEasygoing d8   Goto %2%>
+	result%id%03 <Goto %1%>
+	result%id%04 <NewChat   Say %id%02   Goto %2%>
+
+	Msg%id%01 <I can't chat right now, I have a lot of work to do today.>
+
+	Msg%id%02 <There's never a dull moment in this line of work. Sometimes I wish there were.>
+
+	Msg%id%03 <This is a private matter. I'd rather not discuss it with you.>
+
+	Msg%id%04 <Maybe you could help me. I need a mecha pilot to help with a civil defense mission.>
+
+	Prompt%id%01 <From what I hear, you could use some help.>
+	Prompt%id%01_1 <Would you like to talk about it?>
+	Prompt%id%01_2 <Really? What kind of work are you doing?>
+	Prompt%id%02 <I'll leave you to that, then.>
+	Prompt%id%02_1 <Good luck with whatever it is.>
+	Prompt%id%02_2 <In that case, I'll come back later.>
+	Prompt%id%03 <Absolutely.>
+	Prompt%id%03_1 <I'd be glad to help.>
+	Prompt%id%03_2 <Give me the mission details.>
+	Prompt%id%04 <I don't think so.>
+	Prompt%id%04_1 <Sorry, but I can't.>
+	Prompt%id%04_2 <This doesn't sound like my kind of job.>
+
+%
+% TYPE: *AutoThiefTest
+%
+%	The NPC has a criminal proposition for the PC.
+%
+%   PARAM1: Accept Exit Label	( no message )
+%   PARAM2: Reject Exit Label	( no message )
+%   PARAM3: Failure Exit Label ( no message )
+%
+
+	Persona
+	requires <*AutoThiefTest "PCFAC">
+	START <if= PCFac ChatNPCFac else %3% NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <Goto %2%>
+	Msg%id%01 <Hey \PC , do I have an offer for you...>
+	Msg%id%01_1 <You're just in time, \PC . I've got a special offer just for you...>
+	Msg%id%01_2 <>
+	Prompt%id%01 <Tell me about it, \CHATNPC .>
+	Prompt%id%01_1 <You don't say? What kind of offer?>
+	Prompt%id%01_2 <Interesting. Give me the details.>
+	Prompt%id%02 <No thanks, \CHATNPC .>
+	Prompt%id%02_1 <I don't have time for this today.>
+	Prompt%id%02_2 <Thanks for telling me, but I'm not interested.>
+
+	Persona
+	requires <*AutoThiefTest -"PCFAC">
+	START <ifG React d70 else %3% NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <Goto %2%>
+	Msg%id%01 <Say, how would you be interested in earning a bit of filthy lucre?>
+	Msg%id%01_1 <If you're hoping to get rich quick, sometimes you've got to get your hands dirty. How would you like to make a bit of filthy lucre?>
+	Msg%id%01_2 <How would you like a chance to earn wads of money, if all you had to do was break a few laws?>
+	Prompt%id%01 <I'd be very interested.>
+	Prompt%id%01_1 <Anything for a quick buck, I always say.>
+	Prompt%id%01_2 <>
+	Prompt%id%02 <No thanks.>
+	Prompt%id%02_1 <I don't do that kind of work.>
+	Prompt%id%02_2 <>
+
+%
+% TYPE: *SkillThiefTest
+%
+%	The NPC has a criminal proposition, which the PC may be able to learn
+%	about.
+%
+%   PARAM1: Accept Exit Label	( no message )
+%   PARAM2: Reject Exit Label	( no message )
+%   PARAM3: Failure Exit Label
+%   PARAM4: Difficulty rating, expressed as renown
+%
+
+	Persona
+	requires <*SkillThiefTest ~"Melancholy" ~"Villainous">
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+	result%id%01 <ifIntimidation SkillTar %4% else .%id%_GoR1Fail Goto %1%>
+	.%id%_GoR1Fail <EndChat Say %id%02 Goto %3%>
+	result%id%02 <ifConversation SkillTar %4% else .%id%_GoR2Fail Goto %1%>
+	.%id%_GoR2Fail <EndChat Say %id%03 Goto %3%>
+	result%id%03 <Goto %2%>
+	Msg%id%01 <To get ahead in this world you can't allow tiny things like "law" or "morality" to stand in your way.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <This world is populated entirely by thieves and bandits. There are the crooks on top who have enough power to make the laws, and the rest of us on bottom who only have the power to break them.>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <We live in a crooked world. Only the strong can prosper, and they do so by preying on the weak.>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+	Msg%id%02 <Don't try to sound tough. It doesn't suit you.>
+	Msg%id%02_1 <Was that supposed to be irony? That's the other problem with this world... suckers thinking they're being ironic.>
+	Msg%id%02_2 <>
+	Msg%id%03 <All this talk is cheap. It's action that really counts.>
+	Msg%id%03_1 <You can talk all you want, but nothing's ever going to change...>
+	Msg%id%03_2 <>
+	Prompt%id%01 <It's how I survive. I'm a survivor.>
+	Prompt%id%01_1 <That's why I'm always on top.>
+	Prompt%id%01_2 <This world is tough, but I'm tougher.>
+	Prompt%id%02 <Yeah, I think you're on to something there.>
+	Prompt%id%02_1 <That sounds about right.>
+	Prompt%id%02_2 <In that case, it's a good time to be a crook.>
+	Prompt%id%03 <I disagree.>
+	Prompt%id%03_1 <You're a fool if you believe that.>
+	Prompt%id%03_2 <Don't mistake short term gain for real success.>
+
+	Persona
+	requires <*SkillThiefTest ~"Shy">
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <NewChat Say %id%02 AddChat %id%03 AddChat %id%04 AddChat %id%05>
+	.%id%_GoFail <EndChat Say %id%03 Goto %3%>
+	result%id%02 <Goto %2%>
+	result%id%03 <ifIntimidation SkillTar %4% else .%id%_GoFail Goto %1%>
+	result%id%04 <ifConversation SkillTar %4% else .%id%_GoFail Goto %1%>
+	result%id%05 <Goto %2%>
+	Msg%id%01 <Yeah, what do you want?>
+	Msg%id%01_1 <Do you have a reason for looking at me like that?>
+	Msg%id%02 <Could be. Why do you care?>
+	Msg%id%02_1 <So?>
+	Msg%id%03 <This doesn't concern you. In fact, I don't even know what we're talking about.>
+	Msg%id%03_1 <I don't know anything. Apparently, neither do you.>
+	Prompt%id%01 <I heard that you might know something.>
+	Prompt%id%02 <Nothing...>
+	Prompt%id%03 <Whatever it is, I want in!>
+	Prompt%id%03_1 <It's not safe to keep secrets from me, \CHATNPC .>
+	Prompt%id%04 <I might be able to help you.>
+	Prompt%id%04_1 <I'm just looking for a piece of the action.>
+	Prompt%id%05 <Really, I don't care. I'm just messing with you.>
+	Prompt%id%05_1 <Um, actually I don't care.>
+
+
+%
+% TYPE *ReferredForJob
+%
+%	The PC has been referred for this job by an NPC.
+%
+%   PARAM1: The NPC in question
+%   PARAM2: Exit Label
+%
+
+	Persona
+	requires <*ReferredForJob>
+	START <NewChat Say %id%01 AddCHat %id%01>
+	result%id%01 <Goto %2%>
+	Msg%id%01 <Hello, \PC . I heard that you'd be coming about this mission.>
+	Msg%id%01_10 <Ah, \PC , \PERSONA %1% told me that you'd be coming about this mission.>
+	CMsg%id%01_10 <ifNPCOK %1% Accept>
+	Msg%id%01_20 <You must be here about the mission.>
+	CMsg%id%01_20 <ifNPCDead %1% Accept>
+	Prompt%id%01 <Give me the details.>
+	Prompt%id%01_1 <Tell me what this is all about.>
+	Prompt%id%01_2 <What's the situation?>
+
+
+%
+% TYPE: *RejectMission
+%	The PC has been offered a mission, but has declined.
+%   PARAM1: Exit Label
+	Persona
+	requires <*RejectMission =MIL_DEFAULT_DEFENSE>
+	start <NewChat Say %id%01 Goto %1%>
+	Msg%id%01 <I'll find another cavalier to help defend our city.>
+	Msg%id%01_1 <You'll never get a good reputation if you spend all your time on the sidelines.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Fine. Be on your way, then.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <I'm certain there'll be plenty of other volunteers to help defend the city.>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <When those enemy patrols I mentioned break through our defenses, don't act like you're surprised.>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <Okay. I think our defenses will be adequate for now.>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <You turn your back when the city needs you? For shame.>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+	Msg%id%01_7 <This is going to be a dangerous place for a while. If you aren't part of the defense force, you might want to think about leaving town.>
+	CMsg%id%01_7 <ifNPCHeroic Accept>
+	Msg%id%01_8 <I know you must have a good reason for not helping, but be careful out there, okay?>
+	CMsg%id%01_8 <ifG React 50 Accept>
+
+	Persona
+	requires <*RejectMission>
+	start <NewChat Say %id%01 Goto %1%>
+	Msg%id%01 <That's too bad. I'll have to find someone else, then.>
+	Msg%id%01_1 <Maybe we can work together some other time.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <I see. Well, I should get back to work.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Okay, it shouldn't be hard for me to find someone else.>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <Alright, so long as you're willing to live with the consequences of your decision.>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <Don't worry about it. I'll find someone else for the job.>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <So that's how it is... Don't think I won't remember this.>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+
+% TYPE: *PerformanceTest
+%	The NPC needs to hire an entertainer for a performance of some type.
+%   PARAM1: Accept Exit Label	( no message )
+%   PARAM2: Reject Exit Label	( no message )
+%   PARAM3: Failure Exit Label  ( no message )
+
+	Persona
+	requires <*PerformanceTest>
+	START <NewChat Say %id%01 AddChat %id%01 AddCHat %id%02 AddChat %id%03 AddChat %id%04>
+	%% Method 1 - Conversation
+	result%id%01 <ifConversation * 2 ChatNPCEgo else %3% Goto %1%>
+	%% Method 2 - Flirtation
+	result%id%02 <ifConversation ChatNPCEgo else %3% Goto %1%>
+	%% Method 3 - Reputation
+	result%id%03 <ifG PCRenown d65 else %3% Goto %1%>
+	%% Reject the mission
+	result%id%04 <Goto %2%>
+	Msg%id%01 <We've got a live show planned for tonight, but I still need to find a performer for it.>
+	Msg%id%01_1 <Hi there. You wouldn't happen to know a singer, would you? I need to hire a performer for tonight's show.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <I need to find a good performer for tonight's show.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Hey, how do you like live music? We'll be having a show here later on tonight. Of course I don't have a performer lined up yet, but there's plenty of time for that.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <It's all about the music! I've got to find a rocking performer for tonight's show...>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <I need to book some talent for tonight's show. This could be a good opportunity for an aspiring performer.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <This is terrible. We were supposed to have a show tonight, but our performer cancelled at the last minute... Now I need to find someone else to fill in.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01 <I may be able to help you.>
+	Prompt%id%01_1 <I'm a singer.>
+	Prompt%id%02 <I think I could heat up the joint.>
+	CPrompt%id%02 <ifChatNPCSexy Accept>
+	Prompt%id%02_1 <Nothing brings in the crowds like sex appeal.>
+	Prompt%id%03 <What you need is a big name, like me.>
+	CPrompt%id%03 <ifG PCRenown 0 Accept>
+	Prompt%id%03_1 <You need a headline star... like me.>
+	Prompt%id%04 <I don't think I can help you.>
+	Prompt%id%04_1 <Sorry, I'm no singer.>
+
+
+% TYPE: *AutoMissionTest
+%			&Mecha	It's a mecha mission
+%			&Chara	It's a character mission
+%			&NonCom It's a non-combat mission
+%	The NPC has a mission; the PC may be offered this mission automatically.
+%   PARAM1: Accept Exit Label	( no message )
+%   PARAM2: Reject Exit Label	( no message- link to REJECTMISSION above. )
+%   PARAM3: Failure Exit Label ( no message )
+%   PARAM4: Allied Faction	[optional]
+%   PARAM5: Enemy Faction	[optional]
+
+	Persona
+	requires <*AutoMissionTest ("FRIEND"|"FAMILY"|"LANCEMATE"|"LOVER") Common>
+	start <if= V%id%01 0 else %3% V= %id%02 1 ifG React 0 else %3% NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <Goto %2%>
+	Msg%id%01 <Hey \PC , if you're not too busy I've got a mission for you.>
+	Msg%id%01_1 <Hi \PC . How would you like to run a mission for me? I've got a position availiable and thought you might be perfect for it.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <Hi. How'd you like to do a job for me?>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Good to see you, \PC . How'd you like to do a mission for me? A little bit of extra cash is always good.>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <This work is going to drive me nuts... Say, maybe you could help me with a mission I've got to fill?>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <Sorry, I can't talk now, I'm working... but maybe you can help with that. How'd you like to run a mission for me?>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <\PC , you're just the person I need! I've got to find a pilot for an upcoming mission, and you'd be perfect for it!>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+	Prompt%id%01 <Tell me the details.>
+	Prompt%id%01_1 <I could do that. What kind of mission are we talking about?>
+	Prompt%id%01_2 <I suppose I could.>
+	Prompt%id%02 <Sorry, I'm kind of busy at the moment.>
+	Prompt%id%02_1 <Sorry, I really can't.>
+	Prompt%id%02_2 <This isn't a good time for that.>
+
+	Persona
+	requires <*AutoMissionTest =MIL_DEFAULT_DEFENSE>
+	% Because of =MIL_DEFAULT_DEFENSE, we know that %4% and %5% exist
+	% V%id%01 = Can only try the auto-test once counter
+	start <if= V%id%01 0 else %3% V= %id%01 15 V+ %id%01 d30 ifG PCRenown V%id%01 else %3% NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <AddReact -d6   Goto %2%>
+	Msg%id%01 <The city is under attack. Everyone who can should help in the defense against \FACTION %5% ...>
+	Msg%id%01_1 <Our city is being attacked by \FACTION %5% , but \FACTION %4% will do its best to protect us. Still, we could use some pilots to run interference missions. Would you be interested in that?>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <The city is being attacked, and we need pilots to run interception against \FACTION %5% .>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <It's your lucky day, \RANK . The city's under attack from \FACTION %5% and we need all the pilots we can get to run patrols.>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <I we can't turn back \FACTION %5% soon, a lot of people are going to die. We need volunteers to help defend the city.>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <Once again, \FACTION %4% and \FACTION %5% are fighting. We need some pilots to run interception. How'd you like to do that?>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <Those curs from \FACTION %5% have invaded our territory! They must be driven out... Are you with us or against us? I need a pilot for a defense mission right away.>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+	Prompt%id%01 <Alright, I'll do it.>
+	Prompt%id%01_1 <I'll do it.>
+	Prompt%id%01_2 <No problem, I'll help out.>
+	Prompt%id%02 <Look, I don't want to get involved.>
+	Prompt%id%02_1 <Sorry, I can't help.>
+	Prompt%id%02_2 <This isn't my fight.>
+
+	Persona
+	requires <*AutoMissionTest ~Sociable>
+	% V%id%01 = Can only try the auto-test once counter
+	start <if= V%id%01 0 else %3% V= %id%01 35 V+ %id%01 d20 ifG React V%id%01 else %3% NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <AddReact -1   Goto %2%>
+	Msg%id%01 <\PC , I was hoping to see you. I need someone for a mission and could use your help.>
+	Msg%id%01_10 <When \FACTION %4% asked me to locate a cavalier for an upcoming mission, yours was the first name I thought of. How'd you like to help me?>
+	CMsg%id%01_10 <ifFactionExists %4% Accept>
+	Msg%id%01_20 <I need someone for a mission against \FACTION %5% . How would you like to help me out?>
+	CMsg%id%01_20 <ifFactionExists %5% Accept>
+	Msg%id%01_30 <Hey \PC , your old buddies from \FACTION %5% are in town. I have a mission lined up against them and thought I'd give you first crack at it.>
+	CMsg%id%01_30 <ifFactionExists %5%  ifFactionEnemy %5% Accept>
+	Prompt%id%01 <Tell me about it.>
+	Prompt%id%01_1 <What kind of mission is it?>
+	Prompt%id%01_2 <Of course I'll help you.>
+	Prompt%id%02 <Sorry, I can't.>
+	Prompt%id%02_1 <This isn't a good time for that now.>
+	Prompt%id%02_2 <Really, I'd rather not.>
+
+	Persona
+	requires <*AutoMissionTest>
+	% V%id%01 = Can only try the auto-test once counter
+	start <if= V%id%01 0 else %3% V= %id%01 1 ifG PCRenown d60 else %3% ifG React d20 else %3% NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <Goto %2%>
+	Msg%id%01 <Hey, you're a cavalier, right? If you're looking for work I have a mission that just might interest you.>
+	Msg%id%01_10 <Hey, how'd you like to do a mission for \FACTION %4% ? I need a cavalier for one right away.>
+	CMsg%id%01_10 <ifFactionExists %4% Accept>
+	Msg%id%01_20 <You're a mecha pilot, aren't you? I've got a mission against \FACTION %5% if you're looking for a job.>
+	CMsg%id%01_20 <ifFactionExists %5% Accept>
+	Msg%id%01_30 <You're \PC , right? I heard you're no fan of \FACTION %5% ... How would you like a chance to face them in battle?>
+	CMsg%id%01_30 <ifFactionExists %5%  ifFactionEnemy %5% Accept>
+	Prompt%id%01 <Give me the details.>
+	Prompt%id%01_1 <I'd like to hear more.>
+	Prompt%id%01_2 <Alright, I can do that.>
+	Prompt%id%02 <Sorry, I'm not interested.>
+	Prompt%id%02_1 <I'm too busy for that right now.>
+	Prompt%id%02_2 <That doesn't sound like my kind of thing.>
+
+
+% TYPE: *GenericMissionTest
+%			&Mecha	It's a mecha mission
+%			&Chara	It's a character mission
+%			&Extermination	The PC has to exterminate some monsters
+%	The NPC has a mission available, will imply this to the PC, and the PC will then
+%	have a chance to maybe get the mission.
+%   PARAM1: Success Exit Label	(no message)
+%   PARAM2: Failure Exit Label
+%   PARAM3: Reject Mission Exit Label (no message)
+%   PARAM4: Allied Faction	[optional]
+%   PARAM5: Enemy Faction	[optional]
+%   PARAM6: Difficulcy number, expressed as Renown
+
+	Persona
+	requires <*GenericMissionTest &Mecha "POLIC">
+	start <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+	.%id%_GoFail <EndChat Say %id%03 Goto %2%>
+	result%id%01 <ifConversation SocSkillTar %6% else .%id%_GoFail Goto %1%>
+	result%id%02 <ifTaunt SkillTar %6% else .%id%_GoFail ifG React 0 else .%id%_GoFail NewChat Say %id%02 AddChat %id%04 AddChat %id%05>
+	result%id%03 <Goto %1%>
+	result%id%04 <Goto %1%>
+	result%id%05 <Goto %3%>
+	Msg%id%01 <There's been a lot of mecha crime in \SCENE RootSceneID lately. This problem must be stopped.>
+	Msg%id%01_1 <I suppose you've heard about the convoy attack last week... one attack is one attack too many. These criminals must be stopped.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <There are too many bandits and mekjackers operating in this area.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <You know, my life would be much easier if not for all the mecha crime we've been having recently. Someone ought to do something about it.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <I can't talk now- we're in the midst of a crime wave! Gangs of mecha-equipped criminals are tearing up the streets.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Mecha crimes have been down recently, but any at all is still too many.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <Mecha crimes in \SCENE RootSceneID have been increasing at an alarming rate. It's imperative that this trend be stopped.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%02 <If you think you could do any better, I've got a mission you can try.>
+	Msg%id%02_1 <What, you think that you could do better? If you're willing to back that up, I've got a mission you could do...>
+	Msg%id%02_2 <Talk is cheap. If you want to help solve the problem instead of just complaining about it, I've got a mission you could do.>
+	Msg%id%03 <This matter is under control. There's no reason for citizens to be concerned.>
+	Msg%id%03_1 <You don't need to concern yourself about this. We have the situation under control, or we will shortly...>
+	CMsg%id%03_1 <ifNPCSociable Accept>
+	Msg%id%03_2 <Your concern is noted.>
+	CMsg%id%03_2 <ifNPCShy Accept>
+	Msg%id%03_3 <Eh, just try to stay out of trouble, okay?>
+	CMsg%id%03_3 <ifNPCEasygoing Accept>
+	Msg%id%03_4 <You think you can help? I doubt it. The situation's not that desperate yet.>
+	CMsg%id%03_4 <ifNPCPassionate Accept>
+	Msg%id%03_5 <Rest assured that the police have this matter well under control.>
+	CMsg%id%03_5 <ifNPCCheerful Accept>
+	Msg%id%03_6 <Just don't do anything to contribute to the problem, and we'll call it square.>
+	CMsg%id%03_6 <ifNPCMelancholy Accept>
+	Prompt%id%01_1 <What can I do to help?>
+	Prompt%id%01_2 <I'd like to volunteer to help.>
+	Prompt%id%01_3 <Maybe I could help you.>
+	Prompt%id%02_1 <Maybe it wouldn't happen if you weren't so useless.>
+	Prompt%id%02_2 <You just need to hire better pilots.>
+	Prompt%id%02_3 <As usual, the police are powerless to stop it.>
+	Prompt%id%03 <I've had some experience with this sort of thing.>
+	CPrompt%id%03 <ifG PCLaw %6% Accept>
+	Prompt%id%04 <Alright. It doesn't sound hard.>
+	Prompt%id%04_1 <I'll take you up on that offer.>
+	Prompt%id%05 <Sorry, but this is your mess to sort out.>
+	Prompt%id%05_1 <No way. I don't work for cops.>
+
+	Persona
+	requires <*GenericMissionTest &Mecha>
+	start <if= v%id%01 0 else .%id%_GoBeenBefore V= %id%01 1 NewChat Say %id%01  AddChat %id%01 AddChat %id%02 AddChat %id%03 AddChat %id%04>
+	.%id%_GoBeenBefore <NewChat SayAnything Goto %2%>
+	result%id%01 <ifConversation SocSkillTar %6% else .%id%_GoR1Lose ifG React -1 else .%id%_GoR1Lose Goto %1%>
+	.%id%_GoR1Lose <NewChat Say %id%02 Goto %2%>
+	result%id%02 <ifIntimidation SocSkillTar %6% else .%id%_GoR1Lose Goto %1%>
+	result%id%03 <AddEasygoing -d10  ifConversation SocSkillTar %6% else .%id%_GoR3Lose  ifG React 20 else .%id%_GoR3Lose  AddReact 10  NewChat Say %id%03 AddChat %id%05>
+	.%id%_GoR3Lose <AddReact -10  EndChat Say %id%04>
+	result%id%04 <Goto %3%>
+	result%id%05 <Goto %1%>
+	Msg%id%01 <I need to find a skilled mecha pilot for an upcoming mission.>
+	Msg%id%01_1 <I've been entrusted to locate a mecha pilot for an upcoming mission. I certainly hope that I can find someone who's qualified.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <I need a decent pilot for a combat mission.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <It's going to be a lucky day for someone. I've been authorized to hire a freelance mecha pilot for a lucrative combat mission.>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <It seems the trouble never ends. I need a skilled pilot for an urgent combat mission.>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <Hey, do you know any pilots around here? I've got to locate a skilled cavalier for an upcoming job.>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <I need to locate a pilot for an upcoming combat mission... only the best will do.>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+	Msg%id%01_10 <I've been asked by \FACTION %4% to locate a freelance pilot for an upcoming combat mission.>
+	CMsg%id%01_10 <ifFactionExists %4% Accept>
+	Msg%id%01_11 <You should know that I've been asked by \FACTION %4% to find a decent combat pilot for a freelance job they're offering. This could be a good opportunity for anyone who meets our requirements.>
+	CMsg%id%01_11 <ifNPCSociable ifFactionExists %4% Accept>
+	Msg%id%01_12 <I need a pilot to run a combat mission for \FACTION %4% .>
+	CMsg%id%01_12 <ifNPCShy ifFactionExists %4% Accept>
+	Msg%id%01_13 <I need a skilled pilot for an upcoming mission. This could be a golden opportunity for anyone who's ever wanted to work for \FACTION %4% .>
+	CMsg%id%01_13 <ifNPCCheerful ifFactionExists %4% Accept>
+	Msg%id%01_14 <It seems like the conflict never ends... \FACTION %4% needs a talented cavalier to perform a dangerous mission.>
+	CMsg%id%01_14 <ifNPCMelancholy ifFactionExists %4% Accept>
+	Msg%id%01_15 <I was asked by \FACTION %4% to find a pilot for some kind of mission.>
+	CMsg%id%01_15 <ifNPCEasygoing ifFactionExists %4% Accept>
+	Msg%id%01_16 <I need a cavalier to perform a mission for \FACTION %4% . I don't know why we aren't using one of our own pilots for this mission, but it is not my place to judge.>
+	CMsg%id%01_16 <ifNPCPassionate ifFactionExists %4% Accept>
+	Msg%id%01_20 <I need a talented mecha pilot for an upcoming combat mission against \FACTION %5% .>
+	CMsg%id%01_20 <ifFactionExists %5% Accept>
+	Msg%id%01_21 <It's my duty to locate an experienced combat pilot for an upcoming mission we have against \FACTION %5% . I've been searching high and low but so far haven't found anyone qualified.>
+	CMsg%id%01_21 <ifNPCSociable ifFactionExists %5% Accept>
+	Msg%id%01_22 <I need a pilot for a job against \FACTION %5% .>
+	CMsg%id%01_22 <ifNPCShy ifFactionExists %5% Accept>
+	Msg%id%01_23 <As usual, the folks at \FACTION %5% are busy stirring up trouble. I've been asked to find a mecha pilot to run a mission against them.>
+	CMsg%id%01_23 <ifNPCCheerful ifFactionExists %5% Accept>
+	Msg%id%01_24 <The conflict between us and \FACTION %5% may very well never end... It's my duty to find a skilled pilot for a combat mission against them.>
+	CMsg%id%01_24 <ifNPCMelancholy ifFactionExists %5% Accept>
+	Msg%id%01_25 <Once again we square off against \FACTION %5% . This time I need a freelance mecha pilot to run a mission against them.>
+	CMsg%id%01_25 <ifNPCEasygoing ifFactionExists %5% Accept>
+	Msg%id%01_26 <Those fools in \FACTION %5% must be punished for what they have done. I've been authorized to hire a mecha pilot for an immediate combat mission against them.>
+	CMsg%id%01_26 <ifNPCPassionate ifFactionExists %5% Accept>
+	Msg%id%02 <Sorry, but I don't think you're quite what we're looking for.>
+	Msg%id%02_1 <I don't think so. In addition to lacking the skills we need, you also show a tragic lack of style. Skills can be learned with experience but that boorish manner will be yours forever.>
+	CMsg%id%02_1 <ifNPCSociable ifG 20 React Accept>
+	Msg%id%02_10 <If it were just up to me, I'd hire you. Unfortunately I don't think you'd be approved by everyone else.>
+	CMsg%id%02_10 <ifNPCSociable ifG React 19 Accept>
+	Msg%id%02_2 <You're not the type I'm looking for.>
+	CMsg%id%02_2 <ifNPCShy Accept>
+	Msg%id%02_3 <I don't think you're quite what we're looking for, but keep trying and I'm sure you'll find a mission somewhere!>
+	CMsg%id%02_3 <ifNPCCheerful Accept>
+	Msg%id%02_4 <Didn't I say we were looking for a qualified pilot? I'm sorry, but you're not it.>
+	CMsg%id%02_4 <ifNPCMelancholy Accept>
+	Msg%id%02_5 <You're not the sort of pilot I think we need for this mission. Maybe you can find work somewhere else.>
+	CMsg%id%02_5 <ifNPCEasygoing Accept>
+	Msg%id%02_6 <I'll be honest... You may have the skills, but your presentation leaves me cold. Nobody else along the chain of command would be willing to authorize you like that.>
+	CMsg%id%02_6 <ifNPCPassionate Accept>
+	Msg%id%03 <I think you might be perfect for this job... among other things. How about I give you the details?>
+	Msg%id%03_1 <I believe you may have what I need... er, I mean, what we need. For this job. How about I just give you the details?>
+	Msg%id%03_2 <Oh my... Yes, I think you're definitely the right one for this... job... What was I saying? How about I just give you the mission briefing?>
+	Msg%id%04 <Do you really expect to get a job after calling me "Baby"!? Get out of here... Just leave...>
+	Msg%id%04_1 <Note for future reference: "Sleazy" is not a good look for a job interview. Just get out of here, please...>
+	Msg%id%04_2 <Oh, yeah, like calling anyone "baby" has ever had a positive effect. You can forget about this job... and anything else you had in mind, as well.>
+	Prompt%id%01 <Tell me the mission details.>
+	Prompt%id%01_1 <I'd like to hear more about that.>
+	Prompt%id%02 <If you're looking for the best pilot, that'd be me.>
+	Prompt%id%02_1 <If you want the job done right, I'm your pilot.>
+	Prompt%id%03 <I've got exactly what you need right here, baby.>
+	CPrompt%id%03 <ifChatNPCSexy Accept>
+	Prompt%id%03_1 <I'm the only one you need, baby.>
+	Prompt%id%04 <I'm not interested in working for you.>
+	Prompt%id%04_1 <Sorry, I'm not interested.>
+	Prompt%id%05 <Go on.>
+	Prompt%id%05_1 <Please do.>
+
+	Persona
+	requires <*GenericMissionTest ~Shy>
+	start <if= v%id%01 0 else .%id%_GoBeenBefore V= %id%01 1 NewChat Say %id%01  AddChat %id%01 AddChat %id%02>
+	.%id%_GoBeenBefore <NewChat SayAnything Goto %2%>
+	result%id%01 <ifIntimidation SocSkillTar %6% else .%id%_GoR1Fail Goto .%id%_GoOfferMission>
+	.%id%_GoR1Fail <NewChat Say %id%02 Goto %2%>
+	result%id%02 <ifConversation SocSkillTar %6% else .%id%_GoR2Fail Goto .%id%_GoOfferMission>
+	.%id%_GoR2Fail <NewChat Say %id%03 Goto %2%>
+	.%id%_GoOfferMission <NewChat Say %id%04 AddChat %id%03 AddChat %id%04>
+	result%id%03 <Goto %1%>
+	result%id%04 <Goto %3%>
+	Msg%id%01 <Yes, may I help you with something?>
+	Msg%id%01_1 <I'm swamped with work right now. Is there any reason why you're bothering me?>
+	CMsg%id%01_1 <ifNPCMelancholy Accept>
+	Msg%id%01_2 <Hello. Is there anything I could help you with?>
+	CMsg%id%01_2 <ifNPCCheerful Accept>
+	Msg%id%01_3 <Is there something you want? I'm kind of busy right now...>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <Is there something I can do for you? Hurry up, get to the point.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%02 <Sorry, I don't know of anything.>
+	Msg%id%02_1 <As far as I know \FACTION %4% isn't currently hiring.>
+	CMsg%id%02_1 <ifFactionExists %4% Accept>
+	Msg%id%02_3 <Nope, I couldn't help you with that.>
+	CMsg%id%02_3 <ifNPCEasygoing Accept>
+	Msg%id%02_4 <Until you get some more experience, you're not going to have any chance of finding a job around here.>
+	CMsg%id%02_4 <ifNPCPassionate Accept>
+	Msg%id%02_5 <I can't help you myself, but keep looking. I'm sure something will turn up.>
+	CMsg%id%02_5 <ifNPCCheerful Accept>
+	Msg%id%02_6 <Do you think I'd tell you if I did know about something like that? I have to maintain my standards, after all.>
+	CMsg%id%02_6 <ifNPCMelancholy Accept>
+	Msg%id%03 <Okay, but make it quick. I have lots of work to do.>
+	Msg%id%03_1 <Sure, we can do that. It's always fun talking with you.>
+	CMsg%id%03_1 <ifG React 35 Accept>
+	Msg%id%03_2 <I was afraid of that... Go ahead, I guess there's no way I can stop you.>
+	CMsg%id%03_2 <ifG 5 React Accept>
+	Msg%id%03_3 <Sure, why not? It's better than working.>
+	CMsg%id%03_3 <ifNPCEasygoing Accept>
+	Msg%id%03_4 <What, you expect me to drop everything I'm doing just for a bit of mindless chatter? Alright, I guess I can do that...>
+	CMsg%id%03_4 <ifNPCPassionate Accept>
+	Msg%id%03_5 <Sounds like fun. Let's do that.>
+	CMsg%id%03_5 <ifNPCCheerful Accept>
+	Msg%id%03_6 <Alright. It's been a terrible day so far, I could use a break.>
+	CMsg%id%03_6 <ifNPCMelancholy Accept>
+	Msg%id%04 <You may be able to help me. I've got a mission that needs doing.>
+	Msg%id%04_2 <If you're interested, I've got a job you might be able to do.>
+	Msg%id%04_11 <Maybe you could be of use to me. I've got a mission for \FACTION %4% that needs doing.>
+	CMsg%id%04_11 <ifFactionExists %4% Accept>
+	Msg%id%04_12 <How'd you like to work for \FACTION %4% ? I'm looking for a freelancer to run a mission for us.>
+	CMsg%id%04_12 <ifNPCCheerful ifFactionExists %4% Accept>
+	Msg%id%04_13 <I suppose \FACTION %4% could do worse than having you on their side... If you're interested, I've got a job on offer.>
+	CMsg%id%04_13 <ifNPCMelancholy ifFactionExists %4% Accept>
+	Msg%id%04_14 <If you don't mind working for \FACTION %4% , I've got a mission you might be able to do.>
+	CMsg%id%04_14 <ifNPCEasygoing ifFactionExists %4% Accept>
+	Msg%id%04_15 <Right now, \FACTION %4% needs a skilled cavalier for an urgent mission. Do you think you're up for it?>
+	CMsg%id%04_15 <ifNPCPassionate ifFactionExists %4% Accept>
+	Msg%id%04_21 <Maybe you could help me. I need someone to run a mission against \FACTION %5% .>
+	CMsg%id%04_21 <ifFactionExists %5% Accept>
+	Msg%id%04_22 <I have something you may be interested in... We're planning a mission against \FACTION %5% , and need someone to carry it out.>
+	CMsg%id%04_22 <ifNPCCheerful ifFactionExists %5% Accept>
+	Msg%id%04_23 <You may know about all the trouble that's been caused by \FACTION %5% . I have to find someone for a mission against them, if you're willing to take it.>
+	CMsg%id%04_23 <ifNPCMelancholy ifFactionExists %5% Accept>
+	Msg%id%04_24 <How do you feel about tangling with \FACTION %5% ? If you're willing to face them, I have a job that just might interest you.>
+	CMsg%id%04_24 <ifNPCEasygoing ifFactionExists %5% Accept>
+	Msg%id%04_25 <I have a job you might be interested in. We're taking the fight to \FACTION %5% ... Do you want to hear more?>
+	CMsg%id%04_25 <ifNPCPassionate ifFactionExists %5% Accept>
+	Prompt%id%01 <I'm looking for a job. Know any leads?>
+	Prompt%id%01_1 <Actually, I'm looking for work.>
+	Prompt%id%01_2 <I was hoping you had a job available.>
+	Prompt%id%02 <I just wanted to talk for a while.>
+	Prompt%id%02_1 <Not really. I just wanted to chat.>
+	Prompt%id%02_2 <I'm just here to chat.>
+	Prompt%id%03 <Tell me about it.>
+	Prompt%id%03_1 <Give me the details.>
+	Prompt%id%04 <Sorry, I'm not interested.>
+	Prompt%id%04_1 <That doesn't interest me.>
+
+
+% TYPE: *CivilDefenseTest
+%	The NPC has a mission available, will imply this to the PC, and the PC will then
+%	have a chance to maybe get the mission. This is a town defense mission. The PC
+%	will almost always be able to get the mission guaranteed by taking a pay hit.
+%   PARAM1: Success Exit Label	(no message)
+%   PARAM2: Failure Exit Label
+%   PARAM3: Reject Exit Label (no message)
+%   PARAM4: LowSuccess Exit Label (no message)
+%   PARAM5: Allied Faction	[optional]
+%   PARAM6: Enemy Faction	[optional]
+%   PARAM7: Difficulcy number, expressed as Renown
+
+
+	Persona
+	requires <*CivilDefenseTest>
+	Start <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03 AddChat %id%04>
+	.%id%_GoFail <NewChat Say %id%03 Goto %2%>
+	.%id%_GoSuccess <NewChat Say %id%04 AddChat %id%05 AddChat %id%06>
+	result%id%01 <Goto %4%>
+	result%id%02 <ifConversation SocSkillTar %7% else .%id%_GoFail Goto .%id%_GoSuccess>
+	result%id%03 <ifIntimidation SocSkillTar %7% else .%id%_GoFail Goto .%id%_GoSuccess>
+	result%id%04 <Goto %3%>
+	result%id%05 <Goto %1%>
+	result%id%06 <Goto %3%>
+	Msg%id%01 <Our city is under attack, but the defense force has everything under control.>
+	Msg%id%01_10 <Our city is under attack from \FACTION %6% , but citizens are urged not to panic.>
+	CMsg%id%01_10 <ifFactionExists %6% Accept>
+	Msg%id%01_11 <I guess you've heard by now that our city is being attacked by \FACTION %6% . Citizens are being urged to not panic, but just between you and me if you don't have any business in town you should probably leave.>
+	CMsg%id%01_11 <ifNPCSociable ifFactionExists %6% Accept>
+	Msg%id%01_12 <We're being attacked by \FACTION %6% .>
+	CMsg%id%01_12 <ifNPCShy ifFactionExists %6% Accept>
+	Msg%id%01_13 <Even though we're being attacked by \FACTION %6% , I feel confident that \FACTION %5% will be able to contain the threat.>
+	CMsg%id%01_13 <ifNPCCheerful ifFactionExists %6% Accept>
+	Msg%id%01_14 <I've got some bad news, I'm afraid... the city is under attack by \FACTION %6% .>
+	CMsg%id%01_14 <ifNPCMelancholy ifFactionExists %6% Accept>
+	Msg%id%01_15 <There are scouts from \FACTION %6% outside the city, but \FACTION %5% won't let them get inside.>
+	CMsg%id%01_15 <ifNPCEasygoing ifFactionExists %6% Accept>
+	Msg%id%01_16 <There are combat troops from \FACTION %6% outside the city! This could lead to a full-scale war!>
+	CMsg%id%01_16 <ifNPCPassionate ifFactionExists %6% Accept>
+	Msg%id%03 <We have all the pilots we're going to need, I'm afraid.>
+	Msg%id%03_1 <Sorry if I implied that I was looking for recruits; we have all the pilots we need for the time being.>
+	CMsg%id%03_1 <ifNPCSociable Accept>
+	Msg%id%03_2 <I don't need anyone right now.>
+	CMsg%id%03_2 <ifNPCShy Accept>
+	Msg%id%03_3 <I don't need any help, but if you keep looking I'm sure there's someone around here who does.>
+	CMsg%id%03_3 <ifNPCCheerful Accept>
+	Msg%id%03_4 <You're not the sort of pilot we're looking for.>
+	CMsg%id%03_4 <ifNPCMelancholy Accept>
+	Msg%id%03_5 <I don't have any work for you to do. Maybe some other time.>
+	CMsg%id%03_5 <ifNPCEasygoing Accept>
+	Msg%id%03_6 <Are you looking for a mission from \FACTION %5% ? I'm sorry, but we only accept the best.>
+	CMsg%id%03_6 <ifNPCPassionate Accept>
+	Msg%id%03_7 <Why are you trying to get this mission, you don't even have a mecha! Find yourself a ride and then we can talk.>
+	CMsg%id%03_7 <if= PCMeks 0 Accept>
+	Msg%id%04 <Maybe you could help \FACTION %5% ... I have a mission available for a mecha pilot.>
+	Msg%id%04_1 <I think you just might be able to help us. You know that \FACTION %5% is coordinating the defense, but we also need a number of freelance pilots. Would you be interested in a job?>
+	CMsg%id%04_1 <ifNPCSociable Accept>
+	Msg%id%04_2 <I have a mission available, if you're interested.>
+	CMsg%id%04_2 <ifNPCShy Accept>
+	Msg%id%04_3 <You're in luck. I happen to have a mission available for a mecha pilot, if you're free right now.>
+	CMsg%id%04_3 <ifNPCCheerful Accept>
+	Msg%id%04_4 <You're the best applicant I've had all day, and that's sad. I have a combat mission for a mecha pilot if you'd like to accept it.>
+	CMsg%id%04_4 <ifNPCMelancholy Accept>
+	Msg%id%04_5 <Yeah, I've got a mission available. You want it?>
+	CMsg%id%04_5 <ifNPCEasygoing Accept>
+	Msg%id%04_6 <How would you like a bit of combat action? I could find a mission for you, if you want.>
+	CMsg%id%04_6 <ifNPCPassionate Accept>
+	Prompt%id%01 <I'm here to volunteer.>
+	Prompt%id%01_1 <I'd like to volunteer my services.>
+	Prompt%id%01_2 <Can I volunteer to help fight?>
+	Prompt%id%02 <Are there are any piloting jobs available?>
+	CPrompt%id%02 <ifPCEasygoing Accept>
+	Prompt%id%02_1 <Do you have any missions available?>
+	Prompt%id%02_2 <What kind of missions are available?>
+	Prompt%id%03 <I could kick \FACTION %6% out of here.>
+	CPrompt%id%03 <ifPCPassionate Accept>
+	Prompt%id%03_1 <Eh, they're not so tough.>
+	Prompt%id%03_2 <They don't scare me.>
+	Prompt%id%04 <That doesn't concern me.>
+	Prompt%id%04_1 <I'll be careful in town.>
+	Prompt%id%04_2 <What does that have to do with me?>
+	Prompt%id%05 <I'll do it!>
+	Prompt%id%05_1 <Just give me the details.>
+	Prompt%id%05_2 <Alright, I'll help you.>
+	Prompt%id%06 <No thanks.>
+	Prompt%id%06_1 <Sorry, I'm not interested.>
+
+
+	Persona
+	requires <*CivilDefenseTest ~Melancholy>
+	Start <NewChat   Say %id%01   AddChat %id%01   AddChat %id%02   AddChat %id%03  AddChat %id%04>
+	result%id%01 <Goto %4%>
+	result%id%02 <ifConversation SocSkillTar %7% else .%id%_GoFail   Goto %1%>
+	result%id%03 <AddEasygoing -d6  ifIntimidation SocSkillTar %7% else .%id%_GoFail   Goto %1%>
+	result%id%04 <Goto %3%>
+	.%id%_GoFail <NewChat Say %id%02 Goto %2%>
+	Msg%id%01 <If you don't have any business in town I suggest you leave. It isn't a safe time to be here.>
+	Msg%id%01_1 <What's your business in town? If it's not urgent, then you should probably come back later. It's not a safe time to be here.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <This isn't a safe time. If you have no business in town you should leave.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Right now there's a state of emergency in town. They say that everyone who can get out probably should.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <It's a very dangerous time to be here. If you don't have urgent business in town, it would be best if you left.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_20 <This isn't a safe time to be in town... \FACTION %6% has troops in the area.>
+	CMsg%id%01_20 <ifFactionExists %6% Accept>
+	Msg%id%01_21 <There's something you should know. Mecha from \FACTION %6% are causing trouble near here. The fighting could spill into the city. If you value your life, you should probably leave.>
+	CMsg%id%01_21 <ifNPCSociable ifFactionExists %6% Accept>
+	Msg%id%01_22 <You should leave while you still can. Raiders from \FACTION %6% are in town.>
+	CMsg%id%01_22 <ifNPCShy ifFactionExists %6% Accept>
+	Msg%id%01_23 <I don't want to worry you, but there are raiders from \FACTION %6% near town. If you can go somewhere safer that'd probably be a good idea.>
+	CMsg%id%01_23 <ifNPCEasygoing ifFactionExists %6% Accept>
+	Msg%id%01_24 <Every minute you stay here, your life's in danger... raiders from \FACTION %6% are causing trouble.>
+	CMsg%id%01_24 <ifNPCPassionate ifFactionExists %6% Accept>
+	Msg%id%02 <It's no use... there's no way you could help.>
+	Msg%id%02_1 <I don't think so.>
+	CMsg%id%02_1 <ifNPCShy Accept>
+	Msg%id%02_2 <Just forget I said anything, there's nothing you can do.>
+	CMsg%id%02_2 <ifNPCSociable Accept>
+	Msg%id%02_3 <No need to trouble yourself, I've got everything in hand.>
+	CMsg%id%02_3 <ifNPCEasygoing Accept>
+	Msg%id%02_4 <Look, I told you everything you need to know. Don't bother me about this again.>
+	CMsg%id%02_4 <ifNPCPassionate Accept>
+	Prompt%id%01 <If the city's in trouble, I'd like to volunteer.>
+	Prompt%id%01_1 <Is there any way I could help?>
+	Prompt%id%01_2 <What can I do to help out?>
+	Prompt%id%02 <Why don't you tell me about it?>
+	Prompt%id%02_1 <Tell me exactly what's going on.>
+	Prompt%id%02_2 <I'd like to hear about this problem.>
+	Prompt%id%03 <All you need is an ace pilot like me.>
+	Prompt%id%03_1 <Hire me, and all your troubles will go away.>
+	Prompt%id%03_2 <Sounds like you need my services.>
+	Prompt%id%04 <Your problem, not mine.>
+	Prompt%id%04_1 <Whatever.>
+	Prompt%id%04_2 <I can look out for myself, thanks.>
+
+	Persona
+	requires <*CivilDefenseTest ~Sociable>
+	start <NewChat  Say %id%01  AddChat %id%01  AddChat %id%02  AddChat %id%03>
+	result%id%01 <Goto %4%>
+	result%id%02 <ifIntimidation SocSkillTar %7% else .%id%_Go2Fail Goto %1%>
+	.%id%_Go2Fail <ifG %7% PCRenown else %1% NewChat Say %id%02 Goto %2%>
+	result%id%03 <Goto %3%>
+	Msg%id%01 <Our city is in trouble. I need to locate a pilot for a mission against some infiltrators.>
+	Msg%id%01_20 <Our city is being attacked by \FACTION %6% ! I need a skilled pilot to head them off.>
+	CMsg%id%01_20 <ifFactionExists %6% accept>
+	Msg%id%01_21 <There have been numerous reports of mecha from \FACTION %6% being spotted near the city. Our defense command is doing everything possible to investigate. The matter should be resolved shortly, with any luck.>
+	CMsg%id%01_21 <ifNPCSociable ifFactionExists %6% accept>
+	Msg%id%01_22 <There are unknown mecha near our city, possibly from \FACTION %6% . Defense teams are investigating.>
+	CMsg%id%01_22 <ifNPCShy ifFactionExists %6% accept>
+	Msg%id%01_23 <There have been sightings of \FACTION %6% mecha near town, but not to worry... Our defense force will make short work of them.>
+	CMsg%id%01_23 <ifNPCCheerful ifFactionExists %6% accept>
+	Msg%id%01_24 <This may be the beginning of the end... \FACTION %6% has deployed combat teams nearby. I need a skilled cavalier to engage them.>
+	CMsg%id%01_24 <ifNPCMelancholy ifFactionExists %6% accept>
+	Msg%id%01_25 <Mecha from \FACTION %6% sighted near town, but there's no cause for alarm. Our city defense team can handle the situation.>
+	CMsg%id%01_25 <ifNPCEasygoing ifFactionExists %6% accept>
+	Msg%id%01_26 <Those bastards from \FACTION %6% have sent a combat patrol here... They must be stopped.>
+	CMsg%id%01_26 <ifNPCPassionate ifFactionExists %6% accept>
+	Msg%id%02 <I don't think you're quite the type we're looking for.>
+	Msg%id%02_1 <Sorry, but I've already found someone for the mission. I'm afraid there's nothing for you to do.>
+	CMsg%id%02_1 <ifNPCSociable Accept>
+	Msg%id%02_2 <Um, no.>
+	CMsg%id%02_2 <ifNPCShy Accept>
+	Msg%id%02_3 <If you want to impress me, you should say that with a straight face.>
+	CMsg%id%02_3 <ifNPCCheerful Accept>
+	Msg%id%02_4 <Don't be a fool- you'd never survive this mission.>
+	CMsg%id%02_4 <ifNPCMelancholy Accept>
+	Msg%id%02_5 <Um, I really don't think you're the kind of pilot we need right now.>
+	CMsg%id%02_5 <ifNPCEasygoing Accept>
+	Msg%id%02_6 <What, are you trying to sound tough? What we need is a real pilot, not some poser.>
+	CMsg%id%02_6 <ifNPCPassionate Accept>
+	Prompt%id%01 <I'd like to volunteer for duty.>
+	Prompt%id%01_1 <Are you looking for volunteers?>
+	Prompt%id%01_2 <When the city needs me I'm ready.>
+	Prompt%id%02 <If you want the best pilot, that'd be me.>
+	Prompt%id%02_1 <I'm the best, if you can afford my rates.>
+	Prompt%id%02_2 <Whatever the threat, I can handle it.>
+	Prompt%id%03 <That doesn't concern me.>
+	Prompt%id%03_1 <Big deal.>
+	Prompt%id%03_2 <They'll go away, eventually...>
+
+
+% TYPE: *JoinMyPatrolTest
+%	There's a patrol, the PC will be invited to join if he passes some test.
+%   PARAM1: Success exit label
+%           Success if PC is chosen for mission, and selects "Join Patrol" menu option.
+%   PARAM2: Failure exit label
+%	    Only if test failed- if mission rejected, use %5%.
+%   PARAM3: Difficulcy rating
+%   PARAM4: Cash reward for partaking in mission
+%   PARAM5: Rejection exit label. Message printed here.
+%   PARAM6: Who the NPC is working for	[optional]
+%   PARAM7: Who the NPC is fighting	[optional]
+
+	Persona
+	requires <*JoinMyPatrolTest =MIL_DEFAULT_DEFENSE>
+	%% Because this is =MIL_DEFAULT_DEFENSE we know %6% and %7% exist
+	%% We also know that cash is being offered.
+	start <ifG PCRenown d30 else %2% ifG React d40 else %2%  EndChat  Say %id%01  AddChat %id%01  AddChat %id%02>
+
+	Result%id%01 <Goto %1%>
+	Result%id%02 <EndChat Say %id%02 Goto %5%>
+
+	Msg%id%01 <There are scouts from \FACTION %7% operating in the area. I'm closing in on some of them, and could use some backup. Cover me and it'll be worth $ \VAL %4% .>
+	Msg%id%01_1 <Invaders from \FACTION %7% operating nearby. I've been assigned by \FACTION %6% to track them down and destroy them. I feel that I'm close to one of their patrols, and could use some backup. How'd you like to join me?>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <This area has been infiltrated by \FACTION %7% . Help me engage an enemy patrol and you'll earn $ \VAL %4% from \FACTION %6% .>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Just who I was hoping to bump into, a fellow ace! I'm running a patrol for \FACTION %6% to kick out \FACTION %7% . Help me engage their patrol and you'll earn $ \VAL %4% .>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <Raiders from \FACTION %7% are attacking our city. I could use some backup... Help me out, and it'll be worth $ \VAL %4% .>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <Hey \PC , are you busy? I could use an assist over here... As you might know, there are mecha from \FACTION %7% nearby. I'm supposed to be fighting them. If you help me, you'll earn $ \VAL %4% .>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <Our city is under attack! I'm about to engage some mecha from \FACTION %7% ... How'd you like some of the action? If we win, I'll split the bounty of $ \VAL * 2 %4% with you.>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+	Msg%id%02 <Watch out for \FACTION %7% patrols.>
+	Msg%id%02_1 <That's a shame; it would have been nice to have company.>
+	CMsg%id%02_1 <ifNPCSociable Accept>
+	Msg%id%02_2 <Okay. Goodbye.>
+	CMsg%id%02_2 <ifNPCShy Accept>
+	Msg%id%02_3 <If you spot any \FACTION %7% mecha while driving around, let me know would ya?>
+	CMsg%id%02_3 <ifNPCCheerful Accept>
+	Msg%id%02_4 <Be careful... if \FACTION %7% get their way, all hell's about to break loose.>
+	CMsg%id%02_4 <ifNPCMelancholy Accept>
+	Msg%id%02_5 <No problem. See you around.>
+	CMsg%id%02_5 <ifNPCEasygoing Accept>
+	Msg%id%02_6 <I'll have to face \FACTION %7% by myself then... This will be a real test of my skills.>
+	CMsg%id%02_6 <ifNPCPassionate Accept>
+	Prompt%id%01 <Sounds good. Let's go.>
+	Prompt%id%01_1 <Alright, I'm in.>
+	Prompt%id%01_2 <Okay, I'll join you.>
+	Prompt%id%02 <I'd rather not.>
+	Prompt%id%02_1 <I can't help you.>
+	Prompt%id%02_2 <Sorry, I can't.>
+
+
+	Persona
+	requires <*JoinMyPatrolTest>
+	start <ifG PCRenown d50 else %2%   EndChat   Say %id%01   AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <EndChat   Say %id%02   Goto %5%>
+	result%id%03 <EndChat   Say %id%03   AddChat %id%04  AddChat %id%05>
+	result%id%04 <Goto %1%>
+	result%id%05 <EndChat   Say %id%02   Goto %5%>
+	Msg%id%01 <Hey, I've got a patrol here. You're a pretty good pilot... How'd you like to help me out?>
+	Msg%id%01_10 <This is \ChatNPC of \FACTION %6% . I'm conducting a patrol of this area... How would you like to join me for combat duty?>
+	CMsg%id%01_10 <ifFactionExists %6% Accept>
+	Msg%id%01_11 <This is \ChatNPC of \FACTION %6% speaking. We are conducting a patrol of the area; sensors indicate a number of enemy mecha nearby. How would you like to help me engage them?>
+	CMsg%id%01_11 <ifNPCSociable ifFactionExists %6% Accept>
+	Msg%id%01_12 <This is an agent of \FACTION %6% . Enemy troops are operating in the area; I could use assistance to engage them.>
+	CMsg%id%01_12 <ifNPCShy ifFactionExists %6% Accept>
+	Msg%id%01_13 <Hey, just what I need, a famous pilot... I'm leading a patrol for \FACTION %6% and am about to enter combat. Can I get an assist?>
+	CMsg%id%01_13 <ifNPCCheerful ifFactionExists %6% Accept>
+	Msg%id%01_14 <>
+	CMsg%id%01_14 <ifNPCMelancholy ifFactionExists %6% Accept>
+	Msg%id%01_15 <>
+	CMsg%id%01_15 <ifNPCEasygoing ifFactionExists %6% Accept>
+	Msg%id%01_16 <>
+	CMsg%id%01_16 <ifNPCPassionate ifFactionExists %6% Accept>
+	Msg%id%01_20 <There are \FACTION %7% forces operating in the area... I'm trying to clear them out. How'd you like to join my patrol?>
+	CMsg%id%01_20 <ifFactionExists %7% Accept>
+	Msg%id%01_21 <>
+	CMsg%id%01_21 <ifNPCSociable ifFactionExists %7% Accept>
+	Msg%id%01_21 <>
+	CMsg%id%01_21 <ifNPCShy ifFactionExists %7% Accept>
+	Msg%id%01_21 <>
+	CMsg%id%01_21 <ifNPCCheerful ifFactionExists %7% Accept>
+	Msg%id%01_21 <There's trouble... \FACTION %7% has troops in the area, and we don't know what they're up to. I'm about to run an interception... Can I get some assistance?>
+	CMsg%id%01_21 <ifNPCMelancholy ifFactionExists %7% Accept>
+	Msg%id%01_21 <Hey there. I've been running patrols all day but haven't found anyone from \FACTION %7% . How'd you like to link up for a while, see if our luck improves?>
+	CMsg%id%01_21 <ifNPCEasygoing ifFactionExists %7% Accept>
+	Msg%id%01_21 <I've been tracking a scout group from \FACTION %7% but could use some help engaging them. How about it, are you up for some combat?>
+	CMsg%id%01_21 <ifNPCPassionate ifFactionExists %7% Accept>
+	Msg%id%02 <Watch out... enemies are everywhere.>
+	Msg%id%02_1 <Be careful... \FACTION %7% troops are operating in the area.>
+	CMsg%id%02_1 <ifFactionExists %7% Accept>
+	Msg%id%02_2 <You should know that \FACTION %6% will continue operations in this area.>
+	CMsg%id%02_2 <ifFactionExists %6% Accept>
+	Msg%id%03_10 <If you help me out it's worth $ \VAL %4% . What do you say?>
+	CMsg%id%03_10 <ifG %4% 0 Accept>
+	Msg%id%03_20 <There's no reward for this mission, I'm afraid, but if you help me out it'd be greatly appreciated.>
+	CMsg%id%03_20 <ifG 1 %4% Accept>
+	Prompt%id%01 <Sure, let's do that.>
+	Prompt%id%01_1 <I'd like to help you.>
+	Prompt%id%01_2 <I want a piece of that action.>
+	CPrompt%id%01_2 <ifPCPassionate Accept>
+	Prompt%id%01_3 <Alright, let's do it.>
+	Prompt%id%01_4 <Okay, I'll join your patrol.>
+	Prompt%id%01_5 <Let's go.>
+	Prompt%id%01_6 <Alright, let's go.>
+	Prompt%id%01_7 <Sounds good.>
+	Prompt%id%02 <No, I'd rather not.>
+	Prompt%id%02_1 <I'm a little busy now.>
+	Prompt%id%02_2 <Sorry, I can't.>
+	Prompt%id%02_3 <Nope.>
+	Prompt%id%02_4 <Not this time.>
+	Prompt%id%02_5 <Not right now.>
+	Prompt%id%02_6 <I don't think so.>
+	Prompt%id%02_7 <No way.>
+	Prompt%id%03 <How much will I be paid?>
+	Prompt%id%03_1 <Is there a reward?>
+	Prompt%id%03_2 <How much money will I get?>
+	Prompt%id%03_3 <Will I be paid?>
+	Prompt%id%03_4 <Is there any reward involved?>
+	Prompt%id%03_5 <I don't work for free.>
+	CPrompt%id%03_5 <ifPCMelancholy Accept>
+	Prompt%id%03_6 <What kind of reward are you offering?>
+	Prompt%id%03_7 <Can I expect to be paid?>
+	Prompt%id%04 <Alright, I'll do it.>
+	Prompt%id%04_1 <Okay, I'll help you.>
+	Prompt%id%04_2 <I'll do it.>
+	Prompt%id%05 <Sorry, I'm not interested.>
+	Prompt%id%05_1 <That's not enough.>
+	Prompt%id%05_2 <No thanks, I'll pass.>
+
+	Persona
+	requires <*JoinMyPatrolTest>
+	start <ifG React d60 else %2%  ifG PCRenown d %3% else %2%   EndChat   Say %id%01   AddChat %id%01  AddChat %id%02  AddChat %id%03>
+	result%id%01 <Goto %1%>
+	result%id%02 <EndChat   Say %id%02   Goto %5%>
+	result%id%03 <EndChat   Say %id%03   AddChat %id%04  AddChat %id%05>
+	result%id%04 <Goto %1%>
+	result%id%05 <EndChat   Say %id%02   Goto %5%>
+	Msg%id%01 <Hey, I've got a patrol here. How'd you like to do me a personal favor and join my team?>
+	Msg%id%02 <This area might not be safe. Watch your back.>
+	Msg%id%02_1 <Be careful... \FACTION %7% troops are operating in the area. I'd hate to see you get hurt.>
+	CMsg%id%02_1 <ifFactionExists %7% Accept>
+	Msg%id%02_2 <Don't worry; \FACTION %6% will keep this area safe.>
+	CMsg%id%02_2 <ifFactionExists %6% Accept>
+	Msg%id%03_10 <I can give you $ \VAL %4% for helping, so long as the mission is successful. What do you say?>
+	CMsg%id%03_10 <ifG %4% 0 Accept>
+	Msg%id%03_20 <There's no reward for this mission, I'm afraid, but if you help me out it'd be greatly appreciated.>
+	CMsg%id%03_20 <ifG 1 %4% Accept>
+	Prompt%id%01 <Sure, let's do that.>
+	Prompt%id%01_1 <I'd like that a lot.>
+	Prompt%id%01_2 <I want a piece of that action.>
+	CPrompt%id%01_2 <ifPCPassionate Accept>
+	Prompt%id%01_3 <Alright, let's do it.>
+	Prompt%id%01_4 <Okay, I'll join your patrol.>
+	Prompt%id%01_5 <Let's go.>
+	Prompt%id%01_6 <Alright, let's go.>
+	Prompt%id%01_7 <Sounds good.>
+	Prompt%id%02 <No, I'd rather not.>
+	Prompt%id%02_1 <I'm a little busy now.>
+	Prompt%id%02_2 <Sorry, I can't.>
+	Prompt%id%02_3 <Nope.>
+	Prompt%id%02_4 <Not this time.>
+	Prompt%id%02_5 <Not right now.>
+	Prompt%id%02_6 <I don't think so.>
+	Prompt%id%02_7 <No way.>
+	Prompt%id%03 <How much will I be paid?>
+	Prompt%id%03_1 <Is there a reward?>
+	Prompt%id%03_2 <How much money will I get?>
+	Prompt%id%03_3 <Will I be paid?>
+	Prompt%id%03_4 <Is there any reward involved?>
+	Prompt%id%03_5 <I don't work for free.>
+	CPrompt%id%03_5 <ifPCMelancholy Accept>
+	Prompt%id%03_6 <What kind of reward are you offering?>
+	Prompt%id%03_7 <Can I expect to be paid?>
+	Prompt%id%04 <Alright, I'll do it.>
+	Prompt%id%04_1 <Okay, I'll help you.>
+	Prompt%id%04_2 <I'll do it.>
+	Prompt%id%05 <Sorry, I'm not interested.>
+	Prompt%id%05_1 <That's not enough.>
+	Prompt%id%05_2 <No thanks, I'll pass.>
+
+

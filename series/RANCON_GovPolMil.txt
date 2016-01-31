@@ -1,0 +1,477 @@
+% Random Content - Government, Police, Military
+
+%% *GOV_MISC Content
+%%	Miscellaneous content for government buildings.
+
+Content
+	%% No Room
+	requires <*GOV_MISC>
+	minimap <#########################>
+
+Content
+	%% Empty Room
+	requires <*GOV_MISC>
+	minimap <....................##+##>
+	content <Optional *URBAN_X na Local>
+
+Content
+	%% Office
+	requires <*GOV_MISC>
+	minimap <.....1..............##+##>
+	content <Optional *URBAN_X na Local>
+
+	Element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC bureaucrat
+	end
+
+Content
+	%% Press Club
+	requires <*GOV_MISC ~Capital>
+	minimap <.....1..............##+##>
+	content <Optional *URBAN_X na Local>
+
+	Element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Journalist
+	end
+
+Content
+	requires <*GOV_MISC>
+	content <REQUIRED *RESTAURANT na Local>
+
+Content
+	requires <*GOV_MISC Common>
+	content <REQUIRED *GOV_MILITARY na Local>
+
+Content
+	requires <*GOV_MISC>
+	content <REQUIRED *GOV_POLICE na Local>
+
+Content
+	requires <*GOV_MISC MAQUI>
+	minimap <............1.......&&+&&>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+
+	sub
+		Persona 1
+		special <NOPLOTS>
+		greeting <if# ChatNPCFac 0 else GoChat if= PCFac ChatNPCFac else GoCheckEligibility Goto GoTrain>
+		*GoTrain <*SKILL_TRAINING GoGoodbye>
+		*GoCheckEligibility <*ENEMY_CHECK GoCheckFaction ChatNPCFac GoNil>
+		GoCheckFaction <if= PCFac 0 else GoChat Goto GoCheckSkills>
+		*GoCheckSkills <*FACTION_ENTRANCE_EXAM GoJobOffer ChatNPCFac>
+		*GoChat <*MISC_CHATTER>
+		*GoGoodbye <*GOODBYE>
+		*GoJobOffer <*FACTION_JOIN_OFFER ChatNPCFac GoJoin>
+		*GoJoin <*FACTION_JOIN_ACCEPT ChatNPCFac>
+	end
+	inv
+		NPC bureaucrat
+		SetFaction 1
+		job <Trainer>
+	end
+
+Content
+	requires <*GOV_MISC FCOMS>
+	minimap <............1.......&&+&&>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+
+	sub
+		Persona 1
+		special <NOPLOTS>
+		greeting <if# ChatNPCFac 0 else GoChat if= PCFac ChatNPCFac else GoCheckEligibility Goto GoTrain>
+		*GoTrain <*SKILL_TRAINING GoGoodbye>
+		*GoCheckEligibility <*ENEMY_CHECK GoCheckFaction ChatNPCFac GoNil>
+		GoCheckFaction <if= PCFac 0 else GoChat Goto GoCheckSkills>
+		*GoCheckSkills <*FACTION_ENTRANCE_EXAM GoJobOffer ChatNPCFac>
+		*GoChat <*MISC_CHATTER>
+		*GoGoodbye <*GOODBYE>
+		*GoJobOffer <*FACTION_JOIN_OFFER ChatNPCFac GoJoin>
+		*GoJoin <*FACTION_JOIN_ACCEPT ChatNPCFac>
+	end
+	inv
+		NPC bureaucrat
+		SetFaction 10
+		job <Trainer>
+	end
+
+Content
+	requires <*GOV_MISC RISHI>
+	minimap <............1.......&&+&&>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+
+	sub
+		Persona 1
+		special <NOPLOTS>
+		greeting <if# ChatNPCFac 0 else GoChat if= PCFac ChatNPCFac else GoCheckEligibility Goto GoTrain>
+		*GoTrain <*SKILL_TRAINING GoGoodbye>
+		*GoCheckEligibility <*ENEMY_CHECK GoCheckFaction ChatNPCFac GoNil>
+		GoCheckFaction <if= PCFac 0 else GoChat Goto GoCheckSkills>
+		*GoCheckSkills <*FACTION_ENTRANCE_EXAM GoJobOffer ChatNPCFac>
+		*GoChat <*MISC_CHATTER>
+		*GoGoodbye <*GOODBYE>
+		*GoJobOffer <*FACTION_JOIN_OFFER ChatNPCFac GoJoin>
+		*GoJoin <*FACTION_JOIN_ACCEPT ChatNPCFac>
+	end
+	inv
+		NPC bureaucrat
+		SetFaction 11
+		job <Trainer>
+	end
+
+Content
+	requires <*GOV_MISC BOHEM>
+	minimap <............1.......&&+&&>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+
+	sub
+		Persona 1
+		special <NOPLOTS>
+		greeting <if# ChatNPCFac 0 else GoChat if= PCFac ChatNPCFac else GoCheckEligibility Goto GoTrain>
+		*GoTrain <*SKILL_TRAINING GoGoodbye>
+		*GoCheckEligibility <*ENEMY_CHECK GoCheckFaction ChatNPCFac GoNil>
+		GoCheckFaction <if= PCFac 0 else GoChat Goto GoCheckSkills>
+		*GoCheckSkills <*FACTION_ENTRANCE_EXAM GoJobOffer ChatNPCFac>
+		*GoChat <*MISC_CHATTER>
+		*GoGoodbye <*GOODBYE>
+		*GoJobOffer <*FACTION_JOIN_OFFER ChatNPCFac GoJoin>
+		*GoJoin <*FACTION_JOIN_ACCEPT ChatNPCFac>
+	end
+	inv
+		NPC bureaucrat
+		SetFaction 12
+		job <Trainer>
+	end
+
+
+
+%% *MIL_RECRUITER Content
+%%	Add a military recruiter to this location.
+
+Content
+	requires <*MIL_RECRUITER SILKN>
+	minimap <............1.......##+##>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+
+	sub
+		Persona 1
+		special <NOPLOTS>
+		greeting <if# ChatNPCFac 0 else GoChat if= PCFac ChatNPCFac else GoCheckEligibility Goto GoTrain>
+		*GoTrain <*SKILL_TRAINING GoGoodbye>
+		*GoCheckEligibility <*ENEMY_CHECK GoCheckFaction ChatNPCFac GoNil>
+		GoCheckFaction <if= PCFac 0 else GoChat Goto GoCheckSkills>
+		*GoCheckSkills <*FACTION_ENTRANCE_EXAM GoJobOffer ChatNPCFac>
+		*GoChat <*MISC_CHATTER>
+		*GoGoodbye <*GOODBYE>
+		*GoJobOffer <*FACTION_JOIN_OFFER ChatNPCFac GoJoin>
+		*GoJoin <*FACTION_JOIN_ACCEPT ChatNPCFac>
+	end
+	inv
+		NPC Knight
+		SetFaction 3
+		job <Trainer>
+	end
+
+
+Content
+	requires <*MIL_RECRUITER>
+	minimap <............1.......##+##>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+
+	sub
+		Persona 1
+		special <NOPLOTS>
+		greeting <if# ChatNPCFac 0 else GoChat if= PCFac ChatNPCFac else GoCheckEligibility Goto GoTrain>
+		*GoTrain <*SKILL_TRAINING GoGoodbye>
+		*GoCheckEligibility <*ENEMY_CHECK GoCheckFaction ChatNPCFac GoNil>
+		GoCheckFaction <if= PCFac 0 else GoChat Goto GoCheckSkills>
+		*GoCheckSkills <*FACTION_ENTRANCE_EXAM GoJobOffer ChatNPCFac>
+		*GoChat <*MISC_CHATTER>
+		*GoGoodbye <*GOODBYE>
+		*GoJobOffer <*FACTION_JOIN_OFFER ChatNPCFac GoJoin>
+		*GoJoin <*FACTION_JOIN_ACCEPT ChatNPCFac>
+	end
+	inv
+		NPC Soldier
+		update <if= V1 0 V= 1 1 SetSelfFaction LocalFaction>
+		job <Recruiter>
+	end
+
+
+
+%% *GOV_MILITARY Content
+%%	Add a military garrison to this location.
+
+Content
+	% Privateers detachment
+	requires <*GOV_MILITARY (MAQUI|FCOMS) ~Sleazy -Legit Common>
+	minimap <.....1..............#...#>
+
+	Element1 <Prefab>
+	team1 <Guards>
+	teamdesc1 <SD>
+
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>		
+	end
+	inv
+		NPC Privateer
+		SetFaction 6
+	end
+
+Content
+	requires <*GOV_MILITARY (MAQUI|FCOMS) ~Sleazy -Legit>
+	minimap <............1..2....&-&-&>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	Element2 <Prefab>
+	team2 <Guards>
+	teamdesc2 <SD>
+
+	sub
+		Persona 1
+		special <NOPLOTS>
+		greeting <if# ChatNPCFac 0 else GoChat if= PCFac ChatNPCFac else GoCheckEligibility Goto GoTrain>
+		*GoTrain <*SKILL_TRAINING GoGoodbye>
+		*GoCheckEligibility <*ENEMY_CHECK GoCheckFaction ChatNPCFac GoNil>
+		GoCheckFaction <if= PCFac 0 else GoChat Goto GoCheckSkills>
+		*GoCheckSkills <*FACTION_ENTRANCE_EXAM GoJobOffer ChatNPCFac>
+		*GoChat <*MISC_CHATTER>
+		*GoGoodbye <*GOODBYE>
+		*GoJobOffer <*FACTION_JOIN_OFFER ChatNPCFac GoJoin>
+		*GoJoin <*FACTION_JOIN_ACCEPT ChatNPCFac>
+	end
+	inv
+		NPC Privateer
+		SetFaction 6
+		job <Trainer>
+
+		NPC Privateer
+		SetFaction 6
+	end
+
+
+Content
+	% Silver Knights detachment
+	requires <*GOV_MILITARY MAQUI ~Legit -Sleazy Common>
+	minimap <.....1..............#...#>
+
+	Element1 <Prefab>
+	team1 <Guards>
+	teamdesc1 <SD>
+
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Knight
+		SetFaction 3
+	end
+
+Content
+	requires <*GOV_MILITARY MAQUI ~Legit -Sleazy>
+	minimap <............1..2....&-&-&>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	Element2 <Prefab>
+	team2 <Guards>
+	teamdesc2 <SD>
+
+	sub
+		Persona 1
+		special <NOPLOTS>
+		greeting <if# ChatNPCFac 0 else GoChat if= PCFac ChatNPCFac else GoCheckEligibility Goto GoTrain>
+		*GoTrain <*SKILL_TRAINING GoGoodbye>
+		*GoCheckEligibility <*ENEMY_CHECK GoCheckFaction ChatNPCFac GoNil>
+		GoCheckFaction <if= PCFac 0 else GoChat Goto GoCheckSkills>
+		*GoCheckSkills <*FACTION_ENTRANCE_EXAM GoJobOffer ChatNPCFac>
+		*GoChat <*MISC_CHATTER>
+		*GoGoodbye <*GOODBYE>
+		*GoJobOffer <*FACTION_JOIN_OFFER ChatNPCFac GoJoin>
+		*GoJoin <*FACTION_JOIN_ACCEPT ChatNPCFac>
+	end
+	inv
+		NPC Knight
+		SetFaction 3
+		job <Trainer>
+
+		NPC Knight
+		SetFaction 3
+	end
+
+Content
+	% Rocket Stars detachment
+	requires <*GOV_MILITARY (RISHI|ROCKE) Common>
+	minimap <.....1..............#...#>
+
+	Element1 <Prefab>
+	team1 <Guards>
+	teamdesc1 <SD>
+
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Rocket Star
+	end
+
+Content
+	requires <*GOV_MILITARY (RISHI|ROCKE)>
+	minimap <............1..2....&-&-&>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	Element2 <Prefab>
+	team2 <Guards>
+	teamdesc2 <SD>
+
+	sub
+		Persona 1
+		special <NOPLOTS>
+		greeting <if# ChatNPCFac 0 else GoChat if= PCFac ChatNPCFac else GoCheckEligibility Goto GoTrain>
+		*GoTrain <*SKILL_TRAINING GoGoodbye>
+		*GoCheckEligibility <*ENEMY_CHECK GoCheckFaction ChatNPCFac GoNil>
+		GoCheckFaction <if= PCFac 0 else GoChat Goto GoCheckSkills>
+		*GoCheckSkills <*FACTION_ENTRANCE_EXAM GoJobOffer ChatNPCFac>
+		*GoChat <*MISC_CHATTER>
+		*GoGoodbye <*GOODBYE>
+		*GoJobOffer <*FACTION_JOIN_OFFER ChatNPCFac GoJoin>
+		*GoJoin <*FACTION_JOIN_ACCEPT ChatNPCFac>
+	end
+	inv
+		NPC Rocket Star
+		job <Trainer>
+
+		NPC Rocket Star
+	end
+
+Content
+	% Space Force detachment
+	requires <*GOV_MILITARY RISHI -ROCKE Common>
+	minimap <.....1..............#...#>
+
+	Element1 <Prefab>
+	team1 <Guards>
+	teamdesc1 <SD>
+
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Mecha Pilot
+		SetFaction 16
+	end
+
+
+Content
+	% FComS detachment
+	requires <*GOV_MILITARY FCOMS Common>
+	minimap <.....1..............#...#>
+
+	Element1 <Prefab>
+	team1 <Guards>
+	teamdesc1 <SD>
+
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Mecha Pilot
+		SetFaction 10
+	end
+
+
+%% *GOV_POLICE Content
+%%	Add a police garrison to this location.
+
+Content
+	requires <*GOV_POLICE (MAQUI|FCOMS|RISHI) Common>
+	minimap <.....1..............#...#>
+
+	Element1 <Prefab>
+	team1 <Guards>
+	teamdesc1 <SD>
+
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Police Officer
+		SetFaction 9
+	end
+
+Content
+	requires <*GOV_POLICE (MAQUI|FCOMS|RISHI)>
+	minimap <............1..2....&-&-&>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	Element2 <Prefab>
+	team2 <Guards>
+	teamdesc2 <SD>
+
+	sub
+		Persona 1
+		special <NOPLOTS>
+		greeting <if# ChatNPCFac 0 else GoChat if= PCFac ChatNPCFac else GoCheckEligibility Goto GoTrain>
+		*GoTrain <*SKILL_TRAINING GoGoodbye>
+		*GoCheckEligibility <*ENEMY_CHECK GoCheckFaction ChatNPCFac GoNil>
+		GoCheckFaction <if= PCFac 0 else GoChat Goto GoCheckSkills>
+		*GoCheckSkills <*FACTION_ENTRANCE_EXAM GoJobOffer ChatNPCFac>
+		*GoChat <*MISC_CHATTER>
+		*GoGoodbye <*GOODBYE>
+		*GoJobOffer <*FACTION_JOIN_OFFER ChatNPCFac GoJoin>
+		*GoJoin <*FACTION_JOIN_ACCEPT ChatNPCFac>
+	end
+	inv
+		NPC Police Officer
+		SetFaction 9
+		job <Trainer>
+
+		NPC Police Officer
+		SetFaction 9
+	end
+

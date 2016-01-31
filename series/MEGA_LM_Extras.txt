@@ -1,0 +1,399 @@
+%%
+%% *LM_WannaJoin_Accepted Content
+%%
+%%  A lancemate has been accepted into a faction. Yay!
+%%
+%% PARAM1: The Lancemate
+%% PARAM2: The faction to be joined
+%%
+
+Content
+	name <Military LMWJA>
+	desc <The lancemate is accepted into a MILIT faction. Record the FacID, and give a new mecha.>
+	requires <*LM_WannaJoin_Accepted 2:MILIT>
+
+	% E1 is the lancemate
+	% E2 is the faction
+
+	% P%id%01 = One time only counter
+	update <if= P%id%01 0 P= %id%01 1 SetNPCFaction %1% %2% ForceChat %1%>
+	end <ifNPCDead %1% EndPlot>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% TrainNPC %1% .%id%_Skills History %id%01 RandomMecha .%id%_Facs ChatNPCRenown EndPlot Goto .%id%_GoAnnounce>
+		*.%id%_GoAnnounce <*LM_JoinFaction&IsMilitary %2%>
+		.%id%_Skills <NAS_Initiative NAS_ElectronicWarfare NAS_SpotWeakness NAS_Toughness -NAS_BornToFly -NAS_SureFooted -NAS_RoadHog -NAS_Ninjitsu>
+		.%id%_Facs <GENERAL \FACTION_DESIG %2%>
+		Msg%id%01 <%name1% joined %name2%.>
+	end
+
+Content
+	name <Police LMWJA>
+	desc <The lancemate is accepted into a POLIC faction. Record the FacID, and give a new mecha.>
+	requires <*LM_WannaJoin_Accepted 2:POLIC>
+
+	% E1 is the lancemate
+	% E2 is the faction
+
+	% P%id%01 = One time only counter
+	update <if= P%id%01 0 P= %id%01 1 SetNPCFaction %1% %2% ForceChat %1%>
+	end <ifNPCDead %1% EndPlot>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% TrainNPC %1% .%id%_Skills History %id%01 RandomMecha .%id%_Facs ChatNPCRenown EndPlot Goto .%id%_GoAnnounce>
+		*.%id%_GoAnnounce <*LM_JoinFaction&IsPolice %2%>
+		.%id%_Skills <NAS_SpotWeakness NAS_Insight NAS_Conversation NAS_Science -NAS_HapKiDo -NAS_Sniper -NAS_Innovation -NAS_StuntDriving>
+		.%id%_Facs <GENERAL \FACTION_DESIG %2%>
+		Msg%id%01 <%name1% joined %name2%.>
+	end
+
+Content
+	name <Corporate LMWJA>
+	desc <The lancemate is accepted into a CORPO faction. Record the FacID, and give a new mecha.>
+	requires <*LM_WannaJoin_Accepted 2:CORPO>
+
+	% E1 is the lancemate
+	% E2 is the faction
+
+	% P%id%01 = One time only counter
+	update <if= P%id%01 0 P= %id%01 1 SetNPCFaction %1% %2% ForceChat %1%>
+	end <ifNPCDead %1% EndPlot>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% TrainNPC %1% .%id%_Skills History %id%01 RandomMecha .%id%_Facs ChatNPCRenown EndPlot Goto .%id%_GoAnnounce>
+		*.%id%_GoAnnounce <*LM_JoinFaction&IsCorporate %2%>
+		.%id%_Skills <NAS_Repair NAS_ElectronicWarfare NAS_Shopping NAS_MechaEngineering -NAS_StuntDriving -NAS_BusinessSense -NAS_Innovation -NAS_TechVulture>
+		.%id%_Facs <GENERAL \FACTION_DESIG %2%>
+		Msg%id%01 <%name1% joined %name2%.>
+	end
+
+Content
+	name <Government LMWJA>
+	desc <The lancemate is accepted into a POLIT faction. Record the FacID, and give a new mecha.>
+	requires <*LM_WannaJoin_Accepted 2:POLIT>
+
+	% E1 is the lancemate
+	% E2 is the faction
+
+	% P%id%01 = One time only counter
+	update <if= P%id%01 0 P= %id%01 1 SetNPCFaction %1% %2% ForceChat %1%>
+	end <ifNPCDead %1% EndPlot>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% TrainNPC %1% .%id%_Skills History %id%01 RandomMecha .%id%_Facs ChatNPCRenown EndPlot Goto .%id%_GoAnnounce>
+		*.%id%_GoAnnounce <*LM_JoinFaction&IsPolitical %2%>
+		.%id%_Skills <NAS_Medicine NAS_Conversation NAS_Taunt NAS_Performance -NAS_SureFooted -NAS_BusinessSense -NAS_HullDown -NAS_Camaraderie>
+		.%id%_Facs <GENERAL \FACTION_DESIG %2%>
+		Msg%id%01 <%name1% joined %name2%.>
+	end
+
+%%
+%% *LM_WannaJoin_Rejected Content
+%%
+%%  A lancemate has been rejected by a faction. Yay!
+%%
+%% PARAM1: The Lancemate
+%% PARAM2: The faction
+%%
+
+Content
+	name <Professional Rejection>
+	desc <The lancemate will set a new motivation.>
+	requires <*LM_WannaJoin_Rejected 1:M.pro>
+
+	% E1 is the lancemate
+	% E2 is the faction
+
+	% P%id%01 = One time only counter
+	update <if= P%id%01 0 P= %id%01 1 ForceChat %1%>
+	end <ifNPCDead %1% EndPlot>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% ifNPCHeroic else .%id%_GoSetCompetition TrainNPC %1% .%id%_HeroicSkills NewChat Say %id%01 EndPlot>
+		.%id%_GoSetCompetition <TrainNPC %1% .%id%_CompetSkills NewChat Say %id%02 EndPlot>
+		.%id%_HeroicSkills <NAS_Medicine NAS_Conversation NAS_Mysticism NAS_Insight -NAS_Polymath -NAS_Camaraderie>
+		.%id%_CompetSkills <NAS_Initiative NAS_Stealth NAS_Intimidation NAS_Taunt -NAS_KungFu -NAS_Polymath>
+		Msg%id%01 <So %name2% doesn't want me... well, I can keep on doing my best to make this world a better place all by myself. I don't need them.>
+		Msg%id%01_1 <This is very disappointing. I thought I could do some good by joining %name2%, but maybe I can do more without them...>
+		Msg%id%01_2 <Oh well, %name2% doesn't want me... I shouldn't be too disappointed. There's still a lot of good I can do in the world without them.>
+		Msg%id%02 <What, they think I'm not good enough for %name2%!? I'll show them how good I am! I'll show everyone!>
+		Msg%id%02_1 <How could I have been rejected by %name2%!? They don't know what they're missing... I'm the best there is, and from this moment on I'm gonna prove it to the world!>
+		Msg%id%02_2 <They think they're better than me!? I'll show %name2% who's the best pilot around!>
+	end
+
+
+%%
+%% *LM_WannaJoinFaction Content
+%%
+%%  A lancemate wants to join a faction. The PC can try to get them in, or not.
+%%
+%% PARAM1: The Lancemate
+%% PARAM2: The faction to be joined
+%% PARAM3: The NPC to speak with about joining
+%%
+
+Content
+	name <Default LM Faction Application>
+	desc <The Lancemate will be checked for application. The PC can either reccomend them or not.>
+	requires <*LM_WannaJoinFaction>
+
+	% E1 is the lancemate
+	% E2 is the faction
+	% E3 is the NPC to speak with about joining
+
+	start <ifNPCOK %1% else .%id%_GoDelete ifNPCOK %3% else .%id%_GoDelete ifFactionEnemy %2% EndPlot>
+	.%id%_GoDelete <EndPlot>
+
+	% SubPlot1 is what happens if the LM's application is accepted.
+	% SubPlot2 is what happens if the LM's application is rejected.
+	SubPlot1 <*LM_WannaJoin_Accepted  1 2>
+	SubPlot2 <*LM_WannaJoin_Rejected 1 2>
+
+	sub
+		Persona 3
+		% V%id%01 = LM's score
+		% V%id%02 = PC's fac point gain, based on honesty of answers
+		% V%id%11 = Answered P04
+		% V%id%12 = Answered P05
+		greeting <if= PlotStatus %plotid% %id% else %pop% ifNPCLancemate %1% else %pop% NewChat Say %id%01 AddChat %id%01>
+		.%id%_GoReportProblems <NewChat Say %id%03 AddChat %id%04 AddChat %id%05 AddChat %id%06>
+		.%id%_GoContinueReport <NewChat Say %id%04 AddChat %id%04 AddChat %id%05 AddChat %id%06>
+		% Upon starting interview, clear all counters to prevent scumming.
+		result%id%01 <NewChat Say %id%02 AddChat %id%02 AddChat %id%03  V= %id%02 0 V= %id%11 0 V= %id%12 0>
+		result%id%02 <V= %id%01 PCFacLevel  V+ %id%01 d2  V+ %id%01 -1  Goto .%id%_GoReportProblems>
+		result%id%03 <V= %id%01 d3          Goto .%id%_GoReportProblems>
+		result%id%04 <V+ %id%02 5  V+ %id%01 -d3  V= %id%11 1  Goto .%id%_GoContinueReport>
+		result%id%05 <V+ %id%02 2  V+ %id%01 -d3  V= %id%12 1  Goto .%id%_GoContinueReport>
+		result%id%06 <EndChat Say %id%05 AddChat %id%07>
+		result%id%07 <FacXP+ %2% v%id%02 ifG v%id%01 1 else .%id%_GoReject NewChat Say %id%06 SetPlotStatus %plotid1% %id1%>
+		.%id%_GoReject <NewChat Say %id%07 SetPlotStatus %plotid2% %id2%>
+		Msg%id%01 <Hi \PC . %name1% says that \SPR %1% would like to join %name2%.>
+		Msg%id%02 <Are you willing to give a formal recommendation for %name1%?>
+		Msg%id%03 <Very well. Can you think of any reasons why %name1% might not be a good candidate?>
+		Msg%id%04 <Your concern has been noted. Is there anything else you feel we should know?>
+		Msg%id%04_1 <I see. Is there anything else you'd like to mention?>
+		Msg%id%05 <Thanks. Let me finish entering the data into the computer, and the verdict is...>
+		Msg%id%06 <Congratulations, %name1% is now a member of %name2%!>
+		Msg%id%07 <Sorry, but %name1%'s application has been rejected...>
+		Prompt%id%01 <That's right.>
+		Prompt%id%01_1 <That's why we're here.>
+		Prompt%id%02 <Yes I am.>
+		CPrompt%id%02 <ifG PCFacLevel 0 Accept>
+		Prompt%id%03 <No, not particularly...>
+		Prompt%id%04 <Well, \SPR %1% is a bit of a psychopath...>
+		CPrompt%id%04 <ifG 0 NPCHeroism %1% if= v%id%11 0 Accept>
+		Prompt%id%05 <%name1% has a history of petty crime.>
+		CPrompt%id%05 <ifG 0 NPCLaw %1% if= v%id%12 0 Accept>
+		Prompt%id%06 <No, that's all.>
+		Prompt%id%07 <[Continue]>
+	end
+
+%%
+%% *LM_SecretPlace Content
+%%
+%%  A lancemate will bring the PC to a secret place.
+%%
+%% PARAM1: The Lancemate
+%% PARAM2: The outdoors scene where the secret place is
+%%
+
+Content
+	name <My Favorite Junkyard>
+	desc <Your lancemate will bring you to a junkyard for some fresh salvage.>
+	requires <*LM_SecretPlace 1:A.tha ~1:CRAFT ~1:LABOR ~1:CORPO ~"Industrial">
+
+	% Element1 is the lancemate
+	% Element2 is the outdoors scene
+	% Element3 is the junkyard
+	Element3 <Prefab>
+	Place3 <2>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% if= SceneID %3% else .%id%_GoNotHere Goto .%id%_GoExplain>
+		.%id%_GoNotHere <RevertPersona>
+		.%id%_GoExplain <NewChat Say %id%01   SetXXRAttitude %1% XXR_A_IsEqual   History %id%02  EndPlot  Trigger0 Local1>
+		Msg%id%01 <Welcome to my favorite junkyard! When I'm in \SCENE RootSceneID I usually come here to scrounge for parts. From the look of things they just got a new load in. Take a look around, if you see anything useful you can grab it.>
+		Msg%id%01_1 <I'll bet you didn't expect me to bring you here! Seriously, this is a good place, the best scrapyard in \SCENE RootSceneID . Look around and if you find anything useful then grab it.>
+		CMsg%id%01_1 <ifNPCSociable Accept>
+		Msg%id%01_2 <What, you expected a fancy restaurant or something? This is the kind of place I like... loads of mecha parts, no-one to bother me. Take a look around and see if you can find anything useful.>
+		CMsg%id%01_2 <ifNPCShy Accept>
+		Msg%id%01_3 <Yeah, I know what you're thinking, it's a junkyard... but what a junkyard! This is my favorite place to go parts-scrounging in \SCENE RootSceneID . Look around and see if you can find anything worth taking.>
+		CMsg%id%01_3 <ifNPCEasygoing Accept>
+		Msg%id%01_4 <You know where you are? The greatest scrapyard in all of civilization! I always stop by here when in \SCENE RootSceneID . Go, explore, seek the buried treasures hidden among the wrecks!>
+		CMsg%id%01_4 <ifNPCPassionate Accept>
+		Msg%id%01_5 <Welcome to the happiest place in the world! This junkyard has loads of great parts, and it looks like they got a fresh shipment today! Take a look around, and if you see anything useful grab it before someone else does.>
+		CMsg%id%01_5 <ifNPCCheerful Accept>
+		Msg%id%01_6 <That's right, I brought you to a junkyard... bear with me, \PC . This is a great place to find useful parts. Take a look around and see what you can find.>
+		CMsg%id%01_6 <ifNPCMelancholy Accept>
+		Msg%id%02 <%name1% brought you to \PPR %1% favorite scrapyard.>
+
+
+		MetaScene 3 2
+		MapWidth 50
+		MapHeight 50
+		AsteroidMap
+		RockyTiles
+
+		% L1 = First time counter
+		% L2 = Lancemate advancement counter
+
+		start <if= L1 0 else GoBeenBefore L= 1 1  Alert 1 ForceChat %1%>
+		GoBeenBefore <Print 2>
+
+		Local1 <if= L2 0 L= 2 1 TrainNPC %1% .skills>
+		.skills <NAS_Repair NAS_MechaEngineering NAS_Shopping -NAS_TechVulture -NAS_JackOfAll -NAS_Innovation -NAS_GateCrasher>
+
+		Msg1 <%name1% leads you to a salvage yard. There appear to be some fresh parts laying about.>
+		Msg2 <You enter the salvage yard.>
+
+		Content1 <Some 2 100 Sub *JUNKYARD_SALVAGE na>
+		Content2 <Some 3  55 Sub *JUNKYARD_SALVAGE na>
+
+		sub
+			rect
+			Width 5
+			Height 5
+			minimap < ... .......1....... ... >
+			inv
+				STC MECHAMODEL-1
+				MiniMapComponent 1
+				Scale 2
+				Use <Alert 1 ifRepair SkillTar %threat% else GoLesserMecha CustomMecha .fac %threat% DeleteSelf>
+				GoLesserMecha <RandomMecha .fac %threat% DeleteSelf>
+				.fac <GENERAL \FACTION_DESIG RootSceneFac \FACTION_DESIG NPCFac %1%>
+				msg1 <This mecha appears to be in pretty good shape.>
+			end
+		end
+	end
+	inv
+		STC PLOT-LMSECRETSPOT
+	end
+
+
+Content
+	name <Temple of Atan>
+	desc <Your lancemate will bring you to a temple of Atan, PreZero goddess of mecha.>
+	requires <*LM_SecretPlace 1:A.tha (1:M.---|1:M.pro) ~1:ADVEN ~1:MILIT ~1:FAITH>
+
+	% Element1 is the lancemate
+	% Element2 is the outdoors scene
+	% Element3 is the temple
+	Element3 <Prefab>
+	Place3 <2>
+
+	end <ifNPCDead %1% EndPlot>
+
+	%% Win or lose the ambush challenge, it'll end the plot.
+	.%id1%_%plotid1%_GoWin   <EndPlot>
+	.%id1%_%plotid1%_GoLoss  <EndPlot>
+
+	SubPlot1 <*:MechaAmbush&Duel 2>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% if= SceneID %3% else .%id%_GoNotHere Goto .%id%_GoExplain>
+		.%id%_GoNotHere <RevertPersona>
+		.%id%_GoExplain <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 SetXXRAttitude %1% XXR_A_IsEqual  SetXXRMotivation %1% XXR_M_Professional>
+		result%id%01 <NewChat Say %id%02  AddReact  d10     History %id%04  WinSubPlot %plotid% SetPlotStatus %plotid1% %id1%  Trigger0 Local1>
+		result%id%02 <EndChat Say %id%03  AddCheerful -d10  History %id%04  WinSubPlot %plotid% SetPlotStatus %plotid1% %id1%  Trigger0 Local1>
+		Msg%id%01 <Back when I started learning how to pilot I used to come here all the time. My friends used to run practice matches outside... We'd talk about great cavaliers, and imagine how successful we were going to be ourselves someday.>
+		Msg%id%01_1 <I first became a cavalier because it seemed like that's what all my friends were doing. We'd meet here, run practice matches outside, talk about great pilots... and imagine how great we were going to be ourselves, someday.>
+		CMsg%id%01_1 <ifNPCSociable Accept>
+		Msg%id%01_2 <This was my secret place. I found out later that it was the secret place for a lot of young cavaliers. Sometimes they'd hold duels outside... This is really where I decided what I wanted to do with my life.>
+		CMsg%id%01_2 <ifNPCShy Accept>
+		Msg%id%01_3 <Yeah, I used to hang out here a lot. All us young wannabes came to the shrine for chatting and practice matches. It was fun, but more than that, I realized that this is something I can really be good at y'know?>
+		CMsg%id%01_3 <ifNPCEasygoing Accept>
+		Msg%id%01_4 <This was the first place I ever met anyone as nuts about mecha as I am. We'd watch arena vids, hold practice duels, read all the latest tech mags... This is where I became what I am, where I became a cavalier.>
+		CMsg%id%01_4 <ifNPCPassionate Accept>
+		Msg%id%01_5 <We had lots of good times here. My friends all wanted to become cavaliers. We'd meet here, run practice matches outside, talk about the great pilots... Good times.>
+		CMsg%id%01_5 <ifNPCCheerful Accept>
+		Msg%id%01_6 <All my life, I never really fit in... until I found this place. We would chat about mecha, run practice duels, bet on the latest tournaments. It was here that I decided what I wanted to be, and found the courage to pursue that goal.>
+		CMsg%id%01_6 <ifNPCMelancholy Accept>
+		Msg%id%02 <Because of this place, and my experiences here, I decided to become the best cavalier that I can... To never stop striving. I hope you can find some inspiration here as well, \PC .>
+		Msg%id%02_1 <I don't believe in gods or goddesses, but I can believe in the spirit of Atan... to always do your best, to never stop striving. That's what I aim for as a cavalier. I hope you can find some inspiration here as well, \PC .>
+		CMsg%id%02_1 <ifNPCPragmatic Accept>
+		Msg%id%02_2 <I feel like Atan has guided me on this quest, and that she led me to you. I'll work hard to be the best cavalier that I can be. I hope you can find some inspiration in this place as well, \PC .>
+		CMsg%id%02_2 <ifNPCSpiritual Accept>
+		Msg%id%02_3 <I know you don't believe in these things, but I honestly feel that it was Atan who led me to you \PC . I hope that you can find some inspiration in this place as well.>
+		CMsg%id%02_3 <ifNPCSpiritual ifPCPragmatic Accept>
+		Msg%id%03 <I was just hoping that you could find some inspiration here, too. I know, I know, you don't do that whole "inspiration" thing.>
+		Msg%id%03_1 <Ashes, why do I even bother? I was hoping, y'know, that maybe you could find some inspiration here as well... I know, I know, you don't do that whole "inspiration" thing.>
+		CMsg%id%03_1 <ifG d20 React Accept>
+		Msg%id%03_2 <Screw you! This is my monologue, and I'm going to finish it! This place made me want to be the best cavalier in the world. Maybe if you take a look around you'll shape up a bit too.>
+		CMsg%id%03_2 <ifNPCMelancholy Accept>
+		Msg%id%03_3 <Yeah, I was monologueing, wasn't I? I was just hoping you could find some inspiration here, too.>
+		CMsg%id%03_3 <ifNPCShy Accept>
+		Msg%id%04 <%name1% showed you \PPR %1% shrine to Atan.>
+		Prompt%id%01 <Atan was your inspiration to become a cavalier?>
+		Prompt%id%01_1 <Thanks for bringing me here.>
+		Prompt%id%02 <Yeah, yeah, get to the point.>
+		Prompt%id%02_1 <So, what does that have to do with me?>
+
+		MetaScene 3
+		MapWidth 25
+		MapHeight 25
+		CaveMap
+		RockyTiles
+
+		% L1 = First time counter
+		% L2 = Lancemate advancement counter
+
+		start <if= L1 0 else GoBeenBefore L= 1 1  Alert 1 ForceChat %1%>
+		GoBeenBefore <Print 2>
+
+		Local1 <if= L2 0 L= 2 1 TrainNPC %1% .skills>
+		.skills <NAS_ElectronicWarfare NAS_SpotWeakness NAS_Initiative NAS_Awareness -NAS_HapKiDo -NAS_KungFu -NAS_StuntDriving -NAS_Camaraderie -NAS_BornToFly -NAS_SureFooted>
+
+		Msg1 <%name1% leads you to a crudely built shrine of Atan, the PreZero goddess of mecha pilots.>
+		Msg2 <You enter the shrine of Atan.>
+
+		sub
+			room
+			Width 5
+			Height 5
+			special <STARTHERE>
+			sub
+				StairsDown
+				Use <Print 1 Return>
+			end
+
+			room
+			Width 5
+			Height 5
+			minimap < ... .......1....... ... >
+			inv
+				STC SHRINE-ATAN
+				use <Alert 101 OpenInv>
+				Msg101 <It's a statue of Atan, the goddess of mecha pilots. She appears to be holding something...>
+				MiniMapComponent 1
+				inv
+					Treasure
+					name <Kroper's Guide to Mecha Gunnery>
+					desc <An old and well-work book. The blurb on the cover promises that it can teach you some new tricks.>
+					Fudge 20
+					% V1 = Have read book already
+					use <if= V1 0 else GoAlreadyRead ifYesNo 1 2 3 else GoReadLater Alert 4 History 5 V= 1 1 Mental XPV 100 PCSkill+ NAS_MechaGunnery 1>
+					GoReadLater <Print 6>
+					GoAlreadyRead <Print 7>
+					Msg1 <Kroper's Guide to Mecha Gunnery! No matter who you are or your level of experience, this book is guaranteed to teach you some new tricks. Do you want to read it now?>
+					Msg2 <Yes, please.>
+					Msg3 <No, I'll save it for later.>
+					Msg4 <You read the book. Wow, the blurb on the cover wasn't kidding! You feel like a better mecha pilot than before.>
+					Msg5 <You read Kroper's Guide to Mecha Gunnery.>
+					Msg6 <You put away the book for later.>
+					Msg7 <You've already read the book.>
+				end
+			end
+		end
+	end
+	inv
+		STC PLOT-LMSECRETSPOT
+	end
+
+

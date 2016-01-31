@@ -1,0 +1,266 @@
+Battroid 5
+Name <Wolfram>
+Desig <HMC-6>
+factions <PDASS HWANG FEDER REGEX>
+type <GROUND INSIDE>
+SDL_Sprite <btr_wolfram.png>
+Desc <A mining robot developed from the Claymore design. It's not designed for combat, but is often used by arena fighters who can't afford anything better yet.>
+SDL_PORTRAIT <item_wolfram.png>
+Legality -20
+
+sub
+Head
+	Size 3
+	Armor 3
+	mass 2
+	sub
+		Sensor 3
+	end
+	inv
+		HeadArmor 3
+		Name <Mining Helmet>
+	end
+
+Torso
+	Armor 5
+	sub
+		CPit
+
+		Mount
+		Name <Right Hardpoint>
+
+		Mount
+		Name <Left Hardpoint>
+		inv
+			BeamGun 7
+			Name <Mining Laser>
+			Range 4
+			Acc -1
+			Speed 1
+		end
+
+		HeavyActuator 1
+	end
+
+Arm
+	Name <Right Arm>
+	Armor 4
+	sub
+		Hand
+		inv
+			Melee 14
+			Name <Pick-Axe>
+			Acc 1
+		end
+
+		HeavyActuator 3
+	end
+
+Arm
+	Name <Left Arm>
+	Armor 4
+	sub
+		Hand
+
+		HeavyActuator 3
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 4
+	sub
+		HeavyActuator 4
+	end
+	
+Leg
+	Name <Left Leg>
+	Armor 4
+	sub
+		HeavyActuator 4
+	end
+end
+
+Battroid 5
+Name <Zeta Wolfram>
+Desig <>
+factions <UNIQUE>
+type <GROUND SPACE INSIDE>
+SDL_Sprite <btr_wolfram.png>
+Desc <A heavily modified version of a Wolfram mining mecha.>
+SDL_PORTRAIT <item_wolfram.png>
+Legality -20
+
+sub
+Head
+	Size 3
+	Armor 3
+	mass 2
+	sub
+		Sensor 6
+		mass -1
+
+		Computer 2
+		mass -1
+		sub
+			Software
+			name <Target Analysis>
+			S_Information
+			SInfo_MechaDex
+
+			Software 2
+			name <Speed Compensator>
+			S_SpeedComp
+			S_BoostScale 2
+		end
+	end
+	inv
+		HeadArmor 3
+		name <Zeta Helmet>
+		Hardened
+		mass -3
+		sub
+			Flight 2
+		end
+	end
+
+Torso
+	Armor 5
+	sub
+		CPit
+
+		Mount
+		Name <Right Hardpoint>
+		inv
+			MLauncher 8
+			sub
+				STC GM-10
+				Magazine 8
+				Mass -1
+			end
+		end
+
+		Mount
+		Name <Left Hardpoint>
+		inv
+			MLauncher 8
+			sub
+				STC SWM-5
+				Magazine 16
+				Mass -1
+			end
+		end
+
+		HeavyActuator 2
+		Flight 1
+
+		Computer 6
+		mass -4
+		sub
+			Software 3
+			name <Z-ROCK Targeting>
+			S_TRBoost
+			S_BoostScale 2
+
+			Software 3
+			name <Z-ROCK Maneuver>
+			S_MVBoost
+			S_BoostScale 2
+		end
+	end
+	inv
+		BodyArmor 4
+		name <Zeta Breastplate>
+		Hardened
+		mass -3
+		sub
+			Flight 2
+		end
+	end
+
+Arm
+	Name <Right Arm>
+	Armor 4
+	sub
+		Hand
+		inv
+			EMelee 14
+			Name <Plasma Pickaxe>
+			Acc 1
+			Mass 1
+			type <EXTEND>
+		end
+
+		HeavyActuator 4
+
+		Flight 1
+	end
+	inv
+		ArmArmor 3
+		name <Zeta Bracer>
+		Hardened
+		mass -3
+		sub
+			Flight 2
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	Armor 4
+	sub
+		Hand
+		inv
+			STC RG-8
+			Mass -4
+		end
+
+		HeavyActuator 4
+
+		Flight 1
+	end
+	inv
+		ArmArmor 3
+		name <Zeta Bracer>
+		Hardened
+		mass -3
+		sub
+			Flight 2
+		end
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 4
+	sub
+		HeavyActuator 5
+		Flight 1
+	end
+	inv
+		LegArmor 3
+		name <Zeta Leg Armor>
+		Hardened
+		mass -3
+		sub
+			Flight 2
+		end
+	end
+	
+Leg
+	Name <Left Leg>
+	Armor 4
+	sub
+		HeavyActuator 5
+		Flight 1
+	end
+	inv
+		LegArmor 3
+		name <Zeta Leg Armor>
+		Hardened
+		mass -3
+		sub
+			Flight 2
+		end
+	end
+
+end
+

@@ -1,0 +1,60 @@
+%% This file holds the "Cavalier's Club", which will be the starting
+%% location for the PC. All scenes in this file must have the designation
+%% "00000" and the type "cavclub". They don't have to be named "Cavalier's
+%% Club", though.
+
+Scene
+	name <the Cavalier's Club>
+	desig <00000>
+	type <building public cavclub mall garage>
+	entrance <*CAVCLUB>
+	special <ADDEXIT SHOWALL>
+	MallMap
+	MapWidth 15
+	MapHeight 15
+
+	% L1 = Initialization Counter
+	%      Don't print a message the first time this building is entered;
+	%      the core story will do that for us.
+
+	start <if# L1 0 else GoFirstTime Print 1>
+	GoFirstTime <L= 1 1>
+
+	Msg1 <You enter the Cavalier's Club.>
+
+
+	neededcells 2
+	Content1 <Some 1 100 Sub *MECHANIC_SHOP>
+	Content2 <Some 1 100 Sub *INTRO_SHOP>
+	Content3 <Fill Sub *SHOP_RANDOM>
+
+	% Load the hometown quests.
+	Quest1 <*:Q_LeadershipSeries>
+	Quest2 <*:Q_FREEMECHA 5>
+
+	% Load the debug quests. For testing purposes, set difficulcy to 1.
+	Quest7 <*:Q_DEBUG 1>
+	Quest8 <*:Q_DEBUGARENA 1>
+	Quest9 <*:Q_DEBUGGIVEMISSION 1>
+
+	sub
+		Team 1
+
+		Team 2
+		name <Citizens>
+		SetAlly 1
+		Passive
+
+		team 3
+		name <Guards>
+		SetAlly 2
+
+		room
+		name <Foyer>
+		desig <EntranceGrid>
+		Content2 <Some 1 100 Here *ANTI_ATTACK_SECURITY 2>
+		Content3 <Some 2 30 Here *URBAN_X>
+		special <STARTHERE>
+
+	end
+

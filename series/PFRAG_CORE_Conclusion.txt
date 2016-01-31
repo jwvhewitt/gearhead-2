@@ -1,0 +1,425 @@
+%%
+%% CORE STORY CONCLUSION
+%%
+%%  These fragments are used by the game ending.
+%%
+
+%%
+%% *CS_END_FinalBattle_Greeting
+%%
+%%  The final battle has started, and the Enemy has just appeared. This is the greeting
+%%  for the PC.
+%%
+%%  PARAM1: Exit Label, presumably to THEME_EXPO
+%%
+
+Persona
+	requires <*CS_END_FinalBattle_Greeting (@:A.hat|@:A.mut|@:A.pch)>
+	START <EndChat Say %id%01 AddChat %id%01>
+	Result%id%01 <Goto %1%>
+	Msg%id%01 <How convenient. Here you are, \PC , standing before me at my moment of power. It saves me the trouble of having to hunt you down later on.>
+	Msg%id%01_1 <>
+	Msg%id%01_2 <>
+	Prompt%id%01_1 <Let's settle this.>
+	Prompt%id%01_2 <>
+
+Persona
+	requires <*CS_END_FinalBattle_Greeting @:A.obs>
+	START <EndChat Say %id%01 AddChat %id%01>
+	Result%id%01 <Goto %1%>
+	Msg%id%01 <I knew you'd come, \PC ! I wouldn't want you to miss my ascent to power, and your descent into hell!>
+	Msg%id%01_1 <>
+	Msg%id%01_2 <>
+	Prompt%id%01_1 <It's time to end this, \CHATNPC .>
+	Prompt%id%01_2 <I'm here. And I'm going to end this, now.>
+
+Persona
+	requires <*CS_END_FinalBattle_Greeting @:M.nih>
+	START <EndChat Say %id%01 AddChat %id%01>
+	Result%id%01 <Goto %1%>
+	Msg%id%01 <Today a new god of death is born, and \PPR ChatNPCID name is \ChatNPC ! You will be among the first to taste my power.>
+	Msg%id%01_1 <>
+	Msg%id%01_2 <>
+	Prompt%id%01_1 <The only one who's going to die here is you.>
+	Prompt%id%01_2 <Wow, you really have lost it.>
+
+Persona
+	requires <*CS_END_FinalBattle_Greeting "Villainous">
+	START <EndChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	Result%id%01 <Goto %1%>
+	Result%id%02 <Goto %1%>
+	Msg%id%01 <Well look at this. I haven't started to fight yet, but already you're bleeding... Should I be quick and put you out of your misery, or shall I play with you a while first?>
+	Msg%id%01_1 <>
+	Msg%id%01_2 <>
+	Prompt%id%01_1 <By the end, you'll look way worse than me.>
+	Prompt%id%01_2 <I hope you're not afraid of blood, 'cause you're about to see plenty.>
+	Prompt%id%02_1 <Enough talking. Let's end this.>
+	Prompt%id%02_2 <Are you here to talk or to fight? Let's go.>
+
+Persona
+	requires <*CS_END_FinalBattle_Greeting>
+	START <EndChat Say %id%01 AddChat %id%01>
+	Result%id%01 <Goto %1%>
+	Msg%id%01 <This battle has gone on for long enough. It's time that I end it once and for all, by ending your life...>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01_1 <Let's do this.>
+	Prompt%id%01_2 <You're free to try.>
+
+
+%%
+%% *CS_END_Intro_Greeting
+%%
+%%  The PC has just stumbled into the Enemy's plans, and the Enemy will greet the PC.
+%%  This pfrag should be based on the E:A and E:M context.
+%%
+%%  The PFrag will exit with the PC making a defiant challenge, to be answered below.
+%%
+%%  PARAM1: Exit Label
+%%
+
+Persona
+	requires <*CS_END_Intro_Greeting>
+	START <EndChat Say %id%01 AddChat %id%01>
+	Result%id%01 <Goto %1%>
+	Msg%id%01 <Hello, \PC . I've been expecting you. This would hardly be my moment of victory if I didn't get a chance to crush you once and for all.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Prompt%id%01_1 <You're the one who's going to get crushed.>
+	Prompt%id%01_2 <Don't be so cocky. I haven't even started yet.>
+
+%%
+%% *CS_END_Intro_Explanation
+%%
+%%  The Enemy NPC will explain what's going on, and may mention that the PC is too
+%%  late anyhow. This pfrag should be based on the plot state of the enemy faction.
+%%
+%%  This PFrag should set a storynote (smemo+history).
+%%
+
+Persona
+	requires <*CS_END_Intro_Explanation F:P.art I:++>
+	START <EndChat Say %id%01 SMemo %id%02 History %id%03>
+	Msg%id%01 <We have the \ITEM &TargetItem . With the knowledge it contains, our forces will be unbeatable! Still, I cannot leave loose ends unaddressed... I've assigned my best fighters to hunting you down. Goodbye \PC .>
+	Msg%id%02 <\CHATNPC revealed that \SPR ChatNPCID has obtained the \ITEM &TargetItem ; \SPR ChatNPCID assigned several of \PPR ChatNPCID best fighters to hunting you down.>
+	Msg%id%03 <\CHATNPC found the \ITEM &TargetItem , and revealed that it held great knowledge.>
+
+Persona
+	requires <*CS_END_Intro_Explanation F:REDMA (F:P.---|F:P.cat|F:P.pat|F:P.wep|F:P.war)>
+	START <EndChat Say %id%01 SMemo %id%02 History %id%03>
+	Msg%id%01 <The era of the Red Mask Raiders has begun. With our new fleet we will be lords of the spaceways! Soon you will feel our true power, and tremble before it...>
+	Msg%id%02 <\CHATNPC revealed that the Red Mask Raiders are making a play for dominance.>
+	Msg%id%03 <The Red Mask Raiders unveiled their new fleet, and plans for domination.>
+
+Persona
+	requires <*CS_END_Intro_Explanation>
+	START <EndChat Say %id%01 SMemo %id%02 History %id%03>
+	Msg%id%01 <I'm afraid that you're too late. My forces have already launched, and victory is at hand. I regret that you will not be able to see this, though, as I've sent my best fighters to remove you from the equation.>
+	Msg%id%02 <\CHATNPC revealed that \PPR ChatNPCID forces have already launched; \SPR ChatNPCID assigned several of \PPR ChatNPCID best fighters to hunting you down.>
+	Msg%id%03 <You arrived too late to prevent \CHATNPC 's forces from launching.>
+
+%%
+%% *CS_END_StatusReport
+%%
+%%  This friendly NPC will explain to the PC what's been going on in the city. This
+%%  pfrag will be based on the enemy faction, the enemy NPC, and the plot state.
+%%
+%%  PARAM1: [Continue] exit label
+%%
+
+Persona
+	requires <*CS_END_StatusReport F:REDMA E:++>
+	START <EndChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <The Red Mask Raiders have united under a new admiral, \PERSONA &EnemyNPC . Under \PPR &EnemyNPC leadership they plan to become a major power in the L5 region. They're ravaging \SCENE &EpisodeScene as a demonstration of their strength.>
+	Prompt%id%01 <[Continue]>
+
+Persona
+	requires <*CS_END_StatusReport F:REDMA (F:P.wep|F:P.war)>
+	START <EndChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <I don't know who's been helping them, but the Red Mask Raiders have obtained state of the art mecha. There's no way pirates could build machines like that by themselves. They're using \SCENE &EpisodeScene as a proving ground.>
+	Prompt%id%01 <[Continue]>
+
+Persona
+	requires <*CS_END_StatusReport F:REDMA>
+	START <EndChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <The Red Mask Raiders have completely taken over \SCENE &EpisodeScene . It's almost like they're just showing off their power- they've taken on the police and the military and defeated everyone.>
+	Prompt%id%01 <[Continue]>
+
+Persona
+	requires <*CS_END_StatusReport>
+	START <EndChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01_1 <\PERSONA &EnemyNPC is launching some kind of big operation. We can't be sure what, but \SPR &EnemyNPC 's got a veritable army in town enforcing \PPR &EnemyNPC will.>
+	CMsg%id%01_1 <ifNPCOK &EnemyNPC Accept>
+	Msg%id%01_2 <We've been overrun by \FACTION &EnemyFac ; nobody knows what they want, but they've got a veritable army on the street and have been busy crushing all resistance!>
+	CMsg%id%01_2 <if# &EnemyFac 0 Accept>
+	Msg%id%01_3 <\SCENE &EpisodeScene has been engulfed in chaos! Unaligned cavaliers have been battling in the street and nobody seems to know who's responsible or how to stop it.>
+	CMsg%id%01_3 <ifNPCDead &EnemyNPC if= &EnemyFac 0 Accept>
+	Prompt%id%01 <[Continue]>
+
+
+
+%%  ************************************
+%%  ***   PEACE  AND  LOVE  ENDING   ***
+%%  ************************************
+%%
+%%  Persona fragments for the final conversation in the Peace and Love ending.
+%%
+
+%%
+%% *CS_END_FPAL_Greeting
+%%
+%%  The PC is attempting to gain the Peace and Love ending. In this first
+%%  question, you get to choose whether to negotiate peace or simply fight.
+%%  Yeah, I know you've been working up to this the whole game, but it's still
+%%  a legitimate question.
+%%
+%% PARAM1: Negotaite Exit Label
+%% PARAM2: Fight Exit Label
+%%
+
+Persona
+	requires <*CS_END_FPAL_Greeting>
+	START <EndChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <Goto %2%>
+	Msg%id%01 <This fighting has gone on for long enough. It's time that I end things, by destroying you...>
+	Prompt%id%01 <Wait, it doesn't have to end that way...>
+	Prompt%id%01_1 <I'm here to end things, but not to fight you.>
+	Prompt%id%01_2 <There's been enough death. Let's talk.>
+	Prompt%id%02 <Big words. Can you back that up?>
+	Prompt%id%02_1 <It's you who will be destroyed.>
+	Prompt%id%02_2 <I'm tired of your posing. Let's get this over with.>
+
+Persona
+	requires <*CS_END_FPAL_Greeting (F:CRIHN|F:BOHEM) (P:L5LAW|P:RISHI|P:FCOMS|P:MAQUI|P:AEGSF|P:SILKN|P:ROCKE|P:PRIVA)>
+	START <EndChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <Goto %1%>
+	result%id%02 <Goto %2%>
+	Msg%id%01 <\SCENE RootSceneID has fallen easily enough... At last, Crihna Rock will be avenged!>
+	Prompt%id%01 <Wouldn't you rather have justice than vengeance?>
+	Prompt%id%02 <You're nothing but a murderer. I won't let you succeed.>
+
+%%
+%% *CS_END_FPAL_Quest1
+%%
+%%  The PC is attempting to gain the Peace and Love ending. In this second
+%%  question, the PC's reason for wanting peace will be established. Having
+%%  friends, allies, family or lovers on the opposite side is needed for the
+%%  top score.
+%%
+%% PARAM1: Best Exit Label
+%% PARAM2: Okay Exit Label
+%% PARAM3: Bad Exit Label
+%%
+
+Persona
+	requires <*CS_END_FPAL_Quest1>
+	START <EndChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03 AddChat %id%04>
+	result%id%01 <Goto %1%>
+	result%id%02 <Goto %2%>
+	result%id%03 <Goto %3%>
+	result%id%04 <Goto %2%>
+	Msg%id%01 <What do you care about peace? You're with \FACTION &AllyFac ... You just want to see us destroyed.>
+	Prompt%id%01 <That's not true; there are people I love on both sides.>
+	CPrompt%id%01 <ifG FacBuddies &EnemyFac 0 Accept>
+	Prompt%id%02 <I don't want to see anybody die, no matter who.>
+	CPrompt%id%02 <if= FacBuddies &EnemyFac 0 ifUConversation SocSkillTar StoryDL Accept>
+	Prompt%id%03 <I won't deny that...>
+	CPrompt%id%03 <if= FacBuddies &EnemyFac 0 Accept>
+	Prompt%id%04 <Reject peace, and you WILL be destroyed.>
+	CPrompt%id%04 <if= FacBuddies &EnemyFac 0 ifUIntimidation SocSkillTar StoryDL Accept>
+
+Persona
+	requires <*CS_END_FPAL_Quest1 (F:CRIHN|F:BOHEM|F:REDMA) (P:L5LAW|P:RISHI|P:FCOMS|P:MAQUI|P:AEGSF|P:SILKN|P:ROCKE|P:PRIVA)>
+	START <EndChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03 AddChat %id%04>
+	result%id%01 <Goto %1%>
+	result%id%02 <Goto %2%>
+	result%id%03 <Goto %3%>
+	result%id%04 <Goto %2%>
+	Msg%id%01 <The spinners don't care about peace. As long as the trade keeps flowing in and out of the ring, they don't worry about what happens to the people who live there.>
+	Prompt%id%01 <I worry. I've got friends there.>
+	CPrompt%id%01 <ifG FacBuddies &EnemyFac 0 Accept>
+	Prompt%id%02 <Yeah, like you haven't profited from their suffering, either.>
+	CPrompt%id%02 <if= FacBuddies &EnemyFac 0 ifUTaunt SocSkillTar StoryDL Accept>
+	Prompt%id%03 <You have a point...>
+	CPrompt%id%03 <if= FacBuddies &EnemyFac 0 Accept>
+	Prompt%id%04 <That's why we have to talk, to start a dialog.>
+	CPrompt%id%04 <if= FacBuddies &EnemyFac 0 ifUConversation SocSkillTar StoryDL Accept>
+
+%%
+%% *CS_END_FPAL_Quest2
+%%
+%%  The PC is attempting to gain the Peace and Love ending. In this third
+%%  question, the PC must explain what the enemy faction has to gain from
+%%  pursuing peace. Having a high Heroism score will enable the PC to make
+%%  the best offer.
+%%
+%% PARAM1: Best Exit Label
+%% PARAM2: Okay Exit Label
+%% PARAM3: Bad Exit Label
+%%
+
+Persona
+	requires <*CS_END_FPAL_Quest2>
+	START <EndChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+	result%id%01 <Goto %1%>
+	result%id%02 <Goto %2%>
+	result%id%03 <Goto %3%>
+	Msg%id%01 <Why should I even negotiate with you? We're in a position of strength here... \SCENE RootSceneID is completely at our mercy.>
+	Prompt%id%01 <For now, but what of tomorrow when the violence continues?>
+	CPrompt%id%01 <ifG PCHeroism 75 Accept>
+	Prompt%id%02 <Look at the big picture. Is this the legacy you want?>
+	CPrompt%id%02 <ifPCHeroic ifG 76 PCHeroism Accept>
+	Prompt%id%03 <I can see you're not willing to listen...>
+	CPrompt%id%03 <ifG 25 PCHeroism Accept>
+
+Persona
+	requires <*CS_END_FPAL_Quest2 (F:CRIHN|F:BOHEM) (P:L5LAW|P:RISHI|P:FCOMS|P:AEGSF|P:ROCKE)>
+	START <EndChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+	result%id%01 <Goto %1%>
+	result%id%02 <Goto %2%>
+	result%id%03 <Goto %3%>
+	Msg%id%01 <The spinners have broken too many promises before. What can you offer to \FACTION &EnemyFac that hasn't already been destroyed?>
+	Prompt%id%01 <A real investigation of Crihna Rock, plus reparations.>
+	CPrompt%id%01 <ifG PCHeroism 75 Accept>
+	Prompt%id%02 <Aid to the ring, and an end to violence from both sides.>
+	CPrompt%id%02 <ifPCHeroic ifG 76 PCHeroism Accept>
+	Prompt%id%03 <Look, just trust me...>
+	CPrompt%id%03 <ifG 25 PCHeroism Accept>
+
+%%
+%% *CS_END_FPAL_Quest3
+%%
+%%  The PC is attempting to gain the Peace and Love ending. In this fourth
+%%  question, the PC must establish the authority by which they're negotiating.
+%%  This generally requires a master ranking in the allied faction, or a really
+%%  good conversation roll.
+%%
+%% PARAM1: Best Exit Label
+%% PARAM2: Okay Exit Label
+%% PARAM3: Bad Exit Label
+%%
+
+Persona
+	requires <*CS_END_FPAL_Quest3>
+	START <EndChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+	result%id%01 <Goto %1%>
+	result%id%02 <Goto %2%>
+	result%id%03 <Goto %3%>
+	Msg%id%01 <Look, even if I were sympathetic to you, no-one else would listen. You're making promises that you can't keep.>
+	Prompt%id%01 <I swear, as \RANK of \FACTION PCFac .>
+	CPrompt%id%01 <if= PCFac &AllyFac ifG PCFacLevel 7 Accept>
+	Prompt%id%02 <I promise, I won't give up on this.>
+	CPrompt%id%02 <ifUConversation SocSkillTar StoryDL Accept>
+	Prompt%id%03 <Uh, it could happen...>
+
+%%
+%% *CS_END_FPAL_Quest4
+%%
+%%  The PC is attempting to gain the Peace and Love ending. In this final
+%%  question, the PC must remove all doubt... usually with a skill roll.
+%%  The difficulty rating is based on the success so far and will not be
+%%  any higher than 125.
+%%
+%% PARAM1: Difficulty Rating
+%% PARAM2: Success Exit Label
+%% PARAM3: Failure Exit Label
+%%
+
+Persona
+	requires <*CS_END_FPAL_Quest4>
+	START <EndChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03 AddChat %id%04 AddChat %id%05>
+	result%id%01 <Goto %2%>
+	result%id%02 <Goto %2%>
+	result%id%03 <Goto %3%>
+	result%id%04 <Goto %2%>
+	result%id%05 <Goto %2%>
+	Msg%id%01 <I don't know... I'm still not convinced.>
+	Prompt%id%01 <Then put down the guns and let's keep talking.>
+	CPrompt%id%01 <ifUConversation SkillTar %1% Accept>
+	Prompt%id%02 <The decision is yours. Peace or war, life or death.>
+	CPrompt%id%02 <ifUIntimidation SkillTar %1% Accept>
+	Prompt%id%03 <If you don't want peace, let me show you war!!!>
+	Prompt%id%04 <You really shouldn't fight when you're that conflicted.>
+	CPrompt%id%04 <ifUTaunt SkillTar %1% Accept>
+	Prompt%id%05 <By cost-benefit analysis, peace is a bargain.>
+	CPrompt%id%05 <ifUShopping SkillTar %1% Accept>
+
+Persona
+	requires <*CS_END_FPAL_Quest4 (C:MEDIC|C:ACADE)>
+	START <EndChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03 AddChat %id%04 AddChat %id%05>
+	result%id%01 <Goto %2%>
+	result%id%02 <Goto %2%>
+	result%id%03 <Goto %3%>
+	result%id%04 <Goto %2%>
+	result%id%05 <Goto %2%>
+	Msg%id%01 <How is peace even possible? There are too many wounds standing between us...>
+	Prompt%id%01 <We can start by just putting down the guns.>
+	CPrompt%id%01 <ifUConversation SkillTar %1% Accept>
+	Prompt%id%02 <It's time to stop the cycle of death and embrace life.>
+	CPrompt%id%02 <ifUMysticism SkillTar %1% Accept>
+	Prompt%id%03 <Then I guess there's nothing left to do but fight.>
+	Prompt%id%04 <All wounds heal with time, but first we must stop fighting.>
+	CPrompt%id%04 <ifUMedicine SkillTar %1% Accept>
+	Prompt%id%05 <If we want it bad enough, peace should be possible.>
+	CPrompt%id%05 <ifUScience SkillTar %1% Accept>
+
+%%
+%%  *CS_END_FPAL_Accept
+%%
+%%  Your offer of peace has been accepted.
+%%
+%% PARAM1: Exit Label
+%%
+
+Persona
+	requires <*CS_END_FPAL_Accept>
+	START <EndChat Say %id%01 Goto %1%>
+	Msg%id%01 <You're right... I don't know what will come of this, but I'm willing to talk, for both \FACTION &EnemyFac and \FACTION &AllyFac .>
+
+
+%%
+%%  *CS_END_FPAL_Reject
+%%
+%%  Your offer of peace has been rejected.
+%%
+%% PARAM1: Exit Label
+%%
+
+Persona
+	requires <*CS_END_FPAL_Reject>
+	START <EndChat Say %id%01 AddChat %id%01>
+	result%id%01 <Goto %1%>
+	Msg%id%01 <Your words are weak. I'll show you that my sword is mightier...>
+	Prompt%id%01 <[Continue]>
+
+
+
+
+
+
+

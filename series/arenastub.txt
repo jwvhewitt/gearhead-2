@@ -1,0 +1,7 @@
+% Arena Stub
+ArenaUnit
+Cash 2000000
+
+name <Default>
+UPDATE <UPDATEPROPS>
+

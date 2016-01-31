@@ -1,0 +1,189 @@
+Gerwalk 6
+Name <Roc>
+Desig <ZAM-99>
+SDL_Sprite <ger_roc.png>
+SDL_Portrait <item_roc.png>
+
+desc <A high mobility artillery platform from Hoeller Industries.>
+type <GROUND SPACE>
+factions <HOELL ROCKE MAQUI FCOMS RISHI>
+
+ROLE_HOELL <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+ROLE_ROCKE <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+ROLE_FCOMS <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+ROLE_RISHI <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+
+sub
+head
+	Size 3
+	Armor 5
+	mass -5
+	sub
+		Sensor 6
+		mass -1
+
+		ECM 6
+		mass -1
+	end
+	inv
+		HeadArmor 4
+		mass -4
+		sub
+			STC LAS-5
+			Name <AM Beamgun>
+			Type <INTERCEPT>
+			Acc 4
+			mass -3
+		end
+	end
+
+torso
+	Armor 7
+	Mass -10
+	sub
+		Mount
+		Name <Right Body Mount>
+		inv
+			MLauncher 8
+			sub
+				STC SWM-2
+				Magazine 40
+			end
+		end
+
+		Mount
+		Name <Left Body Mount>
+		inv
+			MLauncher 8
+			sub
+				STC SWM-2
+				Magazine 40
+			end
+		end
+
+		CPit
+		Armor 2
+		mass -1
+
+		Gyro
+		Armor 2
+		mass -1
+
+		Engine 6
+		Armor 2
+		mass -1
+
+		Sensor 4
+
+		BeamGun 12
+		Name <Plasma Mega-Cannon>
+		Type <HYPER>
+		Integral
+		Acc 1
+		Speed 1
+		Range 7
+
+		Computer 5
+		mass -6
+		sub
+			Software 2
+			name <Trajectory Assistance>
+			S_SpeedComp
+			S_BoostScale 2
+
+			Software 2
+			name <C134s Reflex Control>
+			S_MVBoost
+			S_BoostScale 2
+
+			Software 2
+			name <Falcon Fire Control>
+			S_TRBoost
+			S_BoostScale 2
+		end
+	end
+	inv
+		BodyArmor 7
+		mass -7
+		sub
+			OverCharger 4
+		end
+	end
+
+Wing
+	Name <Right Wing>
+	Armor 5
+	size 5
+	Mass -7
+	sub
+		Mount
+		Name <Right Wing Mount>
+		inv
+			STC RG-8
+			mass -6
+		end
+
+		Flight 5
+	end
+
+Wing
+	Name <Left Wing>
+	Armor 5
+	size 5
+	Mass -7
+	sub
+		Mount
+		Name <Left Wing Mount>
+		inv
+			STC SKBOR-4
+			mass -2
+		end
+
+		Flight 5
+	end
+
+Leg
+	Name <Right Leg>
+	size 7
+	Armor 7
+	Mass -9
+	sub
+		Mount
+		Name <Right Leg Mount>
+		inv
+			MLauncher 8
+			sub
+				STC ICM-5
+				magazine 16
+			end
+		end
+
+		Flight 3
+
+		PowerSource 4
+		mass -4
+	end
+
+Leg
+	Name <Left Leg>
+	size 7
+	Armor 7
+	Mass -9
+	sub
+		Mount
+		Name <Left Leg Mount>
+		inv
+			MLauncher 8
+			sub
+				STC ICM-5
+				magazine 16
+			end
+		end
+
+		Flight 3
+
+		PowerSource 4
+		mass -4
+	end
+
+end

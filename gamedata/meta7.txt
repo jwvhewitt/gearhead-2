@@ -1,0 +1,6 @@
+% Rubble Scripts
+name <Rubble>
+roguechar <%>
+SDL_Sprite <meta_terrain.png>
+Use <Print -1>
+msg-1 <Blocked!>

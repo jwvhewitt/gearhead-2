@@ -1,0 +1,179 @@
+%%
+%% Disaster Plots
+%%
+%%  Something bad has happened, like an earthquake or a typhoon. Various
+%%  rescue and rebuilding efforts may be underway.
+%%
+%% Mood Spec:
+%%  - No Elements
+%%
+
+Plot
+	name <Go Beat Looters>
+	desc <In any disaster you're going to get looters. Go blow them up.>
+	requires <*Disaster>
+
+	% E1 is the town itself
+	% E2 is a police or military character aligned with the town
+	% E3 is the urban scene where the looters are
+	Element1 <Scene Town>
+	Element2 <Character (POLIC|MILIT) !Ally 1>
+	Element3 <Scene Urban>
+
+	% V1 = Time Limit
+	% V2 = Memo Counter
+
+	% There's a 24-hour time limit.
+	start <if= V1 0 else GoCheckTime V= 1 ComTime V+ 1 86400>
+	GoCheckTime <ifG ComTime V1 EndPlot>
+	end <if= PlotStatus %plotid1% 0 ifNPCDead %2% EndPlot>
+
+	% Winning the battle against the looters will automatically end the plot.
+	update <if= V2 0 ifSubPlotWon %plotid1% else GoCheckLoss  V= 2 1  AddHeroic 1  EndPlot>
+	GoCheckLoss <ifSubPlotLost %plotid1%  V= 2 1  EndPlot>
+
+	% SubPlot1 is the mecha encounter task
+	SubPlot1 <*:TASK_DefeatLooters 3>
+
+	sub
+		Persona 2
+		rumor0 <%name2% has been trying to control the looters in %name3%.>
+		greeting <if= PlotStatus %plotid1% 0 else GoRemind Goto GoCheckEnemy>
+		GoRemind <NewChat Say 1>
+		*GoCheckEnemy <*ENEMY_CHECK GoCheckOffer ChatNPCFac GoEnd>
+		GoEnd <EndPlot>
+		GoCheckOffer <ifPCLawful else GoNoOffer NewChat Say 2 AddChat 1 AddChat 2>
+		GoNoOffer <NewChat Say 3 EndPlot>
+		result1 <NewChat Say 4 Memo 5 SetPlotStatus %plotid% %id% SetPlotStatus %plotid1% %id1% AddReact d4>
+		result2 <NewChat Say 6 EndPlot>
+		Msg1 <There are still looters active in %name3%.>
+		Msg1_1 <The looters are still active in %name3%.>
+		Msg2 <There are looters active in %name3%. In the current state of emergency, we don't have the manpower or the funds to deal with them.>
+		Msg2_1 <We've got a looting situation going on in %name3%. Unfortunately, we can't hire more pilots to deal with it because all funds are tied up in disaster relief.>
+		CMsg2_1 <ifNPCSociable Accept>
+		Msg2_2 <Sorry, I can't talk. We have an emergency on our hands and no money to hire more pilots.>
+		CMsg2_2 <ifNPCShy Accept>
+		Msg2_3 <I was going to tell you about a mission to stop looters in %name3%, but we don't have enough money to hire you so I guess you get the day off.>
+		CMsg2_3 <ifNPCEasygoing Accept>
+		Msg2_4 <This is madness! %name1% is being stripped bare by looters, and we don't have enough pilots or money to deal with it effectively.>
+		CMsg2_4 <ifNPCPassionate Accept>
+		Msg2_5 <As these things go, I think %name1% has weathered the disaster pretty well. The biggest problem right now is the looters... maybe later we can hire a pilot to deal with them.>
+		CMsg2_5 <ifNPCCheerful Accept>
+		Msg2_6 <Hasn't our city suffered enough? On top of everything else, now there are criminals looting %name3%. We can't even divert funds from disaster relief to deal with them.>
+		CMsg2_6 <ifNPCMelancholy Accept>
+		Msg3 <You are advised to stay out of %name3% until the situation improves.>
+		Msg3_1 <There's a security breach in %name3%. We can't assume any responsibility for your wellbeing until the situation improves.>
+		Msg3_2 <Only you can stop looting. No, seriously, I'd like you to stop looting.>
+		CMsg3_2 <ifPCCriminal Accept>
+		Msg4 <That's very noble of you. Here are the coordinates of the hardest fighting... please help us to return peace to %name1%.>
+		Msg4_1 <Thanks for the offer... You can find the looters in %name3%. I really appreciate your help.>
+		Msg4_2 <If you're willing to do this for free, then I'm willing to let you. I'll upload the latest reports to your navcomp. Be careful out there.>
+		Msg5 <You volunteered to fight some looters in %name3%. There is no reward for this mission.>
+		Msg6 <Please be careful while traveling through the area.>
+		Msg6_1 <Understood. Be careful out there.>
+		Prompt1 <I'd like to volunteer for service.>
+		Prompt1_1 <Given the situation, I'll waive my regular pay.>
+		Prompt2 <That's not my problem.>
+		Prompt2_1 <Good luck with that.>
+	end
+
+Plot
+	name <Donation Drive>
+	desc <Donations are beging solicited for the town.>
+	requires <*Disaster>
+
+	% E1 is the town itself
+	% E2 is a businessperson or politician
+	Element1 <Scene Town>
+	Element2 <Character (POLIT|TRADE|CRAFT|CORPO) -Villainous !Okay 1 Recharged>
+
+	% V1 = Time Limit
+
+	% There's a 24-hour time limit.
+	start <if= V1 0 else GoCheckTime V= 1 ComTime V+ 1 86400>
+	GoCheckTime <ifG ComTime V1 EndPlot>
+	end <ifNPCDead %2% EndPlot>
+
+	sub
+		Persona 2
+		rumor <%name2% has been collecting donations to help %name1%.>
+		&HighPledge <Reward PCHeroism 300>
+		&MediumPledge <Reward PCHeroism 100>
+		&LowPledge <500>
+		greeting <NewChat Say 1 AddChat 1 AddChat 2 AddChat 3 AddChat 4 EndPlot>
+		GoGive <EndChat Say 2 AddChat 5>
+		result1 <Cash+ -&HighPledge    AddHeroic 1 AddReact d10 FacXP+ ChatNPCFac 2   Goto GoGive>
+		result2 <Cash+ -&MediumPledge  AddReact d8  FacXP+ ChatNPCFac 1   Goto GoGive>
+		result3 <Cash+ -&LowPledge     AddReact d2  Goto GoGive>
+		result4 <RevertPersona>
+		result5 <RevertPersona>
+		Msg1 <I'm collecting donations to help rebuild %name1%. Are you willing to give?>
+		Msg1_1 <Hello \PC . As you know, there's been a lot of damage done to %name1%. Can you donate anything to help in the rebuilding?>
+		CMsg1_1 <ifG React 25 Accept>
+		Msg1_2 <It's going to take a lot of money to rebuild %name1%. I'm collection donations to go towards emergency relief... Can you give anything?>
+		CMsg1_2 <ifG React 0 Accept>
+		Msg2 <Thank you!>
+		Msg2_1 <Thank you so much.>
+		Prompt1 <I'll give $ \VAL &HighPledge .>
+		CPrompt1 <ifG PC$ &HighPledge Accept>
+		Prompt2 <I'll give $ \VAL &MediumPledge .>
+		CPrompt2 <ifG PC$ &MediumPledge Accept>
+		Prompt3 <I'll give $ \VAL &LowPledge .>
+		CPrompt3 <ifG PC$ &LowPledge Accept>
+		Prompt4 <Sorry, I can't.>
+		Prompt4_1 <Maybe some other time.>
+		Prompt5 <[Continue]>
+	end
+
+Plot
+	name <Blood Drive>
+	desc <In the wake of the disaster, blood donations are needed.>
+	requires <*Disaster>
+
+	% E1 is a medical professional- a nurse, doctor, etc
+	Element1 <Character MEDIC Recharged -Villainous>
+
+	% V1 = Time Limit
+
+	% There's a 24-hour time limit.
+	start <if= V1 0 else GoCheckTime V= 1 ComTime V+ 1 86400>
+	GoCheckTime <ifG ComTime V1 EndPlot>
+	end <ifNPCDead %1% EndPlot>
+
+	sub
+		Persona 1
+		rumor <%name1% has been running a blood drive for victims of the disaster.>
+		greeting <ifChatNPCinPlay else GoNotHere NewChat Say 1 AddChat 1 AddChat 2 AddChat 3>
+		GoNotHere <NewChat Say 6>
+		%% Being a blood donor abuses vitality, just a little- this is the price for the point of heroism.
+		%% Note that it can't actually reduce your vitality skill, it'll just delay your next vitality
+		%% boost.
+		%% Donating blood will contribute to faction XP for the government faction.
+		result1 <EndChat Say 2 Print 3 AddReact d10 AddHeroic 1 SkillXP NAS_Vitality -10 Time 3600 FacXP+ RootSceneFac 2 GrabPCPilot GAddNAtt NAG_Condition NAS_StaminaDown 30 GiveSTC .desc EndPlot Print 4>
+		.desc <FOOD-1>
+		result2 <RevertPersona>
+		result3 <NewChat Say 5 EndPlot>
+		Msg1 <Hi. We're running a blood drive for victims of the disaster. Volunteers get a free lunch.>
+		Msg1_1 <Hi \PC , how would you like to help me out? We've got a blood shortage in \SCENE RootSceneID because of all the accident victims. Donate some of your own and I'll buy you lunch.>
+		CMsg1_1 <ifG React 25 Accept>
+		Msg1_2 <\SCENE RootSceneID has run out of synthetic blood. I'm sure that a brave young adventurer such as yourself has no problem with needles. How about being a blood donor?>
+		CMsg1_2 <ifG React 0 Accept>
+		Msg1_3 <\SCENE RootSceneID is currently hosting a blood drive. How would you like to be a donor? You'll get a free lunch in exchange for your time.>
+		Msg2_1 <Just lie back and watch TV while I put the needle in. Thank you for giving.>
+		Msg2_2 <You're doing a good thing for the community. Here, just lie back and relax. This won't take too long.>
+		Msg2_3 <Lie back and relax. You can watch TV or listen to music if you like. Thank you very much for giving.>
+		Msg3 <\PC donates blood.>
+		Msg4 <\PC gets a free lunch from %name1%.>
+		Msg5_1 <That's fine. You should really consider donating when you're able to.>
+		Msg5_2 <You should consider making a blood donation sometime when you're able, then.>
+		Msg5_3 <Fine.>
+		Msg6 <I'm running a blood drive for \SCENE RootSceneID . Why not drop by \SCENE NPCScene %1% and donate?>
+		Prompt1 <Alright, I'll do that.>
+		Prompt1_1 <Sure. No problem.>
+		Prompt2 <Sorry, I need medical help myself.>
+		Prompt2_1 <Wait a minute, I need help myself.>
+		Prompt3 <No way. I need all the blood I can get.>
+		Prompt3_1 <This isn't a good time for that.>
+	end
+
+

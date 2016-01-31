@@ -1,0 +1,295 @@
+%%
+%% UTILITY SUBPLOTS
+%%
+%%  This unit holds utility subplots. These are usually very short subplots which are used for
+%%  handling common situations- running out of time on a mission, earning a cash reward, and
+%%  so on.
+%%
+
+%%
+%% *UTIL_GiveEquipment
+%%
+%%  As a reward for something or another, the PC is being given some
+%%  upgraded hardware. This will probably be something that can't
+%%  be gotten in any other way.
+%%
+%%  Persona 1 must include a .%id%_GoGiveEquipment script.
+%%
+%%  This subplot doesn't affect the PlotStatus at all, and in fact
+%%  doesn't need its PlotID activated. It's not much more than a
+%%  glorified PFrag for handing out an item.
+%%
+%% Param1: The item-giver
+%%
+
+Content
+	name <New Mecha>
+	requires <*UTIL_GiveEquipment>
+
+	% E1 is the item-giver
+
+	sub
+		Persona 1
+		% V%id%01 = Threat Counter
+		.%id%_GoGiveEquipment <NewChat Say %id%01 V= %id%01 %threat% V+ %id%01 d10  RandomMecha .%id%_Factions V%id%01>
+		Msg%id%01 <You can never own too many mecha. Here, you can have this one. May it never be shot out from under you.>
+		.%id%_Factions <GENERAL \FACTION_DESIG RootSceneFac \FACTION_DESIG ChatNPCFac>
+	end
+
+Content
+	name <Mecha Gun 1: Grenade Launcher>
+	requires <*UTIL_GiveEquipment !Ne ~1:CRAFT>
+
+	% E1 is the item-giver
+	% E2 is the item
+	Element2 <Prefab>
+
+	sub
+		Persona 1
+		.%id%_GoGiveEquipment <NewChat Say %id%01 GiveItem %2%>
+		Msg%id%01 <This mecha grenade launcher should come in handy. It's just the thing for taking out swarms of quick enemies.>
+	end
+	inv
+		Gun 9
+		name <Grenade Launcher>
+		caliber <50mm explosive cannister>
+		range 6
+		scale 2
+		Magazine 30
+		sub
+			Ammo 9
+			caliber <50mm explosive cannister>
+			type <BLAST 3 BRUTAL>
+		end
+	end
+
+Content
+	name <Mecha Gun 2: Mech Assault Rifle>
+	requires <*UTIL_GiveEquipment !Lo ~1:CRAFT>
+
+	% E1 is the item-giver
+	% E2 is the item
+	Element2 <Prefab>
+
+	sub
+		Persona 1
+		.%id%_GoGiveEquipment <NewChat Say %id%01 GiveItem %2%>
+		Msg%id%01 <Here's a mecha assault rifle. It's a versatile weapon that can be used in either fully auto or semiautomatic mode.>
+	end
+	inv
+		Gun 8
+		Scale 2
+		name <Mech Assault Rifle>
+		caliber <30mm caseless>
+		Range 6
+		Magazine 60
+		BV 2
+		Speed 3
+		Acc 1
+		mass -5
+		sub
+			Ammo 8
+			caliber <30mm caseless>
+			mass -6
+		end
+	end
+
+%%
+%% *UTIL_BlankState
+%%  
+%%  For when you need a PlotState, but don't need anything to happen.
+%%
+
+Content
+	name <Blank State>
+	requires <*UTIL_BlankState>
+
+%%
+%% *UTIL_ReferredMission
+%%
+%%  The PC has been sent to this person, who will now give a basic mecha
+%%  mission.
+%%
+%%  The master plot must have a PayRate set.
+%%
+%%  PARAM1: The Referrer
+%%  PARAM2: The mission-giver
+%%
+
+Content
+	name <Basic Referred Mission>
+	% The basic patrol job is a fight against some generic enemy mecha.
+	% This job gives salvage. This job will not result in the PC making
+	% any enemies.
+	requires <*UTIL_ReferredMission>
+
+	% E1 is the referrer
+	% E2 is the mission-giver
+	% E3 is a scene where the encounter will take place
+	Element3 <Scene Outdoors>
+
+	% SubPlot1 is the combat encounter
+	SubPlot1 <*MECHAMISSION_Basic 2 3>
+
+	% P%id%01 = Time Limit
+	start <ifNPCOK %2% else .%id%_GoDelete if# P%id%01 0 ifG ComTime P%id%01 EndPlot>
+	.%id%_GoDelete <EndPlot>
+	update <if= P%id%01 0 P= %id%01 ComTime P+ %id%01 86400>
+
+	% SubPlot1 is the mission
+	SubPlot1 <*MECHAMISSION_Basic 2 3>
+
+	sub
+		Persona 2
+		greeting <if# PlotStatus %plotid% %id% else .%id%_GoGreet if# PlotStatus %plotid% %id1% else .%id%_GoRemind  Goto %pop%>
+		*.%id%_GoRemind <*MechaMissionReminder %3%>
+		*.%id%_GoGreet <*ReferredForJob %1% .%id%_GoBriefing>
+		*.%id%_GoBriefing <*BasicMissionBriefing %3% .%id%_GoAcceptMission .%id%_GoRejectMission %threat%>
+		*.%id%_GoAcceptMission <*GoodLuckOnMission&NoEnemyFac .%id%_GoAccept ChatNPCFac na>
+		.%id%_GoAccept <PMemo %plotid% %id%01 SetPlotStatus %plotid% %id1%>
+		*.%id%_GoRejectMission <*RejectMission .%id%_GoEnd>
+		.%id%_GoEnd <EndPlot>
+		Msg%id%01 <%name2% in \SCENE NPCScene %2% hired you to fight some mecha in \EXACT_SCENE %3% .>
+	end
+
+
+%%
+%% *UTIL_WinMission
+%%
+%%  The player has won this mission, and will be paid by the NPC according to the agreed upon
+%%  pay rate. There may be an additional bonus, depending on the situation.
+%%
+%% The master plot must have a PayRate set.
+%%
+%%  PARAM1: The mission-giving NPC
+
+Content
+	name <Friend/Lover Win Mission>
+	requires <*UTIL_WinMission (1:FRIEND|1:LOVER)>
+
+	% E1 is the mission-giving NPC.
+
+	start <ifNPCDead %1% EndPlot>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop%  NewChat Say %id%01 CashPrize Reward %threat% PayRate    FacXP+ ChatNPCFac 1    RandomMecha .%id%_meks %threat%   EndPlot>
+		.%id%_meks <GENERAL \FACTION_DESIG RootSceneID \FACTION_DESIG ChatNPCFac>
+		Msg%id%01 <Here's your reward for that last mission, \PC . I decided to throw in a little something extra as well.>
+		Msg%id%01_1 <Your mission was a complete success. You're impressing a lot of people with your performance, \PC . In addition to the mission pay you've also been awarded this special gift.>
+		CMsg%id%01_1 <ifNPCSociable Accept>
+		Msg%id%01_2 <Good work, \PC . You've been awarded this new mecha.>
+		CMsg%id%01_2 <ifNPCShy Accept>
+		Msg%id%01_3 <Hey \PC . I hope the mission wasn't too hard... Anyhow, because of your success, I've been asked to give you this new mecha in addition to your regular pay.>
+		CMsg%id%01_3 <ifNPCEasygoing Accept>
+		Msg%id%01_4 <You did it! Wow, you really are a powerful fighter... In recognition of your success, I'm pleased to give you this brand new mecha in addition to your pay. Pilot it well!>
+		CMsg%id%01_4 <ifNPCPassionate Accept>
+		Msg%id%01_5 <Good job, \PC ! You'll be pleased to know that the higher-ups are just as impressed with you as I am. In addition to the regular mission pay, they've authorized me to give you this brand new mecha.>
+		CMsg%id%01_5 <ifNPCCheerful Accept>
+		Msg%id%01_6 <I'm glad to see that you made it back in one piece. Here, this new mecha is for you. You're probably going to need a backup one of these days.>
+		CMsg%id%01_6 <ifNPCMelancholy Accept>
+	end
+
+Content
+	name <Basic Win Mission>
+	requires <*UTIL_WinMission Common>
+
+	% E1 is the mission-giving NPC.
+
+	start <ifNPCDead %1% EndPlot>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop%  Goto .%id%_GoWinMission>
+		*.%id%_GoWinMission <*MissionWasSuccess&Reward .%id%_GoEnd ChatNPCFac na>
+		.%id%_GoEnd <CashPrize Reward %threat% PayRate    FacXP+ ChatNPCFac 1    AddReact d6   EndPlot>
+	end
+
+Content
+	name <Mecha Win Mission>
+	requires <*UTIL_WinMission &Mecha Common>
+
+	% E1 is the mission-giving NPC.
+
+	start <ifNPCDead %1% EndPlot>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop%  Goto .%id%_GoWinMission>
+		*.%id%_GoWinMission <*MissionWasSuccess&Reward&Mecha .%id%_GoEnd ChatNPCFac na>
+		.%id%_GoEnd <CashPrize Reward %threat% PayRate    FacXP+ ChatNPCFac 1   AddReact d6   EndPlot>
+	end
+
+%%
+%% *UTIL_LoseMission
+%%
+%%  The player has lost this mission.
+%%
+%%  PARAM1: The mission-giving NPC
+
+Content
+	name <Basic Lose Mission>
+	requires <*UTIL_LoseMission>
+
+	% E1 is the mission-giving NPC.
+
+	% P%id%01 = Time Limit
+	start <ifNPCOK %1% else .%id%_GoEnd ifG ComTime P%id%01 EndPlot>
+	.%id%_GoEnd <EndPlot>
+	update <if= p%id%01 0 P= %id%01 ComTime P+ %id%01 43200>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop%  Goto .%id%_GoLostMission>
+		*.%id%_GoLostMission <*MissionWasFailure .%id%_GoEnd ChatNPCFac na>
+		.%id%_GoEnd <AddReact -d6   EndPlot>
+	end
+
+Content
+	name <Basic Lose Mission>
+	requires <*UTIL_LoseMission &Mecha>
+
+	% E1 is the mission-giving NPC.
+
+	% P%id%01 = Time Limit
+	start <ifNPCOK %1% else .%id%_GoEnd ifG ComTime P%id%01 EndPlot>
+	.%id%_GoEnd <EndPlot>
+	update <if= p%id%01 0 P= %id%01 ComTime P+ %id%01 43200>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop%  Goto .%id%_GoLostMission>
+		*.%id%_GoLostMission <*MissionWasFailure&Mecha .%id%_GoEnd ChatNPCFac na>
+		.%id%_GoEnd <AddReact -d6   EndPlot>
+	end
+
+%%
+%% *UTIL_TimeOver
+%%
+%%  The player was given a mission, but didn't complete it in time.
+%%
+%%  PARAM1: The mission-giving NPC
+
+Content
+	name <Basic Time Over>
+	requires <*UTIL_TimeOver>
+
+	% E1 is the mission-giving NPC.
+
+	% P%id%01 = Time Limit
+	start <if= PlotStatus %plotid% %id% else %pop% ifNPCOK %1% else .%id%_GoEnd ifG ComTime P%id%01 EndPlot>
+	.%id%_GoEnd <EndPlot>
+	update <if= PlotStatus %plotid% %id% else %pop% if= p%id%01 0 P= %id%01 ComTime P+ %id%01 21600 EMail %id%01>
+
+	Msg%id%01_1 <%name1% @ \SCENE NPCScene %1% :// Your mission has been cancelled.>
+	Msg%id%01_2 <%name1% @ \SCENE NPCScene %1% :// Your mission has been aborted.>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop%  NewChat Say %id%01 AddReact -d3 EndPlot>
+		Msg%id%01 <I'm afraid that you took too long on that mission. It's over now.>
+	end
+
+
+
+

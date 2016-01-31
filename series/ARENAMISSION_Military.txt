@@ -1,0 +1,251 @@
+%%  **************************************
+%%  ***   [!Ne+]  BEGINNER  MISSIONS   ***
+%%  **************************************
+
+%%  ****************************************
+%%  ***   [!Lo+]  LOW  LEVEL  MISSIONS   ***
+%%  ****************************************
+
+	ArenaMission
+	name <Destroy Enemy Base>
+	requires <*MISSION -!Ne MILITARY>
+	desc <A base belonging to %name1% has been discovered. Destroy it completely.>
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 1000
+
+	WildMap
+	terrain <GROUND>
+
+	Element1 <Faction Enemy>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	% L3 = Destroy Base Counter
+	Start <if= L1 0 CommanderSays 1 L= 1 1>
+	nu1 <if= T1 0 Return if= L2 0 L= 2 1 if= L3 1 else GoLoseMission Goto GoWinMission>
+	nu2 <if= T2 0 if= L3 1 if= L2 0 L= 2 1 Return Goto GoWinMission>
+	nu3 <if= T3 0 else GoN3SomeLeft if= L3 0 L= 3 1 Print 5 XPV 200 if= T2 0 Return L= 2 1 Goto GoWinMission>
+	GoN3SomeLeft <ifG T3 0 Print 4>
+
+	GoWinMission <Salvage Alert 3 WinArenaMission>
+	GoLoseMission <Alert 2 LoseArenaMission>
+
+	5Min <if= d2 1  WMecha 3 ArenaRenown 100>
+
+	Msg1 <Locate and destroy the enemy base.>
+	Msg2 <The mission is a failure.>
+	Msg3 <The mission is a success.>
+	Msg4_1 <There are \VAL T3 buildings left to destroy.>
+	CMsg4_1 <ifG T3 1 Accept>
+	Msg4_2 <There is one building left to destroy.>
+	CMsg4_2 <ifG 2 T3 Accept>
+	Msg5 <The base has been destroyed.>
+
+	sub
+		Team 1
+		SetEnemy 2 3 4
+		ParaX 5
+		ParaY 5
+
+		Team 2
+		SetEnemy 1
+		SetAlly 3 4
+		Deploy <SetSelfFaction M1 WMecha 2 ArenaRenown 450>
+		home <The Fortress>
+
+		Team 3
+		SetEnemy 1
+		SetAlly 2 4
+		home <The Fortress>
+
+		Team 4
+		SetEnemy 1
+		SetAlly 2 3
+		home <Entry 2>
+		Deploy <SetSelfFaction M1>
+
+		rect
+		width 5
+		height 5
+		name <Entry 2>
+
+		rect
+		name <The Fortress>
+		MFX 35
+		MFY 35
+		width 10
+		height 10
+		sub
+			SuperProp
+			requires <*Fortress>
+			SetTeam 3
+		end
+	end
+
+
+%%  *******************************************
+%%  ***   [!Md+]  MEDIUM  LEVEL  MISSIONS   ***
+%%  *******************************************
+
+ArenaMission
+	name <Police Action>
+	requires <*MISSION Military -!Ne -!Lo>
+	desc <Provide heavy support for %name2% against mecha from %name3%.>
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 1600
+
+	CityBlockMap
+	terrain <GROUND>
+
+	% E1 is an allied government
+	% E2 is an allied police force
+	% E3 is the criminal faction
+	% E4 is the police officer
+	Element1 <Faction Government Ally>
+	Element2 <Faction Police !Ally 1>
+	Element3 <Faction Crim !Enemy 2>
+	Element4 <Prefab>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	Start <if= L1 0 Monologue %4% 1 L= 1 1>
+	nu1 <if= T1 0 if= L2 0 L= 2 1 Alert 2 LoseArenaMission>
+	nu2 <if= T2 0 if= L2 0 Salvage Return XPV 200 L= 2 1 Alert 3 WinArenaMission>
+
+	Msg1 <Some mecha from %name3% are operating in the city. Help me track them down and defeat them.>
+	Msg2 <The mission is a failure.>
+	Msg3 <The mission is a success.>
+
+	sub
+		Team 1
+		SetEnemy 2
+		SetAlly 3
+		ParaX 5
+		ParaY 5
+
+		Team 2
+		SetEnemy 1 3
+		Deploy <SetSelfFaction M3   WMecha 2 ArenaRenown 800>
+		ParaX 45
+		ParaY 45
+
+		Team 3
+		SetEnemy 2
+		ParaX 7
+		ParaY 7
+
+		rect
+		name <PC Deploy Spot>
+		desig <NW>
+
+		rect
+		name <Enemy Deploy Spot>
+		desig <SE>
+	end
+	inv
+		NPC Police Officer
+		SetFaction -2
+		SetTeam 3
+	end
+
+
+ArenaMission
+	name <Orbital Weapon>
+	requires <*MISSION Military -!Ne -!Lo>
+	desc <%name1% has deployed an orbital laser satellite. It must be destroyed before it can be used against us.>
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 1200
+
+	SpaceMap
+	terrain <SPACE>
+	SpaceScroll
+	Microgravity
+	Vacuum
+	SpaceBackdrop
+
+	Element1 <Faction Enemy>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	% L3 = Destroy Base Counter
+	Start <if= L1 0 CommanderSays 1 L= 1 1>
+	nu1 <if= T1 0 Return if= L2 0 L= 2 1 if= L3 1 else GoLoseMission Goto GoWinMission>
+	nu2 <if= T2 0 if= L3 1 if= L2 0 L= 2 1 Return Goto GoWinMission>
+	nu3 <if= T3 0 if= L3 0 L= 3 1 Print 4 XPV 200 if= T2 0 Return L= 2 1 Goto GoWinMission>
+
+	GoWinMission <Salvage Alert 3 WinArenaMission>
+	GoLoseMission <Alert 2 LoseArenaMission>
+
+	5Min <if= d2 1  WMecha 2 ArenaRenown 100>
+
+	Msg1 <Locate and destroy the orbital weapon.>
+	Msg2 <The mission is a failure.>
+	Msg3 <The mission is a success.>
+	Msg4 <The base has been destroyed.>
+
+
+	sub
+		Team 1
+		SetEnemy 2 3 4
+		ParaX 5
+		ParaY 5
+
+		Team 2
+		SetEnemy 1
+		SetAlly 3 4
+		Deploy <SetSelfFaction M1 WMecha 2 ArenaRenown 450>
+		ParaX 40
+		ParaY 40
+
+		Team 3
+		SetEnemy 1
+		SetAlly 2 4
+		ParaX 45
+		ParaY 45
+	end
+	inv
+		CombatProp 30
+		SetTeam 3
+		name <Orbital Laser Platform>
+		sdl_sprite <prop_turret1.png>
+		roguechar <&>
+		Scale 2
+		RangedCombat 8
+		Dodge 8
+		Initiative 2
+		sub
+			Turret
+			size 8
+			armor 8
+			sub
+				BeamGun 8
+				name <Laser Cannon>
+				Range 12
+				type <HYPER>
+			end
+			PowerSource 10
+		end
+	end
+
+
+%%  *****************************************
+%%  ***   [!Hi+]  HIGH  LEVEL  MISSIONS   ***
+%%  *****************************************
+
+
+%%  ***************************************
+%%  ***   [!Ex]  ACE  LEVEL  MISSIONS   ***
+%%  ***************************************
+
+
+
+

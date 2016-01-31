@@ -1,0 +1,1504 @@
+%% Contains things that only show up at one place in the ATLAS, but
+%% are included as content fragments so as to make organization cleaner
+%% and to take advantage of the content formatting junk. So here they
+%% are.
+%%
+%% In most cases, this content can be added as a VARIETY.
+%%
+%% NAME: *[city designation]_[building name abbreviated]_[content type]
+
+%% *KOSSP_CrTo_Content Content
+%%      Kosaka Spinner, Crystal Tower
+
+Content
+	name <FCOMS Recruiter>
+	requires <*KOSSP_CrTo_Content>
+	minimap <............1.......#&+&#>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+
+	sub
+		Persona 1
+		greeting <if# ChatNPCFac 0 else GoChat if= PCFac ChatNPCFac else GoCheckEligibility Goto GoTrain>
+		*GoTrain <*SKILL_TRAINING GoGoodbye>
+		*GoCheckEligibility <*ENEMY_CHECK GoCheckFaction ChatNPCFac GoNil>
+		GoCheckFaction <if= PCFac 0 else GoChat Goto GoCheckSkills>
+		*GoCheckSkills <*FACTION_ENTRANCE_EXAM GoJobOffer ChatNPCFac>
+		*GoChat <*MISC_CHATTER>
+		*GoGoodbye <*GOODBYE>
+		*GoJobOffer <*FACTION_JOIN_OFFER ChatNPCFac GoJoin>
+		*GoJoin <*FACTION_JOIN_ACCEPT ChatNPCFac>
+	end
+	inv
+		NPC Politician
+		job <Technocrat>
+		name <Docun Suno>
+		chardesc male
+		age 5
+		SDL_COLORS <239 198 58 150 112 89 222 222 156>
+		SetFaction 10
+	end
+
+
+
+%% *CLUND_MLP2_Content
+%%	Content for Memorial Land. Each game won will add one to L2;
+%%	once all four games are won, the property manager will let the
+%%	PC into the Ruins of Terror.
+
+Content
+	name <Escape Pod Ride>
+	% This ride will test the PC's Vitality
+	requires <*CLUND_MLP2_Content>
+	minimap <       1   &#&   &       >
+	Element1 <Prefab>
+	inv
+		Elevator
+		name <Escape Pod Ride>
+		% V1 = Have completed ride
+		use <ifYesNo 1 2 3 STAMINA PCMoraleDmg -20 Alert 4 if= V1 0 else GoCompleted ifSkillTest NAS_Vitality STAT_Ego SkillTar 35 else GoFailRoll Goto GoWinRoll>
+		GoWinRoll <Alert 5 V= 1 1 L+ 2 1>
+		GoFailRoll <Alert 6>
+		GoCompleted <Alert 5>
+		Msg1 <This is the entrance for the Escape Pod Ride. Patrons are strapped into large padded spheres which then get flung about and bounced off one another.>
+		Msg2 <Sounds like fun!>
+		Msg3 <I'd rather not...>
+		Msg4 <You board the machine and start to spin.>
+		Msg5 <That was awesome!>
+		Msg6 <It takes all of your willpower to stop yourself from puking. Maybe you should find an easier ride, for now.>
+	end
+
+Content
+	name <Comet Dropper>
+	% This ride will test the PC's Athletics
+	requires <*CLUND_MLP2_Content>
+	minimap <       1   &#&   &       >
+	Element1 <Prefab>
+	inv
+		Elevator
+		name <Comet Dropper>
+		% V1 = Have completed ride
+		use <ifYesNo 1 2 3 STAMINA PCMoraleDmg -20 Alert 4 if= V1 0 else GoCompleted ifSkillTest NAS_Athletics STAT_Ego SkillTar 35 else GoFailRoll Goto GoWinRoll>
+		GoWinRoll <Alert 5 V= 1 1 L+ 2 1>
+		GoFailRoll <Alert 6>
+		GoCompleted <Alert 5>
+		Msg1 <This is the entrance for the Comet Dropper. The carriage gets lifted to the top of Memorial Land's dome, then falls back to ground level.>
+		Msg2 <Sounds like fun!>
+		Msg3 <I'd rather not...>
+		Msg4 <You board the ride. It begins rising slowly, then suddenly drops back towards the ground.>
+		Msg5 <That was exhilirating!>
+		Msg6 <That drop really took the wind out of you.>
+	end
+
+Content
+	name <Bumper Buru-Burus>
+	% This ride will test the PC's Mecha Piloting
+	requires <*CLUND_MLP2_Content>
+	minimap <       1   &#&   &       >
+	Element1 <Prefab>
+	inv
+		Elevator
+		name <Bumper Buru-Burus>
+		% V1 = Have completed ride
+		use <ifYesNo 1 2 3 STAMINA PCMoraleDmg -20 Alert 4 if= V1 0 else GoCompleted ifSkillTest NAS_MechaPiloting STAT_Reflexes SkillTar 35 else GoFailRoll Goto GoWinRoll>
+		GoWinRoll <Alert 5 V= 1 1 L+ 2 1>
+		GoFailRoll <Alert 6>
+		GoCompleted <Alert 5>
+		Msg1 <This is the entrance for the Bumper Buru-Burus. Inside, patrons are crashing into one another in miniature giant robots.>
+		Msg2 <Sounds like fun!>
+		Msg3 <I'd rather not...>
+		Msg4 <You board a buru-buru and wait for the ride to start.>
+		Msg5 <You kick ass and chew bubblegum!>
+		Msg6 <You get banged up pretty bad by the other players.>
+	end
+
+Content
+	name <Shell Game>
+	% This ride will test the PC's Concentration
+	requires <*CLUND_MLP2_Content>
+	minimap <       1   &#&   &       >
+	Element1 <Prefab>
+	inv
+		Elevator
+		name <Shell Game>
+		% V1 = Have completed ride
+		use <if= V1 0 else GoCompleted ifYesNo 1 2 3 Alert 4 ifSkillTest NAS_Concentration STAT_Perception SkillTar 35 else GoFailRoll Goto GoWinRoll>
+		GoWinRoll <Alert 5 V= 1 1 L+ 2 1 GiveSTC .bear>
+		.bear <Teddy Bear>
+		GoFailRoll <Alert 6>
+		GoCompleted <Alert 7>
+		Msg1 <This is the a shell game. There are three shells; underneath one of them is a ball. The shells are shuffled and you must determine where it is.>
+		Msg2 <Sounds like fun!>
+		Msg3 <I'd rather not...>
+		Msg4 <The robot arm places the ball and shuffles the shells. You select one of the shells...>
+		Msg5 <It's the right one! You win a teddy bear!>
+		Msg6 <It was the wrong one. You just couldn't concentrate well enough.>
+		Msg7 <You don't really want another bear.>
+	end
+
+
+
+%% *CLUND_MLP_Content
+%%	Content for the entry dome to Memorial Land.
+
+Content
+	%% Mecha Display 1
+	requires <*CLUND_MLP_Content>
+	minimap <####################1#2#3>
+	element1 <Prefab>
+	element2 <Prefab>
+	element3 <Prefab>
+	inv
+		STC MECHAMODEL-1
+		sdl_colors <211 195 82 222 222 156 211 195 82>
+		SDL_SPRITE <btr_thorshammer.png>
+		PDir 2
+		name <Thorshammer>
+		use <Alert 1>
+		Msg1 <The Thorshammer was the most powerful mecha fielded by the Clund Rock defense force. Due to their low mobility, they were positioned to defend the habitation dome and didn't see much combat action.>
+
+		STC MECHAMODEL-1
+		sdl_colors <211 195 82 222 222 156 211 195 82>
+		SDL_SPRITE <btr_buruburu.png>
+		PDir 2
+		use <Alert 1>
+		name <Buru-Buru>
+		Msg1 <The Buru-Buru was used by both sides in the conflict. Consequently, following the battle there was a glut in the local market for salvaged Buru-Buru parts.>
+
+		STC MECHAMODEL-1
+		sdl_colors <211 195 82 222 222 156 211 195 82>
+		SDL_SPRITE <btr_vadel.png>
+		PDir 2
+		name <Vadel>
+		use <Alert 1>
+		Msg1 <The Vadel was the only unit on the defensive side with the mobility to intercept the attackers wherever they landed. By the end of hostilities only two of these mecha were still functioning.>
+	end
+
+Content
+	%% Mecha Display 2
+	requires <*CLUND_MLP_Content>
+	minimap <####################1#2#3>
+	element1 <Prefab>
+	element2 <Prefab>
+	element3 <Prefab>
+	inv
+		STC MECHAMODEL-1
+		sdl_colors <211 195 82 222 222 156 211 195 82>
+		SDL_SPRITE <btr_eyre.png>
+		PDir 2
+		name <Eyre>
+		use <Alert 1>
+		Msg1 <The Eyre was the main battle unit used by Rishiri Spinner. Far more maneuverable than most of the defenders, it was these mecha which inflicted most of the civilian casulties.>
+
+		STC MECHAMODEL-1
+		sdl_colors <211 195 82 222 222 156 211 195 82>
+		PDir 2
+		name <Luna>
+		use <Alert 1>
+		Msg1 <The Aegis Space Force provided military assistance to Rishiri Spinner. They intended to use the asteroid colonies as a proving grounds for their new mecha designs.>
+
+		STC MECHAMODEL-1
+		sdl_colors <211 195 82 222 222 156 211 195 82>
+		PDir 2
+		name <Mebsy>
+		use <Alert 1>
+		Msg1 <Industrial mecha such as the Mebsy were pressed into service to help defend Clund Rock. Many brave truckers, miners, and prospectors gave their lives to hold back the invaders.>
+	end
+
+Content
+	%% Hoblen's gift shop.
+	requires <*CLUND_MLP_Content>
+	minimap <12345........6......&---&LUCRE>
+	element1 <Prefab>
+	element2 <Prefab>
+	element3 <Prefab>
+	element4 <Prefab>
+	element5 <Prefab>
+	element6 <Prefab>
+	team6 <Citizens>
+	teamdata6 <ally pass>
+	sub
+		Persona 6
+		*greeting <*NiceToMeetYou GoShop>
+		GoShop <NewChat Say 1 AddChat 1 AddChat 2>
+		*GoBye <*GOODBYE>
+		result1 <EndChat Say 2 Shop .wares Goto GoBye>
+		.wares <SOUVENIR PIRATE CLOTHING>
+		result2 <Goto GoBye>
+		Msg1 <Welcome to the Memorial Land gift shop. Please enjoy our souvenirs, mementos, and keepsakes.>
+		Msg2 <All of this stuff was made locally, except for the stuff that wasn't.>
+		Prompt1 <I'd like to see what you have.>
+		Prompt2 <I've got enough useless knickknacks already.>
+	end
+	inv
+		STC GAMBLING-1
+		PDir 1
+
+		STC MANNEKIN-M
+		PDir 2
+
+		STC MANNEKIN-F
+		PDir 2
+
+		STC SHOPDISPLAY-WEAPONS-3
+		PDir 2
+
+		STC SHOPDISPLAY-ARMOR-2
+		PDir 2
+
+		NPC Shopkeeper
+		name <Hoblen>
+		chardesc female easygoing melancholy sociable
+		Age -4
+	end
+
+%% *WAGSP_L5LA2_Content
+%%	Content for the 2nd level of the L5Law Academy in Wagner Spinner.
+
+Content
+	%% The master of forensics
+	requires <*WAGSP_L5LA2_Content>
+	minimap <............1.......#-&-#>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+
+	sub
+		Persona 1
+		special <NOPLOTS>
+		*greeting <*NiceToMeetYou GoCheckFac>
+		GoCheckFac <if= PCFac ChatNPCFac else GoChat NewChat Say 1 AddChat 1 AddChat 2>
+		*GoChat <*MISC_CHATTER>
+		*GoGoodbye <*GOODBYE>
+		result1 <EndChat Say 2 School .skills Goto GoGoodbye>
+		.skills <1 2 3 4 5 6 15 21 27>
+		result2 <Goto GoGoodbye>
+		Msg1 <The most important part of our work is investigation. Of course being able to take down a perp is also mighty handy.>
+		Msg2 <Sure. What skill do you want to train?>
+		Prompt1 <Could you give me some pointers?>
+		Prompt2 <I don't need anything right now.>
+	end
+	inv
+		NPC Forensic Investigator
+		NonCombatant
+		SetFaction 9
+	end
+
+Content
+	%% The master of mecha
+	requires <*WAGSP_L5LA2_Content>
+	minimap <........1...........&---&>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+
+	sub
+		Persona 1
+		special <NOPLOTS>
+		*greeting <*NiceToMeetYou GoCheckFac>
+		GoCheckFac <if= PCFac ChatNPCFac else GoChat NewChat Say 1 AddChat 1 AddChat 2>
+		*GoChat <*MISC_CHATTER>
+		*GoBye <*GOODBYE>
+		result1 <EndChat Say 2 Shop .wares Goto GoBye>
+		.wares <MECHA MEK_WEP>
+		result2 <Goto GoBye>
+		Msg1 <So, \RANK \PC , how's your mecha holding up against the opposition?>
+		Msg2 <That's the way it always is, isn't it? You have to keep running as fast as you can just to stay in the same place as before.>
+		Msg2_1 <You have my deepest sympathies. Let me show you what we've got.>
+		Msg2_2 <Probably? Try definitely. That crate you're flying around in isn't fit to use for parts.>
+		Prompt1 <I could probably use an upgrade.>
+		Prompt2 <Things are fine... for now.>
+	end
+	inv
+		NPC Police Officer
+		name <Starseid>
+		job <Mechamaster>
+		SDL_PORTRAIT <por_f_starseid(A-Y).png>
+		SDL_COLORS <30 30 90 241 254 223 122 88 193>
+		SetFaction 9
+		NonCombatant
+		Shopping 12
+		Age 17
+		chardesc easygoing pragmatic heroic female
+	end
+
+Content
+	%% The master of weapons
+	requires <*WAGSP_L5LA2_Content>
+	content <Required *DECOR_FOR_WEAPON_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+
+	sub
+		Persona 1
+		special <NOPLOTS>
+		*greeting <*NiceToMeetYou GoCheckFac>
+		GoCheckFac <if= PCFac ChatNPCFac else GoChat NewChat Say 1 AddChat 1 AddChat 2>
+		*GoChat <*MISC_CHATTER>
+		*GoBye <*GOODBYE>
+		result1 <EndChat Say 2 Shop .wares Goto GoBye>
+		.wares <WEAPON AMMO GRENADE ACCESSORY ARMOR SHIELD>
+		result2 <Goto GoBye>
+		Msg1 <Personal combat is an important part of our training program. If you need a weapon, just ask me about it.>
+		Msg2 <Keep your gun ready at all times, and hope you never have to use it.>
+		Prompt1 <I could use something new.>
+		Prompt2 <I don't need anything right now.>
+	end
+	inv
+		NPC Police Officer
+		job <Weaponmaster>
+		SetFaction 9
+		NonCombatant
+		Shopping 12
+	end
+
+%% *WAGSP_L5LA_Content
+%%	Content for the L5Law Academy in Wagner Spinner.
+
+Content
+	requires <*WAGSP_L5LA_Content>
+	minimap <............1.......#-&-#>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+
+	sub
+		Persona 1
+		special <NOPLOTS>
+		greeting <if# ChatNPCFac 0 else GoChat if= PCFac ChatNPCFac else GoCheckEligibility Goto GoTrain>
+		*GoTrain <*SKILL_TRAINING GoGoodbye>
+		*GoCheckEligibility <*ENEMY_CHECK GoCheckFaction ChatNPCFac GoNil>
+		GoCheckFaction <if= PCFac 0 else GoChat Goto GoCheckSkills>
+		*GoCheckSkills <*FACTION_ENTRANCE_EXAM GoJobOffer ChatNPCFac>
+		*GoChat <*MISC_CHATTER>
+		*GoGoodbye <*GOODBYE>
+		*GoJobOffer <*FACTION_JOIN_OFFER ChatNPCFac GoJoin>
+		*GoJoin <*FACTION_JOIN_ACCEPT ChatNPCFac>
+	end
+	inv
+		NPC Police Officer
+		job <Instructor>
+		SetFaction 9
+	end
+
+%% *RISSP_SFHQ_Content
+%%	Content for the Space Force HQ. Includes a recruiter for the Rishiri Dominion and an
+%%	Aegis mecha shop.
+
+Content
+	requires <*RISSP_SFHQ_Content>
+	minimap <............1.......#&+&#>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+
+	sub
+		Persona 1
+		special <NOPLOTS>
+		greeting <if# ChatNPCFac 0 else GoCheckEligibility if= PCFac ChatNPCFac else GoCheckFaction Goto GoTrain>
+		*GoTrain <*SKILL_TRAINING GoGoodbye>
+		*GoCheckEligibility <*ENEMY_CHECK GoCheckFaction ChatNPCFac GoNil>
+		GoCheckFaction <NewChat Say 1 AddChat 1 AddChat 2>
+		*GoJoin <*FACTION_JOIN_ACCEPT ChatNPCFac>
+		result1 <ifG PCRenown 19 else GoR1Fail NewChat Say 3 AddChat 4 AddChat 5>
+		GoR1Fail <NewChat Say 4>
+		result2 <NewChat Say 2 AddChat 1 AddChat 3>
+		*result3 <*GoodBye>
+		result4 <Goto GoJoin>
+		result5 <Goto result3>
+		Msg1 <The Rishiri Space Force is looking for skilled volunteers. We are creating a brand new mecha brigade to defend our colonies against all threats.>
+		Msg2 <In a sense they are, yes, but the Rocket Stars are a mercenary force. The Rishiri Space Force will be a traditional militiary under the direct control of the technocracy.>
+		Msg3 <Hm. Looking over your resume, it seems that you do have the necessary skills. I can offer you a position in the forces right away.>
+		Msg4 <I'm sorry, but I'm afraid that you don't quite have the skills we're looking for. Feel free to reapply later, though.>
+		Prompt1 <I'd like to apply.>
+		CPrompt1 <if= PCFac 0 Accept>
+		Prompt2 <Aren't the Rocket Stars Rishiri's defenders?>
+		Prompt3 <Well, good luck with that.>
+		Prompt4 <Sign me up.>
+		Prompt5 <No thanks, I just wanted to see if I qualified.>
+	end
+	inv
+		NPC Mecha Pilot
+		SetFaction 11
+	end
+
+Content
+	requires <*RISSP_SFHQ_Content>
+	minimap <............1.......#---#>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+
+	sub
+		Persona 1
+		special <NOPLOTS>
+		greeting <if# PCFac 11 else GoOpenShop if# PCFac 4 else GoOpenShop if# PCFac 16 else GoOpenShop NewChat Say 1>
+		GoOpenShop <NewChat Say 2 AddChat 1 AddChat 2>
+		result1 <EndChat Say 3 Shop .wares Goto result2>
+		.wares <MECHA MEXTRA>
+		*result2 <*GoodBye>
+		Msg1 <This shop is for members of the Rishiri Space Force only. Sorry.>
+		Msg2 <The Aegis Council has pledged its support to Rishiri Spinner. I have a selection of military supplies from Luna for distribution to the Rishiri Space Force.>
+		Msg3 <Lunar mecha are made from high grade ceramics. You won't find this kind of technology anywhere else in the solar system.>
+		Prompt1 <Let me take a look.>
+		Prompt2 <Thanks, but I prefer to buy local.>
+	end
+	inv
+		NPC Shopkeeper
+		SetFaction 4
+		Repair 10
+	end
+
+
+%% *RISSP_L5AE_Content
+%%	The ambassador for the Aegis embassy in Rishiri Spinner
+
+Content
+	requires <*RISSP_L5AE_Content>
+	minimap <............1.......#&+&#>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		special <NOPLOTS>
+		*greeting <*NiceToMeetYou GoTalk>
+		GoTalk <NewChat Say 1 AddChat 1 AddChat 2 EraseSpecial>
+		result1 <NewChat Say 2 AddChat 3 AddChat 4>
+		result2 <NewChat Say 3 AddChat 5 AddChat 4>
+		result3 <NewChat Say 4 AddChat 6 AddChat 7>
+		result4 <NewChat Say 5 AddChat 8 AddChat 2 AddChat 9 AddChat 10>
+		result5 <NewChat Say 6 AddChat 11 AddChat 7>
+		result6 <NewChat Say 7 AddChat 12>
+		result7 <Goto result4>
+		result8 <Goto result1>
+		result9 <NewChat Say 8 AddChat 12>
+		*result10 <*GoodBye>
+		result11 <NewChat Say 9 AddChat 12>
+		result12 <Goto result4>
+		Msg1 <I am the representative of Aegis Overlord in the L5 region. The government of Luna pledges its full support for the city of Rishiri and all of the spinner colonies.>
+		Msg2 <Many kinds. There is a lot of trade between Luna and L5. We have an ongoing technological exchange with Galconde Spinner. In addition, we provide military support in the form of the Aegis Space Force.>
+		Msg3 <Luna is the oldest federation in the solar system, having existed since before the fall of Pax Europa. The colonies of Luna are united peacefully under Aegis Overlord. We are eager to share our knowledge and experience with other worlds.>
+		Msg4 <They are certainly misguided in their alliance with Earth, but their citizens should not be made to suffer for the faults of their leaders. Aegis Overlord wishes them no ill.>
+		Msg5 <What else do you wish to know?>
+		Msg6 <That it was damaged by a quake and rebuilt by Aegis Overlord? Yes, that is true. No expense was spared to restore the dome to its original glory.>
+		Msg7 <Crihna Rock had no citizens; it was not a legitimate political entity. Besides, Aegis had nothing to do with its destruction. That decision was made by Admiral Haarast himself.>
+		Msg8 <It's a remarkable city, as fine as any on Luna. I've told Merdon many times that he has the gravity turned up a bit too high but he apparently thinks I'm joking.>
+		Msg9 <That's very odd. If Tycho Madang were truly destroyed by Aegis forces, surely it would be impossible to keep something like that a secret. I'd advise you to not believe all the anti-Lunar propaganda being spread by Earth.>
+		Prompt1 <What kind of support are you talking about?>
+		Prompt2 <Tell me a bit about Luna.>
+		Prompt3 <What about the L5 Alliance?>
+		Prompt4 <How nice.>
+		Prompt4_1 <Good for you.>
+		Prompt5 <Is it true what they say about Tycho Madang?>
+		Prompt6 <Were the citizens of Crihna Rock misguided too?>
+		Prompt7 <I see. Let's talk about something else.>
+		Prompt7_1 <Aha. Let's talk about something else.>
+		Prompt8 <What kind of support do you give to L5?>
+		Prompt9 <How do you like Rishiri Spinner?>
+		Prompt10 <That's all for now.>
+		Prompt11 <Actually, I heard that it was destroyed by Aegis.>
+		Prompt12 <I have another question.>
+	end
+	inv
+		NPC Politician
+		job <Ambassador>
+		SetFaction 4
+	end
+
+
+%% *GALSP_NI_Content
+%%	NPCs and stuff for the Nova Initiative in Galconde Spinner
+
+Content
+	%% Technology Professor - free skill trainer
+	requires <*GALSP_NI_Content>
+	minimap <............1.......##+##>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoSchool>
+		GoSchool <NewChat Say 1 AddChat 1 AddChat 2>
+		Result1 <EndChat Say 2 School .skills Goto Result2>
+		.skills <13 21 22>
+		*Result2 <*GoodBye>
+		Msg1 <The Nova Initiative has programs for both research and education. Our doors are open to all people with an interest in science.>
+		Msg2 <Certainly. What subject do you want to know more about?>
+		Prompt1 <I'd like to study here.>
+		Prompt2 <No thanks, I've had enough schooling.>
+	end
+	inv
+		NPC Scientist
+		job <Technology Professor>
+	end
+
+
+Content
+	%% Laboratory - guaranteed science toy
+	requires <*GALSP_NI_Content>
+	minimap <#.2.#.......1.......##+##>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	Element2 <Prefab>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoChat>
+		*GoChat <*MISC_CHATTER>
+	end
+	inv
+		NPC Scientist
+
+		Prop 10
+		name <Physics Apparatus>
+		SDL_SPRITE <prop_displaycase.png>
+		roguechar <+>
+		use <Print 1>
+		CLUE_SCIENCE <ifG ComTime V1 else GoBeenBefore V= 1 NextDay Reputation 7 d4 MENTAL ifUScience 10 else GoNoDice ifG PCRep 7 -d100 else GoNoDice Print 2 XPV 150>
+		GoNoDice <Print 3>
+		GoBeenBefore <Print 4>
+		Msg1 <It's a classical physics workbench.>
+		Msg2 <You conduct an experiment. You feel that your understanding of the universe has improved.>
+		Msg3 <You conduct an experiment.>
+		Msg4 <You've already done an experiment today.>
+	end
+
+
+
+%% *GALSP_TO_Content
+%%	NPCs for the tech outlet in Galconde Spinner
+
+Content
+	%% Mechanic at the Tech Outlet- may become skill trainer
+	requires <*GALSP_TO_Content>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		% V1 = Have accepted/denied skill training
+		*greeting <*NiceToMeetYou GoCheckGift>
+		GoCheckGift <if= V1 0 else GoOpenShop ifG React 50 else GoOpenShop ifG PCHeroism 25 else GoOpenShop ifChatNPCKnown else GoOpenShop NewChat say 1 AddChat 1 AddChat 2>
+		GoOpenShop <NewChat Say 2 AddChat 3 AddChat 4 AddChat 5>
+		Result1 <NewChat Say 3 History 4 V= 1 1  AddChat 6 AddChat 7 AddChat 4 AddReact d20>
+		Result2 <NewChat Say 5 History 6 V= 1 -1 AddSociable -d6 RandomMecha .facs 30>
+		.facs <GENERAL ROCKE>
+		Result3 <EndChat Say 7 Shop .wares Goto Result4>
+		.wares <MEXTRA TOOL>
+		*Result4 <*GoodBye>
+		Result5 <EndChat Say 8 School .skills Goto Result4>
+		.skills <13 16 22>
+		Result6 <Goto result5>
+		Result7 <Goto result3>
+		Msg1 <I've been following your adventures, \PC , and I'd like to help you out. If you want I can teach you some things about mecha design.>
+		Msg2 <If you want to upgrade your mecha you've come to the right place. Galconde is where all the new technologies appear first.>
+		Msg3 <Great! Whenever you need training, just come and ask. Would you like to do that right away?>
+		Msg4 <%name1% in Galconde Spinner agreed to teach you about mecha design.>
+		Msg5 <Fair enough. You can have this mecha, then. Its original owner couldn't afford to pay for the work I did on it, but I don't have any use for it myself, so now it's yours.>
+		Msg6 <%name1% in Galconde Spinner gave you a free mecha.>
+		Msg7 <The key to building a good mecha is having the right parts. If you can't find what you need right now then come back again tomorrow.>
+		Msg8 <While it's important to have the right parts when designing a mek, that's not going to help much if you don't know how to put them together.>
+		Prompt1 <I'd like that.>
+		Prompt2 <Really, some free gear would be more helpful.>
+		Prompt3 <I'd like to see what you have.>
+		Prompt4 <Sorry, but I don't need anything right now.>
+		Prompt5 <I want to study mecha design with you.>
+		CPrompt5 <if= V1 1 Accept>
+		Prompt6 <Alright, let's train.>
+		Prompt7 <Not now, but I do need your other services.>
+	end
+	inv
+		NPC Mechanic
+		name <Fabrianne>
+		CharDesc Female Heroic Lawful Sociable
+		Age 12
+		Shopping 15
+		SDL_Portrait <por_f_musical(J--).png>
+		SDL_Colors <80 80 85 245 213 160 168 133 230>
+	end
+
+
+
+%% *GALSP_Guyatt_Content
+%%	NPCs for Guyatt Medical in Galconde Spinner
+
+Content
+	requires <*GALSP_Guyatt_Content>
+	minimap <............1.......##+##>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		GoShop <NewChat Say 1 AddChat 1 AddChat 2>
+		result1 <EndChat Say 2 Shop .wares Goto result2>
+		.wares <MEDICINE CYBERWARE>
+		Keywords <MEDICINE CYBERWARE>
+		*result2 <*GOODBYE>
+		Msg1 <Guyatt Medical is primarily a research hospital, but we also offer conventional medical services. Is there anything I could help you with?>
+		Msg2_1 <Let me see what the body scan says... Hm, disappointing. You don't have any rare diseases.>
+		Msg2_2 <Let me see what the body scan says... Strange. Did you know you have a dark spot in your brain?>
+		Msg2_3 <Let me see what the body scan says... Not bad. Perfectly boring, in fact.>
+		Prompt1 <I think there is.>
+		Prompt2 <Not today, thanks.>
+	end
+	inv
+		NPC CyberDoc
+		Shopping 15
+		name <Freedman>
+		Age 21
+		chardesc Male Pragmatic Heroic Melancholy Sociable
+		SDL_Portrait <por_m_guy4(A-Y).png>
+		SDL_Colors <201 205 229 255 230 210 255 120 80>
+	end
+
+
+%% *YATSP_RB2_Content
+%%	NPCs for Rocket Penthouse, aka Rocket Base 2
+
+Content
+	requires <*YATSP_RB2_Content>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	element2 <Prefab>
+	team2 <Citizens>
+	teamdata2 <ally pass>
+	minimap <#...#..2....1.......#---#>
+
+	sub
+		Persona 1
+		greeting <if= PCFac ChatNPCFac else GoChat ifChatNPCUnknown else GoTeach EndChat Say 3 AddCHat 3>
+		GoTeach <NewChat Say 1 AddChat 1 AddChat 2>
+		GoChat <NewChat SayAnything>
+		result1 <EndChat Say 2 School .skills Goto result2>
+		.skills <10 11 15>
+		*result2 <*GoodBye>
+		result3 <Goto GoTeach>
+		Msg1 <Life is a process of reinventing oneself. When you stop learning, it means you have achieved either perfection or death. I, being relatively closer to that state, know more about these things than you.>
+		Msg2 <A Star needs to master three skills. The first is to avoid dying; that's quite handy. The second is the ability to see things as they really are. The third is the ability to look cool at all times. The rest is just details.>
+		Msg3 <\PC . I have been watching your advancement... Remember this, that legends are written of the bold. Someday you may become legend, but for right now I suggest you concentrate on simply being.>
+		Prompt1 <Teach me something.>
+		Prompt2 <I don't have time for this.>
+		Prompt3 <[Continue]>
+
+		Persona 2
+		greeting <if= PCFac ChatNPCFac else GoChat NewChat Say 1 AddChat 1 AddChat 2>
+		GoChat <NewChat SayAnything>
+		*GoEnd <*GoodBye>
+		result1 <EndChat Say 2 School .skills Goto GoEnd>
+		.skills <17 25>
+		result2 <NewChat Say 3>
+		Msg1 <Welcome to the hall of Master Kynan. Do you like my song? I could teach it to you.>
+		Msg2 <Without music, a warrior's heart is filled only with death. Take this song and make it your own.>
+		Msg3 <That's so sad... You must feel very empty inside.>
+		Prompt1 <I'd enjoy that.>
+		Prompt2 <Sorry, I'm not a musician.>
+	end
+	inv
+		NPC Rocket Star
+		name <Kynan>
+		job <Mentor>
+		SetFaction 14
+		Age 42
+		Chardesc Male Sociable Passionate Spiritual Heroic
+		SDL_PORTRAIT <por_m_kynan(OC-).png>
+		SDL_COLORS <166 47 32 255 212 195 115 100 13>
+		Renown 65
+		NonCombatant
+
+		NPC Singer
+		name <Leppiu>
+		job <Musician>
+		SetFaction 14
+		Age -3
+		Chardesc Female Passionate Sociable Melancholy Heroic
+		Combatant
+	end
+
+Content
+	requires <*YATSP_RB2_Content>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	minimap <............1.......#---#>
+
+	sub
+		Persona 1
+		special <UNLISTED>
+		Greeting <if= PCFac ChatNPCFac else GoChat NewChat Say 1 AddChat 1 AddChat 2>
+		GoChat <NewChat SayAnything>
+		result1 <EndChat Say 2 Shop .wares Goto result2>
+		.wares <WEAPON EXOTIC ARMOR>
+		*result2 <*GoodBye>
+		Msg1 <You can tell the worth of a pilot by the gear he carries. Looking at you, it's obviously time for an upgrade.>
+		Msg2 <These weapons are the finest in all of space. Use them well, and look good while doing so.>
+		Prompt1 <I could use some new gear.>
+		Prompt2 <Right now I've got everything I need.>
+	end
+	inv
+		NPC Rocket Star
+		name <Jondi Syd>
+		job <Weaponmaster>
+		SetFaction 14
+		Shopping 13
+		Age 8
+		Chardesc Male Sociable Passionate Villainous
+		NonCombatant
+	end
+
+Content
+	requires <*YATSP_RB2_Content>
+	element1 <Prefab>
+	team1 <Guards>
+	teamdata1 <ally pass>
+	minimap <............1.......##+##>
+
+	sub
+		Persona 1
+		greeting <NewChat SayAnything>
+	end
+	inv
+		NPC Rocket Star
+	end
+
+
+%% *YATSP_RB1_Content
+%%	NPCs for Rocket Base 1
+
+Content
+	requires <*YATSP_RB1_Content>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	minimap <............1.......#&+&#>
+
+	sub
+		Persona 1
+		Greeting <NewChat Say 1 AddChat 1 AddChat 2>
+		result1 <EndChat Say 2 if= PCFac ChatNPCFac else GoBadWares Shop .wares1 Goto result2>
+		GoBadWares <Shop .wares2 Goto result2>
+		.wares1 <MEDICINE CYBERWARE>
+		.wares2 <MEDICINE>
+		*result2 <*GoodBye>
+		Msg1 <Crash your mek? Party a little too hard? You've come to the right place. Let me take away your pain.>
+		Msg2 <Just wait and I'll make you as good as new... or maybe even better.>
+		Prompt1 <I could use some help.>
+		Prompt2 <No thanks, I'm fine.>
+	end
+	inv
+		NPC Cyberdoc
+		name <Edeline>
+		SetFaction 14
+		Shopping 10
+		Age 8
+		Chardesc Female sociable passionate cheerful heroic
+	end
+
+Content
+	requires <*YATSP_RB1_Content>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoCheckEnemy>
+		*GoCheckEnemy <*ENEMY_CHECK GoShop ChatNPCFac GoIsEnemy>
+		GoIsEnemy <PCEnemy SelfCID>
+		GoShop <if= PCFac ChatNPCFac else GoMinorShop NewChat Say 3 AddChat 3 AddChat 2>
+		GoMinorShop <NewChat Say 1 AddChat 1 AddChat 2>
+		*GoBye <*GOODBYE>
+		result1 <EndChat Say 2 Shop .nowares Goto GoBye>
+		result2 <Goto GoBye>
+		result3 <EndChat Say 4 Shop .wares Goto GoBye>
+		.wares <MECHA MEXTRA>
+		Msg1 <You stand in the presence of the official mechanic for the Rocket Stars. I'm the one who keeps their dream machines flying.>
+		Msg2 <Normally I wouldn't, but since the Stars are all such ace pilots I don't have a lot of fixing to do. Let's see what's wrong with it.>
+		Msg3 <All hail \RANK \PC ! Just say the word and I'll get straight to work on your beautiful machine.>
+		Msg4 <If you think you'd rather upgrade, I have a couple of new machines you might be interested in.>
+		Msg4_1 <The good thing is, this job never gets old. I just love working with these machines.>
+		Msg4_2 <So, when are you planning to upgrade that antique you've been riding? Take a look through my selection, I'm sure you can find something better back there.>
+		CMsg4_2 <ifG PCMeks 0 Accept>
+		Msg4_3 <Walking is no way for a Star to get around town. You should pick up a new mecha, if you have the money.>
+		CMsg4_3 <if= PCMeks 0 Accept>
+		Prompt1 <Could you take a look at my mecha?>
+		Prompt2 <I don't need any repairs right now.>
+		Prompt3 <Give it to me, Makk.>
+	end
+	inv
+		NPC Mechanic
+		name <Makk>
+		SetFaction 14
+		Shopping 10
+		SDL_PORTRAIT <>
+		SDL_COLORS <>
+		CharDesc Male Sociable Passionate Passionate Cheerful Pragmatic
+		Age 2
+	end
+
+
+%% *THESP_HM_Content
+%%	NPCs for Hovel Manor in Theles Spinner
+
+Content
+	requires <*THESP_HM_Content>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+
+	% L%id%01 = Monologue Counter
+	start <if= v%id%01 0 else %pop% ifNPCOK %1% else %pop% ifNPCInPlay %1% else %pop% Monologue %1% %id%01 v= %id%01 1 Goto %pop%>
+	Msg%id%01_1 <Well if it isn't \PC ... I thought for sure you'd have gotten out of this hellhole by now.>
+	CMsg%id%01_1 <if= PCHomeTown RootSceneID Accept>
+	Msg%id%01_2 <Look at this, some fresh meat for the hovel. Abandon all hope while you still have any left!>
+	CMsg%id%01_2 <if# PCHomeTown RootSceneID Accept>
+
+	sub
+		Persona 1
+		special <NOPLOTS>
+		greeting <NewChat Say 1>
+		Msg1 <We don't have nothing down here; they have some things up there, but mostly just killer rats.>
+	end
+	inv
+		NPC Citizen
+		chardesc old melancholy passionate spiritual
+	end
+
+%% *THESP_SH_Content
+%%	NPCs for Salvation Hospital in Theles Spinner
+
+Content
+	requires <*THESP_SH_Content>
+	minimap <............1.......#&+&#>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+
+	sub
+		Persona 1
+		special <NoEscape>
+		% V1 = Have been told about offer.
+		% V2 = Have sold some body tissue already.
+		% V3 = Sell tissue timer
+		% V6 .. V9 = Have sold appropriate body part.
+		&MuscleCost <150000>
+		&EyeCost <200000>
+		&SpineCost <250000>
+		&BrainCost <300000>
+		*greeting <*NiceToMeetYou GoOpenShop>
+		GoOpenShop <NewChat Say 1 AddChat 1 AddChat 2 AddChat 3 AddChat 4>
+		*GoBye <*GOODBYE>
+		GoOperate <EndChat Say 12 AddChat 11 V= 2 1 GrabPCPilot GAddNAtt NAG_Condition NAS_StaminaDown 50  V= 3 ComTime V+ 3 * 2 86400>
+		result1 <ifG V2 0 else GoR1Base EndChat Say 3 Shop .wares Goto GoBye>
+		GoR1Base <EndChat Say 2 Shop .nowares Goto GoBye>
+		.wares <CYBERWARE>
+		result2 <Goto GoBye>
+		result3 <NewChat Say 4 V= 1 1 AddChat 5 AddChat 4>
+		result4 <if= PCDamage 0 else GoR4Fail NewChat Say 6 AddChat 6 AddChat 7 AddChat 8 AddChat 9 AddChat 10>
+		GoR4Fail <NewChat Say 5 AddChat 1 AddChat 2>
+		result5 <NewChat Say 7>
+		result6 <ifG PCBody 8 else GoR6Fail Cash+ &MuscleCost PCStat+ STAT_Body -1 V= 6 1 Goto GoOperate>
+		GoR6Fail <NewChat Say 8 AddChat 7 AddChat 8 AddChat 9>
+		result7 <ifG PCCharm 7 else GoR7Fail Cash+ &EyeCost PCStat+ STAT_Charm -1 V= 7 1 GrabPCPilot GSetNAtt NAG_StatusEffect 21 1 Goto GoOperate>
+		GoR7Fail <NewChat Say 9 AddChat 6 AddChat 8 AddChat 9>
+		result8 <ifG PCReflexes 5 else GoR8Fail ifG PCSpeed 5 else GoR8Fail Cash+ &SpineCost PCStat+ STAT_Reflexes -1 PCStat+ STAT_Speed -1 V= 8 1  Goto GoOperate>
+		GoR8Fail <NewChat Say 10 AddChat 6 AddChat 7 AddChat 9>
+		result9 <ifG PCKnowledge 7 else GoR9Fail Cash+ &BrainCost PCStat+ STAT_Knowledge -1 V= 9 1 Goto GoOperate>
+		GoR9Fail <NewChat Say 11 AddChat 6 AddChat 8 AddChat 7>
+		result10 <Goto result5>
+		result11 <EndChat Say 13>
+		Msg1 <All flesh is doomed to die, but as long as it's here you might as well make some money off it. What can I do for you?>
+		Msg2 <I'll patch up your body, in exchange for some monetary compensation of course.>
+		Msg3 <You could probably use some cyberware to counter the side effects of your tissue donation. I'll show you what I have in stock.>
+		Msg4 <I mean that it's a commodity. Some companies here have need of living human tissue; it's best not to wonder about their reasons. If you'd be willing to sacrifice a part of yourself, it's the easiest money in Theles.>
+		Msg5 <I'm afraid that you're not in any condition to donate anything. As much as I hate to lose my commission, I'm afraid that I can't operate on you.>
+		Msg6 <Here's what the companies are looking for. I can offer you $ \VAL &MuscleCost for muscle fiber, $ \VAL &EyeCost for an eyeball, $ \VAL &SpineCost for spinal neurons, or $ \VAL &BrainCost for brain matter.>
+		Msg7 <Can't say I blame you. Still, there are plenty of others who are desperate enough to take the money.>
+		Msg8 <I'm sorry, but you don't look like you have any muscle fiber to spare. Perhaps you'd like to sell something else?>
+		Msg9 <Those eyes look a little glassy... Perhaps you'd be interested in selling something else?>
+		Msg10 <Based on your hand-eye coordination, I'm inclined to judge that your spinal tissue is sub-par. Perhaps you'd like to sell something else?>
+		Msg11 <I know that you aren't really using it, but I think it would be best if you kept what brains you have. Perhaps you'd like to sell something else?>
+		Msg12 <Just lie back on the operating table. This won't hurt for long.>
+		Msg13 <Thank you for your generous contribution; here's your cut of the money. I wouldn't advise toward making any further tissue donations for at least a couple of days.>
+		Prompt1 <I need medical help.>
+		Prompt2 <You can't do anything for me.>
+		Prompt3 <What do you mean, make some money?>
+		CPrompt3 <if= V1 0 Accept>
+		Prompt4 <I'd like to sell some body tissue.>
+		CPrompt4 <if# V1 0 ifChatNPCInPlay ifG ComTime V3 Accept>
+		Prompt5 <No thanks- I'm kind of attached to my body.>
+		Prompt6 <I'd like to sell muscle fiber.>
+		CPrompt6 <if= V6 0 Accept>
+		Prompt7 <I'd like to sell an eyeball.>
+		CPrompt7 <if= V7 0 GrabPCPilot if= GNAtt NAG_StatusEffect 21 0 Accept>
+		Prompt8 <I'd like to sell part of my spine.>
+		CPrompt8 <if= V8 0 GrabPCPilot if= GNAtt NAG_StatusEffect 22 0 Accept>
+		Prompt9 <I'd like to sell part of my brain.>
+		CPrompt9 <if= V9 0 Accept>
+		Prompt10 <On second thought, I don't want to do this.>
+		Prompt11 <[Continue]>
+	end
+	inv
+		NPC Cyberdoc
+		name <Cab Glodener>
+		SDL_PORTRAIT <por_m_guy4(A-Y).png>
+		SDL_COLORS <136 141 101 255 233 225 244 216 28>
+		chardesc Male Criminal Melancholy Easygoinge
+		Age 14
+		Shopping 15
+	end
+
+%% *THESP_FR_Content
+%%	NPCs for Factory Rejects in Theles Spinner
+
+Content
+	requires <*THESP_FR_Content>
+	minimap <............1.......#&+&#>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+
+	sub
+		Persona 1
+		greeting <if# ChatNPCFac 0 else GoChat if= PCFac ChatNPCFac else GoCheckEligibility Goto GoTrain>
+		*GoTrain <*SKILL_TRAINING GoGoodbye>
+		*GoCheckEligibility <*ENEMY_CHECK GoCheckFaction ChatNPCFac GoNil>
+		GoCheckFaction <if= PCFac 0 else GoChat Goto GoCheckSkills>
+		*GoCheckSkills <*FACTION_ENTRANCE_EXAM GoJobOffer ChatNPCFac>
+		*GoChat <*MISC_CHATTER>
+		*GoGoodbye <*GOODBYE>
+		*GoJobOffer <*FACTION_JOIN_OFFER ChatNPCFac GoJoin>
+		*GoJoin <*FACTION_JOIN_ACCEPT ChatNPCFac>
+	end
+	inv
+		NPC Privateer
+		SetFaction 6
+	end
+
+%% *THESP_TheSpPo_Content
+%%	NPCs for Theles Spinner's spaceport.
+
+Content
+	requires <*THESP_TheSpPo_Content>
+	minimap <............1.......##+##>
+	element1 <Prefab>
+	team1 <Guards>
+	teamdata1 <ally SD>
+
+	sub
+		Persona 1
+		special <NOPLOTS>
+		% V1 = Have spoken counter
+		*Greeting <*NiceToMeetYou GoChat>
+		GoChat <if= SceneVar RootSceneID 2 0 else GoChaos NewChat Say 1 AddChat 1 AddChat 2 AddChat 3 EraseSpecial>
+		GoChaos <NewChat Say 7>
+		result1 <NewChat Say 2 AddChat 4 AddChat 5>
+		result2 <NewChat Say 3 AddChat 4 AddChat 5>
+		result3 <NewChat Say 4>
+		result4 <NewChat Say 5>
+		result5 <NewChat Say 6>
+		Msg1 <Exercise caution when traveling in this colony. L5Law does not have jurisdiction in Theles Spinner; the lower level is extremely dangerous.>
+		Msg2 <Criminal gangs run the streets. In theory the Theles Security Force is responsible for keeping order, but in reality they're not much better than the gangs. As long as the factories keep working no-one cares what else goes on.>
+		Msg3 <We have jurisdiction for interspinner crime, but inside the colony we serve at the whim of the technocrats. Theles has a private security force, but as long as the factories keep running they don't care what happens on the street.>
+		Msg4 <I see. Well, best of luck to you, then.>
+		Msg5 <As long as Theles Spinner continues to turn an energy profit, the charter of the Free Commerce States doesn't allow any action to be taken against it. Personally, I don't like it but there's nothing legal that can be done.>
+		Msg6 <Most of them have no choice. They've been exiled from other spinners and have no place to go, or were born here and can't afford to leave. The whole setup is sleazy and exploitative, but completely within the law.>
+		Msg7 <The FCS Council is planning to appoint a new technocrat for Theles Spinner. We need to find out how this place ever got in such a mess, and make sure that it can never happen again.>
+		Prompt1 <What's so dangerous about it?>
+		Prompt2 <Why doesn't L5Law have jurisdiction?>
+		Prompt3 <I know. I was born here.>
+		CPrompt3 <if= PCHomeTown RootSceneID Accept>
+		Prompt4 <Isn't there anything you can do about it?>
+		Prompt5 <How can people tolerate this?>
+	end
+	inv
+		NPC Police Officer
+		name <Sidnea>
+		Age 7
+		chardesc female heroic passionate
+		SDL_PORTRAIT <por_f_mechpilot(--Y).png>
+		SDL_COLORS <30 30 90 150 112 89 172 225 175>
+		SetFaction 9
+	end
+
+
+%% *MAQSP_ComTow_Content
+%%	NPCs for Comet Tower in Maquise Spinner
+
+Content
+	requires <*MAQSP_ComTow_Content>
+	minimap <............1.......##+##>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+
+	content1 <Optional *CORP_EMPLOYEE - Local>
+
+	sub
+		Persona 1
+		greeting <if# ChatNPCFac 0 else GoChat if= PCFac ChatNPCFac else GoCheckEligibility Goto GoTrain>
+		*GoTrain <*SKILL_TRAINING GoGoodbye>
+		*GoCheckEligibility <*ENEMY_CHECK GoCheckFaction ChatNPCFac GoNil>
+		GoCheckFaction <if= PCFac 0 else GoChat Goto GoCheckSkills>
+		*GoCheckSkills <*FACTION_ENTRANCE_EXAM GoJobOffer ChatNPCFac>
+		*GoChat <*MISC_CHATTER>
+		*GoGoodbye <*GOODBYE>
+		*GoJobOffer <*FACTION_JOIN_OFFER ChatNPCFac GoJoin>
+		*GoJoin <*FACTION_JOIN_ACCEPT ChatNPCFac>
+	end
+	inv
+		NPC Corporate Executive
+		name <Bracett>
+		job <Human Resources Manager>
+		SDL_PORTRAIT <por_m_guy2(-A-).png>
+		SDL_COLORS <234 180 88 255 212 195 50 50 50>
+		Chardesc Male Villainous Sociable Melancholy
+		SetFaction 2
+		Age 12
+	end
+
+
+%% *ATHSP_TA_MusicShop
+%%	At the Atrium in Athera Spinner, there is a guaranteed music shop.
+
+Content
+	requires <*ATHSP_TA_MusicShop>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <Pass>
+	minimap <..1.................#---#>
+	sub
+		Persona 1
+		% V1 = Have become skill trainer (1) or PC has declined the offer (-1)
+		*greeting <*NiceToMeetYou GoCheckOFfer>
+		GoCheckOffer <if= V1 0 else GoOpenStore ifChatNPCKnown else GoOpenStore ifG PCRenown 40 else GoOpenStore EndChat Say 4 AddChat 4>
+		GoOpenStore <NewChat Say 1 AddChat 1 AddChat 2 AddChat 3>
+		result1 <EndChat Say 2 Shop .wares Goto result2>
+		.wares <INSTRUMENT ENTERTAINMENT>
+		*result2 <*GoodBye>
+		result3 <EndChat Say 3 School .skills Goto result2>
+		.skills <8 17 18 25 28>
+		result4 <NewChat Say 5 AddChat 5 AddChat 6>
+		result5 <NewChat Say 6 V= 1 1 History 8 AddChat 7 AddChat 8 PCFriend %1%>
+		result6 <NewChat Say 7 V= 1 -1 History 9 AddEasygoing -d10>
+		result7 <Goto result1>
+		result8 <goto result3>
+		Msg1 <Athera Spinner is the place where dreams are born. I carry a selection of instruments for aspiring musicians, and a variety of entertainment goods for those who choose to appreciate rather than create art.>
+		Msg2 <Take your time looking around; you never know when you'll find that one thing you need.>
+		Msg3 <Come, let's see what I may have learned that you might find useful.>
+		Msg4 <\PC , I'd like a word with you, if I could. I told you once that Athera Spinner is the place where dreams are born- far too often, it is also the place where dreams come to die. When I came here first I dreamt of becoming a star.>
+		Msg5 <As time went on, though, I discovered that I was happiest just running this shop. I know that you have big dreams yourself, \PC . I could share with you some of the things I've learned about singing and the entertainment business.>
+		Msg6 <That makes me glad. Shall we get started right away, or is there something else you need?>
+		Msg7 <You're very confident. That can be a blessing, but sometimes also a curse.>
+		Msg8 <Artemis in Athera Spinner offered to teach you about performance.>
+		Msg9 <You refused Artemis's offer to become your teacher.>
+		Prompt1 <Let me see what you have.>
+		Prompt2 <Sorry, but I don't need anything here.>
+		Prompt3 <I'd like to train.>
+		CPrompt3 <if= V1 1 Accept>
+		Prompt4 <[Continue]>
+		Prompt5 <I'd like that.>
+		Prompt6 <There's nothing you could teach me.>
+		Prompt7 <Actually, I want to buy something.>
+		Prompt8 <Okay, let's do that.>
+	end
+	inv
+		NPC Singer
+		name <Artemis>
+		Combatant
+		Age 5
+		CharDesc Lawful Sociable Easygoing Female
+		Shopping 12
+		SDL_PORTRAIT <por_f_ladiartemis(-C-).png>
+		SDL_COLORS <144 166 195 250 183 139 103 3 45>
+	end
+
+
+%% *EMESP_EB_Investment
+%%	At the Emerald Bank, there's a place to invest money. The success or failure of the
+%% 	PC's investment will be determined by the Shopping skill.
+
+Content
+	requires <*EMESP_EB_Investment>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <Pass>
+	minimap <..1............##+###...#>
+	sub
+		Persona 1
+		rumor <you can lose your shirt playing stocks if you don't know what you're doing.>
+		% This is going to be a complicated one. Investing here is pretty much like
+		% gambling- if your Shopping skill exceeds a target number, you get a return
+		% on your investment. Otherwise you lose your money.
+		% Every time the PC successfully gains money, the difficulcy number for the
+		% next transaction increases.
+		%
+		% V1 = Cash units invested
+		% V2 = Renown at last withdrawl
+		% V3 = Initialization Counter
+		% V4 = Cash units requested; doesn't get stored until transaction complete
+		% V5 = Risk level; 0=Low, 1=Medium, 2=High
+		% V6 = Renown at last deposit
+		% V7 = Shopping roll at last deposit
+		% V8 = Investment Timer
+		% V9 = Number of successful investments
+		% V10 = Investment target
+		%
+		% InvestmentCost = the cost of investing X cash units.
+		&InvestmentCost <* ? 25000>
+		%
+		*Greeting <*NiceToMeetYou GoOpenBank>
+		GoOpenBank <NewChat Say 1 AddChat 1 AddChat 2 AddChat 3  if= V3 0  V= 3 1  V= 2 -1>
+		GoNoClients <NewChat Say 4>
+		GoSelectStock <NewChat Say 6 AddChat 13 AddChat 14 AddChat 15 AddChat 12>
+		GoConfirm <V= 1 V4   V= 7 Shopping   Cash+ - &InvestmentCost V4   V= 6 PCRenown   NewChat Say 7 Memo 8  V= 8 ComTime V+ 8 86400>
+		GoNotYet <NewChat Say 9>
+		GoInvestSucceed <NewChat Say 10 Memo 0 V= 2 PCRenown V+ 9 1 if= V5 2 else GoCheckMedium CashPrize * V1 100000 V= 1 0>
+		GoCheckMedium <if= V5 1 else GoLowMoney  CashPrize * V1 50000 V= 1 0>
+		GoLowMoney <CashPrize * V1 37500 V= 1 0>
+		GoInvestFailed <NewChat Say 11  SkillXP NAS_Shopping * V1 5  Memo 0 V= 2 PCRenown V= 1 0>
+		result1 <ifG PCRenown V2 else GoNoClients if# PCRenown 100 else GoNoClients NewChat Say 5 AddChat 6 AddChat 7 AddChat 8 AddChat 9 AddChat 10 AddChat 11 AddChat 12>
+		result2 <NewChat Say 2 AddChat 4>
+		result3 <ifG ComTime V8 else GoNotYet ifG PCRenown V6 else GoNotYet V= 10 5 V+ 10 * 5 V5 V+ 10 V9 ifG V7 V10 else GoInvestFailed Goto GoInvestSucceed>
+		result4 <NewChat Say 3 AddChat 1 AddChat 3 AddChat 5>
+		*result5 <*GoodBye>
+		result6 <V= 4 1 Goto GoSelectStock>
+		result7 <V= 4 2 Goto GoSelectStock>
+		result8 <V= 4 4 Goto GoSelectStock>
+		result9 <V= 4 10 Goto GoSelectStock>
+		result10 <V= 4 20 Goto GoSelectStock>
+		result11 <V= 4 40 Goto GoSelectStock>
+		result12 <Goto result5>
+		result13 <V= 5 0 Goto GoConfirm>
+		result14 <V= 5 1 Goto GoConfirm>
+		result15 <V= 5 2 Goto GoConfirm>
+		Msg1 <Welcome to %name1% Personal Investment. I offer a variety of stock trading and investment services.>
+		Msg2 <You give me some money to invest in a stock of your choice. Some stocks are high risk, others are low risk. If everything goes well your stock will increase in value and you'll earn money.>
+		Msg3 <In that case, you'll probably lose the money you invested. At least you'll have learned something in the process. It takes at least 24 hours for a stock to mature but may take longer, depending on your situation.>
+		Msg4 <I'm sorry, but my portfolio is currently full. I'm not accepting any more clients at this time.>
+		Msg5 <Certainly. How much money would you like to invest? Remember, if the stock turns sour, you could lose all of this.>
+		Msg6 <Very good. Next, which type of stock would you like to invest in? It's probably best to stick with low risk stocks unless you know what you're doing.>
+		Msg7_1 <Very well. I have you confirmed for a $ \VAL &InvestmentCost V1 investment in a low risk stock. Come back tomorrow to see how your stock is doing.>
+		CMsg7_1 <if= V5 0 Accept>
+		Msg7_2 <Very well. I have you confirmed for a $ \VAL &InvestmentCost V1 investment in a medium risk stock. Come back tomorrow to see how your stock is doing.>
+		CMsg7_2 <if= V5 1 Accept>
+		Msg7_3 <Very well. I have you confirmed for a $ \VAL &InvestmentCost V1 investment in a high risk stock. Come back tomorrow to see how your stock is doing.>
+		CMsg7_3 <if= V5 2 Accept>
+		Msg8_1 <You invested $ \VAL &InvestmentCost V1 in a low risk stock with %name1%.>
+		CMsg8_1 <if= V5 0 Accept>
+		Msg8_2 <You invested $ \VAL &InvestmentCost V1 in a medium risk stock with %name1%.>
+		CMsg8_2 <if= V5 1 Accept>
+		Msg8_3 <You invested $ \VAL &InvestmentCost V1 in a high risk stock with %name1%.>
+		CMsg8_3 <if= V5 2 Accept>
+		Msg9 <I'm afraid that your stock has not yet matured. You'll have to come back later.>
+		Msg10 <I'm pleased to inform you that your stocks did very well. Here's the money you earned from their sale.>
+		Msg11 <I'm sorry to inform you that your stocks crashed. Maybe you'll have better luck next time.>
+		Prompt1 <I'd like to invest some money.>
+		CPrompt1 <if= V1 0 Accept>
+		Prompt2 <Just how does investment work?>
+		Prompt3 <I'd like to check on my investments.>
+		CPrompt3 <if# V1 0 Accept>
+		Prompt4 <What if everything doesn't go well?>
+		Prompt5 <That's all I needed to know.>
+		Prompt6 <I want to invest $ \VAL &InvestmentCost 1 .>
+		CPrompt6 <ifG PC$ &InvestmentCost 1 Accept>
+		Prompt7 <I want to invest $ \VAL &InvestmentCost 2 .>
+		CPrompt7 <ifG PC$ &InvestmentCost 2 Accept>
+		Prompt8 <I want to invest $ \VAL &InvestmentCost 4 .>
+		CPrompt8 <ifG PC$ &InvestmentCost 4 Accept>
+		Prompt9 <I want to invest $ \VAL &InvestmentCost 10 .>
+		CPrompt9 <ifG PC$ &InvestmentCost 10 Accept>
+		Prompt10 <I want to invest $ \VAL &InvestmentCost 20 .>
+		CPrompt10 <ifG PC$ &InvestmentCost 20 Accept>
+		Prompt11 <I want to invest $ \VAL &InvestmentCost 40 .>
+		CPrompt11 <ifG PC$ &InvestmentCost 40 Accept>
+		Prompt12 <Sorry, I changed my mind.>
+		Prompt13_1 <Terran Agriculture (low risk)>
+		Prompt13_2 <Martian Steel (low risk)>
+		Prompt13_3 <L5 Electronics (low risk)>
+		Prompt13_4 <Lunar Ceramics (low risk)>
+		Prompt13_5 <Vesuvian Pharma (low risk)>
+		Prompt14_1 <Asteroid Mining (medium risk)>
+		Prompt14_2 <Fusion Engines (medium risk)>
+		Prompt14_3 <Basketball Shoes (medium risk)>
+		Prompt14_4 <Music Distribution (medium risk)>
+		Prompt14_5 <Snack Foods (medium risk)>
+		Prompt15_1 <Biotech Research (high risk)>
+		Prompt15_2 <Computer Games (high risk)>
+		Prompt15_3 <Novelty Pillows (high risk)>
+		Prompt15_4 <Artificial Stupidity (high risk)>
+		Prompt15_5 <Fancy Hats (high risk)>
+	end
+	inv
+		NPC Corporate Executive
+		job <Stockbroker>
+	end
+
+%% *MAQSP_PG_PrivateerShop
+%%	One shop at the Privateer's Guild sells privateer weapons, armor, and
+%%	mecha.
+
+Content
+	requires <*MAQSP_PG_PrivateerShop>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <Pass>
+	minimap <..1.................#---#>
+	sub
+		Persona 1
+		% V1 = Stupid question counter
+		*greeting <*NiceToMeetYou GoOpenStore>
+		GoOpenStore <NewChat Say 1 AddChat 1 AddChat 2 AddChat 3>
+		result1 <EndChat Say 2 Shop .wares Goto result2>
+		.wares <WEAPON ARMOR PIRATE MECHA>
+		*result2 <*GoodBye>
+		result3 <NewChat Say 3 V= 1 1 AddChat 1 AddChat 2>
+		Msg1 <This is the Weapons Locker, official supplier of the Privateer's Guild. Here you'll find all and sundry for turning a profit on your letter of marque.>
+		Msg2 <Now, our clients may be mostly ex-pirates, but that doesn't mean this isn't all top of the line gear. I know the serial numbers are all scratched off the pistols but those were damaged in shipping.>
+		Msg3 <No, you bloody well do not get a membership discount. What kind of a stupid question is that? Now, do you want to look at my gear or not?>
+		Prompt1 <I'll take a look.>
+		Prompt2 <I don't need anything.>
+		Prompt3 <Do I get a membership discount?>
+		CPrompt3 <if= PCFac 6 if= V1 0 Accept>
+	end
+	inv
+		NPC Privateer
+		name <Aveyhar>
+		NonCombatant
+		SetFaction 6
+		Age 23
+		% He isn't lying about the pistols, check out that Lawful rep
+		CharDesc Lawful Pragmatic Passionate Male
+		Shopping 12
+		SDL_PORTRAIT <por_m_comiccarter(OUY).png>
+		SDL_COLORS <20 90 130 150 112 89 168 153 230>
+	end
+
+
+
+
+%% *CSNSP_SilSan_Content
+%%	The content of the silver fortress private level.
+
+Content
+	%% Weaponmaster
+	requires <*CSNSP_SilSan_Content>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <Pass>
+	minimap <..1.................#---#>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoCheckFac>
+		GoCheckFac <if= PCFac 3 else GoChat NewChat Say 1 AddChat 1 AddChat 2 AddChat 3>
+		*GoChat <*MISC_CHATTER>
+		*GoBye <*GOODBYE>
+		result1 <EndChat Say 2 Shop .wares Goto GoBye>
+		.wares <WEAPON AMMO GRENADE ACCESSORY ARMOR SHIELD>
+		result2 <EndChat Say 3 School .skills Goto GoBye>
+		.skills <1 2 3 4 5 6   15 16 22>
+		result3 <Goto GoBye>
+		Msg1 <Having the right equipment can make the difference between life and death. Of course, knowing how to use it is also important.>
+		Msg2 <Take a look through the armory. Let me know what you need.>
+		Msg3 <Money spent on training is never wasted. In battle, it is usually the superior warrior who prevails.>
+		Prompt1 <I need some new equipment.>
+		Prompt2 <I need to train my skills.>
+		Prompt3 <Right now I have everything I need.>
+	end
+	inv
+		NPC Knight
+		name <Arleus>
+		NonCombatant
+		Age 19
+		SetFaction 3
+		chardesc Passionate Shy Cheerful Lawful Heroic Female
+		Shopping 15
+		job <Weaponmaster>
+		SDL_PORTRAIT <por_f_arleus(AAY).png>
+		SDL_COLORS <150 205 229 150 112 89 103 3 45>
+	end
+
+Content
+	%% Cybersurgeon
+	requires <*CSNSP_SilSan_Content>
+
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <Pass>
+
+	minimap <..1.................#---#>
+
+	sub
+		Persona 1
+		*Greeting <*NiceToMeetYou GoCheckFac>
+		GoCheckFac <if= PCFac 3 else GoChat NewChat Say 1 AddChat 1 AddChat 2>
+		*GoChat <*MISC_CHATTER>
+		*GoGoodbye <*GOODBYE>
+		result1 <EndChat Say 3 Shop .wares Goto GoGoodbye>
+		.wares <CYBERWARE MEDICINE>
+		result2 <ifG d40 React else GoChat EndChat Say 2>
+		Msg1_1 <We have neither the men nor the resources to field large numbers of mecha, so our pilots must be the best. It may be nessecary to overcome your human limitations.>
+		CMsg1_1 <ifChatNPCUnknown Accept>
+		Msg1_2 <Hello again \RANK \PC . Is there anything I can do for you?>
+		CMsg1_2 <ifChatNPCKnown Accept>
+		Msg2 <Chatting is a waste of valuable time. The survival of our colony depends on constant vigilence... Now, if you'll excuse me, I have work to do.>
+		Msg3 <Come in, then. I'll try to be of assistance.>
+		Prompt1 <I need your services.>
+		Prompt2 <Sorry, I'm just stopping by to chat.>
+	end
+	inv
+		NPC Cyberdoc
+		name <Gamaliel>
+		SDL_PORTRAIT <por_m_gamaliel(APY).png>
+		SDL_COLORS <150 205 229 123 63 0 55 25 81>
+		Age 16
+		Shopping 15
+		SetFaction 3
+		chardesc Pragmatic Melancholy Lawful Heroic Male
+		Combatant
+	end
+
+Content
+	%% Chaplain
+	requires <*CSNSP_SilSan_Content>
+
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <Pass>
+
+	element2 <Prefab>
+
+	minimap <..1....2............#---#>
+
+	sub
+		Persona 1
+		*Greeting <*NiceToMeetYou GoCheckFac>
+		GoCheckFac <if= PCFac ChatNPCFac else GoChat NewChat Say 1 AddChat 1 AddChat 2>
+		*GoChat <*MISC_CHATTER>
+		*GoBye <*GOODBYE>
+		result1 <EndChat Say 2 School .skills Goto GoBye>
+		.skills <14 21 27>
+		result2 <Goto GoBye>
+		Msg1 <Welcome, \RANK \PC . I hope that your quest is proceeding well.>
+		Msg2 <Alright, let's do that. What is it that you wish to learn?>
+		Prompt1 <I'd like to train with you.>
+		Prompt2 <I just stopped by to meditate.>
+	end
+	inv
+		NPC Knight
+		name <Marlowe>
+		SDL_PORTRAIT <por_m_marlowe(-CY).png>
+		SDL_COLORS <150 205 229 255 212 195 65 121 119>
+		Age 22
+		SetFaction 3
+		chardesc Spiritual Easygoing Lawful Heroic Male
+		Mysticism 10
+		job <Chaplain>
+		job_desig <FAITH>
+
+		STC SHRINE-1
+	end
+
+
+%% *CSNSP_SilFor_Content
+%%	The content of the silver fortress public level.
+
+Content
+	%% Museum
+	requires <*CSNSP_SilFor_Content>
+	element1 <Prefab>
+	element2 <Artifact>
+	place2 <1>
+	element3 <Prefab>
+	element4 <Prefab>
+
+	minimap <3...4.......1.......&---&>
+	Get%2% <ifNotAccessArmory SetItemStolen %2% AddLawful -10 ifTeamCanSeePC 3 ifStealth 20 else .%id%_GoAttack>
+	.%id%_GoAttack <TeamAttack 3 PCFEnemy 3 AddRenown -10>
+
+	inv
+		STC DISPLAYCASE-1
+		name <%name2% Display>
+		% V1 = Lock Picked
+		% V2 = Code Breaking Counter
+		use <ifAccessArmory else GoNotAllowed OpenInv>
+		GoNotAllowed <if# V1 0 else GoLocked OpenInv>
+		GoLocked <Print 1>
+		CLUE_CODEBREAKING <if= V1 0 else GoUnlocked Mental ifCodeBreaking 20 else GoCheckStealth Print 3 V= 1 1 XPV 100>
+		GoCheckStealth <ifStealth 10 else GoAlarm Goto GoCBFail>
+		GoAlarm <Print 5 TeamAttack 3 PCFEnemy 3 AddRenown -10 AddLawful -5>
+		GoUnlocked <Print 4>
+		GoCBFail <Print 2>
+		Msg1 <This display case contains the %name2%. It's locked.>
+		Msg2 <You can't disarm this lock at your current skill level.>
+		Msg3 <You disably the display case security measures.>
+		Msg4 <You've already unlocked this.>
+		Msg5 <An alarm sounds! You've been discovered!>
+
+		STC COMPUTER-1
+		USE <Print 1>
+		Msg1 <This display tells about famous battles of the Silver Knights.>
+
+		STC COMPUTER-1
+		USE <Print 1>
+		Msg1 <This display tells about famous pilots of the Silver Knights.>
+	end
+
+Content
+	%% Keefa's Garage
+	requires <*CSNSP_SilFor_Content>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoCheckEnemy>
+		*GoCheckEnemy <*ENEMY_CHECK GoShop 3 GoIsEnemy>
+		GoIsEnemy <PCEnemy SelfCID>
+		GoShop <if= PCFac 3 else GoMinorShop NewChat Say 4 AddChat 5 AddChat 2>
+		GoMinorShop <NewChat Say 1 AddChat 1 AddChat 2 AddChat 3>
+		*GoBye <*GOODBYE>
+
+		result1 <EndChat Say 2 Shop .nowares Goto GoBye>
+		result2 <Goto GoBye>
+		result3 <NewChat Say 3 AddChat 4>
+		result4 <Goto result1>
+		result5 <EndChat Say 5 Shop .wares Goto GoBye>
+		.wares <MECHA MEXTRA>
+
+		Msg1 <This is the repair bay for the Silver Knights. I can also do work on civilian mecha, if you need repairs.>
+		Msg2 <Rest assured that your mecha will be in good hands. Most of these knights wouldn't let just anyone touch their machines, you know.>
+		Msg3 <I don't actually know a lot about that, I'm just a junior technician. You can probably find someone around here who knows more.>
+		Msg3_1 <I'm not really in any position to say definitely, but you do seem like an ideal candidate... You should probably talk to one of the commanders about joining.>
+		CMsg3_1 <ifG PCLaw 0 ifG React 5 ifG PCRenown 15 Accept>
+		Msg3_2 <I don't know... You don't seem like the type that would fit in. Maybe you should apply with the privateers instead?>
+		CMsg3_2 <ifG 0 PCLaw  Accept>
+		Msg4 <Hello, \RANK \PC . Back for repairs, or are you looking to requisition a new steed?>
+		Msg5 <Let me see what kind of damage you've gotten this time.>
+
+		Prompt1 <I need repairs.>
+		Prompt2 <There's nothing I need right now.>
+		Prompt3 <So, how do I become a knight?>
+		Prompt4 <I see. Well, I need some repairs.>
+		Prompt5 <I need your services.>
+
+	end
+	inv
+		NPC Mechanic
+		name <Keefa>
+		SetFaction 3
+		Shopping 10
+		SDL_PORTRAIT <por_f_keefa(-P-).png>
+		SDL_COLORS <150 205 229 255 215 195 152 61 97>
+		CharDesc Female Lawful Shy Easygoing Pragmatic
+		Age 5
+	end
+

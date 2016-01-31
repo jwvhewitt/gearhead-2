@@ -1,0 +1,159 @@
+%%
+%% *Q_CHALLENGER_SUBQUEST
+%%	Contains a subquest activated after defeating a mecha arena challenger.
+%%	This can be an extravagant new adventure, or a pithy closing sequence.
+%%
+%%	The ID for this subquest must be set by the parent quest.
+%%
+%%  PARAM1: The Challenger
+%%
+
+Content
+	name <Military Trainer>
+	% The challenger can train the PC in mecha combat skills
+	requires <*Q_CHALLENGER_SUBQUEST 1:MILIT -!Ne -!Lo>
+
+	start <ifNPCDead %1% LoseSubPlot %plotid%>
+
+	% E1 is the challenger
+sub
+	Persona 1
+	% V%id%01 = Have accepted offer
+	greeting <if# v%id%01 1 else .%id%_GoSchool if= PlotStatus %plotid% %id% else %pop% WinSubPlot %plotid%  ifG React 0 else .%id%_GoFail NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	.%id%_GoSchool <ifG React 0 else .%id%_GoChat NewChat Say %id%02 AddChat %id%03 AddChat %id%04>
+	*.%id%_GoFail <*IConcedeDefeat&Battle>
+	.%id%_GoChat <NewChat SayAnything>
+	*.%id%_GoBye <*GoodBye>
+	.%id%_Skills <1 2 3>
+	result%id%01 <EndChat V= %id%01 1 Say %id%03 History %id%04 School .%id%_Skills Goto .%id%_GoBye>
+	result%id%02 <EndChat Say %id%05 AddReact -10>
+	result%id%03 <EndChat Say %id%06 School .%id%_Skills Goto .%id%_GoBye>
+	result%id%04 <NewChat Say %id%07>
+	Msg%id%01 <You did really well out there, but if you don't mind me saying there are still a few things for you to learn. How'd you like for me to teach you some things about mecha combat?>
+	Msg%id%02 <Hello soldier. Are you ready to begin training?>
+	Msg%id%03 <That's what I wanted to hear. If you want to be a great pilot, you're going to have to train relentlessly. Let's get started right away.>
+	Msg%id%04 <%name1% offered to train you in mecha combat.>
+	Msg%id%05 <No offense intended, you did beat me after all. The only question is whether or not you're going to beat the next guy.>
+	Msg%id%06 <Let's get to it, then! Hup-to!>
+	Msg%id%07 <You'll never make it in the army with that kind of attitude. You seem to be doing pretty good as a cavalier, though...>
+	Prompt%id%01 <I'd like that. Thanks>
+	Prompt%id%02 <Learn from you? What, is that a joke?>
+	Prompt%id%03 <Yes sir!>
+	Prompt%id%04 <Not today, I'm afraid.>
+end
+
+Content
+	name <Friendship>
+	% The challenger will likely become friends with the PC.
+	requires <*Q_CHALLENGER_SUBQUEST>
+	special <REUSABLE>
+
+	start <ifNPCDead %1% LoseSubPlot %plotid%>
+
+	% E1 is the challenger
+sub
+	Persona 1
+	greeting <if= PlotStatus %plotid% %id% else %pop% WinSubPlot %plotid% ifG React d20 else .%id%_GoFail PCFriend ChatNPCID NewChat Say %id%01>
+	*.%id%_GoFail <*IConcedeDefeat&Battle>
+	Msg%id%01 <That was a great battle. Maybe we'll see each other again, next time away from the battlefield.>
+	Msg%id%01_1 <I have to admit, you're a formidible warrior. Maybe some time later we can get together again and swap stories. I'd like to do that very much.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <I like you. Let's get together again someday.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <I admit it, you're way better than me. Let's get together again later and swap stories.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <It's very rare for me to meet someone I can call an equal. I feel that there's a bond between the two of us.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <Wow, you are an excellent pilot. I want to invite you and your team out for dinner sometime.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <As much as I hate to admit it, you beat me... but let's not have any hard feelings over any of that. I'd like to meet with you again.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+end
+
+Content
+	name <Mentor/Ally>
+	% The challenger will likely become either a mentor or ally to the PC,
+	% depending on their relative ages.
+	requires <*Q_CHALLENGER_SUBQUEST (1:ADVEN|1:MILIT) -!Ne -!Lo>
+
+	start <ifNPCDead %1% LoseSubPlot %plotid%>
+
+	% E1 is the challenger
+sub
+	Persona 1
+	% V%id%01 = Have become trainer
+	greeting <if# v%id%01 1 else .%id%_GoSchool if= PlotStatus %plotid% %id% else %pop% WinSubPlot %plotid%  ifG React d30 else .%id%_GoFail ifG ChatNPCDAge PCDAge else .%id%_GoMakeAlly if= d2 1 else .%id%_GoMakeAlly V= %id%01 1 NewChat Say %id%02 History %id%03 PCFriend %1% AddChat %id%01>
+	.%id%_GoSchool <NewChat Say %id%04 AddChat %id%01>
+	.%id%_GoMakeAlly <PCAlly %1% NewChat Say %id%01>
+	*.%id%_GoFail <*IConcedeDefeat&Battle>
+
+	result%id%01 <EndChat Say %id%05 School .%id%_Skills Goto .%id%_GoBye>
+	.%id%_Skills <1 2 3 4 5 6 11 15 16>
+	*.%id%_GoBye <*GoodBye>
+
+	Msg%id%01 <You're a great pilot. The next time we meet on the battlefield, I plan to be on your side.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+	Msg%id%02 <You did pretty well out there, but if you don't mind me saying so, there are still a couple of things you could learn. I can teach you a few new tricks.>
+	Msg%id%02_1 <>
+	CMsg%id%02_1 <ifNPCSociable Accept>
+	Msg%id%02_2 <>
+	CMsg%id%02_2 <ifNPCShy Accept>
+	Msg%id%02_3 <>
+	CMsg%id%02_3 <ifNPCEasygoing Accept>
+	Msg%id%02_4 <>
+	CMsg%id%02_4 <ifNPCPassionate Accept>
+	Msg%id%02_5 <>
+	CMsg%id%02_5 <ifNPCCheerful Accept>
+	Msg%id%02_6 <>
+	CMsg%id%02_6 <ifNPCMelancholy Accept>
+	Msg%id%03 <%name1% in \SCENE RootSceneID offered to become your mentor.>
+
+	Msg%id%04 <Hello, \PC . I hope that your adventure's been going well.>
+	Msg%id%04_1 <>
+	CMsg%id%04_1 <ifNPCSociable Accept>
+	Msg%id%04_2 <>
+	CMsg%id%04_2 <ifNPCShy Accept>
+	Msg%id%04_3 <>
+	CMsg%id%04_3 <ifNPCEasygoing Accept>
+	Msg%id%04_4 <>
+	CMsg%id%04_4 <ifNPCPassionate Accept>
+	Msg%id%04_5 <>
+	CMsg%id%04_5 <ifNPCCheerful Accept>
+	Msg%id%04_6 <>
+	CMsg%id%04_6 <ifNPCMelancholy Accept>
+
+	Msg%id%05 <I'll show you some of the things that have helped me in the arena.>
+	Msg%id%05_1 <>
+	CMsg%id%05_1 <ifNPCSociable Accept>
+	Msg%id%05_2 <>
+	CMsg%id%05_2 <ifNPCShy Accept>
+	Msg%id%05_3 <>
+	CMsg%id%05_3 <ifNPCEasygoing Accept>
+	Msg%id%05_4 <>
+	CMsg%id%05_4 <ifNPCPassionate Accept>
+	Msg%id%05_5 <>
+	CMsg%id%05_5 <ifNPCCheerful Accept>
+	Msg%id%05_6 <>
+	CMsg%id%05_6 <ifNPCMelancholy Accept>
+
+	Prompt%id%01 <I'd like to train.>
+	Prompt%id%01_1 <Let's do some training now.>
+	Prompt%id%01_2 <I'd like to study now.>
+
+end
+
+
+
+

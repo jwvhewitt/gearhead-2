@@ -1,0 +1,1374 @@
+% RANDOM CONTENT FILE
+
+
+%%
+%% *JUNKYARD_SALVAGE Content
+%%	Some SF:2 items that the PC can pick up and lug away.
+%%
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Ne|!Lo)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		STC MAC-4
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Lo|!Md)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		STC VC-5
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Lo|!Md)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		STC RG-8
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Hi|!Ex)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		STC RG-16
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Ne|!Lo)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		STC GR-12
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Md|!Hi)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		STC GR-24
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE !Ne>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		STC SC-9
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE !Lo>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		STC MRIF-5
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Ne|!Lo)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		STC LAS-5
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Md|!Hi)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		STC LAS-10
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Ne|!Lo|!Md)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		STC PAR-2
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Lo|!Md|!Hi)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		STC PAR-6
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Hi|!Ex)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		STC PAR-13
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Ne|!Lo)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		STC SML-5
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Hi|!Ex)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		MLauncher 2
+		sub
+			STC NUKE-20
+		end
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE !Ex>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		MLauncher 4
+		sub
+			STC NUKE-20
+			Magazine 2
+		end
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE !Ne>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		Gun 1
+		Name <Nail Gun>
+		Scale 2
+		Range 3
+		caliber <Construction Nails>
+		Speed 4
+		BV 4
+		Acc -1
+		mass -2
+		Magazine 280
+		sub
+			Ammo 1
+			caliber <Construction Nails>
+		end
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE !Ne>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		melee 5
+		name <Metal Bar>
+		desc <Like the ones used as support in heavy duty construction.>
+		Scale 2
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Ne|!Lo)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		Gun 3
+		Name <Industrial Bolt Gun>
+		Scale 2
+		Range 3
+		caliber <Construction Bolts>
+		Speed 4
+		BV 4
+		Acc -1
+		Magazine 120
+		sub
+			Ammo 3
+			caliber <Construction Bolts>
+		end
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Ne|!Lo)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		Gun 12
+		Name <Heavy Loader>
+		Scale 2
+		Range 7
+		caliber <construction girder>
+		Speed 1
+		Acc -1
+		Magazine 20
+		sub
+			Ammo 12
+			caliber <construction girder>
+		end
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Ne|!Lo)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		melee 14
+		name <Mecha Drill>
+		type <ARMORPIERCING>
+		Scale 2
+		acc 1
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Ne|!Lo|!Md)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		melee 12
+		name <Tow Chain>
+		Scale 2
+		acc 1
+		type <FLAIL EXTEND>
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Lo|!Md)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		melee 16
+		name <Buzzsaw>
+		Scale 2
+		acc 1
+		speed 3
+		mass -4
+		type <BRUTAL>
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Md|!Hi)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		melee 18
+		name <Wrecking Ball>
+		Scale 2
+		type <FLAIL EXTEND BRUTAL>  
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Hi|!Ex)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		EMelee 23
+		Name <Energy Chainsaw>
+		Scale 2
+		Type <BRUTAL>
+		Mass 3
+		inv
+			PowerSource 5
+			mass -4
+			name <Extra Battery>
+		end
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE !Ex>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		gun 10
+		name <Heavy Autocannon>
+		range 6
+		Scale 2
+		type <Armorpiercing>
+		BV 2
+		Speed 3
+		caliber <90mm caseless>
+		mass -2
+		Magazine 90
+		sub
+			Ammo 10
+			caliber <90mm caseless>
+		end
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE !Ne>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		Gun 14
+		Scale 2
+		name <Heavy Cannon>
+		caliber <90mm shell>
+		Range 5
+		Acc -1
+		Recharge 1
+		Magazine 20
+		sub
+			Ammo 14
+			caliber <90mm shell>
+		end
+	end
+
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Md|!Hi)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		Gun 20
+		Scale 2
+		name <Naval Cannon>
+		caliber <210mm shell>
+		Range 8
+		Acc 1
+		Speed 3
+		Magazine 20
+		sub
+			Ammo 20
+			caliber <210mm shell>
+		end
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE !Md>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		Gun 20
+		Scale 2
+		name <Roundshot Cannon>
+		caliber <500mm ferrous ball>
+		Range 7
+		Recharge 1
+		type <BRUTAL>
+		Mass -2
+		Magazine 15
+		sub
+			Ammo 20
+			caliber <500mm ferrous ball>
+		end
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Lo|!Md|!Hi)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		BeamGun 6
+		name <Meson Field Inducer>
+		desc <No-one's really sure what this is or how it works...>
+		UsesKnowledge
+		scale 2
+		Range 6
+		Acc -1
+		type <EXPERIMENTAL BRUTAL>
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Ne|!Lo|!Md)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		Melee 7
+		name <Nunchakus>
+		type <FLAIL>
+		speed 3
+		mass -4
+		scale 2
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Hi|!Ex)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		MLauncher 16
+		Scale 2
+		sub
+			STC SWM-2
+			name <Pestilence Missiles>
+			type <DISINTEGRATE SWARM>
+			magazine 80
+		end
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Lo|!Md)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		Gun 15
+		Scale 2
+		name <Buzzsaw Catapult>
+		desc <An improvised weapon firing large circular buzzsaws.>
+		caliber <ferrous sawblade>
+		Range 6
+		Speed 1
+		type <ARMORPIERCING>
+		Magazine 36
+		sub
+			Ammo 15
+			caliber <ferrous sawblade>
+		end
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Md|!Hi)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		Gun 11
+		name <Heavy Slag Cannon>
+		caliber <ferrous fragments>
+		Scale 2
+		type <BRUTAL>
+		range 5
+		Speed 2
+		BV 4
+		Magazine 150
+		sub
+			Ammo 11
+			caliber <ferrous fragments>
+		end
+	end
+
+Content
+	requires <*JUNKYARD_SALVAGE (!Hi|!Ex)>
+	Element1 <Prefab>
+	minimap <      ...  .1.  ...      >
+	inv
+		BeamGun 20
+		name <Demolition Laser>
+		acc 1
+		range 6
+		Speed 1
+		scale 2
+		type <BRUTAL>
+	end
+
+
+%%
+%% *WARZONE_CLEANUP Content
+%%	There's just been a battle right here. The PC can walk around and maybe
+%%	help with the recovery efforts.
+%%
+%%	A WarZone scene needs three teams: Citizens, Guards, and Monsters.
+%%
+
+Content
+	% A wounded person, Mk 1
+	requires <*WARZONE_CLEANUP>
+	Element1 <Prefab>
+	minimap <      %%%  %1%  %%%      >
+	inv
+		STC RECOVERY-VICTIM
+	end
+
+Content
+	% A wounded person, Mk 2
+	requires <*WARZONE_CLEANUP>
+	Element1 <Prefab>
+	minimap <%%    1%%  %^%  .%       >
+	inv
+		STC RECOVERY-VICTIM
+	end
+
+Content
+	% A wounded person, Mk 3
+	requires <*WARZONE_CLEANUP>
+	Element1 <Prefab>
+	minimap <      .%.  ^.%  ^1%      >
+	inv
+		STC RECOVERY-VICTIM
+	end
+
+
+%% *RANDOM_SHAPES Content
+%%	Some random obstacles to break up LOS.
+
+Content
+	requires <*RANDOM_SHAPES>
+	minimap <.......#...###...#.......>
+
+Content
+	requires <*RANDOM_SHAPES>
+	minimap <...........###...........>
+
+Content
+	requires <*RANDOM_SHAPES>
+	minimap <.......#....#....#.......>
+
+Content
+	requires <*RANDOM_SHAPES>
+	minimap <......#.#.......#.#......>
+
+Content
+	requires <*RANDOM_SHAPES>
+	minimap <......###..###..###......>
+
+
+%% *ARMORY Content
+%%	Weapon lockers.
+
+Content
+	requires <*ARMORY -!Md -!Hi -!Ex>
+	MiniMap <...........1#............>
+	element1 <PREFAB>
+	inv
+		STC SHOPDISPLAY-WEAPONS-2
+		PDir 4
+		use <OpenInv>
+		RandomLoot 50000
+		Loot_Category <WEAPON>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	requires <*ARMORY -!Ne -!Hi -!Ex>
+	MiniMap <...........1#............>
+	element1 <PREFAB>
+	inv
+		STC SHOPDISPLAY-WEAPONS-3
+		PDir 4
+		use <OpenInv>
+		RandomLoot 100000
+		Loot_Category <WEAPON>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	requires <*ARMORY (!Md|!Hi)>
+	MiniMap <...........1#2...........>
+	element1 <PREFAB>
+	element2 <PREFAB>
+	inv
+		STC SHOPDISPLAY-WEAPONS-1
+		PDir 4
+		use <OpenInv>
+		RandomLoot 100000
+		Loot_Category <WEAPON>
+		Loot_Factions <GENERAL>
+
+		STC SHOPDISPLAY-WEAPONS-2
+		PDir 0
+		use <OpenInv>
+		RandomLoot 100000
+		Loot_Category <WEAPON>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	requires <*ARMORY (!Hi|!Ex)>
+	MiniMap <.......3...1#2...4.......>
+	element1 <PREFAB>
+	element2 <PREFAB>
+	element3 <PREFAB>
+	element4 <PREFAB>
+	inv
+		STC SHOPDISPLAY-WEAPONS-3
+		PDir 4
+		use <OpenInv>
+		RandomLoot 100000
+		Loot_Category <WEAPON>
+		Loot_Factions <GENERAL>
+
+		STC SHOPDISPLAY-WEAPONS-1
+		PDir 0
+		use <OpenInv>
+		RandomLoot 100000
+		Loot_Category <WEAPON>
+		Loot_Factions <GENERAL>
+
+		STC SHOPDISPLAY-ARMOR-1
+		PDir 6
+		use <OpenInv>
+		RandomLoot 100000
+		Loot_Category <ARMOR ACCESSORY GRENADE>
+		Loot_Factions <GENERAL>
+
+		STC SHOPDISPLAY-ARMOR-2
+		PDir 2
+		use <OpenInv>
+		RandomLoot 100000
+		Loot_Category <ARMOR ACCESSORY GRENADE>
+		Loot_Factions <GENERAL>
+	end
+
+Content
+	requires <*ARMORY !Ex>
+	MiniMap <.......3...1#2...4.......>
+	element1 <PREFAB>
+	element2 <PREFAB>
+	element3 <PREFAB>
+	element4 <PREFAB>
+	inv
+		STC SHOPDISPLAY-WEAPONS-3
+		PDir 4
+		use <OpenInv>
+		RandomLoot 250000
+		Loot_Category <WEAPON EXOTIC>
+		Loot_Factions <GENERAL>
+
+		STC SHOPDISPLAY-WEAPONS-1
+		PDir 0
+		use <OpenInv>
+		RandomLoot 250000
+		Loot_Category <WEAPON>
+		Loot_Factions <GENERAL>
+
+		STC SHOPDISPLAY-ARMOR-1
+		PDir 6
+		use <OpenInv>
+		RandomLoot 200000
+		Loot_Category <ARMOR ACCESSORY GRENADE>
+		Loot_Factions <GENERAL>
+
+		STC SHOPDISPLAY-ARMOR-2
+		PDir 2
+		use <OpenInv>
+		RandomLoot 200000
+		Loot_Category <ARMOR ACCESSORY GRENADE>
+		Loot_Factions <GENERAL>
+	end
+
+
+%% *HIDEOUT_X Content
+%%	Filler for hideouts and strongholds.
+%%	Minimaps should be open on all four sides.
+
+Content
+	requires <*HIDEOUT_X>
+	Minimap <.......1....2............>
+	element1 <PREFAB>
+	element2 <PREFAB>
+	inv
+		STC BOX-1
+		STC BOX-1
+	end
+
+Content
+	requires <*HIDEOUT_X>
+	Minimap <............1............>
+	element1 <PREFAB>
+	inv
+		STC BOX-1
+	end
+
+Content
+	requires <*HIDEOUT_X>
+	Minimap <............12...........>
+	element1 <PREFAB>
+	element2 <PREFAB>
+	inv
+		STC BOX-1
+		STC CRATE
+		Lock 10
+		inv
+			Treasure
+			name <Gold Chain>
+			Fudge 100000
+		end
+	end
+
+
+
+
+
+%% *ANTI_ATTACK_SECURITY Content
+%%   A standard script to prevent the PC from firing weapons in public places.
+%%   This one isn't so random, but it's a complicated script that I'm going to
+%%   want to re-use in a whole lot of places, so it's easiest to put it here.
+%% PARAM: The identity of the team being protected, usually the citizens.
+%%   Note that the alarm won't be sounded if the PC attacks while being
+%%   attacked himself.
+Content
+	requires <*ANTI_ATTACK_SECURITY>
+	content1 <REQUIRED *NPC_GUARD - Local>
+	content2 <Optional *NPC_GUARD - Local>
+
+	% V%id%01 = Initial number of civilians in scene.
+	% V%id%02 = PC has been given warning
+
+	START <V= %id%01 T%param% Goto %pop%>
+
+	PCAttack <ifSafeArea else .%id%_GoNotSafe if# V%id%02 -1 else .%id%_LastHit ifG v%id%01 T%param% else .%id%_GoWarn Goto .%id%_GoAttack>
+	% The map is not safe. Set the warning value to -1 to remind the script that the PC is fighting
+	.%id%_GoNotSafe <V= %id%02 -1>
+	% The map is currently safe, only because the PC's attack supposedly dispatched the last enemy.
+	.%id%_LastHit   <V= %id%02 0>
+	.%id%_GoWarn <if= v%id%02 0 else .%id%_GoAttack V= %id%02 1 Print %id%01>
+	.%id%_GoAttack <Print %id%02 Alarm TeamAttack GuardTeam>
+
+	Msg%id%01 <ALERT: You are not permitted to fire weapons here. You have been warned.>
+	Msg%id%02 <ALERT: You are not permitted to fire weapons here.>
+
+
+
+
+%% *NPC_GUARD Content
+%%   A security guard or whatnot. Belongs to the "Guards" team.
+Content
+	requires <*NPC_GUARD ~Public>
+	element1 <Prefab>
+	team1 <Guards>
+	teamdesc1 <SD>
+	inv
+		NPC Soldier
+		job <Security Guard>
+	end
+
+Content
+	requires <*NPC_GUARD Public ~Government ~Mall (Maqui|FCOMS|RISHI) ~Legit Common>
+	element1 <Prefab>
+	team1 <Guards>
+	teamdesc1 <SD>
+	inv
+		NPC Police Officer
+		SetFaction 9
+		NonMissionGiver
+	end
+
+Content
+	requires <*NPC_GUARD ~Private -L5PAT>
+	element1 <Prefab>
+	team1 <Guards>
+	teamdesc1 <SD>
+	inv
+		Monster Guard Dog
+	end
+
+Content
+	requires <*NPC_GUARD Corp>
+	element1 <Prefab>
+	team1 <Guards>
+	teamdesc1 <SD>
+	inv
+		Monster Androbot
+	end
+
+Content
+	requires <*NPC_GUARD Private>
+	element1 <Prefab>
+	team1 <Guards>
+	teamdesc1 <SD>
+	inv
+		Monster Guardbot
+	end
+
+Content
+	requires <*NPC_GUARD Static (Maqui|FCOMS) ~Sleazy -Legit Public>
+	element1 <Prefab>
+	team1 <guards>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Privateer
+		SetFaction 6
+		NonMissionGiver
+	end
+
+Content
+	requires <*NPC_GUARD Static FCOMS Public>
+	element1 <Prefab>
+	team1 <guards>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Mecha Pilot
+		SetFaction 10
+		NonMissionGiver
+	end
+
+Content
+	requires <*NPC_GUARD Static RISHI Public>
+	element1 <Prefab>
+	team1 <guards>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Rocket Star
+		NonMissionGiver
+	end
+
+Content
+	requires <*NPC_GUARD Static Maqui ~Legit -Sleazy Public ~Government>
+	element1 <Prefab>
+	team1 <guards>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Knight
+		SetFaction 3
+		NonMissionGiver
+	end
+
+Content
+	requires <*NPC_GUARD Static BOHEM Public Common ~Government ~Habitation>
+	element1 <Prefab>
+	team1 <guards>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Pirate
+		SetFaction 8
+		NonMissionGiver
+	end
+
+Content
+	requires <*NPC_GUARD Static BOHEM Public ~Sleazy>
+	element1 <Prefab>
+	team1 <guards>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Pirate
+		SetFaction 15
+		NonMissionGiver
+	end
+
+
+%% *SECURITY Content
+%%   There's some sort of guard here, as a member of the GUARD team.
+%%   Traps and checkpoints would also be good.
+Content
+	requires <*SECURITY>
+	Content1 <Required *NPC_GUARD - Local>
+	Content2 <Optional *NPC_GUARD - Local>
+	Content3 <Required *NPC_GUARD - Local>
+	Content4 <Optional *NPC_GUARD - Local>
+	Content5 <Optional *NPC_GUARD - Local>
+
+Content
+	requires <*SECURITY>
+	minimap <#...#...............#...#>
+	Content1 <Required *NPC_GUARD - Local>
+	Content2 <Optional *NPC_GUARD - Local>
+	Content3 <Required *NPC_GUARD - Local>
+	Content4 <Optional *NPC_GUARD - Local>
+
+
+%% *ALARMSYS Content
+%%   There's a security system that must be disabled before something else
+%%   can take place.
+%%  PARAM: Number of local variable to set when alarm has been deactivated.
+Content
+	requires <*ALARMSYS>
+	element1 <Prefab>
+	content <Optional *RedHerring - Distant>
+	Content2 <Optional *NPC_GUARD - Local>
+	minimap <......#?#..#1#..###......>
+	inv
+		STC Computer-1
+		use <Print 1 L= %param% 1>
+		Msg1 <Security program deactivated.>
+	end
+
+%% *REDHERRING Content
+%%   It looks like something important, but it isn't.
+Content
+	requires <*REDHERRING>
+	minimap <......#?#..#.#..###......>
+
+Content
+	requires <*REDHERRING>
+	minimap <......###..###..###......>
+
+
+
+%% *URBAN_X Content
+%%   Things you might find in a city. Generic content for cafes, parks,
+%%   shopping malls, waiting rooms, and so on. Mostly just NPCs.
+Content
+	requires <*URBAN_X ~Public Legit>
+	Content <Required *NPC_GUARD - Local>
+
+Content
+	requires <*URBAN_X Static>
+	element1 <.>
+	element2 <Scene Town !Near 1>
+	element3 <NewNPC 1 2>
+	team3 <citizens>
+	teamdata3 <pass>
+	sub
+		Persona 3
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+
+Content
+	requires <*URBAN_X Public Static>
+	element1 <.>
+	element2 <Scene Town !Near 1>
+	element3 <NewNPC 0 2>
+	team3 <citizens>
+	teamdata3 <pass>
+	sub
+		Persona 3
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+
+Content
+	requires <*URBAN_X Public Resort>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Citizen
+		job <Tourist>
+	end
+
+Content
+	requires <*URBAN_X Club Dynamic>
+	element1 <Character Cheerful>
+	sub
+		Persona 1
+		*Greeting <*HowAreYou GoChat>
+		*GoChat <*MISC_CHATTER>
+	end
+
+Content
+	requires <*URBAN_X Public ~Legit ~Static>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	inv
+		NPC Citizen
+	end
+
+Content
+	requires <*URBAN_X Mine>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	inv
+		NPC Miner
+	end
+
+Content
+	requires <*URBAN_X Public Common>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Citizen
+	end
+
+Content
+	requires <*URBAN_X (Laboratory|Research)>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Scientist
+	end
+
+Content
+	requires <*URBAN_X University>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Professor
+	end
+
+Content
+	requires <*URBAN_X Public ~University ~Static>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Student
+		chardesc Young
+	end
+
+
+Content
+	requires <*URBAN_X ~Garage ~Public Static>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	inv
+		NPC Trucker
+	end
+
+Content
+	requires <*URBAN_X Static (Maqui|FCOMS) Sleazy>
+	element1 <Prefab>
+	team1 <guards>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Privateer
+		SetFaction 6
+	end
+
+Content
+	requires <*URBAN_X RISHI Public>
+	element1 <Prefab>
+	team1 <guards>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Rocket Star
+	end
+
+Content
+	requires <*URBAN_X L5PAT Sleazy>
+	element1 <Prefab>
+	team1 <guards>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Pirate
+	end
+
+Content
+	requires <*URBAN_X L5PAT Sleazy ~Lawless>
+	element1 <Prefab>
+	team1 <guards>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Pirate
+		SetFaction 8
+	end
+
+Content
+	requires <*URBAN_X L5PAT Sleazy ~Dangerous>
+	element1 <Prefab>
+	team1 <guards>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Pirate
+		SetFaction 15
+	end
+
+Content
+	requires <*URBAN_X Static Maqui Legit>
+	element1 <Prefab>
+	team1 <guards>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Knight
+		SetFaction 3
+	end
+
+Content
+	requires <*URBAN_X Public Static>
+	element1 <Prefab>
+	team1 <guards>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Arena Pilot
+	end
+
+Content
+	requires <*URBAN_X Garage Static>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Mecha Pilot
+	end
+
+Content
+	requires <*URBAN_X Public ~Static ~Capitol>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Journalist
+	end
+
+Content
+	requires <*URBAN_X ~Static>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Monk
+	end
+
+Content
+	requires <*URBAN_X ~Sleazy ~Lawless ~Dangerous ~Lawful ~CavClub Static>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	inv
+		NPC Bounty Hunter
+	end
+
+Content
+	requires <*URBAN_X ~Industrial ~Disaster Static>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	inv
+		NPC Construction Worker
+	end
+
+Content
+	requires <*URBAN_X ~Industrial ~Research Static>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	inv
+		NPC Engineer
+	end
+
+Content
+	requires <*URBAN_X ~Capitol -Lawless -Dangerous Static>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	inv
+		NPC Bureaucrat
+		update <if= v1 0 v= 1 1 SetSelfFaction RootSceneFac>
+	end
+
+Content
+	requires <*URBAN_X ~Culture ~Theatre ~nightclub Static>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	inv
+		NPC Singer
+	end
+
+Content
+	requires <*URBAN_X ~Rich ~nightclub Static>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	inv
+		NPC Celebrity
+	end
+
+Content
+	requires <*URBAN_X Static>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	inv
+		NPC Athlete
+	end
+
+Content
+	requires <*URBAN_X Static>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	inv
+		NPC Explorer
+	end
+
+Content
+	requires <*URBAN_X ~Meeting ~Dangerous Static>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		% V1 = Has joined lance/has been snubbed counter
+		% V2 = Recruitment Cost
+		greeting <IFNPCARCHENEMY ChatNPCID else GoNiceToMeetYou NewChat SayAnything>
+		*GoNiceToMeetYou <*NiceToMeetYou GoCheckOffer>
+		GoCheckOffer <ifChatNPCCanJoinLance else GoMiscTalk if= V1 0 else GoMiscTalk if= V2 0 else GoMakeOffer V= 2 Threat ChatNPCRenown 5 Goto GoMakeOffer>
+		GoMakeOffer <NewChat Say 1 AddChat 1 AddChat 2 AddChat 3>
+		*GoMiscTalk <*MISC_CHATTER>
+		RESULT1 <NewChat Say 2 AddChat 4 AddChat 5>
+		result2 <PCAlly %1% ChatNPCJoinLance History 4 V= 1 1 Cash+ -V2 Goto GoWelcome>
+		*GoWelcome <*WelcomeToLance>
+		*result3 <*Goodbye>
+		result4 <NewChat Say 3 V= 1 1 AddSociable -10>
+		result5 <Goto result3>
+		Msg1 <Hey, if you're in need of a partner, I could join your lance for the low price of $ \VAL V2 .>
+		Msg1_1 <Nobody can go it all by themselves. If you're planning to get into combat, you'll need someone to watch your back. My services are available for the low price of $ \VAL V2 .>
+		CMsg1_1 <ifNPCSociable Accept>
+		Msg1_2 <Are you looking to hire a merc? I'm available for just $ \VAL V2 .>
+		CMsg1_2 <ifNPCShy Accept>
+		Msg1_3 <Your missions would be a whole lot easier if you had a lancemate on your side. I'm available for hire at $ \VAL V2 , if you're interested.>
+		CMsg1_3 <ifNPCEasygoing Accept>
+		Msg1_4 <What you need is an ace fighter at your side. If you're in the market, I'm available for hire for just $ \VAL V2 .>
+		CMsg1_4 <ifNPCPassionate Accept>
+		Msg1_5 <Are you looking for a merc to join your lance? I can be hired for $ \VAL V2 . We could have loads of fun adventuring together!>
+		CMsg1_5 <ifNPCCheerful Accept>
+		Msg1_6 <Travelling alone is a good way to get yourself killed. My services can be purchased for $ \VAL V2 . I'm sure you'll agree that's a fair price for my skills.>
+		CMsg1_6 <ifNPCMelancholy Accept>
+		Msg2 <Are you sure you want to go it alone? I mean, at some point in the future, you might want my help.>
+		Msg2_1 <Do you really mean that, or might you need me sometime in the future?>
+		Msg3 <That's your choice. Be careful, it's a dangerous world out there.>
+		Msg3_1 <Okay, no problem.>
+		Msg4 <You hired %name1% as a lancemate.>
+		Prompt1 <I'm not interested.>
+		Prompt2 <Sounds good. Here you go.>
+		CPrompt2 <ifG PC$ V2 Accept>
+		Prompt3 <Maybe some other time.>
+		Prompt4 <I'm quite sure I won't.>
+		Prompt5 <You're right. If I need help, I'll call.>
+	end
+	inv
+		NPC Mercenary
+		update <if= V1 0 V= 1 1  V= 2 PCRenown ifG 15 V2 else GoLevel V= 2 10 V+ 2 d15 Goto GoLevel>
+		GoLevel <SelfLevel V2>
+		MOTIVATION:Mercenary
+	end
+
+Content
+	requires <*URBAN_X Public Corp ~Static>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	element2 <.>
+	element3 <Faction Corporate !Comrade 2>
+	inv
+		NPC Corporate Executive
+		update <if= V1 0 V= 1 1 SetSelfFaction %3%>
+	end
+
+Content
+	requires <*URBAN_X Hospital ~Static>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Nurse
+	end
+
+Content
+	requires <*URBAN_X Sleazy Static>
+	element1 <Prefab>
+	team1 <citizens>
+	teamdata1 <pass>
+	inv
+		NPC Thief
+	end
+
+Content
+	requires <*URBAN_X Sleazy ~Static>
+	element1 <Prefab>
+	team1 <guards>
+	teamdata1 <pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoMiscTalk>
+		*GoMiscTalk <*MISC_CHATTER>
+	end
+	inv
+		NPC Bandit
+	end
+
+
+
+
+

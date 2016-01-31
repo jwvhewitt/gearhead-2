@@ -1,0 +1,84 @@
+% NPC chatter file- mostly combat taunts
+CHAT_VA.ATTACK_ALL <Face it, you have no hope of defeating me.>
+CHAT_VA.ATTACK_ALL <You will fall before my superior skill.>
+CHAT_VA.ATTACK_ALL <You fight so poorly, this is barely even worthwhile as practice.>
+CHAT_VA.ATTACK_ALL <You will curse the day you crossed my path.>
+CHAT_VA.ATTACK_ALL <You have no chance to survive. I never show mercy to an opponent.>
+
+CHAT_VA.SUCCESS_ALL <Er...>
+CHAT_VA.SUCCESS_ALL <Cut it out!>
+CHAT_VA.SUCCESS_ALL <Shut up!>
+CHAT_VA.SUCCESS_ALL <Wha?>
+CHAT_VA.SUCCESS_ALL <Ouch!>
+
+CHAT_VA.RIPOSTE_ALL <If that's so, then why are you losing?>
+CHAT_VA.RIPOSTE_ALL <Next time, try to say that with a little feeling.>
+CHAT_VA.RIPOSTE_ALL <Keep talking all you want. It'll take your mind off losing.>
+CHAT_VA.RIPOSTE_ALL <You must have learned how to taunt from the same place you learned how to fight... preschool, maybe?>
+CHAT_VA.RIPOSTE_ALL <If your plan is to bore me to death, keep it up, it's working.>
+
+CHAT_VA.FAILURE_ALL <Sticks and stones...>
+CHAT_VA.FAILURE_ALL <Is that the best you could do?>
+CHAT_VA.FAILURE_ALL <Don't quit your day job.>
+CHAT_VA.FAILURE_ALL <All your talk is starting to get tiresome.>
+CHAT_VA.FAILURE_ALL <Oh, I'm sorry, did you say something? I've got some music on.>
+
+CHAT_VA.FORCESURRENDER.17_ALL <Give up, it's your only chance to survive.>
+
+CHAT_VA.FORCESURRENDER.20_ALL <Surrender now or I'll be forced to kill you.>
+
+CHAT_VA.FORCEEJECT.17_ALL <Why don't you eject? There's no way you can win this fight.>
+
+CHAT_VA.FORCEEJECT.20_ALL <This is your last chance to survive. You better eject now.>
+
+CHAT_VA.FORCEFAILURE_ALL <Forget it... I'm going all the way with this.>
+
+CHAT_SURRENDER_ALL <I give up!>
+CHAT_SURRENDER_T1+ <I am beaten... I throw myself upon your mercy.>
+CHAT_SURRENDER_T1- <Today you win, but I don't plan this to be my last fight...>
+CHAT_SURRENDER_T2+ <Your skill is greater than mine. I concede victory to you.>
+CHAT_SURRENDER_T2- <That's enough, I'll come along peacefully now...>
+CHAT_SURRENDER_T3+ <Looks like I have no options left... I might as well give up now.>
+CHAT_SURRENDER_T3- <...>
+CHAT_SURRENDER_T4+ <No point in continuing a fight I can't win. I surrender.>
+CHAT_SURRENDER_T4- <You've beaten everything I've thrown at you... There's no way I can win.>
+CHAT_SURRENDER_T5+ <You're taking this game far too seriously. I give up.>
+CHAT_SURRENDER_T5- <Don't kill me, I surrender...>
+CHAT_SURRENDER_T6+ <I can't believe you managed to beat me...>
+CHAT_SURRENDER_T6- <Alright, I give up, you've beaten me...>
+CHAT_SURRENDER_T7+ <It would be most logical for me to give up now...>
+CHAT_SURRENDER_T7- <By all that is holy, I give up!>
+
+CHAT_ATTACK_ALL <We will be victorious!>
+CHAT_ATTACK_T1+ <You will pay for the evil you've done!>
+CHAT_ATTACK_T1- <I will enjoy making you suffer!>
+CHAT_ATTACK_T2+ <Let's try to keep this an honorable duel.>
+CHAT_ATTACK_T2- <You should know, I don't fight fair.>
+CHAT_ATTACK_T3+ <I'm coming for you now!>
+CHAT_ATTACK_T3- <You're making so much noise I could shoot you in the dark.>
+CHAT_ATTACK_T4+ <You look stressed. Maybe you should just give up?>
+CHAT_ATTACK_T4- <Waargh!>
+CHAT_ATTACK_T5+ <This is getting fun!>
+CHAT_ATTACK_T5- <This will all end in tears, for you...>
+CHAT_ATTACK_T6+ <There's no way you can defeat me.>
+CHAT_ATTACK_T6- <I won't be defeated again!>
+CHAT_ATTACK_T7+ <It would be most logical if you gave up right now.>
+CHAT_ATTACK_T7- <I will send you to the other side!>
+
+CHAT_EJECT_ALL <I'm getting out of here!>
+CHAT_EJECT_ALL <This is enough damage for me...>
+CHAT_EJECT_ALL <I'm not sticking around!>
+CHAT_EJECT_T1+ <I won't throw my life away in vain.>
+CHAT_EJECT_T1- <Don't expect me to forgive anyone who damages my machine!>
+CHAT_EJECT_T2+ <I have dishonored myself on the field of battle...>
+CHAT_EJECT_T2- <You can't catch me that easily!>
+CHAT_EJECT_T3+ <I'd love to stick around some more, but I really must be going...>
+CHAT_EJECT_T3- <...>
+CHAT_EJECT_T4+ <I don't like this mecha anymore. You can have it.>
+CHAT_EJECT_T4- <This isn't the end!!!>
+CHAT_EJECT_T5+ <No fair! I got completely pummeled!>
+CHAT_EJECT_T5- <I don't intend to die just yet...>
+CHAT_EJECT_T6+ <Discretion is the better part of valor...>
+CHAT_EJECT_T6- <I can't believe that I'm losing again!>
+CHAT_EJECT_T7+ <It would be illogical to remain here any longer.>
+CHAT_EJECT_T7- <Heaven can wait...>

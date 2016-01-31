@@ -1,0 +1,108 @@
+%  ******************************************
+%  ***  DEFAULT  ROBOT  BODY  FORM  LIST  ***
+%  ******************************************
+%
+%  STATS  REF BOD SPD PER CFT EGO KNO CHA
+%
+% These stats represent the basic scores that this robot type
+% can have- on a good skill roll bonuses will be applied. If
+% CHARM is greater than 1 the robot will be sentient and
+% cannot be built by a character with a robotics skill lower
+% than 11.
+%
+% Don't include skills or armor ratings with the robot bodies,
+% but do include a power source in the body.
+%
+
+Arch Humanoid (Sentient)
+statline 9 9 9 9 10 9 9 10
+desc <A humanoid robot.>
+sdl_sprite <monster_robot.png>
+sdl_portrait <por_x_androbot.png>
+Metal
+Sealed
+sub
+	head
+	torso
+		sub
+			PowerSource 10
+		end
+	arm
+		name <Right Arm>
+		sub
+			Hand
+			name <Right Hand>
+		end
+	arm
+		name <Left Arm>
+		sub
+			Hand
+			name <Left Hand>
+		end
+	leg
+	name <Right Leg>
+	leg
+	name <Left Leg>
+end
+
+ARCH Arachnoid
+SDL_SPRITE <monster_drone.png>
+SDL_COLORS <72 104 136 150 150 150 220 0 0>
+statline 5 5 5 5 5 1 1 1
+metal
+Sealed
+sub
+	torso
+		sub
+			mount
+			PowerSource 5
+		end
+	leg
+	leg
+	leg
+	leg
+end
+
+
+Arch Ball
+statline 1 1 1 1 1 1 1 1
+desc <>
+sdl_sprite <>
+sdl_portrait <>
+Metal
+Sealed
+sub
+	torso
+	sub
+		mount
+		PowerSource 4
+		Tracks 8
+	end
+end
+
+Arch Androbot
+statline 8 10 8 9 8 8 8 1
+desc <A large humanoid robot.>
+sdl_sprite <monster_androbot.png>
+sdl_portrait <por_x_androbot.png>
+Metal
+Sealed
+sub
+	head
+	torso
+		sub
+			PowerSource 10
+		end
+	arm
+		sub
+			Hand
+		end
+	arm
+		sub
+			Hand
+		end
+	leg
+	leg
+end
+
+

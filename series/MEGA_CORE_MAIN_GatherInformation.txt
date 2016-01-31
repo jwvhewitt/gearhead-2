@@ -1,0 +1,1175 @@
+%% *:CS_GatherInformation Content
+%%	&AboutEnemy	The information is about the enemy faction or NPC
+%%
+%% In this component, the PC will be able to gain some information via a difficult source.
+%% This component will almost certainly change the story context.
+%%
+%% The Param1 NPC must have a persona which calls the following script:
+%%   .%id%_GoInform
+%% This script tells the PC about the situation, setting up the rest of this
+%% subplot. The SubPlotID must be set separately.
+%%
+%% When this subplot concludes, it sets one of the following triggers:
+%%  .%id%_%plotid%_GoWin
+%%  .%id%_%plotid%_GoLoss
+%%
+%% This is a MAIN COURSE subplot. Favored by: POLIT, MEDIA, ACADE
+%%
+%%
+%%  Param1: The NPC who will tell the PC about the situation.
+%%          After introducing the component, this NPC will serve no further purpose
+%%          in this narrative thread.
+%%
+
+Content
+	name <Secret War>
+	desc <There's been a lot of fighting that hasn't been covered by the press.>
+	requires <*:CS_GatherInformation F:-- (P:--|P:PDASS) (L:MAQUI|L:RISHI|L:FCOMS) -1:MAQUI -1:RISHI -1:FCOMS ~1:MEDIA ~1:NOFAC>
+	changes <F:++>
+
+	% E1 is the person who tells the PC about the attacks
+	% E2 is the city faction, which must exclude E1
+	% E3 is a local space scene
+	% E4 is the encounter
+	% E5 is the covert faction
+	Element2 <Faction !Comrade -7 !Xclude 1>
+	Element3 <Scene Space Environs !Near -7>
+	Element4 <Prefab>
+	Place4 <3>
+	Element5 <Faction !Enemy 2 -Ally>
+
+	%% FAIL CONDITIONS:
+	%% - None
+
+	% Debriefing Message
+	Msg%id%10 <So it's true... there are infiltartors near \SCENE RootSceneID . But who sent them? And why are they here? I guess those questions will have to wait until later.>
+
+	sub
+		Persona 1
+		.%id%_GoInform <NewChat Say %id%01 SMemo %id%02 History %id%03>
+		Msg%id%01 <There's something going on that the technocracy is trying to keep a secret. They've mobilized the fleet in %name3%. It's obvious that they're looking for something, but what?>
+		Msg%id%02 <%name1% revealed that the fleet has been mobilized to find something in %name3%, but the technocracy is trying to keep it a secret.>
+		Msg%id%03 <You learned that the fleet was searching for something in %name3%>
+
+		MetaScene 4 2
+		rumor%id% <there have been a lot of mecha attacks lately that haven't been in the news.>
+		MapWidth 50
+		MapHeight 50
+		SpaceMap
+		terrain <SPACE>
+		SpaceScroll
+		Microgravity
+		Vacuum
+		SpaceBackdrop
+		% L1 = Initialization Counter
+		% L2 = Have released Team4
+		% L3 = Initial T3 number
+		% L4 = End Message Counter
+		% L5 = End of mission counter
+		start <if= L1 0 Alert 1 L= 1 1 L= 3 t3 &SetEnemyFac %5% SetXXRPlot %5% XXR_P_CovertAttack>
+		end <if# L5 0 if= L4 0 L= 4 1  History 6    Trigger0 .%id%_%plotid%_GoWin  WinSubPlot %plotid%  SetDebriefing %id%10 if# L2 2 Alert 4>
+		nu1 <if= T1 0 Return if= L5 0 L= 5 1>
+		nu2 <if= T2 0 if= L2 0 L= 2 1  WMecha 4 %threat% 50 WMecha 4 %threat% 50 Alert 2 TeamMonologue 4 3 Retreat 3>
+		nu3 <if= L2 0 ifG L3 T3 L= 2 1 WMecha 4 %threat% 50 WMecha 4 %threat% 50 Alert 2 TeamMonologue 4 3 Retreat 3>
+		nu4 <if= L2 1 if= T4 0  Alert 5 L= 5 1 L= 2 2 XPV 100 Salvage>
+		Msg1 <You find yourself face to face with an enemy battleship being escorted by a lance of mecha. Fortunately, the battleship doesn't seem to be preparing to fire... yet.>
+		Msg2 <A second lance of mecha launches from the battleship.>
+		Msg3 <Return the ship to base; I'll deal with this intruder myself.>
+		Msg4 <This could have been the first wave of an invasion force.>
+		Msg5 <All of the mecha have been defeated, but there is no sign of the battleship. This could have been the first wave of an invasion force.>
+		Msg6 <You fought a possible invasion force.>
+		sub
+			Team 1
+			SetEnemy 2 4
+			ParaX 30
+			ParaY 25
+
+			Team 2
+			SetEnemy 1
+			Deploy <WMecha 2 %threat% 75>
+			home <Enemy Zone>
+
+			Team 3
+			%% The battleship starts out as neutral. It will stay neutral
+			%% as long as the PC doesn't try anything stupid, such as
+			%% attacking it.
+
+			Team 4
+			SetEnemy 1
+			SetAlly 2
+			home <Enemy Zone>
+
+			void
+			name <Enemy Zone>
+			width 12
+			height 12
+			MFX 10
+			MFY 19
+			sub
+				SuperProp
+				requires <*Battleship>
+				SetTeam 3
+			end
+		end
+	end
+	inv
+		STC CORE-INVISIBLEENCOUNTER
+		name <Mysterious Object>
+	end
+
+Content
+	name <They're searching for something.>
+	desc <Your enemy is in town searching for something.>
+	requires <*:CS_GatherInformation (F:P.---|F:P.sub|F:P.pat) I:-->
+	changes <F:P I:++ E:++>
+	Size 5
+
+	% E1 is the person who tells the PC about it
+	% E2 is the item being sought
+	% E3 is an urban scene where the enemies will search
+	% E4 is the basement where you'll find your enemies
+	% E5 is a replacement enemy, in case your current enemy is dead at the time of revelation
+	Element2 <Artifact>
+	Place2 </>
+	Element3 <Scene Urban !Near -7>
+	Element4 <Prefab>
+	Place4 <3>
+	Element5 <NewNPC -2 0>
+	Place5 </>
+
+	%% FAIL CONDITIONS:
+	%% - The RevealEncounter task fails
+
+	% P%id%01 = Initialization Counter
+
+	update <if= P%id%01 0 P= %id%01 1 SetPlotStatus %plotid1% %id1%>
+	end <ifSubPlotLost %plotid1%  LoseSubPlot %plotid%  Trigger0 .%id%_%plotid%_GoLoss>
+
+	%% Debriefing Message
+	Msg%id%11 <So they're after the %name2%... That explains a lot.>
+	Msg%id%11_1 <So \PERSONA &EnemyNPC is after the %name2%... At least now we know what \SPR &EnemyNPC 's up to.>
+	CMsg%id%11_1 <ifNPCOK &EnemyNPC Accept>
+	Msg%id%11_2 <Interesting. \PERSONA &EnemyNPC is after the %name2%... You know what that means? We have to find it first!>
+	CMsg%id%11_2 <ifNPCOK &EnemyNPC if= ChatNPCFac PCFac ifFactionExists ChatNPCFac Accept>
+	Msg%id%11_3 <Let me get this straight... \FACTION &EnemyFac hired \PERSONA &EnemyNPC to find the %name2%? There's only one thing to do: we have to get to it first!>
+	CMsg%id%11_3 <ifNPCOK &EnemyNPC ifFactionExists &EnemyFac ifChatNPCAlly Accept>
+
+	% SubPlot1 is the locate enemy target task
+	SubPlot1 <*:CS_RevealEncounter_Raiders&ReconMission 3 4>
+
+	sub
+		Persona 1
+		.%id%_GoInform <NewChat Say %id%01 StoryNote %id%02>
+		Msg%id%01_1 <\PERSONA &EnemyNPC is in town... \SPR &EnemyNPC 's searching for something. I don't know what it is, but it must be pretty important.>
+		CMsg%id%01_1 <ifNPCOK &EnemyNPC Accept>
+		Msg%id%01_2 <There's a search team from \FACTION &ENemyFac in town looking for something. I don't know what it is, but it must be pretty important.>
+		CMsg%id%01_2 <if# 0 &EnemyFac ifNPCDead &EnemyNPC Accept>
+		Msg%id%01_3 <Your enemies are in town searching for something. I don't know what it is, but it must be pretty important.>
+		CMsg%id%01_3 <if= 0 &EnemyFac ifNPCDead &EnemyNPC Accept>
+		Msg%id%02 <You learned that your enemies were in town looking for something.>
+
+		Metascene 4
+		type <Dungeon Building Basement>
+		mapwidth 50
+		mapheight 50
+		MonkeyMap
+		LockedDoorChance 0
+		SecretDoorChance 10
+
+		NeededCells 3
+
+		% L1 = Initialization Counter
+		start <if= L1 0 else GoBeenBefore L= 1 1 Alert 1 Alert 2 ifNPCOK &EnemyNPC else GoReplaceEnemy DeleteNPC %5% Goto GoMonologue>
+		GoReplaceEnemy <&SetEnemyNPC %5% SetXXRAttitude %5% XXR_A_NeverMet Goto GoMonologue>
+		GoMonologue <Monologue &EnemyNPC 3 &SetTargetItem %2% SetXXRPlot &EnemyFac XXR_P_SeekArtifact History 4 WinSubPlot %plotid% SetDebriefing %id%11 Trigger0 .%id%_%plotid%_GoWin>
+		GoBeenBefore <Print 5>
+
+		end <SetEncounterInactive %4%>
+
+		Msg1 <You enter the abandoned building. All of a sudden, the floor gives way and you tumble into the basement!>
+		Msg2 <As you lie there amid the wreckage and dust you hear faint voices from the upper level.>
+		Msg3 <The %name2% isn't here. Tell the others to move out- we will continue our search elsewhere.>
+		Msg4 <You learned that \PERSONA &EnemyNPC was looking for the %name2%.>
+		Msg5 <You enter the abandoned basement.>
+
+		content1 <Some 1 70 Sub *DUNGEON_THREAT>
+		content2 <Some 1 40 Sub *DUNGEON_DECOR>
+		content3 <Some 1 80 Sub *DUNGEON_REWARD>
+
+		sub
+			Team 1
+			SetEnemy 2
+
+			Team 2
+			name <Monster>
+			type <Ruin Vermin City>
+			Deploy <if= V1 0 V= 1 1 MonsterUp 2 StoryDL>
+			SetEnemy 1
+
+			room
+			special <STARTHERE>
+			MarbleType 22
+
+			room
+			minimap <............2............>
+			sub
+				StairsUp
+				Destination -1
+				MiniMapComponent 2
+				use <Print 1 XPV 100 Return>
+			end
+		end
+	end
+	inv
+		STC CORE-ACTIVATABLE-STATIONARY-DEFENDED
+		name <Abandoned Building>
+	end
+
+Content
+	name <Know Your Enemy>
+	desc <Who is searching for the item? And why?>
+	requires <*:CS_GatherInformation I:++ E:++ F:-->
+	changes <F:++>
+	Size 5
+
+	% E1 is the person who tells the PC about it
+	% E2 is the item
+	% E3 is the enemy NPC
+	% E4 is a local environs scene
+	% E5 is E3's base
+	% E6 is the new enemy faction
+	% E7 is E3's lieutenant
+	% E8 is a secret
+	Element2 <Grab 8>
+	Element3 <Grab 1>
+	Place3 </>
+	Element4 <Scene Outdoors !Near -7>
+	Element5 <Prefab>
+	Place5 <4>
+	Element6 <Faction ArchEnemy !XClude -3 !Okay -2>
+	Element7 <Prefab>
+	Place7 <5 (guards) sd enemy>
+	Element8 <Prefab>
+
+	% There is a base to infiltrate. Either crash the party and fight your way to
+	% the computer, or find a peaceful way in and pose as a new recruit. Once you've
+	% discovered the identity of the enemy faction you can leave and it counts as
+	% a win.
+
+	%% FAIL CONDITIONS:
+	%% - SubPlot1 fails
+	%% - SubPlot2 fails
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Peaceful entry counter
+
+	update <if= P%id%01 0 P= %id%01 1 NPCLevel %7% StoryDL SetNPCFaction %7% %6%  SetPlotStatus %plotid1% %id1%>
+	.%id1%_%plotid1%_GoLearnSecret <if= PlotStatus %plotid2% 0 SetPlotStatus %plotid2% %id2% SetPlotStatus %plotid3% %id3% SMemo %id%01>
+	.%id3%_%plotid3%_GoPeacefulEntry <P= %id%02 1>
+
+	end <ifSubPlotLost %plotid1% else .%id%_GoCheckSP2  LoseSubPlot %plotid%  Trigger0 .%id%_%plotid%_GoLoss>
+	.%id%_GoCheckSP2 <ifSubPlotLost %plotid2%   LoseSubPlot %plotid%  LoseSubPlot %plotid3%  Trigger0 .%id%_%plotid%_GoLoss>
+
+	Msg%id%01 <%name3%'s lieutenant %name7% is in town recruiting pilots to help find the %name2%.>
+
+	% Debriefing Message
+	Msg%id%11 <So %name3% is working for %name6%... how very interesting.>
+
+	% SubPlot1 is the secret, that E7 is recruiting
+	% SubPlot2 is the reveal enemy base task
+	% SubPlot3 is the gain peaceful entry task
+	SubPlot1 <*:CS_TellSecretAboutNPC&LearnPlans&IsEnemy 8 3>
+	SubPlot2 <*:CS_RevealEncounter_NPCBase&EnemyNPC 4 5 7>
+	SubPlot3 <*:CS_PeacefulEntry_NPCBase 5 7>
+
+	sub
+		Persona 1
+		.%id%_GoInform <NewChat Say %id%01 SMemo %id%02 History %id%03>
+		Msg%id%01 <You know that %name3% is looking for the %name2%, but who's \SPR %3% working for? I hear that \SPR %3% has some men in town looking for it right now.>
+		Msg%id%02 <%name1% revealed that %name3%'s men are searching for the %name2%.>
+		Msg%id%03 <%name1% asked who %name3% is working for.>
+
+		MetaScene 5
+		% This is E7's base.
+		type <building basement>
+		mapwidth 35
+		mapheight 35
+		MonkeyMap
+		LockedDoorChance 10
+		SecretDoorChance 10
+
+		NeededCells 3
+
+		start <Print 1  CancelSubPlot %plotid3%  if# P%id%02 0 TeamNeutral 2 TeamNeutral 3 ForceChat %7% P= %id%02 0>
+
+		end <SetEncounterInactive %5% if= plotstatus %plotid% %id% else GoCheckNPC   LoseSubPlot %plotid%   Trigger0 .%id%_%plotid%_GoLoss   Goto GoCheckNPC>
+		GoCheckNPC <ifNPCOK %7% FreezeNPC %7%>
+
+		PCAttack <ifTeamNotHostile 2 TeamAttack 2 TeamAttack 3 Alert 2>
+
+		Surrender%7% <if= PlotStatus %plotid% %id% else GoAlreadyWon ForceChat %7%>
+		GoAlreadyWon <Monologue %7% 3 FreezeNPC %7%>
+
+		Msg1 <You enter %name7%'s base.>
+		Msg2 <Suddenly, an alarm goes off!>
+		Msg3 <You win today, but %name6% will not be stopped!>
+
+		Content1 <Some 1 100 Sub *Armory>
+		content3 <Some 1 50  Sub *DUNGEON_REWARD>
+
+		sub
+			Team 1
+			SetEnemy 2
+
+			Team 2
+			name <Monster>
+			type <Guard Robot>
+			Deploy <if= V1 0 V= 1 1 MonsterUp 2 StoryDL>
+			SetEnemy 1
+			SetAlly 3
+
+			Team 3
+			name <Guards>
+			SetEnemy 1
+			SetAlly 2
+
+			room
+			special <STARTHERE SHAREDPALETTE>
+			minimap <..1.........2............>
+			desig <HOME %e7%>
+			sub
+				TrapDoor
+				Destination -1
+				MiniMapComponent 2
+				use <Print 1 Return>
+			end
+
+			room
+			special <SHAREDPALETTE>
+			minimap <............1............>
+			inv
+				STC COMPUTER-INDESTRUCTIBLE
+				MiniMapComponent 1
+				% V1 = Virys counter
+				use <if= PlotStatus %plotid% %id% else GoBeenBefore Alert 1 XPV 100 History 2 &SetEnemyFac %6% WinSubPlot %plotid% SetDebriefing %id%11 Trigger0 .%id%_%plotid%_GoWin>
+				GoBeenBefore <Print 3>
+				CLUE_CODEBREAKING <if# PlotStatus %plotid% %id% else GoNotYet if= V1 0 else GoBeenBefore Mental ifCodeBreaking HardSkillTar %threat% else GoFail Alert 4 V= 1 1 XPV 200 AddFortune %6% -1>
+				GoFail <Print 5>
+				GoNotYet <Print 6>
+				Msg1 <Accessing this computer, you find communications between %name3% and %name6%.>
+				Msg2 <You learned that %name3% works for %name6%.>
+				Msg3 <You've already learned all you can here.>
+				Msg4 <You use the open conection on this computer to send a virus directly to %name3% and %name6%.>
+				Msg5 <You don't do anything interesting with this computer.>
+				Msg6 <You should take a look at the files on this computer before you try hacking it.>
+			end
+		end
+
+
+		Persona 7
+		special <UNLISTED>
+		greeting <ifChatNPCSurrendered else GoGreet EndChat Say 1 FreezeNPC %7% Retreat 2 MonsterOff 2 XPV 100  Goto GoReveal>
+		*GoGreet <*AreYouHereAboutJob&Recruit&Investigation GoBriefing>
+		GoBriefing <NewChat Say 3 AddChat 1 AddChat 2 AddChat 3 Goto GoReveal>
+		GoReveal <History 2 &SetEnemyFac %6% WinSubPlot %plotid% Trigger0 .%id%_%plotid%_GoWin>
+		GoAttack <TeamAttack 2 TeamAttack 3>
+		result1 <EndChat Say 4 Goto GoAttack>
+		result2 <ifConversation SkillTar %threat% else result1 EndChat Say 5 History 6 RandomMecha .facs %threat% XPV 100 Return>
+		.facs <GENERAL \FACTION_DESIG %6%>
+		result3 <EndChat Say 7 Goto GoAttack>
+		Msg1 <%name3% was asked to find the %name2% by %name6%... That's all I know, I swear.>
+		Msg2 <%name7% revealed that %name3% works for %name6%.>
+		Msg3 <You'll be working under %name3% for %name6%. We're here on a very special mission, one which will soon be coming to fruition...>
+		Msg4 <Wait a minute... you're not one of the new recruits! Guards, we have an intruder!>
+		Msg5 <You'll find a mecha waiting for you at the airlock. Go deploy right away- I've heard that one of %name3%'s enemies is in town.>
+		Msg6 <You tricked %name7% into giving you a mecha.>
+		Msg7 <How did you know about the %name2%...? Guards! We have an intruder!>
+		Prompt1 <Ha ha! That's all I needed to know, sucker!>
+		Prompt2 <So when do I get my mecha and stuff?>
+		Prompt3 <Is the %name2% in \SCENE &EpisodeScene ?>
+	end
+	inv
+		STC CORE-ACTIVATABLE-STATIONARY-DEFENDED
+		name <Mobile Base>
+
+		NPC Mecha Pilot
+
+		Secret
+		Msg <%name3%'s lieutenant %name7% is in town recruiting pilots to search for the %name2%.>
+	end
+
+Content
+	name <Do Not Want!>
+	desc <The PC beats the NPC to the core story item, but the Enemy pulls a LOLcat.>
+	requires <*:CS_GatherInformation I:++ E:++ F:P.art -!Ne -I:TL_Md -I:TL_Hi -I:TL_Ex>
+	changes <F:P>
+	Size 4
+
+	% E1 is the person who tells the PC about it
+	% E2 is the item
+	% E3 is the enemy NPC
+	Element2 <Grab 8>
+	Element3 <Grab 1>
+	Place3 </>
+
+	% P%id%01 = Have gotten item/Have lost item
+	% P%id%02 = Initialization Counter
+
+	%% FAIL CONDITIONS:
+	%% - ItemCozy fails
+
+	%% If the PC has retrieved the item, entering an outdoors scene will trigger the ending
+	%% conversation with the enemy.
+	start <if# p%id%01 0 ifScene .%id%_scene Alert %id%01 ForceChat %3%>
+	.%id%_scene <Outdoors>
+
+	update <if= p%id%02 0 p= %id%02 1 SetPlotStatus %plotid1% %id1%>
+	end <ifSubPlotLost %plotid1%  P= %id%01 -1>
+	Get%2% <P= %id%01 1>
+
+	Msg%id%01 <As you leave, you are approached by %name3% and \PPR %3% lance.>
+
+	%%  Debriefing Msg - Win or Lose, the PC always loses
+	Msg%id%11 <So %name3% found what \SPR %3% was looking for... At least this information may be of some use to us.>
+	Msg%id%11_1 <So \FACTION &EnemyFac has found the information it needs for its weapons program? This is extremely bad news... but at least we know what they're planning, and that's something.>
+	CMsg%id%11_1 <ifFactionExists &EnemyFac Accept>
+	Msg%id%11_2 <You mean to tell me that %name3% found the data needed for \FACTION &EnemyFac 's weapon program? This bad news for \FACTION &AllyFac ... but we can at least try to keep up with them.>
+	CMsg%id%11_2 <ifFactionExists &EnemyFac ifChatNPCAlly ifFactionExists &AllyFac Accept>
+
+	% SubPlot1 is the Item Cozy
+	subplot1 <*:CS_ItemCozy&Abandoned 2>
+
+	sub
+		Persona 1
+		.%id%_GoInform <NewChat Say %id%01 SMemo %id%02 History %id%03>
+		Msg%id%01 <It's believed that the %name2% is near here. In fact, %name3% is searching for it at this very moment.>
+		Msg%id%02 <%name1% revealed that %name3% is in town searching for the %name2%.>
+		Msg%id%03 <%name1% revealed that the %name2% was nearby.>
+
+		Persona 3
+		special <UNLISTED NOESCAPE>
+		greeting <EndChat Say 1 AddChat 1 AddChat 2  SetDebriefing %id%11>
+		result1 <EndChat Say 2 StoryNote 3 Print 4 &SetTargetItem 0           WinSubPlot %plotid%   Trigger0 .%id%_%plotid%_GoWin   SetXXRPlot &EnemyFac XXR_P_WeaponProgram  Dynamic 2 StoryDL 100 .nu1 .nu2  DynaFaction &EnemyFac>
+		result2 <EndChat Say 2 History 5 StoryNote 3 Print 4 &SetTargetItem 0 LoseSubPlot %plotid%  Trigger0 .%id%_%plotid%_GoLoss  SetXXRPlot &EnemyFac XXR_P_WeaponProgram  SavePos  Dynamic 2 StoryDL 100 .nu1 .nu2  DynaFaction &EnemyFac>
+		.nu1 <if= T1 0  Return   if= L2 0  L= 2 1  LoseRenown>
+		.nu2 <if= T2 0           if= L2 0  L= 2 1  XPV 100  AddRenown 1  Salvage   Return>
+		Msg1 <\PC , I should have expected to find you here. Well, it hardly matters- you're too late to stop me.>
+		Msg2 <It wasn't the %name2% that I was after- it was the computer in that place which was the real prize. This information will be a great help to our new weapons program. Unfortunately, you will not live to see the glorious rise of \FACTION &EnemyFac !>
+		Msg3 <%name3% revealed that \FACTION &EnemyFac were working on a new weapons program.>
+		Msg4 <You are attacked by %name3%'s men.>
+		Msg5 <You failed to prevent %name3% from locating the %name2%.>
+		Prompt1 <Too late? I beat you to the %name2%!>
+		CPrompt1 <if= P%id%01 1 Accept>
+		Prompt2 <I can still get the %name2% back from you!>
+		CPrompt2 <if= P%id%01 -1 Accept>
+	end
+
+Content
+	name <Steal The Prototype>
+	desc <The PC will be sent into enemy territory to steal a prototype weapon from the other side.>
+	requires <*:CS_GatherInformation (!Md|!Hi)  (P:P.---|P:P.sub|P:P.cat|P:P.pil|P:P.pat|P:P.art|P:P.gat) F:P.wep ~&AboutEnemy>
+	changes <P:P>
+	Size 15
+
+	% E1 is the person who tells the PC.
+	% E2 is the scene where the prototype is
+	% E3 is the environs scene where the lab is located
+	% E4 is the lab itself
+	% E5 is the research head
+	% E6 is the "high alert" mood
+	Element2 <Scene Town !Far -7 !Ally -2 !XClude -3>
+	Element3 <Scene Environs !Near 2>
+	Element4 <Prefab>
+	Place4 <3>
+	Element5 <Prefab>
+	Place5 <4 (Scientist) sd enemy>
+	Element6 <Prefab>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Safe Entry Counter
+
+	update <if= P%id%01 0 P= %id%01 1 SetEncounterActive %4% NPCLevel %5% StoryDL SetNPCFaction %5% &EnemyFac SetPlotStatus %plotid1% %id1% SetMood %6% %2%>
+
+	.%id3%_%plotid3%_GoPeacefulEntry <P= %id%02 1>
+
+	% SubPlot1 is the peaceful entry task
+	SubPlot1 <*:CS_PeacefulEntry_NPCBase 4 5>
+
+	sub
+		Persona 1
+		.%id%_GoInform <NewChat Say %id%01 SMemo %id%02 History %id%03>
+		Msg%id%01 <Here. These are the coordinates of a weapons lab in %name2% belonging to \FACTION &EnemyFac . They've been testing a prototype there, and are just about to go into production. Go see what you can find out.>
+		Msg%id%02 <%name1% informed you that \FACTION &EnemyFac has a weapons lab in %name3%, and their prototype is nearly ready for production.>
+		Msg%id%03 <%name1% told you where to find the weapons lab in %name2%.>
+
+		MetaScene 4
+		rumor%id% <the weapons lab is being run by %name5%.>
+		MapWidth 35
+		MapHeight 35
+		MonkeyMap
+		Ceiling
+		IndustrialTiles
+		SecretDoorChance 10
+		LockedDoorChance 10
+		type <Complex Private Laboratory>
+		special <UNSAFE NOEXIT>
+		NeededCells 1
+		%%  L1 = Have opened mecha bay doors
+		%%  L2 = Have prepared mecha core
+		%%  L3 = Have released construction harness
+		%%  L4 = Bonus build points
+		%%  L5 = Bonus customization points
+		start <Print 3 if# P%id%02 0 else GoCancelSP1 TeamNeutral 2 TeamNeutral 3>
+		GoCancelSP1 <CancelSubPlot %plotid1%>
+		PCAttack <ifTeamNotHostile 3 TeamAttack 2 TeamAttack 3 Alert 1 P= %id%02 0>
+		end <if# PlotStatus %plotid% %id% else GoCheckLoss SetEncounterInactive %4% ifNPCOK %5% FreezeNPC %5%>
+		GoCheckLoss <Alert 2 History 2 LoseSubPlot %plotid% Trigger0 .%id%_%plotid%_GoLoss SetEncounterInactive %4% KillMood %6% ifNPCOK %5% FreezeNPC %5%>
+		Surrender%5% <Monologue %5% 4 Alert 5 FreezeNPC %5% L= 1 1 L= 2 1 L= 3 1>
+		Msg1 <Suddenly, an alarm rings throughout the complex!>
+		Msg2 <You did not manage to find the prototype before it could be deployed.>
+		Msg3 <You enter %name5%'s weapons lab.>
+		Msg4 <I surrender! You can have the prototype, just take it and go!>
+		Msg5 <%name5% gives you the passcodes for the prototype mecha.>
+		Content1 <Some 1 80 Sub *ARMORY na>
+		sub
+			Team 1
+			SetEnemy 3 4
+
+			Team 2
+			name <Guards>
+			type <GUARD ROBOT SYNTH>
+			Deploy <if= V1 0 V= 1 1 MonsterUp 2 StoryDL>
+			SetEnemy 1
+			SetAlly 3
+
+			Team 3
+			name <Scientist>
+			SetEnemy 1
+			SetAlly 2
+
+			Room
+			name <Foyer>
+			special <STARTHERE>
+			sub
+				Trapdoor
+				Destination -1
+				use <Print 1 Return>
+			end
+
+			Room
+			%% Hangar Door Computer
+			sub
+				STC COMPUTER-INDESTRUCTIBLE
+				name <Hangar Control>
+				use <if= L1 0 else GoBeenBefore ifYesNo 1 2 3 Alert 4 L= 1 1>
+				GoBeenBefore <Print 5>
+				CLUE_CODEBREAKING <Print 9>
+				Msg1 <This computer operates the mecha bay doors. Do you want to open them?>
+				Msg2 <Yes, I do.>
+				Msg3 <No, not just yet...>
+				Msg4 <You open the external bay doors.>
+				Msg5 <You used this computer to open the mecha bay doors.>
+				Msg9 <You don't see any reason to hack this particular computer.>
+			end
+
+			Room
+			%% Power Core Computer
+			sub
+				STC COMPUTER-INDESTRUCTIBLE
+				name <Power Control>
+				use <if= L2 0 else GoBeenBefore ifYesNo 1 2 3 if= L1 1 else GoNonSequence Alert 4 L= 2 1>
+				GoNonSequence <L= 2 1 Alert 6 MonsterUp 2 d6 TeamAttack 2 TeamAttack 3>
+				GoBeenBefore <Print 5>
+				CLUE_SCIENCE <if= L4 0 else GoBeenBefore Mental ifScience HardSkillTar StoryDL else GoSciFail Print 7 L= 4 10>
+				GoSciFail <Print 8>
+				CLUE_CODEBREAKING <Print 9>
+				Msg1 <This computer operates the prototype mecha's ignition system. Do you want to power up the mecha?>
+				Msg2 <Yes, I do.>
+				Msg3 <No, not just yet...>
+				Msg4 <You power up the mecha.>
+				Msg5 <You used this computer to power up the prototype mecha.>
+				Msg6 <You power up the mecha. Suddenly, an alarm sounds!>
+				Msg7 <You examine the design of this prototype mecha and make a few improvements.>
+				Msg8 <You examine the design of this prototype mecha.>
+				Msg9 <You don't see any reason to hack this particular computer.>
+			end
+
+			Room
+			%% Construction Frame Computer
+			sub
+				STC COMPUTER-INDESTRUCTIBLE
+				name <Design Console>
+				% V1 = Have corrupted database
+				use <if= L3 0 else GoBeenBefore ifYesNo 1 2 3 if= L1 1 else GoNonSequence if= L2 1 else GoNonSequence Alert 4 L= 3 1>
+				GoNonSequence <L= 3 1 Alert 6 MonsterUp 2 d6 TeamAttack 2 TeamAttack 3>
+				GoBeenBefore <Print 5>
+				CLUE_SCIENCE <if= L5 0 else GoBeenBefore Mental ifScience HardSkillTar StoryDL else GoSciFail Print 7 L= 5 d10>
+				GoSciFail <Print 8>
+				CLUE_CODEBREAKING <if= V1 0 else GoBeenBefore Mental Print 9 V= 1 1 ifCodeBreaking SkillTar StoryDL AddFortune &EnemyFac -1>
+				Msg1 <This computer operates the mecha construction system. Do you want to release the prototype mecha?>
+				Msg2 <Yes, I do.>
+				Msg3 <No, not just yet...>
+				Msg4 <You release the prototype mecha.>
+				Msg5 <You used this computer to release the prototype mecha.>
+				Msg6 <You release the prototype mecha. Suddenly, an alarm sounds!>
+				Msg7 <You examine the design of this prototype mecha and make a few improvements.>
+				Msg8 <You examine the design of this prototype mecha.>
+				Msg9 <You erase the design database for this mecha. Hopefully \FACTION &EnemyFac didn't keep a backup.>
+			end
+
+			Room
+			name <Mecha Bay>
+			minimap <......###..#2#...........>
+			inv
+				Elevator
+				name <Mecha Hangar>
+				MiniMapComponent 2
+				use <if= L1 1 else GoNotOpen if= L2 1 else GoNotActive if= L3 1 else GoNotFree IfYesNo 7 8 9 Goto GoEndPlot>
+				GoEndPlot <Alert 10 Return V= 1 StoryDL V+ 1 10 V+ 1 L4 V= 2 8 V+ 2 L5 MechaPrize .facs V1 RandomTheme V2  SetXXRPlot &AllyFac XXR_P_WeaponProgram  WinSubPlot %plotid% Trigger0 .%id%_%plotid%_GoWin XPV 100 History 11 History 12 SMemo 13 SetMoodTimeLimit %6% 86400>
+				.facs <GENERAL \FACTION_DESIG &EnemyFac>
+				GoNotOpen <Print 1>
+				GoNotActive <Print 2>
+				GoNotFree <Print 6>
+				CLUE_CODEBREAKING <if= L1 0 else GoDoorOpen ifCodeBreaking HardSkillTar StoryDL else GoFailCB L= 1 1 Print 5 XPV 50>
+				GoDoorOpen <Print 3>
+				GoFailCB <Print 4>
+				Msg1 <This door leads to the mecha hangar. It's locked.>
+				Msg2 <This door leads to the mecha hangar. The prototype mecha is not ready for launch.>
+				Msg3 <This door is already open.>
+				Msg4 <You can't see any way to open the door from right here.>
+				Msg5 <You unlock the door.>
+				Msg6 <This door leads to the mecha hangar. The prototype mecha is still bound within the construction harness.>
+				Msg7 <This door leads to the mecha hangar. Do you want to take the protoype mecha and go?>
+				Msg8 <Yes, please.>
+				Msg9 <No, not yet.>
+				Msg10 <You take the mecha and go. With the information gained from this prototype, \FACTION &AllyFac will be able to begin its own weapons program.>
+				Msg11 <You stole a prototype mecha from \FACTION &EnemyFac .>
+				Msg12 <Now, \FACTION &AllyFac can start its own weapons program.>
+				Msg13 <You stole a prototype mecha from \FACTION &EnemyFac . Maybe you should head back to \SCENE &EpisodeScene now.>
+			end
+		end
+	end
+	inv
+		STC CORE-ACTIVATABLE-STATIONARY-DEFENDED
+		name <Weapons Lab>
+
+		NPC Scientist
+		Combatant
+		MechaEngineering
+
+		Mood 3
+		name <"High Alert" Mood>
+		plot_type <*FactionRampage>
+		Element1 <Grab -2>
+		Update <if= v1 0 V= 1 1   News 1>
+		Msg1_1 <%city% heightens security after report of immanent terror attack.>
+		Msg1_2 <Terror alert issued for %city%; security forces to remain on high alert for duration.>
+		% Meme Messages
+		Msg_1 <Have you seen any terrorists about? The defense force is on high alert...>
+		Msg_2 <I've heard that there's an infiltrator in %city% at this very moment. What do you think about that?>
+		Msg_3 <I just hope that the terrorists don't blow up the building I'm in, that's all.>
+	end
+
+%%  *******************
+%%  ***   GENERAL   ***
+%%  *******************
+
+Content
+	name <Who do they work for?>
+	desc <You'll be sent to find out who your enemy works for.>
+	requires <*:CS_GatherInformation E:++ -E:A.nme F:-- (L:Ally|P:PDASS)>
+	changes <F:++>
+
+	% E1 is the person who tells the PC
+	% E2 is the enemy NPC
+	% E3 is an outdoor scene for the encounter
+	% E4 is the encounter itself
+	% E5 is the new enemy faction
+	% E6 is an allied local faction, to be used here merely as a victim
+	Element2 <Grab 1>
+	Place2 </>
+	Element3 <Scene Outdoors !Near -7>
+	Element4 <Prefab>
+	Place4 <3>
+	Element5 <Faction -Ally !XClude -3 !Enemy -7 !XClude 1>
+	Element6 <Faction !Okay -3 !Enemy 5 !Ally -7>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Decimation Counter
+	% P%id%03 = Reinforcements Counter
+
+	%% FAIL CONDITIONS:
+	%% - DiscoverNPCMission Fails
+
+	update <if= P%id%01 0 P= %id%01 1   SetPlotStatus %plotid1% %id1% SetPlotStatus %plotid2% %id2%    NPCLevel %2% StoryDL>
+	end <ifSubPlotLost %plotid1% CancelSubPlot %plotid2% LoseSubPlot %plotid% Trigger0 .%id%_%plotid%_GoLoss>
+
+	.%id2%_%plotid2%_GoDecimation <P= %id%02 1>
+	.%id2%_%plotid2%_GoReinforcements <P= %id%03 1>
+
+	%% DEBRIEFING MESSAGE
+	Msg%id%11 <So %name2% was hired by %name5%... This is valuable information.>
+
+	%% SubPlot1 = Discover the NPC's mission
+	%% SubPlot2 = Gain advantage vs NPC
+	SubPlot1 <*:CS_DiscoverNPCMission&EnemyNPC 3 4 2>
+	SubPlot2 <*:CS_GainAdvantageVsNPC&Decimation&Reinforcements 2>
+
+	sub
+		Persona 1
+		.%id%_GoInform <NewChat Say %id%01 SMemo %id%02 History %id%03>
+		Msg%id%01 <I believe you've faced %name2% in the past... \SPR %2% 's caused a lot of problems around here. Word is that \SPR %2% 's in town on another mission now. It could be a good chance to find out who \SPR %2% works for.>
+		Msg%id%02 <%name1% revealed that %name2% is in town on a mission. This could be a good opportunity to discover who \SPR %2% works for.>
+		Msg%id%03 <You were asked to find who %name2% works for.>
+
+		Persona 2
+		special <UNLISTED NOESCAPE>
+		greeting <EndChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03 Trigger0 Local1>
+		result%id%01 <EndChat Say %id%02>
+		result%id%02 <EndChat Say %id%03>
+		result%id%03 <EndChat Say %id%04 History %id%05  XPV 100  SetDebriefing %id%11  &SetEnemyFac %5%  PCFEnemy %5%  Trigger0 .%id%_%plotid%_GoWin WinSubPlot %plotid%>
+		Msg%id%01 <You're too late, \PC . My work here is done.>
+		Msg%id%01_1 <Aw, nuts! Why do you always have to show up right when I'm doing a big mission?>
+		CMsg%id%01_1 <ifNPCAttitude %2% XXR_A_IsJunior Accept>
+		Msg%id%01_2 <I hope you weren't hired by %name6%, \PC , because the battle is already over.>
+		CMsg%id%01_2 <ifNPCAttitude %2% XXR_A_IsSenior Accept>
+		Msg%id%01_3 <We need to stop bumping into each other like this, \PC . People will start to think you're my stalker.>
+		CMsg%id%01_3 <ifNPCAttitude %2% XXR_A_IsEqual Accept>
+		Msg%id%01_4 <Hold your fire, we're leaving... our mission here has been completed.>
+		CMsg%id%01_4 <ifNPCHeroic Accept>
+		Msg%id%01_5 <They're all dead, \PC , and you've arrived too late to do anything about it...>
+		CMsg%id%01_5 <ifNPCVillainous Accept>
+		Msg%id%02 <I don't have the time to fight today, \PC , I've got important things to do. Fortunately my lance has no such restriction...>
+		Msg%id%02_1 <Um, about that... I just remembered that I have someplace important to be. But, hey, you can fight my lance if you want!>
+		CMsg%id%02_1 <ifNPCAttitude %2% XXR_A_IsJunior Accept>
+		Msg%id%02_2 <Your confidence is admirable. Unfortunately, I have no time to shatter your illusions today... but maybe my lance can do so in my place.>
+		CMsg%id%02_2 <ifNPCAttitude %2% XXR_A_IsSenior Accept>
+		Msg%id%02_3 <As much fun as it would be to accept that challenge, I have important business elsewhere. You can try fighting my lance if you want.>
+		CMsg%id%02_3 <ifNPCAttitude %2% XXR_A_IsEqual Accept>
+		Msg%id%02_4 <I've done all the fighting I intend to do, for now... but if you're truly desperate for combat my lance won't disappoint you.>
+		CMsg%id%02_4 <ifNPCHeroic Accept>
+		Msg%id%02_5 <Much as I would love to end your life, I simply don't have the time. My lance, on the other hand, has plenty of time to destroy you...>
+		CMsg%id%02_5 <ifNPCVillainous Accept>
+		Msg%id%03 <I don't have time to answer your stupid questions, I've got things to do... my lance, on the other hand, has more than enough time to kick your ass.>
+		Msg%id%03_1 <Why, are you looking for a job? I don't wanna work with you! Knowing my luck, they'd make you my supervisor or something! I'm outta here... but you can fight my lance if you want.>
+		CMsg%id%03_1 <ifNPCAttitude %2% XXR_A_IsJunior Accept>
+		Msg%id%03_2 <All will be revealed in due time, \PC . Unfortunately I must leave right now; if you're determined to fight then my lance should be more than a match for your skills.>
+		CMsg%id%03_2 <ifNPCAttitude %2% XXR_A_IsSenior Accept>
+		Msg%id%03_3 <I expect they'll be going public with their plan any day now. Look, I've got to run... If you're aching for a fight, my lance won't disappoint you.>
+		CMsg%id%03_3 <ifNPCAttitude %2% XXR_A_IsEqual Accept>
+		Msg%id%03_4 <I'm not at liberty to discuss that... not yet. Look, I have to run, but I don't think these pilots I'm traveling with intend to let you get out of here intact. Goodbye \PC .>
+		CMsg%id%03_4 <ifNPCHeroic Accept>
+		Msg%id%03_5 <Does it kill you to not know who's pulling the strings? Ha, you won't live long enough to find out! I have to run, but my lance will destroy you!>
+		CMsg%id%03_5 <ifNPCVillainous Accept>
+		Msg%id%04 <Yeah, and they're none too happy about your interference with our plans. I've got to go but my lance can deal with you themselves.>
+		Msg%id%04_1 <Curse your encyclopedic knowledge of standard paint schemes! But that knowledge isn't going to do you any good, because my lance is going to destroy you... while I run off to a very important meeting I had forgotten about.>
+		CMsg%id%04_1 <ifNPCAttitude %2% XXR_A_IsJunior Accept>
+		Msg%id%05 <You deduced that %name2% worked for %name5%.>
+		Prompt%id%01 <I can take you, %name2%.>
+		Prompt%id%01_1 <Come on, %name2%... let's settle this.>
+		Prompt%id%02 <Tell me who hired you!>
+		Prompt%id%02_2 <Tell me who you work for!>
+		Prompt%id%03 <I see you work for %name5%...>
+		CPrompt%id%03 <ifInsightKn SkillTar StoryDL Accept>
+
+		MetaScene 4 2
+		special <ARENA>
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 1 ForceChat %2%   CancelSubPlot %plotid2%>
+		Local1 <Alert 5  if# P%id%02 0 Alert 6>
+
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1      LoseRenown  if= PlotStatus %plotid% %id%  Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid%>
+		nu2 <if= V1 0  if= T2 1   else GoCheckGone  if= PlotStatus %plotid% %id%  V= 1 1  Alert 2 TeamMonologue 2 3 Salvage Retreat 2 History 4  XPV 100  SetDebriefing %id%11  &SetEnemyFac %5%  PCFEnemy %5%  Trigger0 .%id%_%plotid%_GoWin WinSubPlot %plotid%>
+		GoCheckGone <if= T2 0   V= 1 1   SALVAGE if= PlotStatus %plotid% %id% else GoJustDefeat LoseRenown   Alert 7 History 8   Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid%>
+		GoJustDefeat <Alert 9 XPV 100>
+		end <SetEncounterInactive %4%>
+
+		Msg1 <You arrive too late to aid a lance from %name6% against %name2%'s forces.>
+		Msg2 <With all the others defeated, the last henchman quickly surrenders.>
+		Msg3 <I give up! We were hired by %name5%...>
+		Msg4 <You learned that %name2% worked for %name5%.>
+		Msg5_1 <Maybe you can learn the truth from one of \PPR %2% lancemates.>
+		CMsg5_1 <if= PlotStatus %plotid% %id% Accept>
+		Msg5_2 <%name2%'s lancemates move in to attack.>
+		CMsg5_2 <if# PlotStatus %plotid% %id% Accept>
+		Msg6 <Your reinforcements are here, as promised.>
+		Msg7 <You have defeated %name2%'s lance, but still haven't learned who \SPR %2% works for.>
+		Msg8 <You defeated %name2%'s lance but didn't learn who \SPR %2% works for.>
+		Msg9 <You defeated %name2%'s lance.>
+
+		sub
+			team 1
+			setally 3
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 3
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction %5%   if= p%id%03 0 else GoSmallDeploy WMecha 2 StoryDL 75 WMecha 2 StoryDL 75>
+			GoSmallDeploy <WMecha 2 StoryDL 40 WMecha 2 StoryDL 40>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			setally 1
+			setenemy 2
+			Deploy <if= PlotStatus %plotid% %id%  if# P%id%02 0   WMecha 3 StoryDL 60>
+			ParaX 10
+			ParaY 5
+		end
+	end
+	inv
+		stc CORE-ACTIVATABLE
+		name <%name2%'s Lance>
+	end
+
+Content
+	name <The Enemy's Decision>
+	desc <Your enemy consults their mentor; the PC of course thinks it's a kidnapping>
+	requires <*:CS_GatherInformation E:A.env (E:M.---|E:M.mer|E:M.com) ~&AboutEnemy ~*CORE_R_EXP>
+	changes <E:M>
+	Size 5
+
+	% E1 is the person who tells the PC
+	% E2 is an environs scene for the enemy base
+	% E3 is the base itself
+	% E4 is a local public scene for the mentor's home
+	% E5 is the mentor
+	% E6 is the enemy
+	% E7 is a secret
+	Element2 <Scene Environs !Near -7>
+	Element3 <Prefab>
+	Place3 <2>
+	Element4 <Scene Building Public !Near -7 !Okay -3>
+	Element5 <NewNPC 4 4 Old Old Old Heroic Renowned>
+	Place5 <3 (Citizens) pass>
+	Element6 <Grab 1>
+	Place6 <3 (Guards) sd>
+	Element7 <Prefab>
+
+	%% FAIL CONDITIONS:
+	%% - DiscoverNPCisMissing Fails
+	%% - Reveal NPC Base Fails
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Have learned secret
+
+	update <if= p%id%01 0 p= %id%01 1 SetPlotStatus %plotid1% %id1% SetPlotStatus %plotid3% %id3%>
+	start <ifSubPlotLost %plotid1% else .%id%_GoCheckSP2   Goto .%id%_GoLoseMission>
+	.%id%_GoCheckSP2 <ifSubPlotLost %plotid2%   Goto .%id%_GoLoseMission>
+	.%id%_GoLoseMission <CancelSubPlot %plotid3%  LoseSubPlot %plotid% Trigger0 .%id%_%plotid%_GoLoss>
+
+	.%id1%_%plotid1%_GoDiscover <SetPlotStatus %plotid2% %id2%>
+	.%id3%_%plotid3%_GoLearnSecret <P= %id%02 1>
+
+	%% Debriefing Message - Normal Ending
+	Msg%id%11 <Thanks for your report. Now I know a lot more about %name6%'s motivations.>
+	Msg%id%11_1 <Could it be that %name6% is having second thoughts about working for \FACTION &EnemyFac ? This could get interesting...>
+	CMsg%id%11_1 <ifFactionExists &EnemyFac Accept>
+	Msg%id%11_2 <So %name6% is going through some kind of existential crisis... Good. How do we turn that to our advantage?>
+	CMsg%id%11_2 <ifNPCVillainous Accept>
+	Msg%id%11_3 <So that's what's going on... Sounds like %name6% is going through some kind of crisis. I guess \SPR %6% doesn't have anyone else to reach out to.>
+	CMsg%id%11_3 <ifNPCHeroic Accept>
+
+	%% Debriefing Message - Good Ending
+	Msg%id%12 <Thanks for your report. Now I know a lot more about %name6%'s motivations.>
+	Msg%id%12_1 <It just goes to show you... Maybe if %name6% wasn't working for \FACTION &EnemyFac , the two of you could have been friends.>
+	CMsg%id%12_1 <ifFactionExists &EnemyFac Accept>
+
+	%% Debriefing Message - Trainer ends up dead, somehow.
+	Msg%id%13 <Stop, stop... I've heard enough.>
+
+	% SubPlot1 is the revelation that the NPC is missing
+	% SubPlot2 is the Reveal NPC Base task
+	% SubPlot3 is the secret revelation
+	SubPlot1 <*:CS_DiscoverNPCKidnappedByCSE&NotReally 4 5>
+	SubPlot2 <*:CS_RevealEncounter_NPCBase&EnemyNPC 2 3 6>
+	SubPlot3 <*:CS_LearnSecretAboutNPC 7 5>
+
+	sub
+		Persona 1
+		.%id%_GoInform <NewChat Say %id%01 SMemo %id%02 History %id%03>
+		Msg%id%01 <%name6% has recently been in contact with the famous mecha trainer %name5%. I don't know what kind of history those two have, but you can ask \OPR %5% about it at %name4%.>
+		Msg%id%02 <You learned that %name6% was recently in contact with %name5%; \SPR %5% can be found at %name4%.>
+		Msg%id%03 <You learned that %name6% was in town to see %name5%.>
+
+		STC MS_EmptyBuilding
+		SetID 3
+		start <if= L1 0 L= 1 1 ForceChat %6%>
+		end <MoveNPC %5% %4%>
+		faint%5% <AddHeroic -100 PCEnemy %6% SetDebriefing %id%13>
+
+		Persona 5
+		special <UNLISTED>
+		greeting <if= V1 0 else GoBeenBefore NewChat Say 2 V= 1 1 AddCHat 1 AddChat 2>
+		GoBeenBefore <NewChat Say 1>
+		result1 <NewChat Say 3 AddChat 3>
+		result2 <NewChat Say 4 AddChat 3>
+		result3 <NewChat Say 5 AddChat 4>
+		result4 <EndChat Say 6 History 7 Print 8 Time 3600   SkillXP 1 150   SkillXP 2 150   SkillXP 3 200>
+		Msg1 <Don't worry about me. I can get home by myself.>
+		Msg2 <Sorry for causing all this fuss... %name6% always did have a problem with subtlety. Thanks for trying to rescue me, anyhow, even if I didn't really need it.>
+		Msg3 <Ever since \SPR %6% was my student \SPR %6% 's been like that. I think \SPR %6% isn't very happy with the direction \PPR %6% life has taken; \SPR %6% came to me for advice.>
+		Msg4 <Oh, no, not at all. %name6% is a former student of mine; \SPR %6% just came to see me for some advice. I think \SPR %6% isn't very happy with the direction \PPR %6% life has taken.>
+		Msg5 <I told \OPR %6% that \SPR %6% has to do what \SPR %6% thinks is right. I just hope that I managed to instill in \OPR %6% a good sense of right and wrong...>
+		Msg6 <Well, I retired a while back, but I've still got a few tricks up my sleeve. Let me show you what I know about mecha combat.>
+		Msg7 <%name5% taught you a few things about mecha combat.>
+		Msg8 <You train with %name5% for a short time.>
+		Prompt1 <What is %name6%'s problem, anyhow?>
+		Prompt2 <Are you okay? Did %name6% hurt you?>
+		Prompt3 <What kind of advice did you give \OPR %6% ?>
+		Prompt4 <Do you think you could spare some time to teach me?>
+
+		Persona 6
+		special <UNLISTED NOESCAPE>
+		greeting <EndChat Say 1 AddChat 1 AddChat 2 AddChat 3>
+		GoNormalEnding <History 5 History 6 SetDebriefing %id%11 Goto GoEnd>
+		GoGoodEnding <PCFriend %6% History 5 History 11 SetDebriefing %id%12 Goto GoEnd>
+		GoEnd <Print 4 FreezeNPC %6%   SetXXRMotivation %6% XXR_M_Seeker   ForceChat %5%   WinSubPlot %plotid% Trigger0 .%id%_%plotid%_GoWin>
+		result1 <EndChat Say 2 Goto GoNormalEnding>
+		result2 <EndChat Say 3 AddEasygoing -d10   Goto GoNormalEnding>
+		result3 <EndChat Say 7 AddChat 4 AddChat 5 AddChat 6>
+		result4 <ifTaunt SkillTar StoryDL else GoR4Fail EndChat Say 8 Goto GoGoodEnding>
+		GoR4Fail <EndChat Say 9 Goto GoNormalEnding>
+		result5 <EndChat Say 10 Goto GoGoodEnding>
+		result6 <EndChat Say 10 Goto GoGoodEnding>
+		Msg1 <\PC ... You are a persistent one, I'll give you that. Unfortunately I am in no mood to fight just now.>
+		Msg1_1 <Ah, I heard that there was someone looking for me. I should have guessed that it would be you... I'm afraid that I really must be going, I'm in no mood to kill you right now.>
+		CMsg1_1 <ifNPCSociable Accept>
+		Msg1_2 <What do you want? I'm in no mood for a fight today.>
+		CMsg1_2 <ifNPCShy Accept>
+		Msg1_3 <Look at who just wandered in here. Couldn't you have waited a few minutes until after I'd gone? I'm in no mood to fight you today.>
+		CMsg1_3 <ifNPCEasygoing Accept>
+		Msg1_4 <You!!! What are you doing here!? I would kill you for intruding on my business, but my work here is finished, and I'm in no mood to dirty my blade with your blood...>
+		CMsg1_4 <ifNPCPassionate Accept>
+		Msg1_5 <Well, look at this. If I were in any mood to fight right now this would be my lucky day.>
+		CMsg1_5 <ifNPCCheerful Accept>
+		Msg1_6 <What now!? Oh, it's you... why must you continue to accost me, even when I'm having a day off? Get lost. I'm in no mood to fight.>
+		CMsg1_6 <ifNPCMelancholy Accept>
+		Msg2 <You think that I've harmed %name5%? You really are ignorant. I have no more time to waste on you, \PC . Until we meet again...>
+		Msg2_1 <What, can't you see \OPR %5% standing over there? Really, this is stupid, even for you. Goodbye \PC ... the next time we meet, it will be in battle.>
+		Msg2_2 <Why don't you ask \OPR %5% yourself? I've had enough of your foolishness, \PC ... Next time we meet, it'll be the last time.>
+		Msg3 <You seem to be laboring under the delusion that you have some say in the matter. Don't worry, though... the next time we meet, I promise to finish you.>
+		Msg3_1 <The only one who is going is me. Goodbye, \PC .>
+		Msg3_2 <Don't worry, I promise a great battle the next time we meet. Goodbye, \PC .>
+		Msg4 <%name6% leaves the area.>
+		Msg5 <You learned that %name6% didn't actually kidnap %name5%.>
+		Msg6 <Instead, \SPR %6% sought \PPR %6% former mentor to ask for advice.>
+		Msg7 <You could say that's the reason I'm here. What do you know about it?>
+		Msg8 <Hah! Maybe, just maybe you're right about that... I'm still better than you, though. Until we meet again, \PC .>
+		Msg9 <You know nothing. The next time we meet, \PC , I will end this... I promise.>
+		Msg10 <You may be right about that, \PC . If things were different then perhaps we need not be enemies... but destiny is formed by the choices we make, and this is where we are. Until we meet again...>
+		Msg11 <%name6% expressed regret that the two of you were enemies.>
+		Prompt1 <Tell me what you did with %name5%.>
+		Prompt1_1 <What did you do with %name5%?>
+		Prompt2 <I never have that problem. Let's go!>
+		Prompt2_1 <I don't care about your mood. Let's go!>
+		Prompt3 <Are you in the mood to talk?>
+		CPrompt3 <if= P%id%02 1 if= ChatNPCRelationship 0 ifG ChatNPCHeroism -1 Accept>
+		Prompt4 <I know that you're better at talking than fighting.>
+		Prompt5 <I know that it's never too late to change.>
+		CPrompt5 <ifConversation SkillTar StoryDL Accept>
+		Prompt6 <I know that you've made some bad decisions.>
+		CPrompt6 <ifInsight SkillTar StoryDL Accept>
+	end
+	inv
+		STC CORE-ACTIVATABLE-STATIONARY-DEFENDED
+		name <Secret Base>
+		% Since this is the main combat of this episode, make it a harder than usual.
+		GoStartCombat <Alert 1 SavePos Dynamic 2 StoryDL 150 .nu1 .nu2 ComposeD Msg1 .Msg1 DynaVar= 3 Destination  DynaFaction &EnemyFac>
+
+		Secret
+		Msg <%name5% used to be %name6%'s teacher. I think \SPR %5% was always disappointed in the path %name6% chose.>
+	end
+
+Content
+	name <Ex-Lover vs Ex-Partner>
+	desc <The enemy's ex-lover is on the run from the enemy's ex-partner.>
+	requires <*:CS_GatherInformation E:A.sr_ (E:M.---|E:M.mer) ~&AboutEnemy>
+	changes <E:M>
+	Size 7
+
+	%% The centerpiece of this component is an encounter in which the PC can help
+	%% defend the ex-lover against the ex-partner. It should be possible, if the PC
+	%% plays the cards right, for the encounter to be won without a shot being
+	%% fired.
+
+	% E1 is the person who tells the PC.
+	% E2 is the ex-lover
+	% E3 is the ex-partner
+	% E4 is an outdoors scene for the duel
+	% E5 is the encounter for the duel
+	% E6 is E3's secret which may be revealed
+	% E7 is the enemy, which must be grabbed because it's going to get modified
+	Element2 <NewNPC  0 -7>
+	Place2 </>
+	Element3 <NewNPC -2 -7>
+	Place3 </>
+	Element4 <Scene Outdoors !Near -7>
+	Element5 <Prefab>
+	Place5 <4>
+	Element6 <Prefab>
+	Element7 <Grab 1>
+	Place7 </>
+
+	% FAIL CONDITIONS
+	% - LocateDuel fails
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Decimation Counter
+	% P%id%03 = Learn Secret Counter
+	% P%id%04 = Have won the encounter
+
+	% At initialization, move and level both of the characters, then activate
+	% the three subplots.
+	update <if= p%id%01 0 p= %id%01 1 NPCLevel %2% StoryDL NPCLevel %3% StoryDL MoveNPC %2% %5% SetNPCTeam %2% 3 MoveNPC %3% %5% SetNPCTeam %3% 2 SetPlotStatus %plotid1% %id1% SetPlotStatus %plotid2% %id2% SetPlotStatus %plotid3% %id3%>
+	start <ifSubPlotLost %plotid1% CancelSubPlot %plotid2% CancelSubPlot %plotid3% History %id%01 LoseSubPlot %plotid% Trigger0 .%id%_%plotid%_GoLoss>
+
+	.%id2%_%plotid2%_GoDecimation <P= %id%02 1>
+	.%id3%_%plotid3%_GoLearnSecret <P= %id%03 1>
+
+	Msg%id%01 <You failed to protect %name2% from %name3%.>
+
+	%% Debriefing Msg - Win or Lose
+	Msg%id%11 <%name7% has quite the interesting personal life, I'll say that much.>
+	Msg%id%11_1 <%name7% rejected %name2%... Maybe \SPR %2% can help you fight \OPR %7% later on. They say there's no pilot like a jilted lover.>
+	CMsg%id%11_1 <ifNPCOK %2% Accept>
+	Msg%id%11_2 <This is the way love always ends... with giant robots blowing the crap out of one another.>
+	CMsg%id%11_2 <ifNPCMelancholy Accept>
+	Msg%id%11_3 <%name7% was smart to get rid of %name2%. Relationships can only tie a cavalier down.>
+	CMsg%id%11_3 <ifNPCShy Accept>
+	Msg%id%11_4 <%name2% gave up too easily... True love is stopped by nothing, not even thermonuclear weapons!!!>
+	CMsg%id%11_4 <ifNPCPassionate Accept>
+	Msg%id%11_5 <Remind me never to date %name7%. Moving right along...>
+	CMsg%id%11_5 <ifNPCEasygoing Accept>
+	Msg%id%11_6 <%name2% got off easy. You should hear about some of the things my exes have done...>
+	CMsg%id%11_6 <ifNPCCheerful ifNPCOK %2% Accept>
+	Msg%id%11_7 <%name7% and %name2%... but the one I'm most concerned about is %name3%. Someone like that is bound to come back and haunt you.>
+	CMsg%id%11_7 <ifNPCSociable ifNPCOK %3% Accept>
+
+
+	%% SubPlot1 is the LocateDuel task
+	%% SubPlot2 is the GainAdvantageVsNPC one
+	%% SubPlot3 is the ability to learn E3's secret
+	SubPlot1 <*:CS_LocateDuel 4 5 2 3>
+	SubPlot2 <*:CS_GainAdvantageVsNPC&Decimation 3>
+	SubPlot3 <*:CS_LearnSecretAboutNPC 6 3>
+
+	sub
+		Persona 1
+		.%id%_GoInform <NPCConGen %2% %7% NewChat Say %id%01 StoryNote %id%02>
+		Msg%id%01 <%name7%'s ex-lover %name2% is in town; \SPR %2% 's on the run from %name7%'s partner %name3%. I guess their breakup must have been pretty rough.>
+		Msg%id%02 <You learned that %name7%'s partner %name3% is trying to kill \PPR %7% ex-lover %name2%.>
+
+
+		Persona 2
+		% E2 will speak with the PC after the combat is won; before then, no special message.
+		special <UNLISTED NOESCAPE>
+		greeting <if= p%id%04 1 else GoNotNow  EndChat Say 2 AddCHat 1>
+		GoNotNow <EndChat Say 1>
+		GoWin <AddChat 2 XPV 100   WinSubPlot %plotid%   Trigger0 .%id%_%plotid%_GoWin>
+		result1 <EndChat Say %id%01 StoryNote %id%02 SetXXRMotivation &EnemyNPC XXR_M_Professional Goto GoWin>
+		result2 <EndChat Say 3 PCAlly %2% FreezeNPC %2%>
+		Msg1 <We shouldn't be talking now; we're in the middle of combat!>
+		Msg2 <Thank you! I couldn't have defeated %name3% without your help.>
+		Msg3 <No, that's why \SPR %7% broke up with me. I appreciate your help, \PC . Maybe someday I'll be able to return the favor.>
+		Msg%id%01 <You might think that \PERSONA &EnemyNPC is a simple mercenary, but you'd be wrong. Actually \SPR &EnemyNPC uses conflict as a tool for personal growth; \SPR &EnemyNPC seeks perfection in all things.>
+		Msg%id%02 <You learned from \ChatNPC that \PERSONA &EnemyNPC seeks perfection through combat.>
+		Prompt1 <No problem. I was hoping you could tell me about %name7%.>
+		Prompt2 <Is that why you broke up with \OPR %7% ?>
+
+
+		Persona 3
+		% E3 will speak with the PC at the beginning of combat. If the PC has learned the secret, it's
+		% possible through a series of skill rolls to cause E3 to flee without firing a shot.
+		special <UNLISTED>
+		% V1 = One time only counter
+		greeting <if= v1 0 else GoThemeInfo V= 1 1 EndChat Say 1 AddChat 1 AddChat 2 AddChat 3>
+		*GoThemeInfo <*THEME_EXPO&Enemy NA>
+		result1 <Goto GoThemeInfo>
+		result2 <Goto GoThemeInfo>
+		result3 <EndChat Say 2 AddChat 4 AddChat 5 AddChat 6>
+		result4 <EndChat Say 3 AddChat 7 AddChat 8>
+		result5 <Goto result4>
+		result6 <Goto GoThemeInfo>
+		result7 <ifConversation SkillTar StoryDL else GoR7Fail EndCHat Say 4 Print 5 StoryNote 6 Retreat 2 FreezeNPC %3% PCEnemy %3%  L= 1 1   P= %id%04 1 ForceChat %2%>
+		GoR7Fail <EndCHat Say 7>
+		result8 <Goto GoThemeInfo>
+		Msg1 <\PC , I should have expected to see you here. I suppose you plan on defending %name2%?>
+		Msg2 <What do you mean by that!? I... I'm just protecting %name7%'s interests.>
+		Msg3 <What do you know about love!? What do you know about anything!? I'm doing this because it's what I have to do...>
+		Msg4 <You... you're right. I'll leave here today, but know this- I won't forgive you, and %name7% will be mine!>
+		Msg5 <%name3% leaves the area.>
+		Msg6 <You talked %name3% into leaving %name2% alone.>
+		Msg7 <You're wrong! I'll prove that you're wrong! Neither you nor %name2% can stop our love!>
+		Prompt1 <That's right. That's just the kind of pilot I am.>
+		Prompt2 <I'm more interested in defeating you.>
+		Prompt3 <Does %name7% know about your broken heart?>
+		CPrompt3 <if# p%id%03 0 Accept>
+		Prompt4 <Pathetic. You think loving %name7% gives you a license to kill?>
+		CPrompt4 <ifIntimidation SkillTar StoryDL Accept>
+		Prompt5 <%name7% doesn't even know about this, does \SPR %7% ?>
+		CPrompt5 <ifInsight SkillTar StoryDL Accept>
+		Prompt6 <Well then, I'm going to protect %name2%. Let's fight.>
+		Prompt7 <Killing %name2% won't make \OPR %7% love you.>
+		Prompt8 <I can see it's useless to even try talking with you.>
+
+
+		MetaScene 5 2
+		% This is where the PC will be able to try defending E2 from E3. Succeed, and
+		% E3 will tell the PC some things about the enemy. Fail, and, well... you fail.
+		MapWidth 50
+		MapHeight 50
+
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+
+		Start <if= L2 0 L= 2 1   L= 1 0   Alert 1 Monologue %2% 2 ForceChat %3% CancelSubPlot %plotid2% CancelSubPlot %plotid3%  SetDebriefing %id%11>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1   Goto GoLose>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   ifG T3 0 else GoLose  P= %id%04 1 History 4 ForceChat %2%>
+		GoLose <Alert 3 StoryNote 3 AddRenown -1  Trigger0 .%id%_%plotid%_GoLoss LoseSubPlot %plotid% ifNPCOK %3% PCEnemy %3%>
+		end <SetEncounterInactive %5%>
+
+		Msg1 <You find %name3% about to attack %name2%.>
+		Msg2 <Help! I'm being attacked!>
+		Msg3 <You failed to protect %name2% from %name3%.>
+		Msg4 <You defeated %name3%.>
+
+		sub
+			team 1
+			SetEnemy 2
+			SetAlly 3
+			ParaX 5
+			ParaY 5
+
+			team 2
+			SetEnemy 1 3
+			% Team 2 is the enemy side. If the PC earned the Decimation advantage, it will consist
+			% only of E3; otherwise it's E3 and a bunch of mecha. Ouch.
+			Deploy <if= PlotStatus %plotid% %id% if= p%id%02 0   SetSelfFaction &EnemyFac   WMecha 2 StoryDL 100>
+			ParaX 25
+			ParaY 25
+
+			team 3
+			SetEnemy 2
+			SetAlly 1
+			ParaX 45
+			ParaY 45
+		end
+
+	end
+	inv
+		stc CORE-ACTIVATABLE
+		name <%name2% and %name3%>
+
+		Secret
+		Msg <%name3% hates %name2% because \SPR %3% was secretly in love with %name7%.>
+	end
+
+

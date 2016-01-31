@@ -1,0 +1,58 @@
+Gerwalk 3
+name <Dora>
+desig <HL-401>
+sdl_sprite <ger_dora.png>
+sdl_portrait <item_dora.png>
+desc <This industrial mecha is most commonly used in orbital construction and to load cargo on space liners.>
+type <Space>
+factions <MAQUI COMET PRIVA HOELL MUGLE PDASS CRIHN FCOMS RISHI BOHEM REDMA>
+Legality -20
+
+ROLE_COMET <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_HOELL <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_MUGLE <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+
+
+sub
+torso
+armor 2
+	sub
+		CPit
+		Mount
+		name <Body Mount>
+		inv
+			BeamGun 3
+			name <Utility Laser>
+			range 4
+			Acc 1
+		end
+		Sensor 3
+		SpaceFlight 3
+	end
+
+arm
+name <Right Arm>
+size 1
+armor 1
+	sub
+		Hand
+	end
+
+arm
+name <Left Arm>
+size 1
+armor 1
+	sub
+		Hand
+
+	end
+
+storage
+size 1
+name <Thrust Pod>
+armor 2
+	sub
+		SpaceFlight 4
+	end
+end
+

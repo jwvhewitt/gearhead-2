@@ -1,0 +1,260 @@
+%%
+%%  Subplots needed by various core story events. These are plots which are
+%%  spawned by the core story, but which are not part of the core story
+%%  themselves.
+%%
+
+%%
+%%  *CSE_DEF5_Occupation  Content
+%%
+%% Some military force or another is occupying a city. Help the military to
+%% achieve their objective for an IronDefense merit badge, or resolve the
+%% situation peacefully for a MoralHighGround merit badge.
+%%
+%% The mood should already be deployed, and the commander should be placed
+%% somewhere accessible.
+%%
+%%  PARAM1: The occupying faction
+%%  PARAM2: The enemy faction
+%%  PARAM3: The place being occupied
+%%  PARAM4: The occupation commander
+%%  PARAM5: The prevailing mood, to be terminated with the plot
+%%  PARAM6: The scene where E4 is set up
+%%
+
+
+Content
+	name <Peacekeepers vs Pirates>
+	desc <Occupiers want pirate out, Pirate wants evil industrialist out, Evil Industrialist just wants money.>
+	requires <*CSE_DEF5_Occupation (2:REDMA|2:CRIHN|2:BOHEM)>
+
+	% E1: The occupying faction
+	% E2: The enemy faction
+	% E3: The place being occupied
+	% E4: The occupation commander
+	% E5: The prevailing mood, to be terminated with the plot
+	% E6: Peacekeeper HQ
+	% E7: E4's assistant, to handle the beefgate
+	% E8: The outdoor scene where the pirate is
+	% E9: The Pirate
+	% E10: The Pirate's encounter
+	% E11: A corporate faction for the industrialist
+	% E12: A local public scene
+	% E13: The crooked corpo
+	% E14: The secret that activates the Criminal Investigation subplot
+	% E15: a bodyguard for E4
+	% E16: another bodyguard for E4
+	Element7 <Prefab>
+	Place7 <6 (Guards) sd ally>
+	Element8 <Scene Environs !Near 3>
+	Element9 <Prefab>
+	Place9 <10 (Pirates) sd>
+	Element10 <Prefab>
+	Place10 <8>
+	Element11 <Faction (COMET|HOELL)>
+	Element12 <Scene Building Public !Near 3 !Okay 11>
+	Element13 <Prefab>
+	Place13 <12 (Citizens) pass>
+	Element14 <Prefab>
+	Element15 <Prefab>
+	Place15 <6 (Guards) sd ally>
+	Element16 <Prefab>
+	Place16 <6 (Guards) sd ally>
+
+	% P%id%01 = E9 has been defeated ( 1 = in fight, -1 = voluntarily )
+	% P%id%02 = Have made deal with E9 to remove E13
+	% P%id%03 = Initialization Counter
+	% P%id%04 = E13 has been arrested
+
+	%% FAIL CONDITIONS:
+	%% - E4 dies
+	end <ifNPCDead %4%  SetMoodTimeLimit %5% 86400  EndPlot>
+
+	update <if= P%id%03 0 P= %id%03 1 NPCLevel %9% %threat% NPCLevel %4% 79 SetNPCFaction %9% %2% SetNPCFaction %7% %1%>
+
+	%% Upon learning the secret, activate SubPlot3.
+	.%id2%_%plotid2%_GoLearnSecret <SetPlotStatus %plotid3% %id3%  PMemo %plotid3% %id%02>
+
+	%% Upon destroying the factory, become an enemy of E11
+	.%id4%_%plotid4%_GoWin <Alert %id%01  PCFEnemy %11%  AddLawful -10>
+
+	Msg%id%01 <You have destroyed %name13%'s factory for %name9%.>
+	Msg%id%02_1 <You heard that the trouble in %name3% is a result of %name13% mistreating \PPR %13% workers.>
+	CMsg%id%02_1 <ifNPCOK %13% Accept>
+	Msg%id%02_2 <You heard that the trouble in %name3% is a result of %name11% mistreating its workers.>
+	CMsg%id%02_2 <ifNPCDead %13% Accept>
+
+	% SubPlot1 is the beefgate, activated by E4
+	% SubPlot2 is the secret about the pirates, also activated by E4
+	% SubPlot3 is the crooked corpo, activated by SubPlot2
+	% SubPlot4 is the destroy factory task, activated by E9
+	SubPlot1 <*:ReconBeefgate 7 8 10 2>
+	SubPlot2 <*:LearnSecretAboutNPC&CommonKnowledge 14 13 3>
+	SubPlot3 <*:CriminalInvestigation 13 3>
+	SubPlot4 <*:TASK_DefeatFactory 8>
+
+	sub
+		Persona 4
+		% The peacekeeper commander
+		% v%id%01 = Have given initial spiel.
+		% v%id%02 = Have gotten reward for CriminalInvestigation
+		greeting <if= PlotStatus %plotid% %id% else %pop%  if# v%id%01 0 else .%id%_GoGreet NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03 AddChat %id%04>
+		.%id%_GoGreet <NewChat Say %id%02 AddChat %id%05 AddChat %id%06>
+		*result%id%01 <*GenericMissionReminder>
+		result%id%02 <if= P%id%01 1 else .%id%_GoLeaveVoluntarily ifSubPlotNotWon %plotid3% else .%id%_GoBestEnding if= v%id%02 0 else .%id%_GoBestEnding Goto .%id%_GoSoSoEnding>
+		.%id%_GoBestEnding <NewChat Say %id%03 History %id%04 KillMood %5% SilentMeritBadge NAS_MB_UncompromisingDef PCAlly %4% XPV 100 CashPrize Reward %threat% 200 EndPlot>
+		.%id%_GoSoSoEnding <NewChat Say %id%05 History %id%06 SilentMeritBadge NAS_MB_UncompromisingDef XPV 100 CashPrize Reward %threat% 200 EndPlot>
+		.%id%_GoLeaveVoluntarily <NewChat Say %id%07 History %id%08 SetMoodTimeLimit %5% 86400 SilentMeritBadge NAS_MB_MoralHighGround XPV 100 CashPrize Reward %threat% 200 EndPlot>
+		result%id%03 <NewChat Say %id%09 History %id%10 DeleteNPC %13% CancelSubPlot %plotid3% V= %id%02 1 V= %id%04 1 XPV 100 CashPrize Reward %threat% 100 FacXP+ L5LAW 5 FacXP+ %11% -10 AddChat %id%04>
+		result%id%04 <NewChat Say %id%11 AddChat %id%07 AddChat %id%08 AddChat %id%09>
+		result%id%05 <NewChat Say %id%12  AddChat %id%10 AddChat %id%11>
+		result%id%06 <NewChat Say %id%13  EndPlot>
+		result%id%07 <NewChat Say %id%14 Goto .%id%_GoPirateEnding>
+		.%id%_GoPirateEnding <History %id%15 SetMoodTimeLimit %5% 86400 SilentMeritBadge NAS_MB_MoralHighGround XPV 100 CashPrize Reward %threat% 150 PCAlly %9% MoveAndPacifyNPC %9% %12% EndPlot>
+		result%id%08 <NewChat Say %id%16 Goto .%id%_GoPirateEnding>
+		result%id%09 <Goto result%id%01>
+		result%id%10 <NewChat Say %id%17 History %id%18 PMemo %plotid% %id%19 SetPlotStatus %plotid1% %id1% SetPlotStatus %plotid2% %id2% V= %id%01 1>
+		result%id%11 <Goto result%id%06>
+		Msg%id%01 <Hello, \PC . Do you have anything to report?>
+		Msg%id%02 <You're that pilot from earlier, aren't you? How would you like to help us finish up this mission? The sooner %name1% leave, the happier everyone will be.>
+		Msg%id%03 <Good job! Now I feel certain that peace will return to %name3%. We'll be able to move %name1% out soon.>
+		Msg%id%04 <You defeated %name9%, bringing peace to %name3%.>
+		Msg%id%05 <Thanks. Even though %name9% is gone, it doesn't seem like there's going to be peace here anytime soon. I guess the people of %name3% are going to have to get used to %name1%.>
+		Msg%id%06 <You defeated %name9%.>
+		Msg%id%07 <I don't know how you did it, but thanks. Now I feel certain that peace will return to %name3%. We'll be able to move %name1% out soon.>
+		Msg%id%08 <You convinced %name9% to leave town.>
+		Msg%id%09_1 <That's not good... we have enough problems here just with the pirates. I'll turn %name13% and the evidence you uncovered over to L5Law. Maybe with \OPR %13% out of the way things will begin to settle down.>
+		CMsg%id%09_1 <ifNPCOK %13% Accept>
+		Msg%id%09_2 <That's not good... we have enough problems here just with the pirates. Maybe with %name13% out of the way things will begin to settle down.>
+		CMsg%id%09_2 <ifNPCDead %13% Accept>
+		Msg%id%10 <You revealed %name13%'s crimes to %name4%.>
+		Msg%id%11 <What makes you think \SPR %9% can be trusted? %name13%'s crimes might have been a convenient excuse for piracy, but there'll always be another target.>
+		Msg%id%12 <We're here on peacekeeping duty. A pirate captain by the name of %name9% has been attacking %name11%'s holdings in the area; I've been tasked with getting the violence under control and bringing \OPR %9% to justice.>
+		Msg%id%13 <This could be a very long campaign...>
+		Msg%id%14 <I guess you're right... it's my mandate to end the attacks, and if they end after this we've got no further business hanging around. We'll move out soon.>
+		Msg%id%15 <You convinced %name4% to end the occupation.>
+		Msg%id%16 <I've heard as much, but honor doesn't always have a whole lot to do with it... If you're willing to speak up for \OPR %9% , though, that's something I can trust. We'll move out as soon as the current patrol ends.>
+		Msg%id%17 <%name7% is the one in charge of finding %name9%'s base. Good luck, and keep me up to date on your progress.>
+		Msg%id%18 <You agreed to help %name3%'s peacekeeping mission.>
+		Msg%id%19 <%name4% told you that %name1% are in %name3% on a peacekeeping mission. %name7% has been tasked with finding the pirate captain %name9%.>
+		Prompt%id%01 <Nothing right now, no.>
+		Prompt%id%02 <%name9% has been defeated.>
+		CPrompt%id%02 <if# P%id%01 0 Accept>
+		Prompt%id%03 <%name13% has broken the law.>
+		CPrompt%id%03 <ifSubPlotWon %plotid3% Accept>
+		Prompt%id%04 <With %name13% gone, %name9% won't be a problem.>
+		CPrompt%id%04 <if# v%id%02 0 if# P%id%02 0  if= P%id%01 0  Accept>
+		Prompt%id%05 <Alright, tell me what's going on.>
+		Prompt%id%06 <I'd rather not get involved.>
+		Prompt%id%07 <That's a matter for %name3% to decide.>
+		CPrompt%id%07 <ifG PCLaw %threat% Accept>
+		Prompt%id%08 <%name9% is an honorable pilot, as are you.>
+		CPrompt%id%08 <ifG PCHeroism %threat% Accept>
+		Prompt%id%09 <You're probably right. I'll be back later.>
+		Prompt%id%10 <I'll see what I can do.>
+		Prompt%id%11 <Sorry, I want no part of this.>
+
+		Persona 9
+		% The pirate captain
+		special <UNLISTED NOESCAPE>
+		greeting <if= PlotStatus %plotid% %id% else %pop%  if= L2 0 else %pop%  if= P%id%02 0 else .%id%_GoMakeADeal EndChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+		.%id%_GoMakeADeal <EndChat Say %id%04 AddChat %id%04 AddChat %id%08 AddChat %id%09 AddChat %id%10>
+		.%id%_GoStartCombat <L= 2 1>
+		*result%id%01 <*THEME_EXPO&Enemy .%id%_GoStartCombat>
+		result%id%02 <EndChat Say %id%02 AddChat %id%04 AddChat %id%05>
+		result%id%03 <EndChat Say %id%03 AddChat %id%04 AddChat %id%06 AddChat %id%07>
+		result%id%04 <EndChat Say %id%05  P= %id%01 -1  AddReact d30  Retreat 1>
+		result%id%05 <EndChat Say %id%06 AddChat %id%04 AddChat %id%06 AddChat %id%07>
+		result%id%06 <EndChat Say %id%07  SetPlotStatus %plotid4% %id4%  PMemo %plotid4% %id%11  P= %id%02 1  Retreat 1>
+		result%id%07 <EndChat Say %id%08  Goto .%id%_GoStartCombat>
+		result%id%08 <EndChat Say %id%09  CashPrize Reward %threat% 150  P= %id%01 -1  Retreat 1>
+		result%id%09 <EndChat Say %id%10  Retreat 1>
+		result%id%10 <Goto result%id%01>
+		Msg%id%01 <So you're the one they sent to get rid of me, eh? I won't abandon %name3% to any foreign invaders, no matter what they call themselves!>
+		Msg%id%02 <First you come to steal our stuff, then you start shooting the place up when we resist, and now you want to talk!? If I wasn't a pirate myself I'd think you spinner-borns were daft in the head.>
+		Msg%id%03 <The problem in %name3% is %name11%. Since %name13% got put in charge us locals are treated worse than robots... You want a deal? Blow up %name13%'s factory. Then we'll talk.>
+		Msg%id%04 <Back again... Got anything to report?>
+		Msg%id%05 <You don't say? Heh, I guess I have you to thank for this... it doesn't make any sense to stick around fighting %name1% if %name13%'s out of the picture. You can let %name4% know that we're leaving %name3%.>
+		Msg%id%06 <The only violence around here is us fighting back against %name11%. You want to be part of the solution? Go blow up %name13%'s factory. It's time to show the corpos that there's some ash we won't eat.>
+		Msg%id%07 <We'll see. You can find the factory in \EXACT_SCENE %8% . Come back when it's gone.>
+		Msg%id%08 <In the words of the great info-age philosopher Jimmy Ramone, if you ain't part of the solution then you're part of the problem.>
+		Msg%id%09 <Ha, that'll show 'em! With %name13% out of the picture, we better lay low for a while... Here's your reward, \PC .>
+		Msg%id%10 <Come let me know when there's been a change.>
+		Msg%id%11 <You told %name9% that you'd destroy %name13%'s factory.>
+		Prompt%id%01 <That's big talk for a small time crook.>
+		Prompt%id%02 <Wait, I just want to talk...>
+		CPrompt%id%02 <ifSubPlotWon %plotid2% Accept>
+		Prompt%id%03 <Actually, I'm here to make a deal.>
+		CPrompt%id%03 <ifPCCriminal Accept>
+		Prompt%id%04 <%name13% won't bother you any more.>
+		CPrompt%id%04 <ifNPCDead %13% Accept>
+		Prompt%id%05 <How can we put an end to this violence?>
+		CPrompt%id%05 <ifNPCOK %13% Accept>
+		Prompt%id%06 <I'll do it.>
+		Prompt%id%07 <I don't want to blow up a factory...>
+		Prompt%id%08 <%name13%'s factory is toast.>
+		CPrompt%id%08 <ifSubPlotWon %plotid4% Accept>
+		Prompt%id%09 <I'll be back later.>
+		Prompt%id%10 <Sorry, but I told %name4% I'd defeat you.>
+
+
+		MetaScene 10 2
+		% The pirate captain home scene.
+		% L1 = Combat has finished
+		% L2 = Combat has started
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0   Alert 1   ForceChat %9%>
+
+		nu1 <if= T1 0   Return   if# L2 0   LoseRenown>
+		nu2 <if= T2 0            if= V1 0 V= 1 1   Alert 2   XPV 100  AddRenown 1   SALVAGE   P= %id%01 1>
+		end <if# P%id%01 0 else GoCheckE9Dead   SetEncounterInactive %10%>
+		GoCheckE9Dead <ifNPCDead %9%  Alert 3  P= %id%01 1  SetEncounterInactive %10%>
+
+		Msg1 <You face a large force of pirates led by Captain %name9%.>
+		Msg2 <You have defeated %name9% and \PPR %9% entire fleet.>
+		Msg3 <With %name9% dead the pirates disperse, never again to trouble %name3%.>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Pirates>
+			SetEnemy 1
+			Deploy <if= PlotStatus %plotid% %id% SetSelfFaction %2%   WMecha 2 %threat% 150>
+			ParaX 45
+			ParaY 45
+		end
+	end
+	inv
+		NPC Mecha Pilot
+		chardesc Young
+		bio <A young recruit whose first assignment was peacekeeping at %name3%.>
+		update <if= V1 0 SetSelfFaction %1% V= 1 1>
+
+		NPC Pirate
+		chardesc Heroic
+		bio <A pirate captain from %name3%.>
+
+		STC CORE-ACTIVATABLE
+		name <%name9%'s lance>
+
+		NPC Corporate Executive
+		chardesc Villainous
+		update <if= V1 0 SetSelfFaction %11% V= 1 1>
+
+		Secret
+		Msg <%name9% is loved in %name3% because \SPR %9% stands up to %name13%.>
+
+		NPC Mecha Pilot
+		update <if= V1 0 SetSelfFaction %1% V= 1 1>
+
+		NPC Mecha Pilot
+		update <if= V1 0 SetSelfFaction %1% V= 1 1>
+	end
+
+

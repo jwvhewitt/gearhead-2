@@ -1,0 +1,4 @@
+Quest: Selecting Team For Use in Blank Scene Bug
+  Characters are placed into blank scenes before the metascene stuff is, so
+  the usual team selection mechanism will give bad results. Solution? Explicitly
+  give team numbers to prefab gears that you're planning to place in blank scenes.

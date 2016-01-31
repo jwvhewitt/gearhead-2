@@ -1,0 +1,369 @@
+% ArenaScript Value Macros
+V <GrabSource        GNAtt NAG_ScriptVar ?>
+L <GrabCurrentScene  GNAtt NAG_ScriptVar ?>
+G <GrabAdventure     GNAtt NAG_ScriptVar ?>
+P <GrabPlot          GNAtt NAG_ScriptVar ?>
+E <GrabPlot          GNAtt NAG_ElementID ?>
+S <GrabStory         GNAtt NAG_ScriptVar ?>
+N <GrabStory         GNAtt NAG_ElementID ?>
+M <GrabCurrentScene  GNAtt NAG_ElementID ?>
+MoodE <GrabController ControllerID  GNAtt NAG_ElementID ?>
+ControllerID <GrabPlot GNAtt NAG_Narrative NAS_ControllerID>
+RandomTheme <d12>	% returns a random mecha theme
+PartyScore <GrabCurrentScene GNAtt NAG_Narrative NAS_PartyPoints>
+ScenePartyScore <GrabScene ? GNAtt NAG_Narrative NAS_PartyPoints>
+CitizensTeam <GrabTeamName Citizens GS>
+EnemiesTeam <GrabTeamName Enemies GS>
+EnemyNPCTeam <GrabTeamName EnemyNPC GS>
+NumDatePoints <GrabSource GNAtt NAG_Narrative NAS_DatePoints>
+na <0>  %% "Not Applicable", passed as PFrags and RanCon optional param
+PCHomeTown <GrabPCPilot GNatt NAG_Narrative NAS_HomeTownID>
+ERootScene <GrabScene EScene ? GrabRootScene GS>
+RootSceneID <GrabCurrentScene GrabRootScene GS>
+ParentSceneID <GrabScene ? GrabParent GS>
+SCENEFAC <GrabScene ?  GNAtt NAG_Personal NAS_FactionID>
+PCHomeTownFAC <GrabScene PCHomeTown  GNAtt NAG_Personal NAS_FactionID>
+ROOTSCENEFAC <GrabCurrentScene GrabRootScene  GNAtt NAG_Personal NAS_FactionID>
+CURRENTSCENEFAC <GrabCurrentScene  GNAtt NAG_Personal NAS_FactionID>
+GUARDTEAM <GrabTeamName GUARDS GS>
+NPCVar   <GrabNPC ?       GNAtt NAG_ScriptVar ?>
+NPCScene <GrabNPC ? GScene>
+ChatNPCScene <GrabChatNPC GScene>
+ItemScene <GrabItem ? GScene>
+ItemVar  <GrabItem ?      GNAtt NAG_ScriptVar ?>
+SceneVar <GrabScene ?       GNAtt NAG_ScriptVar ?>
+LOCALFACTION <GrabCurrentScene   GNAtt NAG_Personal NAS_FactionID>
+Destination <StatVal 4>
+Visibility <StatVal 5>
+PCFac <GrabAdventure  GNAtt NAG_Personal NAS_FactionID>
+OldFac <GrabAdventure  GNAtt NAG_Personal NAS_OldFaction>
+PCDamage <GrabPCPilot GNAtt NAG_Damage NAS_StrucDamage>
+NPCFac <GrabNPC ?  GNAtt NAG_Personal NAS_FactionID>
+ChatNPCFac <GrabChatNPC  GNAtt NAG_Personal NAS_FactionID>
+ChatNPCTeam <GrabChatNPC  GNAtt NAG_Location NAS_Team>
+ChatNPCTheme <GrabChatNPC  GNAtt NAG_Personal NAS_MechaTheme>
+SelfTeam <GrabSource GNAtt NAG_Location NAS_Team>
+PCRep <GrabPCPilot GNAtt NAG_CharDescription - ?>
+PCHeroism <GrabPCPilot GNAtt NAG_CharDescription -1>
+ChatNPCHeroism <GrabChatNPC GNAtt NAG_CharDescription -1>
+NPCHeroism <GrabNPC ? GNAtt NAG_CharDescription -1>
+NPCLaw <GrabNPC ? GNAtt NAG_CharDescription -2>
+PCLaw <GrabPCPilot GNAtt NAG_CharDescription -2>
+PCEasygoingness <GrabPCPilot GNAtt NAG_CharDescription -4>
+PCCheerfulness <GrabPCPilot GNAtt NAG_CharDescription -5>
+PCRenown <GrabPCPilot GNAtt NAG_CharDescription -6>
+NPCRenown <GrabNPC ? GNAtt NAG_CharDescription -6>
+ChatNPCRenown <GrabChatNPC GNAtt NAG_CharDescription -6>
+PCX <GrabPC GNAtt NAG_Location NAS_X>
+PCY <GrabPC GNAtt NAG_Location NAS_Y>
+PCHunger <GrabPCPilot GNatt NAG_Condition NAS_Hunger>
+PC$ <GrabPCPilot GNAtt NAG_Experience NAS_Credits>
+PCUID <GrabPC GNAtt NAG_EpisodeData NAS_UID>
+TruePCSkillVal <GrabPCPilot GNAtt NAG_Skill ?>
+NPCSkill <GrabNPC ? GNAtt NAG_Skill ?>
+PCGENDER <GrabPCPilot GNAtt 3 0>
+NPCGENDER <GrabNPC ? GNAtt 3 0>
+PCSTATVAL <GrabPCPilot GStat ?>
+PCREFLEXES <GrabPCPilot GStat 1>
+PCBODY <GrabPCPilot GStat 2>
+PCSPEED <GrabPCPilot GStat 3>
+PCPERCEPTION <GrabPCPilot GStat 4>
+PCCRAFT <GrabPCPilot GStat 5>
+PCEGO <GrabPCPilot GStat 6>
+PCKNOWLEDGE <GrabPCPilot GStat 7>
+PCCHARM <GrabPCPilot GStat 8>
+NPCEGO <GrabNPC ? GStat 6>
+CHATNPCEGO <GrabChatNPC GStat 6>
+NPCCHARM <GrabNPC ? GStat 8>
+PCDAGE <GrabPCPilot GNAtt NAG_CharDescription NAS_DAge>
+CHATNPCDAGE <GrabChatNPC GNAtt NAG_CharDescription NAS_DAge>
+NPCDAGE <GrabNPC ? GNAtt NAG_CharDescription NAS_DAge>
+CHATNPCPERCEPTION <GrabChatNPC GStat 4>
+ChatNPCRelationship <GrabChatNPC GNAtt NAG_Relationship 0>
+NPCRelationship <GrabNPC ? GNAtt NAG_Relationship 0>
+FacRelationship <GrabFaction ? GNatt NAG_Relationship 0>
+FacFortune <GrabFaction ? GNAtt NAG_Narrative NAS_Fortune>
+NPCUID <GrabNPC ? GNAtt NAG_EpisodeData NAS_UID>
+NPCX <GrabNPC ? GrabRoot GNAtt NAG_Location NAS_X>
+NPCY <GrabNPC ? GrabRoot GNAtt NAG_Location NAS_Y>
+LocalX <GrabLocal ? GNAtt NAG_Location NAS_X>
+LocalY <GrabLocal ? GNAtt NAG_Location NAS_Y>
+EncounterX <GrabEntrance ? GNAtt NAG_Location NAS_X>
+EncounterY <GrabEntrance ? GNAtt NAG_Location NAS_Y>
+ArenaPay <GrabCurrentScene GNAtt 20 2>
+ArenaRenown <GrabAdventure GNAtt NAG_CharDescription -6>
+SELFX <GrabSource GNAtt NAG_Location NAS_X>
+SELFY <GrabSource GNAtt NAG_Location NAS_Y>
+SELFUID <GrabSource GNAtt NAG_EpisodeData NAS_UID>
+SELFNID <GrabSource GNAtt NAG_Narrative NAS_NID>
+SelfS <GrabSource GS>
+SelfFac <GrabSource GNAtt NAG_Personal NAS_FactionID>
+RReact <GrabPC GNatt NAG_ReactionScore ?>
+NPCRep <GrabNPC ? GNAtt NAG_CharDescription - ?>
+NPCLaw <GrabNPC ? GNAtt NAG_CharDescription -2>
+ChatNPCLaw <GrabChatNPC GNAtt NAG_CharDescription -2>
+ChatNPCRep <GrabChatNPC GNAtt NAG_CharDescription - ?>
+ChatNPCRenown <GrabChatNPC GNAtt NAG_CharDescription -6>
+ChatNPCID <GrabChatNPC GNAtt NAG_Personal NAS_CID>
+DesigNPCID <GrabDesig ? GNAtt NAG_Personal NAS_CID>
+PayRate <GrabPlot    GNAtt 20 1>
+QuestStatus <GrabAdventure GNatt NAG_PlotStatus ?>
+PlotStatus <GrabAdventure GNAtt NAG_PlotStatus ?>
+NAG_ElementID <-9>
+StatVal <GrabSource GStat ?>
+MetaPass <GrabSource GStat STAT_Pass>
+STAT_Reflexes   <1>
+STAT_Body       <2>
+STAT_Speed      <3>
+STAT_Perception <4>
+STAT_Craft      <5>
+STAT_Ego        <6>
+STAT_Knowledge  <7>
+STAT_Charm      <8>
+NAS_MechaGunnery       <1>
+NAS_MechaFighting      <2>
+NAS_MechaPiloting      <3>
+NAS_RangedCombat       <4>
+NAS_CloseCombat        <5>
+NAS_Dodge              <6>
+NAS_Vitality           <7>
+NAS_Athletics          <8>
+NAS_Concentration      <9>
+NAS_Awareness         <10>
+NAS_Initiative        <11>
+NAS_Survival          <12>
+NAS_Repair            <13>
+NAS_Medicine          <14>
+NAS_ElectronicWarfare <15>
+NAS_SpotWeakness      <16>
+NAS_Conversation      <17>
+NAS_Shopping          <18>
+NAS_Stealth           <19>
+NAS_Intimidation      <20>
+NAS_Science           <21>
+NAS_MechaEngineering  <22>
+NAS_CodeBreaking      <23>
+NAS_Mysticism         <24>
+NAS_Performance       <25>
+NAS_Toughness         <26>
+NAS_Insight           <27>
+NAS_Taunt             <28>
+NAS_KungFu          <1>
+NAS_HapKiDo         <2>
+NAS_Anatomist       <3>
+NAS_HardAsNails     <4>
+NAS_StuntDriving    <5>
+NAS_Polymath        <6>
+NAS_Bishounen       <7>
+NAS_BornToFly       <8>
+NAS_SureFooted      <9>
+NAS_RoadHog        <10>
+NAS_TechVulture    <11>
+NAS_Idealist       <12>
+NAS_BusinessSense  <13>
+NAS_JackOfAll      <14>
+NAS_Rage           <15>
+NAS_Ninjitsu       <16>
+NAS_HullDown       <17>
+NAS_GateCrasher    <18>
+NAS_Sniper         <19>
+NAS_Innovation     <20>
+NAS_Camaraderie    <21>
+NAS_Entourage      <22>
+NAS_Robotics       <23>
+NAS_Acrobatics     <24>
+NAS_DominateAnimal <25>
+NAS_PickPockets    <26>
+NAS_Extropian      <27>
+CodeBreaking <SkRoll NAS_CodeBreaking STAT_Craft>
+Conversation <SkRoll NAS_Conversation STAT_Charm>
+Intimidation <SkRoll NAS_Intimidation STAT_Ego>
+Awareness <SkRoll NAS_Awareness STAT_Perception>
+Survival <SkRoll NAS_Survival STAT_Craft>
+Stealth <SkRoll NAS_Stealth STAT_Speed>
+Taunt <SkRoll NAS_Taunt STAT_Charm>
+Shopping <SkRoll NAS_Shopping STAT_Charm>
+FacVar <GrabFaction ? GNAtt NAG_ScriptVar ?>
+PCFacXP <GrabFaction PCFac GNAtt NAG_Experience NAS_FacXP>
+PCFacLevel <GrabAdventure GNAtt NAG_Experience NAS_FacLevel>
+PCRewardLevel <GrabAdventure GNAtt NAG_Experience NAS_RewardLevel>
+FacXPNeeded <FXPNeeded PCFacLevel>
+DynaRenown <GrabCurrentScene GNAtt 21 4>
+DynaStrength <GrabCurrentScene GNAtt 21 5>
+WildMap <1>
+CityMap <-6>
+CaveMap <-2>
+ArenaMap <-15>
+AsteroidMap <-30>
+RoughMap <11>
+#VictimsRecovered <GrabCurrentScene GNatt NAG_Narrative NAS_VictimsRecovered>
+NPCTEAM <GrabNPC ? GNAtt NAG_LOCATION nAS_Team>
+NAG_XXRan <-7>
+NAS_EpisodeNumber <6>
+NAS_DramaticChoice <8>
+NAS_XXChar_Motivation <101>
+NAS_XXChar_Attitude <102>
+NAS_XXFac_Plan <103>
+CurrentDramaticGoal <GrabStory GNAtt NAG_XXRan NAS_DramaticChoice>
+NAS_DebriefingMsg <11>
+XXRDebriefingMsg <GrabPlot GNAtt NAG_XXRan NAS_DebriefingMsg>
+NAG_Completed_DC <-25>
+DEF_4 <4>
+DEF_5 <5>
+OFF_4 <9>
+OFF_5 <10>
+XXR_M_Mercenary <1>
+XXR_M_Professional <2>
+XXR_M_Competitor <7>
+XXR_M_GreaterGood <3>
+XXR_M_Seeker <4>
+XXR_M_Revenge <5>
+XXR_M_Change <6>
+XXR_M_Nihilism <8>
+XXR_A_NeverMet <11>
+XXR_A_IsJunior <1>
+XXR_A_IsSenior <2>
+XXR_A_Antagonistic <12>
+XXR_A_Thankful <10>
+XXR_A_HasSecret <3>
+XXR_A_IsEqual <4>
+XXR_A_EnviesPC <5>
+XXR_A_Disrespect <14>
+XXR_A_Admire <13>
+XXR_A_PCHates <6>
+XXR_A_HatesPC <7>
+XXR_A_MutualHate <8>
+XXR_A_Obsession <9>
+XXR_P_Subterfuge     <1>
+XXR_P_CovertAttack   <2>
+XXR_P_PublicImage    <3>
+XXR_P_PublicAttack   <4>
+XXR_P_SeekArtifact   <5>
+XXR_P_Gathering      <6>
+XXR_P_WeaponProgram  <7>
+XXR_P_War            <8>
+XXR_P_Inactive       <9>
+StoryDL <GrabStory GNAtt NAG_Narrative NAS_DifficultyLevel>
+EpisodeNumber <GrabStory GNAtt NAG_XXRan NAS_EpisodeNumber>
+STAT_Pass <3>
+STAT_Lock <6>
+STAT_MetaVisibility <5>
+STAT_MapGenerator <1>
+STAT_WMonster <2>
+NAG_ParaLocation <-6>
+NAS_OriginalHome <255>
+NAG_Location <-1>
+NAG_ScriptVar <0>
+NAG_CharDescription <3>
+NAS_DAge <1>
+NAS_CharType <2>
+NAV_TempLancemate <2>
+NAS_IsCombatant <3>
+NAG_Experience <4>
+NAG_Personal <5>
+NAS_OldFaction <14>
+NAS_NumConversation <8>
+NAS_MechaTheme <12>
+NAS_OptMax <6>
+NAS_OptMin <7>
+NAG_ReactionScore <6>
+NAG_Relationship <10>
+NAS_Credits <2>
+NAS_TotalXP <0>
+NAS_FacXP <3>
+NAS_FacLevel <4>
+NAS_RewardLevel <5>
+NAS_CID <0>
+NAS_FactionID <2>
+NAS_X <0>
+NAS_Y <1>
+NAS_Team <4>
+NAV_Friend <1>
+NAV_ArchAlly <2>
+NAV_Family <3>
+NAV_Lover <4>
+NAV_ArchEnemy <-1>
+NAV_DefPlayerTeam <1>
+NAV_DefEnemyTeam <2>
+NAV_LancemateTeam <-3>
+NAG_EpisodeData <-4>
+NAS_SurrenderStatus <14>
+NAV_NowSurrendered <1>
+NAS_EncVis <16>
+NAS_UID <0>
+NAS_Target <1>
+NAS_Orders <2>
+NAG_Action <-2>
+NAS_CallTime <4>
+NAG_Narrative <7>
+NAS_HomeTownID <11>
+NAS_ControllerID <29>
+NAS_EncounterActive <34>
+NAS_Fortune <36>
+NAS_LancemateTraining_Spent <39>
+NAG_PlotStatus <-22>
+NAS_NID <0>
+NAS_VictimsRecovered <201>
+NAS_ReturnTo <18>
+NAS_DifficultyLevel <26>
+NAG_Condition <9>
+NAS_StaminaDown <0>
+NAS_Hunger <2>
+NAG_SideReaction <-24>
+NAG_Skill <1>
+NAG_StatusEffect <14>
+NAS_Poison <1>
+NAS_Stoned <4>
+NAS_Sickness <20>
+NAG_FacReward <17>
+NAS_DatePoints <14>
+NAS_PartyPoints <17>
+TERRAIN_THRESHOLD <15>
+ArenaState <GrabScene ? GNAtt NAG_ArenaData NAS_ArenaState>
+ArenaRecharge <GrabScene ? GNAtt NAG_ArenaData NAS_ArenaRecharge>
+SelfArenaState <GrabCurrentScene GNAtt NAG_ArenaData NAS_ArenaState>
+SelfArenaThreat <GrabCurrentScene GNAtt NAG_ArenaData NAS_ArenaThreat>
+SelfArenaForces <GrabCurrentScene GNAtt NAG_ArenaData NAS_ArenaForces>
+SelfChallengerID <GrabCurrentScene GNAtt NAG_ArenaData NAS_ChallengerID>
+SelfChallengerHome <GrabCurrentScene GNAtt NAG_ArenaData NAS_ChallengerHome>
+ArenaWins <GrabScene ? GNAtt NAG_ArenaData NAS_ArenaWins>
+ArenaThreat <GrabScene ? GNAtt NAG_ArenaData NAS_ArenaThreat>
+NAG_ArenaData <-18>
+NAS_ArenaState <1>
+NAV_AS_Vacant <0>
+NAV_AS_Ready <1>
+NAV_AS_Battle <2>
+NAV_AS_Win <3>
+NAV_AS_Loss <4>
+NAS_ArenaWins <2>
+NAS_ArenaThreat <4>
+NAS_ArenaForces <5>
+NAS_ChallengerID <6>
+NAS_ChallengerHome <7>
+NAS_ArenaRecharge <8>
+NAG_Damage <12>
+NAS_StrucDamage <0>
+NAG_MeritBadge  <28>
+NAS_MB_PopStar           <1>
+NAS_MB_ArenaChampion     <2>
+NAS_MB_Lancemate2        <3>
+NAS_MB_Lancemate3        <4>
+NAS_MB_MoralHighGround   <5>
+NAS_MB_UncompromisingDef <6>
+MAQUI <1>
+COMET <2>
+SILKN <3>
+AEGIS <4>
+PDASS <5>
+PRIVA <6>
+HOELL <7>
+CRIHN <8>
+L5LAW <9>
+FCOMS <10>
+RISHI <11>
+BOHEM <12>
+MUGLE <13>
+ROCKE <14>
+REDMA <15>
+AEGSF <16>
+

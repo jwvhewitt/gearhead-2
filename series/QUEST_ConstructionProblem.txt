@@ -1,0 +1,677 @@
+%%
+%% *:Q_ConstructionProblem Content
+%%
+%% There's a problem at a construction site.
+%%
+%% Param1: The boss NPC who sent the PC to find the problem
+%% Param2: Construction Site Scene
+%%
+
+Content
+	name <Rowdy Foreman>
+	requires <*:Q_ConstructionProblem>
+	desc <The foreman is refusing to work; the PC has to put a stop to it.>
+
+	% E1 is the boss
+	% E2 is the construction site
+	% E3 is the on-site manager
+	% E4 is the rowdy foreman
+	% E5 is the mecha scene where a fight will take place
+	Element3 <Prefab>
+	Place3 <2 (Citizens) Pass Ally>
+	Element4 <Prefab>
+	Place4 <2 (Citizens) Pass Ally>
+	Element5 <QuestScene>
+	Place5 <2>
+	Element6 <Prefab>
+	Place6 </>
+
+	%% P%id%01 = Have accepted challenge
+
+	%% FAIL CONDITIONS:
+	%% - E3 dies
+
+	end <ifNPCDead %3% LoseSubPlot %plotid%>
+
+	sub
+		Persona 3
+		greeting <if= PlotStatus %plotid% %id% else GoCheckFirst if= P%id%01 1 else GoExplain if= ArenaState %5% NAV_AS_Win else GoWaiting NewChat Say 2 SetPlotStatus %plotid% -1 ResetArena %5% AddChat 1>
+		GoWaiting <NewChat Say 4>
+		GoCheckFirst <if= PlotStatus %plotid% 0 else GoChat NewChat Say 1>
+		GoChat <NewChat SayAnything>
+		GoExplain <NewChat Say 5 AddChat 2>
+		result1 <NewChat Say 6>
+		result2 <ifNPCOK %4% else GoTrivialWin NewChat Say 7 QMemo %plotid% 9 P= %id%01 1 AddChat 3 AddChat 4>
+		GoTrivialWin <NewChat Say 8  SetPlotStatus %plotid% -1>
+		result3 <NewChat Say 10>
+		result4 <AddSociable -d6 NewChat Say 11 AddChat 5>
+		result5 <NewChat Say 12>
+		Msg1 <If %name1% didn't send you, you've got no business being in here.>
+		Msg2 <Now that %name4% has been dealt with, our work can continue.>
+		Msg4 <Let me know when you've convinced %name4% to go back to work.>
+		Msg5 <Ah, you must have been sent here by %name1%. My name's %name3%; I'm the manager of this project.>
+		Msg6 <Not much, no... We can't fire someone with senority, but as long as they're gone we can always promote someone else.>
+		Msg7 <The trouble is %name4%; \SPR %4% got into a big argument with me about how this project should be done and now \SPR %4% 's stopped working. None of the other workers will do anything either because %name4% has senority.>
+		Msg8 <We were having some personnel problems, but those are all cleared up now.>
+		Msg9 <%name3% revealed that %name1%'s project is being delayed by the foreman, %name4%.>
+		Msg10 <You can try, but I doubt it'll do any good... %name4% never listens to anyone.>
+		Msg11 <We can't. As I said, %name4% has senority. According to company rules \SPR %4% can't be fired.>
+		Msg12 <Look, just go and talk with \OPR %4% yourself. Maybe \SPR %4% 'll listen to you.>
+		Prompt1 <Doesn't it matter that %name4% is dead?>
+		CPrompt1 <ifNPCDead %4% Accept>
+		Prompt2 <Could you tell me what the problem is?>
+		Prompt3 <I'll have a talk with \OPR %4% .>
+		Prompt4 <Why don't you just fire \OPR %4% ?>
+		Prompt5 <Then why don't you quit?>
+
+		Persona 4
+		% V1 = Have been challenged to mecha duel/have completed quarry arena
+		% V2 = History message counter
+		Greeting <ifSubPlotWon %plotid% else GoCheckQ1State if= V1 1 else GoChat Goto GoOpenArena>
+		GoOpenArena <if= ArenaState %5% NAV_AS_Win else GoCheckQ2Loss Goto GoArenaWin>
+		GoCheckQ2Loss <if= ArenaState %5% NAV_AS_Loss else GoCheckQ2Ready Goto GoArenaLoss>
+		GoCheckQ2Ready <if= ArenaState %5% NAV_AS_Vacant else GoArenaFull ifG ComTime ArenaRecharge %5% else GoArenaBusy Goto GoOfferFight>
+		GoArenaWin <if= ArenaWins %5% 5 else GoMinorWin Goto GoBigWin>
+		*GoMinorWin <*BasicArenaWin %5% GoResetArena>
+		*GoArenaLoss <*BasicArenaLoss %5% GoResetArena>
+		GoResetArena <ResetArena %5%>
+		*GoArenaFull <*ArenaIsFull %5%>
+		*GoArenaBusy <*ArenaIsBusy %5%>
+		GoBigWin <NewChat Say 15 History 16 V= 1 2 XPV 200 CashPrize Reward ArenaThreat %5% 500 GiveItem %6% Goto GoResetArena>
+		GoOfferFight <NewChat Say 13 AddChat 10 AddChat 11 if= V2 0 V= 2 1 History 14>
+		GoCheckQ1State <if= PlotStatus %plotid% %id% else GoNoMatch if= P%id%01 1 else GoNotYet  if= ArenaState %5% NAV_AS_Battle else GoCheckStatus Goto GoTrashTalk>
+		*GoTrashTalk <*ArenaChallenge GoThemeInfo>
+		*GoThemeInfo <*THEME_EXPO&Enemy NA>
+		GoCheckStatus <if= ArenaState %5% NAV_AS_Ready else GoCheckWin Goto GoWaiting>
+		*GoWaiting <*WaitingForDuel %5%>
+		GoCheckWin <if= ArenaState %5% NAV_AS_Win else GoCheckChallenge NewChat Say 2>
+		GoCheckChallenge <ResetArena %5% ifG ComTime ArenaRecharge %5% else GoLater if= V1 1 else GoFirstTime NewChat Say 3 AddChat 1 AddChat 2>
+		GoFirstTime <NewChat Say 5 AddChat 3 AddChat 4>
+		*GoLater <*ChallengeMeLater>
+		GoNotYet <NewChat Say 4>
+		GoNoMatch <if= PlotStatus %plotid% 0 else GoChat NewChat Say 1>
+		GoChat <NewChat SayAnything>
+		GoNoTalk <NewChat Say 6 AddChat 5>
+		GoStartCombat <SetChallengerID %5% %4% SetChallengerHome %5% %2% MoveNPC %4% %5% PrepArena %5% 0 SetNPCTeam %4% 2>
+		*GoChooseBattle <*StartArenaBattle %5% GoStartFight>
+		GoStartFight <SavePos PrepArena %5% 70 Jump %5%>
+		*GoRefuseBattle <*RefuseArenaFight %5%>
+		*result1 <*MeetMeAtArena %5% GoStartCombat>
+		*result2 <*RejectChallenge>
+		result3 <NewChat Say 7 AddChat 6 AddChat 5>
+		result4 <NewChat Say 8 AddChat 7 AddChat 5>
+		result5 <NewChat Say 9 AddChat 8 AddChat 9>
+		result6 <ifIntimidation HardSkillTar %threat% else GoNoTalk NewChat Say 10 XPV 100 SetArenaState %5% NAV_AS_Win>
+		result7 <ifConversation HardSkillTar %threat% else GoNoTalk NewChat Say 10 XPV 100 SetArenaState %5% NAV_AS_Win>
+		result8 <V= 1 1   SetArenaThreat %5% %threat%   QMemo %plotid% 11 Goto result1>
+		result9 <NewChat Say 12>
+		result10 <Goto GoChooseBattle>
+		result11 <Goto GoRefuseBattle>
+		Msg1 <We've got a lot of work to do today. Personally, I'm trying to avoid it.>
+		Msg2 <You beat me... Go tell %name3% that everybody will get back to work.>
+		Msg3 <So, you think you can take me?>
+		Msg4 <If you've got something to talk about, you better do that with %name3% . I'm not gonna have any part in it.>
+		Msg5 <%name3% sent you to talk, didn't \OPR %3% ?>
+		Msg6 <There's no way I'm going to take orders from a pencil-necked paper-pusher like %name3%, who doesn't even know the first thing about construction.>
+		Msg7 <%name3% comes down here from \PPR %3% fancy school and starts telling us to do all kinds of things that make no sense. I'm not going to do that, and I won't subject my men to it either.>
+		Msg8 <Delaying a project isn't something I want to do, but I just don't believe in %name3%. It'd be a bigger waste of time to go along with \OPR %3% and then learn that everything's falling to bits.>
+		Msg9 <If you're so interested in this, why don't you take me up on a little wager? There's a big pit downstairs called %name5%. If you can beat me in mecha combat down there, I'll get back to work.>
+		Msg10 <Argh... you're right. Go tell %name3% that me and the boys will get back to work.>
+		Msg11 <You agreed to duel %name4% beneath the construction site as part of a wager to force \OPR %4% to go back to work.>
+		Msg12 <Suit yourself. I can stay here all day.>
+		Msg13 <Some of the guys are having a little match down below. How'd you like to join in?>
+		Msg14 <%name4% offered to let you join the mecha fights at %name2%.>
+		Msg15 <I knew you were a tough pilot when you kicked my arse six ways to Saturn... The tournament's over now, and you're our new champion. We don't have a trophy but you can take this hammer. When the men see it they'll know what it means.>
+		Msg16 <You were crowned champion of %name5%.>
+		Prompt1 <I know I can.>
+		Prompt2 <Not right now, maybe later.>
+		Prompt3 <Why aren't you working?>
+		Prompt4 <You should stop wasting time.>
+		Prompt5 <Is there anything I can do to change your mind?>
+		Prompt6 <You better accept it or this project will fail.>
+		Prompt7 <Sometimes you have to try new things.>
+		Prompt8 <Sounds good. Let's do it.>
+		Prompt9 <You've got to be joking.>
+		Prompt10 <I'd love to.>
+		CPrompt10 <ifChatNPCInPlay ifG PCMeks 0 Accept>
+		Prompt11 <Maybe some other time.>
+
+		MetaScene 3
+		sub
+			Room
+			minimap <......#.#...2...#.#......>
+			sub
+				Trapdoor
+				name <To Quarry>
+				desig <ENTRANCE %5%>
+				MiniMapComponent 2
+			end
+		end
+
+		MetaScene 5 2
+		name <#'s Quarry>
+		BoxMap
+		RockyTiles
+		MapWidth 17
+		MapHeight 12
+		terrain <INSIDE>
+		special <SHOWALL SOLO ARENA NOPILLAGE>
+		start <if= SelfArenaState NAV_AS_Ready else GoCheckBattle          Alert 1   SetSelfArenaState NAV_AS_Battle SetSelfArenaRecharge if# SelfChallengerID 0 ForceChat SelfChallengerID>
+		GoCheckBattle <if= SelfArenaState NAV_AS_Battle else GoBoringStart Print 2>
+		GoBoringStart <Print 3 Return>
+		nu1 <if= T1 0 Return   if= SelfArenaState NAV_AS_Battle SetSelfArenaState NAV_AS_Loss  Alert 5 Print 5  LoseRenown  Goto GoEndBattle>
+		nu2 <if= T2 0 Return   if= SelfArenaState NAV_AS_Battle SetSelfArenaState NAV_AS_Win   Alert 6 Print 6  AddSelfArenaWin  AddSelfArenaThreat d10  XPV 100 FacXP+ 5 1 AddRenown 1 ifNPCOK SelfChallengerID else GoEndBattle ForceChat SelfChallengerID Goto GoEndBattle>
+		GoEndBattle <ifNPCOK SelfChallengerID MoveAndPacifyNPC SelfChallengerID SelfChallengerHome ClearSelfChallengerID>
+		Msg1 <You enter the quarry. Prepare to battle.>
+		Msg2 <The arena battle rages on.>
+		Msg3 <You enter the quarry. There's nothing interesting here.>
+		Msg5 <You have lost the battle.>
+		Msg6 <You have won the battle.>
+		sub
+			Team 1
+			name <Player Team>
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			Team 2
+			name <Enemies>
+			SetEnemy 1
+			Deploy <if= SelfArenaState NAV_AS_Ready ifG SelfArenaForces 0 WMecha 2 SelfArenaThreat SelfArenaForces>
+			ParaX 12
+			ParaY 7
+		end
+	end
+	inv
+		NPC Construction Worker
+		job <Manager>
+
+		NPC Mecha Pilot
+		job <Foreman>
+		job_desig <LABOR>
+		chardesc Passionate Melancholy
+
+		Melee 23
+		Name <Rock Hammer>
+		desc <A massive hammer made of stone.>
+		type <EXTEND STUN BRUTAL>
+		category <WEAPON MELEE>
+		SDL_PORTRAIT <item_warhammer.png>
+		Acc 1
+		mass -10
+		fudge 35000
+		Speed 3
+	end
+
+Content
+	name <Stupid Fungus>
+	requires <*:Q_ConstructionProblem (Spinner|Asteroid)>
+	% The construction site has been infested with spaceworms, and the boss hasn't
+	% provided the funds for extermination.
+
+	% E1 is the boss
+	% E2 is the construction site
+	% E3 is the foreman
+	% E4 is the extermination scene
+	element3 <Prefab>
+	place3 <2 (Citizens) Pass Ally>
+	element4 <QuestScene>
+	Place4 <2>
+
+	%
+	% P%id%01 = Argument Counter
+	%           Have told about problem (1), have secured funding (2)
+	% P%id%02 = Have method to stop fungi from coming back
+	%
+
+	%% FAIL CONDITIONS:
+	%% - E1 dies
+	end <ifNPCDead %1% LoseSubPlot %plotid%>
+
+	sub
+		% Both the boss and the foreman get speaking roles this time around- if the
+		% PC returns to speak with the boss, he may be able to convince him to pay for
+		% a sensible de-fung'ing of the construction site.
+		Persona 1
+		% V%id%01 = Have argued the point already
+		% If the PC has spoken to character 3, then he can talk to E1 and maybe get money.
+		greeting <if= PlotStatus %plotid% %id% else %pop% if= P%id%01 1 else %pop% Goto .%id%_GoArgue>
+		.%id%_GoArgue <if= v%id%01 0 else .%id%_GoArgue2 NewChat Say %id%01 V= %id%01 1 AddChat %id%01>
+		.%id%_GoArgue2 <NewChat Say %id%02 AddChat %id%02>
+		result%id%01 <NewChat Say %id%03 AddChat %id%03>
+		result%id%02 <NewChat Say %id%04 AddChat %id%04 AddChat %id%05 AddChat %id%06 AddChat %id%07 AddChat %id%08>
+		result%id%03 <Goto result%id%02>
+		result%id%04 <NewChat Say %id%05>
+		result%id%05 <NewChat Say %id%06 P= %id%01 2>
+		result%id%06 <NewChat Say %id%07 P= %id%01 2>
+		result%id%07 <NewChat Say %id%06 P= %id%01 2>
+		result%id%08 <NewChat Say %id%08 P= %id%01 2>
+		Msg%id%01 <Have you found out from %name3% why construction has been delayed?>
+		Msg%id%02 <I'm still waiting for %name3% to finish construction.>
+		Msg%id%03 <That shouldn't be a big problem. I already provided funds for an exterminator.>
+		Msg%id%04 <This project is over budget already. There must be a better way... You're a cavalier, couldn't you just go kill all the fungus?>
+		Msg%id%05 <You do that.>
+		Msg%id%06 <You're probably right... some added expense at this point will save us headaches down the road. Tell %name3% that I'll arrange for a more thorough extermination.>
+		Msg%id%07 <Seriously? In that case, I guess there's nothing I can do... Tell %name3% that I'll provide extra funds for extermination.>
+		Msg%id%08 <Hmmm. Your numbers are sound... Tell %name3% that I'll provide extra funds for extermination.>
+		Prompt%id%01 <There's a fungus infestation at the site.>
+		Prompt%id%02 <%name3%'s still waiting for the exterminator.>
+		Prompt%id%03 <Apparently, the funds weren't enough.>
+		Prompt%id%04 <I'll see what I can do.>
+		Prompt%id%05 <Really, I think we need a professional.>
+		CPrompt%id%05 <ifConversation HardSkillTar %threat% Accept>
+		Prompt%id%06 <Without proper treatment they'll be back in a week.>
+		CPrompt%id%06 <ifScience HardSkillTar %threat% Accept>
+		Prompt%id%07 <It's been tried and failed. Now who's wasting money?>
+		CPrompt%id%07 <ifIntimidation HardSkillTar %threat% Accept>
+		Prompt%id%08 <By my calculations, you'll save money by doing this right.>
+		CPrompt%id%08 <ifShoppingKN HardSkillTar %threat% Accept>
+
+		Persona 3
+		% V%id%01 = Have discussed problem
+		% V%id%03 = Have thanked PC for cleaning basement
+		rumor%id% <%name3% has been having problems with %name1%'s construction project.>
+		greeting <ifSubPlotWon %plotid% else GoCheckProgress if= V%id%03 0 else GoChat NewChat Say 14 AddReact d10 V= %id%03 1>
+		GoCheckProgress <if= PlotStatus %plotid% %id% else GoChat  if= v%id%01 1 else GoFirstTime NewChat Say 10 AddChat 9 AddChat 10>
+		GoFirstTime <NewChat Say 1 AddChat 1 AddChat 2>
+		*GoChat <*MISC_CHATTER>
+		result1 <NewChat Say 2 V= %id%01 1 P= %id%01 1 QMemo %plotid% 6 AddChat 3 AddChat 4>
+		result2 <AddCheerful d8 Goto result1>
+		result3 <NewChat Say 3 AddChat 5 AddChat 6 AddChat 7 AddChat 8>
+		result4 <NewChat Say 4>
+		result5 <NewChat Say 5  P= %id%02 1>
+		result6 <NewChat Say 7>
+		result7 <NewChat Say 8  P= %id%02 1>
+		result8 <NewChat Say 9>
+		result9 <NewChat Say 11>
+		result10 <NewChat Say 12 XPV 100 WinSubPlot %plotid%>
+		Msg1 <Yes, were you sent here by %name1%? It's about time that something was done...>
+		Msg2 <Construction has halted due to a fungus infestation. It's not even safe for the workbots to go there. %name1% hired an exterminator once, but now the fungi are back and stronger than ever.>
+		Msg3 <I don't think that's a good idea. We already tried that, remember? Pretty soon the fungus came back... What we really need is some kind of an expert.>
+		Msg4 <I think that would be best. Let me know what happens.>
+		Msg5 <Could it be as simple as that? You seem to know what you're talking about, so if you can make it work go for it.>
+		Msg6 <%name3% revealed that %name1%'s construction site is infested with space fungus.>
+		Msg7 <Fine. Do whatever you think is best... Come back and let me know when we can get back to work.>
+		Msg8 <Really? In that case, you should be qualified to handle the extermination. Come back and let me know when you're satisfied that the construction zone is safe.>
+		Msg9 <I know I am. If only %name1% were as reasonable as you...>
+		Msg10 <We will be able to begin construction as soon as the fungi are cleared out. Do you have any progress to report?>
+		Msg11 <Well, come see me when you do.>
+		Msg12 <Fantastic. You can tell %name1% that construction will resume as soon as possible.>
+		Msg14 <Thanks for clearing out the basement. It seems like this time the fungus are gonna stay gone.>
+		Prompt1 <Hold on, what's the matter?>
+		Prompt2 <I'm here. Everything will be fine now.>
+		Prompt3 <Why don't I just kill the fungi for you?>
+		Prompt4 <I'll talk to %name1% about the exterminator.>
+		Prompt5 <It's okay. After I kill them, wash the area to get rid of the spores.>
+		CPrompt5 <ifSurvivalKN SkillTar %threat% Accept>
+		Prompt6 <We don't need no stinking expert!>
+		Prompt7 <Just spray with sulfonanilide after I've killed the big ones.>
+		CPrompt7 <ifScience SkillTar %threat% Accept>
+		Prompt8 <You're probably right.>
+		Prompt9 <Nothing yet.>
+		Prompt10 <%name1% has agreed to provide extra funds.>
+		CPrompt10 <if= P%id%01 2 Accept>
+
+		MetaScene 3
+		sub
+			room
+			minimap <......###..#2#........1..>
+			special <SHAREDPALETTE>
+			desig <HOME>
+			sub
+				Elevator
+				name <Sub-Basement>
+				desig <Entrance %4%>
+				MiniMapComponent 2
+				use <if= V1 1 else GoLocked Print 1 Exit Destination>
+				Update <if= PlotStatus %plotid% %id% V= 1 1>
+				GoLocked <Print 2>
+				Msg2 <There's nothing interesting in here.>
+			end
+		end
+
+		MetaScene 4
+		%% The fungus on this level is being produced by 4 spore-spewers.
+		%% Until the PC destroys them, the fungus will keep spreading.
+		name <%name3%'s Basement>
+		type <Basement Private>
+		terrain <GROUND>
+		special <NOEXIT>
+
+		MonkeyMap
+		MapWidth 35
+		MapHeight 35
+		RockyTiles
+
+		content <Fill Sub *STORAGE_X na>
+
+		%% Upon entering the map, if there are any spore-spewers left then the random monster
+		%% value will be set for Team 2. If the player outlined to the foreman a plan for
+		%% getting rid of the fungus (P%id%02) or if the spore-spewers have been destroyed,
+		%% then the final wave will be readied.
+
+		% L1 = Initialization counter, reset upon exit
+		% L2 = Initial number of spore-spewers
+		% L3 = Number of spore-spewer monster upgrades
+		% L4 = Final conflict started
+		% L5 = Victory counter
+
+		start <Print 1 if= PlotStatus %plotid% %id% if= L1 0 L= 1 1 if# P%id%02 0 else GoCheckSpores Retreat 3 Goto GoFinalConfrontation>
+		GoCheckSpores <ifG T3 0 else GoFinalConfrontation  MonsterSet 2 %threat% MonsterUp 2 * 5 L3  L= 2 T3>
+		GoFinalConfrontation <Alert 3  L= 4 1  MonsterOff 2  WMonster 2 %threat% 100>
+		end <L= 1 0>
+
+		% When all the fungus have been destroyed, check to see if this is the final confrontation.
+		% If so, congratulations! You've won the mission. If not, nothing happens.
+		nu2 <if= T2 0 if# L4 0 if= L5 0 Alert 2 XPV 100 L= 5 1 WinSubPlot %plotid%>
+		% When a spore-spewer has been destroyed, check to see if the final conflict has started.
+		% If not, check to make sure that one has actually been destroyed. Reset the spore-spewer
+		% counter and add one to the monster upgrades. If this is the last spore-spewer start the
+		% final confrontation.
+		nu3 <if= L4 0  ifG L2 T3  L+ 3 1 L= 2 T3  MonsterUp 2 5  if= T3 0 Goto GoFinalConfrontation>
+
+		Msg1 <You enter the basement.>
+		Msg2 <That seems to be the last of the fungi.>
+		Msg3 <Just clear out the last of the fungi, and you'll be done.>
+
+		sub
+			Team 1
+			SetEnemy 2 3
+
+			Team 2
+			name <Monsters>
+			type <Fungus Vermin>
+			SetEnemy 1
+			SetAlly 3
+
+			Team 3
+			name <Spore-Spewers>
+			SetEnemy 1
+			SetAlly 2
+
+			Room
+			sub
+				StairsUp
+				Destination -1
+			end
+
+			Room
+			minimap <............1............>
+			inv
+				STC MUSHROOMPATCH-1
+				name <Spore-Spewer>
+				sdl_colors <36 140 46 36 140 46 121 109 150>
+				update <ifSubPlotWon %plotid% DeleteSelf>
+				SetTeam 3
+				MiniMapComponent 1
+			end
+
+			Room
+			minimap <............1............>
+			inv
+				STC MUSHROOMPATCH-1
+				name <Spore-Spewer>
+				sdl_colors <36 140 46 36 140 46 121 109 150>
+				update <ifSubPlotWon %plotid% DeleteSelf>
+				SetTeam 3
+				MiniMapComponent 1
+			end
+
+			Room
+			minimap <............1............>
+			inv
+				STC MUSHROOMPATCH-1
+				name <Spore-Spewer>
+				sdl_colors <36 140 46 36 140 46 121 109 150>
+				update <ifSubPlotWon %plotid% DeleteSelf>
+				SetTeam 3
+				MiniMapComponent 1
+			end
+
+			Room
+			minimap <............1............>
+			inv
+				STC MUSHROOMPATCH-1
+				name <Spore-Spewer>
+				sdl_colors <36 140 46 36 140 46 121 109 150>
+				update <ifSubPlotWon %plotid% DeleteSelf>
+				SetTeam 3
+				MiniMapComponent 1
+			end
+		end
+	end
+	inv
+		NPC Construction Worker
+		job <Foreman>
+	end
+
+Content
+	name <Supplies Went Missing>
+	requires <*:Q_ConstructionProblem>
+	% The trouble with construction is that someone stole the materials!
+
+	% E1 is the boss
+	% E2 is the construction site
+	% E3 is the foreman
+	element3 <Prefab>
+	Place3 <2 (Citizens) Pass Ally>
+
+	% P%id%01 = Memo update
+
+	end <ifNPCDead %3% LoseSubPlot %plotid%>
+
+	% The update will check SP1 to set the memo message
+	update <if= P%id%01 0 ifSubPlotWon %plotid1% else .%id%_GoCheckLoss   P= %id%01 1 QMemo %plotid% %id%01>
+	.%id%_GoCheckLoss <ifSubPlotLost %plotid1%                            P= %id%01 1 QMemo %plotid% %id%02>
+
+	Msg%id%01 <You have recovered %name3%'s building supplies. You should go see \OPR %3% in %name2%.>
+	Msg%id%02 <You have lost %name3%'s building supplies. You should go see \OPR %3% in %name2%.>
+
+	SubPlot1 <*:Q_StolenMaterials&ConstructionSite 3>
+
+	sub
+		Persona 3
+		% V1 = Have revealed problem
+		greeting <if= PlotStatus %plotid% %id% else GoChat if= V1 1 else GoFirstTime NewChat Say 3 AddChat 2 AddChat 5>
+		GoFirstTime <NewChat Say 1 AddChat 1>
+		*GoChat <*MISC_CHATTER>
+		result1 <NewChat V= 1 1 Say 2 AddChat 3 AddChat 4 SetPlotStatus %plotid1% %id1% QMemo %plotid% 4>
+		result2 <NewChat Say 5 SetPlotStatus %plotid% -1 AddReact d10>
+		result3 <NewChat Say 6>
+		result4 <NewChat Say 7 AddCheerful -d10>
+		result5 <NewChat Say 8 SetPlotStatus %plotid% -2>
+		Msg1 <Yes, may I help you? We're very busy here right now.>
+		Msg2 <I wish I could tell you that things are proceeding well, but they aren't. The trouble is, we've been losing building materials.>
+		Msg3 <Have you found anything about the missing building materials?>
+		Msg4 <%name3% revealed that materials are being stolen from %name1%'s construction site.>
+		Msg5 <Fantastic! We'll be able to get back to work soon... You should report to %name1% .>
+		Msg6 <Ask around and see if you can uncover any clues. I'll help you in whatever way I can.>
+		Msg7 <If you can't find the materials and bring them back, then it'll be both of us who have failed, won't it? Search around and see what you can find out. I'll keep working on the project.>
+		Msg8 <The our project is lost... report back to %name1%.>
+		Prompt1 <I was send to hurry up the construction.>
+		Prompt1_1 <%name1% sent me to check your progress.>
+		Prompt2 <I've solved your materials problem.>
+		CPrompt2 <if= PlotStatus %plotid1% -1 Accept>
+		Prompt3 <I could find out what happened to them.>
+		Prompt4 <%name1% won't be pleased at your failure.>
+		Prompt5 <I think you better give up on those supplies...>
+		CPrompt5 <if= PlotStatus %plotid1% -2 Accept>
+	end
+	inv
+		NPC Construction Worker
+		job <Foreman>
+	end
+
+Content
+	name <Robot Rampage>
+	requires <*:Q_ConstructionProblem>
+	desc <The construction robots have malfunctioned; the PC can repair them or destroy them.>
+
+	% E1 is the boss
+	% E2 is the construction site
+	% E3 is the robotics specialist
+	% E4 is the basement full of robots
+	Element3 <Prefab>
+	Place3 <2 (Citizens) Pass Ally>
+
+	Element4 <QuestScene>
+	Place4 <2>
+
+	sub
+		Persona 3
+		% This character just explains how to win the component; other than that he's
+		% pretty useless. If the PC wins without destroying all the robots, then this
+		% person will become a friend.
+		rumor%id% <%name3% is in charge of the robots for %name1%'s project.>
+		% V1 = Have given victory speech
+		% V2 = Have given first introduction
+		greeting <if= PlotStatus %plotid% -1 else GoCheckQuest if= V1 0 else GoChat V= 1 1 if= SceneVar %4% 1 0 else GoBadWin PCFriend %3% NewChat Say 7>
+		GoBadWin <NewChat Say 8>
+		GoCheckQuest <if= PlotStatus %plotid% %id% else GoChat if= V2 1 else GoFirstTime NewChat Say 5 AddChat 3 AddChat 4>
+		*GoFirstTime <*SomeoneSentPCToTalk %1% GoExplain>
+		*GoChat <*MISC_CHATTER>
+		GoExplain <V= 2 1 NewChat Say 1 QMemo %plotid% 2 AddChat 1 AddChat 2>
+		Result1 <NewChat Say 3>
+		Result2 <NewChat Say 4>
+		Result3 <Goto GoExplain>
+		Result4 <NewChat Say 6>
+		Msg1 <The construction robots on the lower level have malfunctioned. They haven't gone aggressive, exactly, it's just that they no longer seem to recognize the difference between human beings and building materials. It's pretty dangerous down there.>
+		Msg2 <%name3% told you that the construction robots at %name1%'s project have malfunctioned, making life dangerous for the workers.>
+		Msg3 <Not really. The control station here stopped working, so we can't even shut them down remotely. Personally I suspect industrial sabotage, though I shudder to think that one of our employees could be working for someone else.>
+		Msg4 <Destroying the robots is probably the only way we're going to get construction back on track. Please try to leave enough wreckage so we can figure out what went wrong.>
+		Msg5 <Do you have anything to report?>
+		Msg6 <Please do your best.>
+		Msg7 <The problem has been fixed, and we didn't even need to destroy all the robots. Thanks to you we'll be back on schedule in no time! You should go tell %name1% about what you've accomplished.>
+		Msg8 <The problem has been solved, so I guess it's time for us to get to work... and without any robots to do the heavy bits, either. You should go tell %name1% that the project is back on track.>
+		Prompt1 <Any idea what happened?>
+		Prompt2 <Don't worry, I can deal with them.>
+		Prompt3 <Could you remind me what's going on again?>
+		Prompt4 <Not yet. I'll be back when I do.>
+
+		MetaScene 3
+		sub
+			room
+			desig <HOME>
+			minimap <......1.2..#3#..###......>
+			special <SHAREDPALETTE>
+			inv
+				STC COMPUTER-1
+				% Using this computer may repair the robots.
+				MiniMapComponent 2
+				PDir 6
+				use <if= PlotStatus %plotid% %id% else GoQuestFinished Print 1>
+				GoQuestFinished <Print 2>
+				GoWin  <Print 3 WinSubPlot %plotid% XPV 100>
+				GoLose <Print 5>
+				GoNothing <Print 2>
+				% Code Breaking and Science allow difficult skill rolls to fix the robots
+				% Repair allows a relatively easy roll to fix the robots
+				Clue_REPAIR        <if= PlotStatus %plotid% %id% else GoNothing  ifRepair        SkillTar %threat% else GoLose      Goto GoWin>
+				Clue_SCIENCE       <if= PlotStatus %plotid% %id% else GoNothing  ifScience       HardSkillTar %threat% else GoLose  Goto GoWin>
+				Clue_CODEBREAKING  <if= PlotStatus %plotid% %id% else GoNothing  ifCodeBreaking  HardSkillTar %threat% else GoLose  Goto GoWin>
+				Msg1 <This computer controls the robots for the construction site. The lights on its display are blinking wildly.>
+				Msg2 <This computer controls the robots for the construction site.>
+				Msg3 <You repair the computer and deactivate the malfunctioning robots.>
+				Msg5 <You can't repair this computer at your current skill level.>
+
+				StairsDown
+				desig <ENTRANCE %4%>
+				MiniMapComponent 3
+			end
+		end
+
+		MetaScene 4
+		name <%name3%'s Basement>
+		type <Basement Private>
+		terrain <GROUND>
+		special <NOEXIT>
+
+		BoxMap
+		MapWidth 17
+		MapHeight 17
+		RockyTiles
+
+		NeededCells 3
+		content <Fill Sub *STORAGE_X na>
+
+		% L1 = Robots destroyed counter
+		% L2 = Monster generation counter
+		Start <Print 1 if= L2 0 if= PlotStatus %plotid% %id% L= 2 1 WMonster 2 %threat% 200>
+		nu2 <if= T2 0 if= PlotStatus %plotid% %id% Print 2 XPV 100 SetPlotStatus %plotid% -1  L= 1 1>
+		Msg1 <You enter the robot construction site.>
+		Msg2 <That appears to be the last of the robots.>
+		sub
+			Room
+			sub
+				StairsUp
+				Destination -1
+			end
+
+			Team 1
+			SetEnemy 2
+
+			Team 2
+			name <Enemies>
+			SetEnemy 1
+			type <Robot>
+		end
+	end
+	inv
+		NPC Construction Worker
+		job <Robot Wrangler>
+		Science 5
+	end
+
+
+%%
+%%  *:Q_DEBUG
+%%
+%%  This quest will load a debug construction problem and activate it.
+%%
+
+Content
+	name <Debugging Frame>
+	requires <*:Q_DEBUG>
+
+	% E1 is the person who will be giving the mission.
+	% E2 is the CavClub
+	% E3 is the urban scene
+	% E4 is the constuction site
+	Element1 <NewNPC 0 0>
+	Place1 <2 (Citizens) ally pass>
+	Element2 <Scene CavClub>
+	Element3 <Scene Urban>
+	Element4 <QuestScene>
+	Place4 <3>
+
+	% SubPlot1 is the mission.
+	subplot1 <*:Q_DConstructionProblem 1 4>
+
+	sub
+		Persona 1
+		rumor0 <%name1% needs a cavalier for a mission of some kind.>
+		greeting <if= PlotStatus %plotid% %id% else GoCheckFirst if= PlotStatus %plotid1% -1 else GoCheckLoss NewChat Say 1 SetPlotStatus %plotid% -1>
+		GoCheckLoss <if= PlotStatus %plotid1% -2 else GoCheckFirst SetPlotStatus %plotid% -2 Goto GoEndInLoss>
+		*GoEndInLoss <*MissionWasFailure na na na>
+		GoCheckFirst <if= PlotStatus %plotid% 0 else GoChat Goto GoOfferQuest>
+		*GoOfferQuest <*DoYouWantAJob GoStartQuest>
+		GoStartQuest <SetPlotStatus %plotid% %id% SetPlotStatus %plotid1% %id1% EndChat Say 2 Exit %4% SeekGate %3%>
+		GoChat <NewChat SayAnything>
+		Msg1 <I hear that you succeeded. The debugging of the mission is now over.>
+		Msg2 <Return here after solving the construction problem for absolutely nothing.>
+
+		MetaScene 1
+		sub
+			room
+			desig <HOME>
+			minimap <#&&&#&...&&.1.&&...&&&-&&>
+		end
+
+		STC QS_ConstructionSite
+		name <the # Project>
+		entrance <*BUILDING>
+		SetID 4
+	end
+
+
+

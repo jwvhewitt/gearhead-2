@@ -1,0 +1,1149 @@
+%% *:CS_FetchItem Content
+%%		&Stolen		The item was stolen from its rightful place
+%%		&FromEnemy	The item is in the posession of your enemy
+%%		&Emergency	The item must be returned right away
+%%
+%% In this component, the PC will be able to search for and recover a lost item.
+%%
+%% If the item is given in some way other than the PC picking it up, the GET%1%
+%%  trigger must be set.
+%% If the item becomes unrecoverable, this subplot will be lost.
+%%
+%% This is a MAIN COURSE subplot. Favored by: THIEF
+%%
+%%
+%%  Param1: The item to be searched for
+%%
+
+Content
+	name <I Needed the Money>
+	desc <Your enemy is working a side job.>
+	requires <*:CS_FetchItem E:A.jr_ E:M.--- ~E:THEIF ~F:CRIME ~+Gmo>
+	changes <E:M>
+	Size 5
+
+	% E1 is the item that was taken
+	% E2 is an outdoors scene
+	% E3 is a base for the enemy
+	% E4 is the ambush scene
+	% E5 is the enemy NPC
+	Place1 <3>
+	Element2 <Scene Outdoors !Near -7>
+	Element3 <Prefab>
+	Place3 <2>
+	Element4 <Prefab>
+	Place4 <2>
+	Element5 <Grab 1>
+	Place5 <4 (Enemies) SD enemy>
+
+	HINT_%id% <:%id1%>
+
+	%% FAIL CONDITIONS
+	%% - DiscoverNPCHasItem fails
+	%% - E1 is destroyed
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Get item history counter
+
+	update <if= P%id%01 0 P= %id%01 1 SetPlotStatus %plotid1% %id1% NPCLevel %5% StoryDL>
+
+	get%1% <WinSubPlot %plotid% if= P%id%02 0 P= %id%02 1 History %id%01 SetEncounterActive %4%  SetXXRMotivation %5% XXR_M_Mercenary>
+
+	end <ifSubPlotLost %plotid1% else .%id%_GoCheckE1   LoseSubPlot %plotid%>
+	.%id%_GoCheckE1 <ifItemDestroyed %1%   LoseSubPlot %plotid%>
+
+	Msg%id%01 <You recovered the %name1% from %name5%.>
+
+	% SubPlot1 is where the PC learns that the enemy has the item.
+	SubPlot1 <*:CS_DiscoverNPCHasItem 5 1 2 3>
+
+	sub
+		MetaScene 3
+		boxmap
+		MapWidth 13
+		MapHeight 13
+		special <AddExit ShowAll>
+		start <if= L1 0 else GoBeenBefore Alert 1 L= 1 1>
+		GoBeenBefore <Print 2>
+		Msg1 <You enter %name5%'s base... if you can call this decrepit little boxcar a base.>
+		Msg2 <You enter %name5%'s base.>
+
+		MetaScene 4 2
+		% This fight isn't strictly necessary, but if the PC loses or runs
+		% then E5's attitude changes to equal. Also note that there's no
+		% script immunity here- junior enemies just live to be replaced.
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1   Alert 1  ForceChat %5%   History 2>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1   Monologue %5% 3  SetXXRAttitude %5% XXR_A_IsEqual>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   XPV 100  AddRenown 1   SALVAGE   Alert 4>
+		end <SetEncounterInactive %4%>
+
+		Msg1 <You are ambushed by %name5%!>
+		Msg2 <You were ambushed by %name5%.>
+		Msg3 <Not so tough now, are you \PC !?>
+		Msg3_1 <Haha, I win for once! Well, kind of win...>
+		CMsg3_1 <ifNPCHeroic Accept>
+		Msg3_2 <Hah, look at me, master of the battlefield! All who oppose %name5% end up dead, or at the least dismembered! Wait a minute... where's the %name1%?>
+		CMsg3_2 <ifNPCVillainous Accept>
+		Msg4 <You have defeated %name5%.>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			SetEnemy 1
+			Deploy <SetSelfFaction &EnemyFac   WMecha 2 StoryDL 50>
+			ParaX 45
+			ParaY 45
+		end
+
+		Persona 5
+		special <UNLISTED>
+		greeting <EndChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+		result%id%01 <EndChat Say %id%02>
+		result%id%02 <EndChat Say %id%03>
+		result%id%03 <EndChat Say %id%04 AddChat %id%04 AddChat %id%05 AddChat %id%06>
+		result%id%04 <EndChat Say %id%05  SkillXP NAS_Taunt 300>
+		result%id%05 <EndChat Say %id%06  Retreat 2>
+		result%id%06 <EndChat Say %id%07  Cash+ -Reward StoryDL 50  AddReact d30  Retreat 2>
+		Msg%id%01 <Hey, no fair! You just went through my secret base, didn't you \PC ? Well, now you're gonna have to fight me!>
+		Msg%id%02 <Noooo!!! I was counting on that %name1% to pay off my rent this month! Come back here and let me thwomp you...>
+		Msg%id%03 <In your dreams! First I'm gonna thwomp you, then I'm gonna get paid for the %name1%, and then I'm gonna go buy some delicious food! With sauce and everything!>
+		Msg%id%04 <Yeah, I'm going through a bit of a lean period. What do you care?>
+		Msg%id%05 <Oh, that's low... I may not have money but I still have my \CHATNPCMECHA !!!>
+		Msg%id%06 <That's a good point... Alright, you win this time \PC , but next time will be different! Next time!!!>
+		Msg%id%07 <Really!? Wow... with this money, we can afford food! Lots of it! And sauce! Thanks, \PC ...>
+		Prompt%id%01 <No thanks, I already have the %name1%.>
+		Prompt%id%01_1 <Why? I already have the %name1%.>
+		Prompt%id%02 <Alright, I could use the practice.>
+		Prompt%id%02_1 <You never learn, do you %name5%?>
+		Prompt%id%03 <You're pretty desperate for cash, aren't you %name5%?>
+		CPrompt%id%03 <ifInsight SkillTar StoryDL Accept>
+		Prompt%id%04 <I don't. I just wanted to taunt you about it.>
+		Prompt%id%05 <Fight me and you'll have to pay for repairs plus ammo.>
+		Prompt%id%06 <I'll give you $ \VAL Reward StoryDL 50 if you stay out of trouble.>
+		CPrompt%id%06 <ifG React 10 ifPCHeroic ifNPCHeroic ifG PC$ Reward StoryDL 50 Accept>
+	end
+	inv
+		STC CORE-ACTIVATABLE-STATIONARY-DEFENDED
+		name <Hideout>
+
+		STC CORE-MECHAAMBUSH-ACTIVATABLE
+		name <%name5%'s Lance>
+	end
+
+
+Content
+	name <The Mansion of Fetch>
+	desc <The item you're looking for is held by a collector.>
+	requires <*:CS_FetchItem P:-- E:-- (C:THIEF|C:ADVEN|C:LABOR)>
+	changes <E:++ P:++>
+	Size 5
+
+	% E1 is the item that was taken
+	% E2 is an urban scene for the mansion
+	% E3 is the mansion itself
+	% E4 is a local corporate sort
+	% E5 is the faction E4 belongs to
+	% E6 is a container for the item
+	Place1 <6>
+	Element2 <Scene Urban !Near -7>
+	Element3 <Prefab>
+	Place3 <2>
+	Element4 <Character Corporate -NOFAC (Criminal|Villainous) !Near -7>
+	Place4 </>
+	Element5 <Faction Corporate !Comrade 4 !XClude -2 -ArchEnemy>
+	Element6 <Prefab>
+	Place6 <3>
+
+	HINT_%id% <:%id1%>
+
+	%% FAIL CONDITIONS
+	%% - DiscoverNPCHasItem fails
+	%% - E1 is destroyed
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = History message counter
+	% P%id%03 = Peaceful Entry Counter
+
+	update <if= P%id%01 0 P= %id%01 1 SetPlotStatus %plotid1% %id1% SetXXRAttitude %4% XXR_A_IsSenior>
+
+	get%1% <WinSubPlot %plotid% if= P%id%02 0 P= %id%02 1 History %id%01>
+
+	.%id1%_%plotid1%_GoDiscover <SetPlotStatus %plotid2% %id2%>
+	.%id2%_%plotid2%_GoPeacefulEntry <P= %id%03 1>
+
+	end <ifSubPlotLost %plotid1% else .%id%_GoCheckE1   LoseSubPlot %plotid%>
+	.%id%_GoCheckE1 <ifItemDestroyed %1%   LoseSubPlot %plotid%>
+
+	Msg%id%01 <You recovered the %name1% from %name4%.>
+
+	% SubPlot1 is where the PC learns that the corporate character has the item.
+	% SubPlot2 is the free entry task
+	SubPlot1 <*:CS_DiscoverNPCHasItem 4 1 2 3>
+	SubPlot2 <*:CS_PeacefulEntry_NPCBase 3 4>
+
+	sub
+		MetaScene 3
+		type <building basement mansion>
+		mapwidth 35
+		mapheight 35
+		MonkeyMap
+		LockedDoorChance 10
+		SecretDoorChance 10
+		FloorType 16
+		WallType 20
+
+		PalaceParkTiles
+
+		NeededCells 3
+
+		% L1 = Have spoken to E4
+		% L2 = Have set alarm
+
+		start <Print 1  CancelSubPlot %plotid3%  if# P%id%03 0 TeamNeutral 2>
+		end <if# plotstatus %plotid% %id% SetEncounterInactive %2%>
+
+		get%1% <if= L1 0 L= 1 1 Alert 3 ForceChat %4%>
+		PCAttack <ifTeamNotHostile 2 TeamAttack 2 Alert 2>
+
+		Msg1 <You enter %name4%'s mansion.>
+		Msg2 <Suddenly, an alarm goes off!>
+		Msg3 <As you take the %name1%, suddenly a viewscreen turns on. You are addressed by the owner of the mansion.>
+
+		content3 <Some 3 30 Sub *DUNGEON_REWARD>
+
+		sub
+			Team 1
+			SetEnemy 2
+
+			Team 2
+			name <Monster>
+			type <Guard Robot>
+			Deploy <if= V1 0 V= 1 1 MonsterUp 2 StoryDL>
+			SetEnemy 1
+
+			room
+			special <STARTHERE SHAREDPALETTE>
+			minimap <............2............>
+			sub
+				TrapDoor
+				Destination -1
+				MiniMapComponent 2
+				use <Print 1 Return>
+			end
+
+			room
+			special <SHAREDPALETTE>
+			desig <HOME %e6%>
+			minimap <............1............>
+		end
+
+		Persona 4
+		special <NOESCAPE UNLISTED>
+ 		greeting <EndChat Say %id%01 AddChat %id%01 AddChat %id%02>
+		.%id%_GoAcceptOffer <TeamNeutral 2 History %id%05 &SetAllyFac %5% if= PCFac 0 SetPCFac %5%>
+		result%id%01 <EndChat Say %id%02 AddChat %id%03 AddChat %id%04 AddChat %id%05>
+		result%id%02 <EndChat Say %id%03 AddChat %id%03 AddChat %id%04 AddChat %id%05  AddEasygoing d10>
+		result%id%03 <EndChat Say %id%04  Goto .%id%_GoAcceptOffer>
+		result%id%04 <EndChat Say %id%06  AddEasygoing -d10  History %id%07  TeamAttack 2 MonsterUp 2 d10 &SetEnemyNPC %4%>
+		result%id%05 <EndChat Say %id%08 AddChat %id%06 AddChat %id%07>
+		result%id%06 <goto result%id%03>
+		result%id%07 <goto result%id%04>
+		Msg%id%01 <Well done \PC . I didn't expect this %name1% to attract so much attention, but it apparently means quite a lot to you.>
+		Msg%id%01_1 <Amazing. When I obtained this %name1% I didn't think it was particularly important... Judging by your efforts, though, it appears that you think otherwise.>
+		Msg%id%02 <I have no intention of taking it back, all I want is to talk for a while. You know, I could use someone with your determination and skills. Come work for me and this indiscretion will be forgiven.>
+		Msg%id%03 <Don't worry about it. I can tell that you want to make amends for breaking into my home, so I'll go easy on you. Come work for me and all will be forgiven. You can keep the %name1% as kind of a signing bonus.>
+		Msg%id%04 <Very good; welcome to %name5%. I'll contact you later on when there's something I need done.>
+		Msg%id%05 <%name4% let you keep it, in exchange for joining %name5%.>
+		Msg%id%06_1 <How very disappointing. I trust you will understand that this isn't an insult that I can simply forget, no? Until we meet again...>
+		CMsg%id%06_1 <if= 0 &EnemyFac Accept>
+		Msg%id%06_2 <How very disappointing. I trust you understand that this isn't an insult which \FACTION &EnemyFac can simply forget. Until we meet again...>
+		CMsg%id%06_2 <if# 0 &EnemyFac Accept>
+		Msg%id%07 <%name4% swore revenge against you.>
+		Msg%id%08 <\PC , I already have you at my mercy, how could this be a trap? Decide now- would you rather accept my offer, or my wrath?>
+		Prompt%id%01 <If you want it back you'll have to fight me.>
+		Prompt%id%01_1 <That's right, and it's mine now!>
+		Prompt%id%02 <Sorry, I'll just put it back where I found it...>
+		Prompt%id%02_1 <Is this your house? I'm so sorry...>
+		Prompt%id%03 <You're offering me a job? Alright, I accept.>
+		Prompt%id%04 <No deal. My freedom isn't up for trade.>
+		Prompt%id%05 <Sounds good, but how do I know this isn't a trap?>
+		Prompt%id%06 <I accept your offer.>
+		Prompt%id%07 <I'll take my chances, thanks.>
+	end
+	inv
+		STC CORE-ACTIVATABLE-STATIONARY-DEFENDED
+		name <Mansion>
+
+		STC DISPLAYCASE-USABLE
+	end
+
+Content
+	name <New Enemy Wants It>
+	desc <The item you're looking for was stolen for a new enemy.>
+	requires <*:CS_FetchItem E:-->
+	changes <E:++>
+	Size 5
+
+	% E1 is the item that was taken
+	% E2 is an environs scene
+	% E3 is a base for the thief
+	% E4 is the thief who took it
+	% E5 is the new enemy NPC
+	Place1 <4>
+	Element2 <Scene Outdoors !Near -7>
+	Element3 <Prefab>
+	Place3 <2>
+	Element4 <Prefab>
+	Place4 <3 (Thief)>
+	Element5 <NewNPC -2 0>
+	Place5 </>
+
+	HINT_%id% <:%id1%>
+
+	%% FAIL CONDITIONS
+	%% - DiscoverNPCHasItem fails
+	%% - E1 is destroyed
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Get item history counter
+
+	update <if= P%id%01 0 P= %id%01 1 SetPlotStatus %plotid1% %id1% NPCLevel %4% StoryDL>
+
+	get%1% <WinSubPlot %plotid% if= P%id%02 0 P= %id%02 1 History %id%01>
+
+	end <ifSubPlotLost %plotid1% else .%id%_GoCheckE1   LoseSubPlot %plotid%>
+	.%id%_GoCheckE1 <ifItemDestroyed %1%   LoseSubPlot %plotid%>
+
+	Msg%id%01 <You recovered the %name1% from %name4%.>
+
+	%% Debriefing Message- As long as PC talked to E4
+	Msg%id%10_1 <I've heard of this %name5% person... \SPR %5% 's fought against \FACTION ChatNPCFac before.>
+	CMsg%id%10_1 <ifFactionExists ChatNPCFac Accept>
+	Msg%id%10_2 <So %name5% wanted the %name1%... I wonder what that was all about.>
+	CMsg%id%10_2 <if= ChatNPCFac 0 Accept>
+	Msg%id%10_3 <%name5% is the one who ordered the %name1% stolen, you say? I've heard of \OPR %5% ... they say \SPR %5% works for \FACTION &EnemyFac .>
+	CMsg%id%10_3 <ifFactionExists &EnemyFac Accept>
+	Msg%id%10_4 <This isn't the first time %name5% has caused problems for \FACTION ChatNPCFac ... \SPR %5% 's a pilot for \FACTION &EnemyFac , and a pretty decent one if the rumors are to be believed.>
+	CMsg%id%10_4 <ifFactionExists ChatNPCFac ifFactionExists &EnemyFac Accept>
+	Msg%id%10_5 <%name5% is a pilot for \FACTION &EnemyFac . They must be pretty desperate to get the %name1%.>
+	CMsg%id%10_5 <ifFactionExists &EnemyFac Accept>
+
+	% SubPlot1 is where the PC learns that the thief has the item.
+	SubPlot1 <*:CS_DiscoverNPCHasItem 4 1 2 3>
+
+	sub
+		MetaScene 3
+		boxmap
+		MapWidth 13
+		MapHeight 13
+		special <AddExit>
+
+		start <if= V1 0 V= 1 1 ForceChat %4%>
+		end <if# PlotStatus %plotid% %id% else GoLoseEpisode SetEncounterInactive %3% FreezeNPC %4%>
+		GoLoseEpisode <History 1 SetEncounterInactive %3% FreezeNPC %4% LoseSubPlot %plotid%>
+
+		Msg1 <You failed to recover the %name1% from %name4%.>
+
+		sub
+			Team 1
+
+			Team 2
+			name <Thief>
+		end
+
+		Persona 4
+		special <UNLISTED>
+		% V1 = First time counter
+		&HighPrice <Threat StoryDL 21>
+		&MedPrice <Threat StoryDL 20>
+		&LowPrice <Threat StoryDL 5>
+		greeting <ifChatNPCSurrendered else GoCheckAggro IfItemOK %1% Else GoDestroyed EndCHat Say 1 ifKeyItem %1% else GoGiveNow>
+		GoGiveNow <Print 3 GiveItem %1%>
+		GoDestroyed <EndChat Say 2>
+		GoCheckAggro <ifSubPlotWon %plotid% else GoGreet EndCHat Say 4 TeamAttack 2 PCEnemy %4%>
+		GoGreet <if= V1 0 else GoBeenBefore V= 1 1 History 6 &SetEnemyNPC %5% SetXXRAttitude %5% XXR_A_NeverMet SetDebriefing %id%10 Goto GoBeenBefore>
+		GoBeenBefore <NewChat Say 5 AddChat 1 AddChat 2 AddChat 3>
+		result1 <ifIntimidation HardSkillTar StoryDL else GoR1Fail EndChat Say 8 GiveItem %1% FreezeNPC %4% PCEnemy %4%>
+		GoR1Fail <EndChat Say 7 TeamAttack 2>
+		result2 <NewChat Say 9 AddChat 4 AddChat 5 AddChat 6 AddChat 7>
+		result3 <NewChat Say 10>
+		result4 <ifShopping 3 else GoR4Fail cash+ -&HighPrice EndChat Say 11 GiveItem %1% FreezeNPC %4%>
+		GoR4Fail <EndCHat Say 12 TeamAttack 2>
+		result5 <ifShopping HardSkillTar StoryDL else GoR4Fail ifIntimidation SkillTar StoryDL else GoR4Fail cash+ -&LowPrice EndChat Say 11 GiveItem %1% FreezeNPC %4%>
+		result6 <Goto result1>
+		result7 <Goto result3>
+		Msg1 <You win! Just take the %name1% and leave!>
+		Msg2 <You've destroyed the %name1%! It's useless to us both now...>
+		Msg3 <%name4% gives you the %name1%.>
+		Msg4 <Hey wait a minute... where's my %name1%!?>
+		Msg5 <They said that you were looking for this %name1%... Well, I hate to disappoint you, but I stole this for %name5% and I never disappoint such an important customer.>
+		Msg6 <%name4% stole the %name1% for someone named %name5%.>
+		Msg7 <If that's how you feel, I'm afraid I can't let you live!>
+		Msg8 <I guess I'd rather live than keep my perfect reputation... Here's the %name1%, just don't tell anyone you got it from me.>
+		Msg9 <%name5% said I'd get $ \VAL &MedPrice for it, but as I said it's not even an issue because I make it a policy to never disappoint a customer. It's not for sale.>
+		Msg10 <Give you some time!? Look, I'm getting ready to go... just get out of here and stop bothering me.>
+		Msg11 <Congratulations, you're my new customer! Here's the %name1%; I gotta go...>
+		Msg12 <I told you, it's not for sale! I can see there's only one way I'm every going to be rid of you...>
+		Prompt1 <I'm afraid that I can't let you keep it.>
+		Prompt2 <How much are you asking for it?>
+		Prompt3 <Wait, I need some time to think about this.>
+		Prompt4 <I'll pay you $ \VAL &HighPrice for it.>
+		CPrompt4 <ifG PC$ &HighPrice Accept>
+		Prompt5 <I'll pay you $ \VAL &LowPrice for it.>
+		CPrompt5 <ifG PC$ &LowPrice Accept>
+		Prompt6 <Looks like I'll have to take it from you, then.>
+		Prompt7 <Maybe I can gather some more money.>
+	end
+	inv
+		STC CORE-ACTIVATABLE-STATIONARY-DEFENDED
+		name <Hideout>
+
+		NPC Thief
+		job_desig <MOOK_>
+	end
+
+Content
+	name <BFF Deathtrap>
+	desc <The Enemy's BFF lays a trap for the PC>
+	requires <*:CS_FetchItem (E:M.see|E:M.pro|E:M.ggd) E:A.env -!Ne -!Lo>
+	changes <E:A>
+	size 9
+
+	%% In a brilliant act of railroading the player, it's possible in this episode
+	%% for the enemy NPC to change sides and become an ally... but if that happens,
+	%% the BFF becomes the new enemy, and the BeanPole campaign continues with
+	%% a new antagonist. Karl Villaneuva would be proud of me.
+
+	% E1 is the item that was taken
+	% E2 is an environs scene for the base
+	% E3 is the secret base
+	% E4 is the Enemy's BFF
+	% E5 is the Enemy- no scene set here; that will be done in subplot below.
+	% E6 is the secret about BFF and Enemy
+	% E7 is a container for the item
+	Place1 <7>
+	Element2 <Scene Environs !Near -7>
+	Element3 <Prefab>
+	Place3 <2>
+	Element4 <NewNPC -2 -7 Villainous>
+	Place4 <3 SD Enemy (BFF)>
+	Element5 <Grab 1>
+	Element6 <Prefab>
+	Element7 <Prefab>
+	Place7 <3>
+
+	HINT_%id% <:%id1%>
+
+	% Upon being activated, this subplot activates the DiscoverNPCHasItem subplot. When that
+	% subplot is completed, it activates both the RevealEncounter and LearnSecret ones.
+	% Learning the secret activates the potential meeting with the Enemy NPC.
+
+	% P%id%01 = Have learned secret
+	% P%id%02 = Initialization Counter
+	% P%id%03 = Have been inside the mobile base - triggers the conclusion event
+	% P%id%04 = Have gotten the item
+	% P%id%05 = Have primed Ending #2
+
+	%% FAIL CONDITIONS
+	%% - DiscoverNPCHasItem fails
+	%% - RevealEncounter fails
+	%% - E1 is destroyed
+
+	% There are two endings: the normal one in which E4 dies, and the special one
+	% in which E4 has a falling out with E5. If the PC hasn't gotten the item by
+	% the time the mobile base blows up, this episode counts as a loss.
+	start <if= p%id%03 1   if= SceneID %2%   if= p%id%04 0 else .%id%_GoWinSP LoseSubPlot %plotid% Goto .%id%_GoConclude>
+	.%id%_GoWinSP <WinSubPlot %plotid% Goto .%id%_GoConclude>
+	.%id%_GoConclude <Alert %id%01 History %id%02 if= p%id%05 0 else .%id%_GoBetterEnding ForceChat %5%   SetXXRAttitude %5% XXR_A_HatesPC   History %id%03 FreezeNPC %5% SetDebriefing %id%11>
+	.%id%_GoBetterEnding <Monologue %4% %id%04 Monologue %5% %id%05 Monologue %4% %id%06 Monologue %4% %id%07   History %id%08 History %id%09  SetXXRAttitude %4% XXR_A_HatesPC  FreezeNPC %4% FreezeNPC %5% &SetEnemyNPC %4%  SetXXRAttitude %5% XXR_A_Admire SetXXRMotivation %5% XXR_M_Change   Alert %id%10   XPV 100  SetDebriefing %id%12>
+
+	end <ifSubPlotLost %plotid1% else .%id%_GoCheckE1   Goto .%id%_GoLoseMission>
+	.%id%_GoCheckE1 <ifItemDestroyed %1%   Goto .%id%_GoLoseMission>
+	.%id%_GoLoseMission <CancelSubPlot %plotid2%  CancelSubPlot %plotid3%  LoseSubPlot %plotid% Trigger0 .%id%_%plotid%_GoLoss>
+	update <if= p%id%02 0 p= %id%02 1 SetPlotStatus %plotid1% %id1% NPCLevel %4% StoryDL NPCLevel %5% StoryDL>
+	Get%1% <P= %id%04 1>
+
+	% The LearnSecret will only be activated if the PC and Enemy aren't arch-enemies.
+	.%id1%_%plotid1%_GoDiscover <ifG NPCRelationship %5% -1 SetPlotStatus %plotid2% %id2%>
+	.%id2%_%plotid2%_GoLearnSecret <if= p%id%01 0 p= %id%01 1 SetPlotStatus %plotid3% %id3%>
+
+	Msg%id%01 <You escape from %name4%'s mobile base just moments before it explodes.>
+	Msg%id%02 <You escaped from %name4%'s mobile base right before it exploded.>
+	Msg%id%03 <%name5% swore revenge against you for killing \PPR %5% friend %name4%.>
+	Msg%id%04 <No! How could you escape my perfect deathtrap? It appears that I'll have to finish you the old fashioned way...>
+	Msg%id%05 <Leave \OPR 0 alone, %name4%. My battle with \PC doesn't concern you.>
+	Msg%id%06 <How can you say that!? Don't you realize that I'm doing this for you? \PC has corrupted you, hasn't \SPR 0 ?>
+	Msg%id%07 <Don't think I'll forgive you, \PC . >
+	Msg%id%08 <%name5% saved you from \PPR %5% friend %name4%.>
+	Msg%id%09 <%name4% swore revenge against you for ruining their friendship.>
+	Msg%id%10 <%name5% and %name4% race off, presumably to settle their differences.>
+
+	%% Debriefing Message - Basic Ending
+	Msg%id%11 <With %name4% dead, %name5% is going to stop at nothing to get you. This can't possibly end well.>
+
+	%% Debriefing Message - Better Ending
+	Msg%id%12 <%name4% sounds like \OPR %4% 's going to be real trouble. I'd watch my back if I were you, \PC .>
+
+	% SubPlot1 is where the PC learns that BFF has the item.
+	% SubPlot2 is a secret about BFF, revealing connection to the enemy.
+	% SubPlot3 is the PC's difficult meeting with the Enemy.
+	SubPlot1 <*:CS_DiscoverNPCHasItem 4 1 2 3>
+	SubPlot2 <*:CS_LearnSecretAboutNPC 6 4>
+	SubPlot3 <*:CS_DifficultMeeting&IsEnemy&Protected 5>
+
+	sub
+		MetaScene 3
+		%% If the PC gets killed here or if the self destruct sequence concludes,
+		%% it's game over, man. No rescue from this scene.
+		special <NOEXIT NORESCUE>
+		mapwidth 35
+		mapheight 35
+		MonkeyMap
+		LockedDoorChance 10
+		SecretDoorChance 5
+		IndustrialTiles
+
+		%% L1 = Can use main exit
+		%% L2 = Self-Destruct Timer
+		%% L3 = Have announced self-destruct
+
+		% Destruction will occur within two hours. Yeah, it doesn't sound all that dangerous, but
+		% game time is compressed.
+		start <if= p%id%03 0 P= %id%03 1   History 8   L= 2 ComTime L+ 2 7200  if= p%id%05 0 else GoBranch2  Monologue %4% 1>
+		end <SetEncounterInactive %3%>
+
+		% In Branch2, E4 isn't physically present and so will announce the self-destruct right away.
+		GoBranch2 <Monologue %4% 1 Monologue %4% 2 Monologue %4% 3>
+
+		% Killing E4 or causing them to surrender will reveal the self-destruct sequence.
+		FAINT%4% <if= L3 0 L= 3 1 Alert 4>
+		SURRENDER%4% <if= L3 0 L= 3 1 Monologue %4% 5>
+
+		% The destruction timer is below.
+		5Min <ifG ComTime L2 Alert 6 History 7 Bomb Bomb Bomb KillPC>
+
+		Msg1 <Welcome, \PC . I knew that the %name1% would draw you into my trap... now, it's time for you to die.>
+		Msg2 <I've activated the self-destruct sequence of this mobile base. Oh, and I've also sealed the airlocks, so escape is quite impossible.>
+		Msg3 <Goodbye.>
+		Msg4 <As %name4% falls, you suddenly notice an ominous ticking noise coming from the intercom.>
+		Msg5 <You haven't won- I've activated the base's self destruct sequence. If I have to die then I'm taking you with me.>
+		Msg6 <Suddenly, the base explodes around you!!!>
+		Msg7 <You did not escape %name4%'s base before the explosion.>
+		Msg8 <%name4% was using the %name1% as bait to lure you into a trap.>
+
+		sub
+			Team 1
+			SetEnemy 2 3 4
+
+			Team 2
+			name <Guards>
+			type <SYNTH ROBOT>
+			Deploy <if= V1 0 V= 1 1 MonsterUp 2 StoryDL>
+			SetEnemy 1
+			SetAlly 3 4
+
+			Team 3
+			name <BFF>
+			SetEnemy 1
+			SetAlly 2 4
+
+			Team 4
+			name <Body Guards>
+			home <Entrance>
+			type <SYNTH ROBOT>
+			Deploy <if= V1 0 V= 1 1 WMonster 3 StoryDL 30>
+			SetEnemy 1
+			SetAlly 3 2
+
+			room
+			name <Entrance>
+			special <STARTHERE>
+			desig <HOME %e4%>
+			minimap <1...........2............>
+			sub
+				TrapDoor
+				%% The trapdoor can't be used until it's unlocked from the computer terminal
+				%% in the room with the safe. Fortunately, there's another exit.
+				Destination -1
+				MiniMapComponent 2
+				use <if# L1 0 else GoLocked Print 1 Return>
+				%% Unlocking the trapdoor with CodeBreaking is difficult, but not impossible.
+				CLUE_CODEBREAKING <if= L1 0 else GoNotLocked Mental ifCodeBreaking 20 else GoNoUnlock Print 6 XPV 100 L= 1 1 ReAttack %4%>
+				Msg4 <You aren't skilled enough to pick this lock.>
+			end
+
+			room
+			desig <HOME %e7%>
+			minimap <............1............>
+
+			room
+			minimap <............1............>
+			inv
+				STC COMPUTER-1
+				%% If E4 surrendered, opening the trap door will cause them to attack again.
+				MiniMapComponent 1
+				use <if= L1 0 else GoBeenBefore Alert 1 L= 1 1 ReAttack %4%>
+				GoBeenBefore <Print 2>
+				Msg1 <Using this computer, you open the airlock.>
+				Msg2 <You have already >
+			end
+
+			room
+			% The PC can steal E4's mecha and escape.
+			sub
+				Elevator
+				name <Mecha Bay>
+				MiniMapComponent 1
+				% V1 = Usage Counter
+				use <ifYesNo 1 2 3 V= 1 1 CustomMecha .mektype StoryDL Return StoryNote 4>
+				.mektype <GENERAL \FACTION_DESIG &EnemyFac>
+				Msg1 <You find an elevator to the pod containing %name4%'s mecha.>
+				Msg2 <Escape with it.>
+				Msg3 <Leave it alone.>
+			end
+		end
+
+		Persona 4
+		special <UNLISTED>
+		%% The only chance the PC will get to freely speak with E4 is if they fight
+		%% and E4 surrenders. Therefore, there is no reason to have a big complicated
+		%% persona here. Sweet.
+		greeting <EndChat Say 1>
+		Msg1_1 <You may have beaten me, but we will die together.>
+		Msg1_2 <I will die too, but at least I've completed my mission.>
+
+		Persona 5
+		special <UNLISTED NOESCAPE>
+		%% There are two possible conversations- the Difficult Meeting one and the Regular Ending one.
+		greeting <if= p%id%03 0 else GoEndingConv Goto GoMeetingConv>
+		GoEndingConv <EndChat Say 1 AddChat 1 AddChat 2 PCEnemy %5%>
+		*GoMeetingConv <*YouWentThroughALotOfTrouble GoExplain>
+		GoExplain <WinSubPlot %plotid3% EndChat Say 2 AddChat 3 AddChat 4>
+		*result1 <*IWillDestroyYou>
+		result2 <AddEasygoing -d10 Goto result1>
+		result3 <EndChat Say 3 AddChat 5>
+		result4 <EndChat Say 4 AddChat 6>
+		result5 <EndChat Say 5 AddCHat 7 AddChat 8 AddChat 9>
+		result6 <Goto result5>
+		result7 <EndChat Say 6>
+		result8 <EndChat Say 7 P= %id%05 1  FreezeNPC %4%>
+		result9 <Goto result8>
+		Msg1 <Murderer! When I got a distress call from %name4% I should have known that you were the one responsible... How dare you attack my friends!? This fight is between you and me.>
+		Msg2 <So, what it it? You must have had a very good reason to come looking for me.>
+		Msg3 <%name4% is a friend of mine; \SPR %4% 's a bit unstable, but a superb pilot and a cunning tactician. Look, do you have a point?>
+		Msg4 <The %name1%? I don't have it. Why are you bothering me about this?>
+		Msg5 <Okay. And why do I care?>
+		Msg6 <I don't know either. Thank you for this colossal waste of time.>
+		Msg7 <Hmm. I'll tell you what, I'll ask %name4% what's going on. Don't count on anything, though, because \SPR %4% can be really headstrong.>
+		Prompt1 <It's not like that! You don't understand.>
+		Prompt2 <That's right, and I'm going to kill you next.>
+		Prompt3 <Do you know someone called %name4%?>
+		Prompt4 <I'm looking for the %name1%.>
+		Prompt5 <I think \SPR %4% has a %name1% that I'm looking for.>
+		Prompt6 <I think it's in the possession of %name4%.>
+		Prompt7 <I don't know.>
+		Prompt8 <I think %name4% is using the %name1% to lure me.>
+		CPrompt8 <ifInsight HardSkillTar StoryDL Accept>
+		Prompt9 <I thought you could act as mediator, or something.>
+		CPrompt9 <ifG ChatNPCRelationship 0 Accept>
+	end
+	inv
+		STC CORE-ACTIVATABLE-STATIONARY-DEFENDED
+		name <Mobile Base>
+
+		Secret
+		Msg <%name4% is good friends with %name5%, but \SPR %4% tends to be a bit overprotective... some would say obsessive.>
+
+		STC Safe
+	end
+
+Content
+	name <Let's Make It A Contest>
+	desc <The Enemy decides to search for the same item as the PC>
+	requires <*:CS_FetchItem (E:A.---|E:A.jr_|E:A.equ) (E:M.pro|E:M.---) -&FromEnemy>
+	changes <E:M>
+	size 3
+
+	% When this subplot gets activated, it activates the item search and sets a time limit.
+	% If the PC can't find the item in time, the enemy takes it instead.
+	% If the time limit runs out, don't deactivate this plot right away- let the PC find the
+	% item's hiding spot, then be disappointed that it's no longer there.
+
+	% E1 is the item
+	% E2 is the PC's enemy
+	Element2 <Grab 1>
+	Place2 </>
+
+	HINT_%id% <:%id1%>
+
+	% p%id%01 = Initialization Counter
+	% p%id%02 = Time Limit
+	% p%id%03 = Freeze Item Counter
+
+	start <if= p%id%02 0 ifScene .%id%_scenedesc if= RootSceneID &EpisodeScene p= %id%02 ComTime P+ %id%02 86400 p+ %id%02 d7200 Alert %id%01 ForceChat %2% History %id%02 SetXXRMotivation %2% XXR_M_Competitor>
+	.%id%_scenedesc <OUTDOORS>
+	update <if= p%id%01 0 p= %id%01 1 SetPlotStatus %plotid1% %id1% SetPlotStatus %plotid2% %id2%>
+	halfhour <if= p%id%03 0 if# p%id%02 0 ifG ComTime p%id%02 p= %id%03 1 ifKeyItem %1% else .%id%_GoFreezeItem>
+	.%id%_GoFreezeItem <FreezeItem %1% Trigger0 .%id1%_%plotid1%_GoItemGone  CancelSubPlot %plotid2%  LoseSubPlot %plotid%  History %id%03>
+	end <ifSubPlotLost %plotid1% CancelSubPlot %plotid2% LoseSubPlot %plotid%>
+
+	get%1% <CancelSubPlot %plotid2% WinSubPlot %plotid%>
+
+	.%id2%_%plotid2%_GoDelay <p+ %id%02 86400>
+
+	Msg%id%01 <Without warning, you are approached by %name2%.>
+	Msg%id%02 <%name2% challenged you to find the %name1% before \SPR %2% did.>
+	Msg%id%03 <%name2% found the %name1% first.>
+
+	% SubPlot1 is the Item Cozy
+	% SubPlot2 is the ability to delay the Enemy
+	SubPlot1 <*:CS_ItemCozy 1>
+	SubPlot2 <*:CS_GainAdvantageVsNPC&Delay 2>
+
+	sub
+		Persona 2
+		special <UNLISTED NOESCAPE>
+		greeting <EndChat Say 1 AddChat 1 AddChat 2>
+		GoEndConversation <EndChat Say 2 Print 3>
+		result1 <AddSociable  d4   Goto GoEndConversation>
+		result2 <AddSociable -d4   Goto GoEndConversation>
+		Msg1 <\PC ... They say that you've agreed to find the %name1%.>
+		Msg1_1 <\PC ... Is it true that you're looking for the %name1%?>
+		CMsg1_1 <ifNPCHeroic Accept>
+		Msg1_12 <Well, look at this... That %name1% you were hired to find must be pretty important.>
+		CMsg1_12 <ifNPCVillainous Accept>
+		Msg1_13 <Hi \PC , long time no see. I heard that you're looking for the %name1%...>
+		CMsg1_13 <ifG React 25 Accept>
+		Msg1_14 <Long time no see, jerkface. They say you're looking for some kind of %name1%.>
+		CMsg1_14 <ifG 1 React  Accept>
+		Msg1_15 <Word on the street is that you're looking for the %name1%. Well, maybe \FACTION &EnemyFac wants it too...>
+		CMsg1_15 <ifFactionExists &EnemyFac Accept>
+		Msg1_16 <I've heard that \FACTION &AllyFac is looking for the %name1%. Is that right?>
+		CMsg1_16 <ifFactionExists &AllyFac Accept>
+		Msg2 <How about we make this a contest? I'm going to try and find it too.>
+		Msg2_1 <This kind of mission isn't the same as boring old mecha combat, you need charisma and smarts to get the info you need. Why don't we make this a contest? I bet I can find the %name1% before you even get close.>
+		CMsg2_1 <ifNPCSociable Accept>
+		Msg2_2 <I propose a competition. Whoever finds the %name1% first gets it, starting now...>
+		CMsg2_2 <ifNPCShy Accept>
+		Msg2_3 <Hey, I'm kind of bored now... why don't we have a contest? I try to find the %name1%, you try too, and whoever gets it first wins.>
+		CMsg2_3 <ifNPCEasygoing Accept>
+		Msg2_4 <You couldn't find the %name1% with two hands and a multiscanner. I'll even prove it to you, by finding it first!>
+		CMsg2_4 <ifNPCPassionate Accept>
+		Msg2_5 <How'd you like to make this more interesting? I propose a contest. I'm going to try and find it too, and whoever gets it first wins.>
+		CMsg2_5 <ifNPCCheerful Accept>
+		Msg2_6 <I've decided that we're having a contest. I'll find the %name1% before you do, and then you'll cry.>
+		CMsg2_6 <ifNPCMelancholy Accept>
+		Msg2_7 <I'm not sure you can be trusted with the %name1%... why don't we make this a contest? Whoever finds it first wins.>
+		CMsg2_7 <ifNPCHeroic Accept>
+		Msg2_8 <I have no real interest in the %name1%, other than preventing you from getting it. Why don't we have a contest? Whoever finds it first wins.>
+		CMsg2_8 <ifNPCVillainous Accept>
+		Msg3 <%name2% races off.>
+		Prompt1 <That's right.>
+		Prompt1_1 <Something like that.>
+		Prompt1_2 <You could say that.>
+		Prompt2 <None of your business, %name2%.>
+		Prompt2_1 <I can neither confirm nor deny that.>
+		Prompt2_2 <Mind your own business.>
+	end
+
+%%
+%% *:CS_ItemCozy Content
+%%		&Stolen		The item was stolen from its rightful place
+%%		&Abandoned	The item is abandoned, not in anyone's possession
+%%
+%% We've got an item that needs to be protected from the filthy hands of the player character.
+%% Stick it in an Item Cozy and be done with it. If the item becomes unrecoverable, this
+%% subplot will be lost.
+%%
+%% Needed Scripts:
+%% .%id%_%plotid%_GoItemGone	The parent plot can trigger this script if the item is
+%% 				removed from its cozy by outside forces. If the removal
+%%				of the item won't affect the plot, this script isn't
+%%				strictly necessary.
+%%
+%%  Param1: The item to be searched for
+%%
+
+Content
+	name <Held by Thief>
+	desc <A thief has it. Negotiate, barter, or fight for it. Or just steal it back.>
+	requires <*:CS_ItemCozy ~&Stolen>
+	Size 5
+
+	% E1 is the item to be found
+	% E2 is an outdoors scene
+	% E3 is the thief's hideout
+	% E4 is a local public scene, for NeverFail
+	% E5 is a thief
+	Place1 <5>
+	Element2 <Scene Outdoors !Near -7>
+	Element3 <Prefab>
+	Place3 <2>
+	Element4 <Scene Building Public !Near -7 -LEGIT>
+	Element5 <Character THIEF !Near 4 !XClude -2 NeverFail>
+	NeverFail5 <Thief>
+	Place5 <3 (Guards) sd>
+
+	HINT_%id% <:%id1%>
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Item has been lost
+
+	% FAIL CONDITIONS:
+	% - The NPC Has Item subplot fails
+	% - The Reveal NPC Base subplot fails
+	% - E1 is destroyed
+
+	update <if= P%id%01 0 P= %id%01 1 SetPlotStatus %plotid1% %id1% NPCLevel %5% StoryDL>
+
+	end <ifItemOK %1% else .%id%_GoFail ifSubPlotLost %plotid1% else .%id%_GoCheckE1 Goto .%id%_GoFail>
+	.%id%_GoCheckE1 <ifItemDestroyed %1% Goto .%id%_GoFail>
+	.%id%_GoFail <LoseSubPlot %plotid%>
+
+	Get%1% <if= p%id%01 1 p= %id%01 2  History %id%01 WinSubPlot %plotid%>
+
+	.%id%_%plotid%_GoItemGone <P= %id%02 1>
+
+	Msg%id%01 <You recovered the %name1% from %name5%.>
+
+	% SubPlot1 is where the PC learns that the corporate character has the item.
+	% SubPlot2 is the PC's attempt to locate the mansion.
+	SubPlot1 <*:CS_DiscoverNPCHasItem 5 1 2 3>
+
+	sub
+		Persona 5
+		special <UNLISTED>
+		% V%id%01 = NPC was known beforehand
+		% V%id%02 = First time counter
+		&HiPrice <Threat StoryDL 3>
+		&LowPrice <Threat StoryDL 1>
+		greeting <if= PlotStatus %plotid% %id% else %pop% if= P%id%02 1 else GoCheckSurrender NewChat Say 1 LoseSubPlot %plotid% MoveAndPacifyNPC %5% %4%>
+		GoCheckSurrender <ifChatNPCSurrendered else GoCheckKnown ifItemOK %1% else GoItemDestroyed EndChat Say 2 GiveItem %1% MoveAndPacifyNPC %5% %4%>
+		GoItemDestroyed <EndChat Say 3 LoseSubPlot %plotid% MoveAndPacifyNPC %5% %4%>
+		GoCheckKnown <if= V%id%02 0 else GoGreet V= %id%02 1 ifChatNPCKnown else GoGreet V= %id%01 1 Goto GoGreet>
+		*GoGreet <*IHearYouAreLookingForItem %1% GoMakeOffer>
+		GoMakeOffer <NewChat Say 4 AddChat 1 AddChat 2 AddChat 3 AddChat 4 AddChat 5 AddChat 6 AddChat 7>
+		result1 <NewChat Say 5 GiveItem %1% Cash+ -&HiPrice XPV 100>
+		result2 <NewChat Say 6 GiveItem %1% Cash+ -&LowPrice XPV 100>
+		*result3 <*HurryBackWithMoney>
+		result4 <NewChat Say 7 GiveItem %1% AddRenown -2 XPV 100>
+		result5 <AddEasygoing -d10 ifIntimidation HardSkillTar StoryDL else GoR5Fail NewChat Say 8 GiveItem %1% AddRenown 1 XPV 100>
+		GoR5Fail <EndChat Say 9 SoloAttack %5%>
+		result6 <NewChat Say 10 GiveItem %1% PCFriend %5% XPV 100>
+		result7 <NewChat Say 11 AddSociable d10 AddReact 10 GiveItem %1%  XPV 100 AddChat 8 AddChat 9>
+		result8 <NewChat Say 12 History 13  if= ChatNPCRelationship 0 PCLover %5%>
+		*result9 <*GoodBye>
+		Msg1 <I'm afraid that you've arrvived too late- I no longer have the %name1%.>
+		Msg2 <You win... Here, take the %name1%, and leave me alone...>
+		Msg3 <You've destroyed the %name1%... it's no use to either one of us now.>
+		Msg4 <I've got your %name1% right here, and I'm willing to let you have it for $ \VAL &HiPrice .>
+		Msg5 <Well that was easy... would you like a receipt to go with that?>
+		Msg6 <Hmph. It's less than I was expecting, but it's better than nothing. Here's your %name1%.>
+		Msg7 <Oh stop begging. Alright, I believe you, you can have the %name1%.>
+		Msg8 <Why yes, that is a good deal... Here, take the %name1%, and just leave me alone...>
+		Msg9 <It's bad form to come into my place of business and start making threats, especially threats that you can't back up...>
+		Msg10 <Buddies, you say? Yeah, I guess we are... Since you really seem to need it I'll let you have the %name1% for free, but some day I might come to call back this favor.>
+		Msg11 <Oh wow... you mean I can call you? Here, the %name1% is yours, with my compliments...>
+		Msg12 <I'll do that, definitely.>
+		Msg13 <You gave %name5% your number, and asked \OPR %5% to call.>
+		Prompt1 <It's a deal. Here you go. [Give Money]>
+		CPrompt1 <ifG PC$ &HiPrice Accept>
+		Prompt2 <I won't pay a cent more than $ \VAL &LowPrice . [Give Money]>
+		CPrompt2 <ifShopping SkillTar StoryDL ifG PC$ &LowPrice Accept>
+		Prompt3 <I need to think about this for a while.>
+		Prompt4 <Come on, %name5%, I really need that %name1%.>
+		CPrompt4 <ifG ChatNPCRelationship 0 Accept>
+		Prompt5 <Here's a deal: give me the %name1% and you can live.>
+		CPrompt5 <ifG 1 ChatNPCRelationship Accept>
+		Prompt6 <Come on, %name5%, I thought we were buddies.>
+		CPrompt6 <if= ChatNPCRelationship 0 ifG React 50 if= V%id%01 1 Accept>
+		Prompt7 <Instead of money, would you trade it for my phone number?>
+		CPrompt7 <ifChatNPCSexy ifConversation SkillTar StoryDL Accept>
+		Prompt8 <Call me anytime. I mean it.>
+		Prompt9 <Thanks. I'll be seeing you around.>
+
+		STC MS_EmptyBuilding
+		SetID 3
+	end
+	inv
+		STC CORE-ACTIVATABLE-STATIONARY-DEFENDED
+		name <Hideout>
+		GoStartCombat <Alert 1 SavePos Dynamic 2 StoryDL 100 .nu1 .nu2 ComposeD Msg1 .Msg1 DynaVar= 3 Destination  DynaFaction NPCFac %5%>
+		Msg1 <You are attacked by guards as you approach %name5%'s hideout!>
+	end
+
+Content
+	name <Cozy Derelict Spaceship>
+	desc <The item lies abandoned on a wrecked spaceship.>
+	requires <*:CS_ItemCozy ~&Abandoned>
+	Size 5
+
+	% E1 is the item to be held
+	% E2 is the endless void of space
+	% E3 is the derelict itself
+	% E4 is a crate for the item on board the ship
+	Place1 <4>
+	Element2 <Scene Space Environs !Near -7>
+	Element3 <Prefab>
+	Place3 <2>
+	Element4 <Prefab>
+	Place4 <3>
+
+	HINT_%id% <:%id1%>
+
+	% P%id%01 = Initialization Counter
+
+	% FAIL CONDITIONS:
+	% - The RevealDungeon subplot fails
+	% - E1 is destroyed
+
+	update <if= P%id%01 0 P= %id%01 1 SetPlotStatus %plotid1% %id1%>
+
+	end <ifItemOK %1% else .%id%_GoFail ifSubPlotLost %plotid1% Goto .%id%_GoFail>
+	.%id%_GoFail <LoseSubPlot %plotid%>
+
+	Get%1% <if= p%id%01 1 p= %id%01 2  History %id%01 WinSubPlot %plotid%>
+
+	Msg%id%01 <You recovered the %name1% from a derelict spaceship.>
+
+	% SubPlot1 is the RevealDungeon task
+	SubPlot1 <*:CS_RevealEncounter_ItemDungeon&Derelict 2 3 1>
+
+	sub
+		MetaScene 3
+		rumor%id% <the %name1% was lost when the spaceship carrying it was destroyed.>
+		type <Dungeon Derelict>
+		terrain <SPACE>
+		mapwidth 50
+		mapheight 50
+		MonkeyMap
+		% Suffocation effect...
+		Vacuum
+		LockedDoorChance 10
+		SecretDoorChance 10
+		IndustrialTiles
+		Ceiling
+
+		NeededCells 3
+
+		% L1 = Initialization Counter
+		% L2 = Have been given item
+		% L3 = Have been threatened once
+		start <Print 1>
+
+		Msg1 <You enter the derelict spaceship where the %name1% might be found.>
+
+		content1 <Some 1 70 Sub *DUNGEON_THREAT>
+		content2 <Some 1 40 Sub *DUNGEON_DECOR>
+		content3 <Some 1 50 Sub *DUNGEON_REWARD>
+
+		sub
+			Team 1
+			SetEnemy 2
+
+			Team 2
+			name <Monster>
+			type <Fungus Exorg Ruin PreZero>
+			Deploy <if= V1 0 V= 1 1 MonsterUp 2 StoryDL>
+			SetEnemy 1
+
+			room
+			special <STARTHERE>
+			minimap <............2............>
+			sub
+				TrapDoor
+				Destination -1
+				MiniMapComponent 2
+				use <Print 1 Return>
+			end
+
+			room
+			desig <HOME %e4%>
+			minimap <......###..#1=..###......>
+		end
+	end
+	inv
+		STC CORE-ACTIVATABLE
+		name <Derelict Spaceship>
+
+		STC Safe
+	end
+
+Content
+	name <Stuck on a Pirate Ship>
+	desc <The item's being held by pirates.>
+	requires <*:CS_ItemCozy ~&Stolen -&Abandoned>
+	Size 7
+
+	% E1 is the item to be held
+	% E2 is a place for the pirate ship
+	% E3 is the pirate ship itself
+	% E4 is a local scene
+	% E5 is a pirate leader
+	% E6 is a crate for the item on board the ship
+	Place1 <6>
+	Element2 <Scene Space Environs !Near -7>
+	Element3 <Prefab>
+	Place3 <2>
+	Element4 <Scene Public -Legit !Near -7>
+	Element5 <Character Pirate HasMecha !Near 4 Neverfail -Friend -ArchAlly -Family -Lover>
+	NeverFail5 <Pirate>
+	Place5 <3 (Pirates)>
+	Element6 <Prefab>
+	Place6 <3>
+
+	HINT_%id% <The %name1% is said to be held by a pirate named %name5%.>
+
+	% FAIL CONDITIONS:
+	% - The RevealShip subplot fails
+	% - E1 is destroyed
+
+	% P%id%01 = Initialization Counter
+	% P%id%02 = Item Gone Counter
+	% P%id%03 = Peaceful Entry Counter
+
+	update <if= p%id%01 0 else .%id%_GoCheckFail p= %id%01 1 NPCLevel %5% StoryDL  SetPlotStatus %plotid1% %id1% SetPlotStatus %plotid2% %id2%>
+	.%id%_GoCheckFail <ifSubPlotLost %plotid1% else .%id%_GoCheckDestruction  LoseSubPlot %plotid%  CancelSubPlot %plotid2%>
+	.%id%_GoCheckDestruction <ifItemDestroyed %1%   LoseSubPlot %plotid%  CancelSubPlot %plotid2%  CancelSubPlot %plotid1%>
+
+	Get%1% <if= p%id%01 1 p= %id%01 2  History %id%01 WinSubPlot %plotid%>
+	.%id%_%plotid%_GoItemGone <P= %id%02 1>
+	.%id2%_%plotid2%_GoPeacefulEntry <P= %id%03 1>
+
+	Msg%id%01 <You gained the %name1% from the pirate %name5%.>
+
+	% SubPlot1 is the RevealShip task
+	% SubPlot2 is the ability to gain peaceful entry to the ship
+	SubPlot1 <*:CS_RevealEncounter_NPCBase&PirateShip 2 3 5>
+	SubPlot2 <*:CS_PeacefulEntry_NPCBase&PirateShip 3 5>
+
+	sub
+		MetaScene 3
+		rumor%id% <the %name1% has been taken by the pirate %name5%.>
+		mapwidth 35
+		mapheight 35
+		MonkeyMap
+		LockedDoorChance 30
+		SecretDoorChance 5
+		IndustrialTiles
+
+		NeededCells 3
+
+		% L1 = Initialization Counter
+		% L2 = Have been given item
+		% L3 = Have been threatened once
+		start <if= L1 0 else GoCheckGone L= 1 1 CancelSubPlot %plotid2% Goto GoCheckGone>
+		GoCheckGone <if= p%id%02 1 else GoCheckPeace ifNPCOK %5%  TeamNeutral 2 TeamNeutral 3 ForceChat %5%>
+		GoCheckPeace <if= p%id%03 1 else GoCheckThreat TeamNeutral 2 TeamNeutral 3 ForceChat %5%>
+		GoCheckThreat <if= L3 0 L= 3 1 ifNPCOK %5% Monologue %5% 2>
+
+		PCAttack <if= P%id%03 1 Goto GoTripAlarm>
+		Get%1% <if= L2 0 if= P%id%03 1 ifStealth SkillTar StoryDL else GoTripAlarm>
+		GoTripAlarm <Alert 1 p= %id%03 0 TeamAttack 2 TeamAttack 3 MonsterUp 3 d10>
+
+		Msg1 <Suddenly, an alarm sounds!>
+		Msg2 <We've been boarded! To arms, kill the intruders!>
+
+		sub
+			Team 1
+			SetEnemy 2 3
+
+			Team 2
+			name <Pirates>
+			SetEnemy 1
+			SetAlly 3
+
+			Team 3
+			name <Guards>
+			type <SYNTH ROBOT CRIMINAL>
+			SetEnemy 1
+			SetAlly 2
+			Deploy <if= V1 0 V= 1 1 MonsterUp 3 StoryDL>
+
+			room
+			special <STARTHERE>
+			desig <HOME %e5%>
+			minimap <1...........2............>
+			sub
+				TrapDoor
+				Destination -1
+				MiniMapComponent 2
+				use <Print 1 Return>
+			end
+
+			room
+			desig <HOME %e6%>
+			minimap <......###..#1=..###......>
+		end
+
+		Persona 5
+		special <UNLISTED>
+		&HighOffer <Threat StoryDL 24>
+		&MidOffer <Threat StoryDL 12>
+		&LowOffer <Threat StoryDL 6>
+		greeting <if= PlotStatus %plotid% %id% else GoChat if# p%id%02 0 else GoCheckSurrender EndChat Say 1 TeamNeutral 2 TeamNeutral 3>
+		GoCheckSurrender <ifChatNPCSurrendered else GoGreet EndChat Say 2 L= 2 1 GiveItem %1% XPV 100 TeamNeutral 2 TeamNeutral 3>
+		*GoGreet <*IHearYouAreLookingForItem %1% GoExplain>
+		GoChat <NewChat SayAnything>
+		GoExplain <NewChat Say 3 AddChat 1 AddChat 2 AddChat 3>
+		GoStartFight <TeamAttack 2 TeamAttack 3 P= %id%03 0>
+		GoBuyItem <NewChat Say 9 L= 2 1 GiveItem %1% XPV 100>
+		GoBuyFail <EndChat Say 10 Goto GoStartFight>
+		GoWinContest <NewChat Say 12 L= 2 1 GiveItem %1% XPV 100>
+		GoLoseContest <EndChat Say 13 Goto GoStartFight>
+		result1 <ifConversation SkillTar StoryDL else GoR1Fail NewChat Say 5 AddChat 4 AddChat 5 AddChat 6 AddChat 7>
+		GoR1Fail <NewChat Say 4 AddChat 2 AddCHat 3 AddChat 7>
+		result2 <ifIntimidation HardSkillTar StoryDL else GoR2Fail NewChat Say 6 AddChat 4 AddChat 5 AddChat 6 AddChat 7 AddChat 8>
+		GoR2Fail <EndCHat Say 7 Goto GoStartFight>
+		result3 <NewChat Say 8 AddChat 9 AddChat 7>
+		result4 <Cash+ -&HighOffer Goto GoBuyItem>
+		result5 <ifShopping SkillTar StoryDL else GoBuyFail Cash+ -&MidOffer Goto GoBuyItem>
+		result6 <ifShopping HardSkillTar StoryDL else GoBuyFail Cash+ -&LowOffer Goto GoBuyItem>
+		*result7 <*GoodBye>
+		result8 <EndChat Say 11 Goto GoStartFight>
+		*result9 <*InsultContest GoWinContest GoLoseContest StoryDL>
+		Msg1 <I'm afraid that you're too late. The %name1% is no longer in my possession.>
+		Msg2 <I surrender! Here, you can have this %name1%.>
+		Msg3 <I have the %name1% here in my possession, but I'm not ready to part with it just yet.>
+		Msg4 <I told you, I'm not ready to part with it yet. No offers.>
+		Msg5 <Hmm. You do realize that your offer would have to be very high, don't you? How much are you willing to offer?>
+		Msg6 <You have a lot of nerve, threatening a pirate in \PPR %5% own lair. I'll tell you what, though- if you can make a decent offer, I may be willing to part with the %name1%.>
+		Msg7 <You dare threaten me on board my own ship? You are the one who is going to die!>
+		Msg8 <Challenge me? Ha! You don't even know the proper way to challenge a pirate, why should I listen to you?>
+		Msg9 <I find your offer most acceptable. Here is the %name1%; do with it as you will.>
+		Msg10 <Do you take me for a fool? That offer was an insult, and nobody insults %name5% and lives!>
+		Msg11 <Ah, someone who likes to get straight to the point. Shall we get started, then?>
+		Msg12 <Arr, your insult has wounded me to the core. Here, the %name1% is yours; from now on I won't be able to even look at it without reliving the shame.>
+		Msg13 <Your insult was an insult to insults everywhere! Prepare to defend yourself!>
+		Prompt1 <I can make you an offer for it.>
+		Prompt2 <Hand it over if you don't want to die.>
+		Prompt3 <I'll challenge you for it.>
+		Prompt4 <I'll give you $ \VAL &HighOffer .>
+		CPrompt4 <ifG PC$ &HighOffer Accept>
+		Prompt5 <I'll give you $ \VAL &MidOffer .>
+		CPrompt5 <ifG PC$ &MidOffer Accept>
+		Prompt6 <I'll give you $ \VAL &LowOffer .>
+		CPrompt6 <ifG PC$ &LowOffer Accept>
+		Prompt7 <Let me think about this for a bit.>
+		Prompt8 <No deal, I'd rather fight.>
+		Prompt9 <You have no idea what I don't know!>
+	end
+	inv
+		STC CORE-ACTIVATABLE-STATIONARY-DEFENDED
+		name <Pirate Ship>
+		GoStartCombat <Alert 1 SavePos Dynamic 2 StoryDL 100 .nu1 .nu2 ComposeD Msg1 .Msg1 DynaVar= 3 Destination  DynaFaction NPCFac %5%>
+		Msg1 <You are attacked by mecha as you approach the pirate ship!>
+
+		STC Safe
+		name <Booty Locker>
+	end
+

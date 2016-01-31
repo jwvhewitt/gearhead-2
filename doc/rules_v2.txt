@@ -1,0 +1,93 @@
+THE RULES OF GEARHEAD
+
+CONSTRUCTION RULES
+
+	v2.0 Mecha System
+
+	INVENTORY RULES
+	*Illegal inventory for master gears must be explicitly excluded
+	*Legal inventory for other types must be explicitly defined
+	Variable form modules use invcoms of their primary form
+	Master gears may not equip:
+		MetaTerrain
+	MetaTerrain may not equip:
+		MetaTerrain
+	Mounting Points may equip:
+		weapons, tools
+		Only one item may be equipped at a time
+	Hands may equip:
+		weapons, tools
+		Only one item may be equipped at a time
+	Arms and Tails may equip:
+		armor, shields, harnesses
+	Other Modules may equip:
+		armor, harnesses
+	Weapons may equip:
+		Power Source, WeaponAddOn (only if they themselves are invcom)
+	A gear may only equip one item of any specific type
+
+	SUBCOMPONENT RULES
+	*Legal subcomponent types must be explicitly defined
+	No two siblings may share the same CyberSlot SAtt
+	At most one movement system of specific type per location
+	At most one support system of specific type per location
+	At most one Module/Body per location (i.e. a mek can only have one body)
+	At most one holder of specific type per location, except...
+	Module/Body may have up to two holders installed
+	At most one ammunition gear per location
+	At most one power source per location
+	Variable form modules use subcoms of their primary form
+	Mecha may have as subcoms:
+		Modules, Modifiers (mecha type only)
+		Modules must use the same material as the mecha itself
+	Body Modules may have:
+		Cockpits, Weapons, MoveSys, Holders (Mount), Sensors, Support, Computers, Power Source, Usables
+	Arm Modules may have:
+		Cockpits, Weapons, MoveSys, Holders (Mount + Hand), Sensors, Computers, Power Source, Usables
+	Other Modules may have as subcoms:
+		Cockpits, Weapons, MoveSys, Holders (Mount), Sensors, Computers, Power Source, Usables
+	Characters may have as subcoms:
+		Modules, Modifiers (chara type only)
+	Cockpits may have as subcoms:
+		Characters
+	Physical Shields may have as subcoms:
+		Weapons
+	External Armor may have as subcoms:
+		Weapons, Movement Systems
+	Weapon/Projectile may have as subcoms:
+		Ammo/Projectile (with matching CALIBER string attribute), Integral Weapons
+	Weapon Add-Ons may have as subcoms:
+		Weapons
+	Weapon/Missile may have as subcoms:
+		Ammo/Missile, Integral Weapons
+	Weapon/Melee,EMelee may have as subcoms:
+		Integral Weapons
+	Computers may have as subcoms:
+		Software
+	Harnesses may have as subcoms:
+		Weapons, Power Sources, Computers, Movement Systems
+	Tools may have as subcoms:
+		Weapons, Power Sources, Computers
+	Props may have any gears as subcoms
+
+  
+ADVENTURE STRUCTURE
+
+Adventure
+	sub
+		World
+			sub
+				Scene (City)
+					sub
+						Scene (Building)
+						Meme
+					inv
+						Local Plots
+			inv
+				Local Plots
+		Scene (independant)
+	inv
+		Global Plots
+		Dynamic Scene
+		Factions
+

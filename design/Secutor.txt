@@ -1,0 +1,147 @@
+Battroid 5
+Name <Secutor>
+Desig <RM-3>
+SDL_Sprite <>
+SDL_PORTRAIT <item_secutor.png>
+desc <Always a crowd favorite, the Secutor packs an impressive array of loud and destructive weapons.>
+type <SPACE GROUND INSIDE>
+factions <PDASS>
+
+sub
+Head
+	Armor 4
+	mass -1
+	sub
+		Sensor 5
+
+		STC LAS-3
+		name <Intercept Laser>
+		type <INTERCEPT>
+
+		CPit
+		Armor 2
+		mass -1
+	end
+	inv
+		HeadArmor 3
+		Mass -2
+	end
+
+torso
+	Armor 4
+	mass -2
+	sub
+		Sensor 1
+
+		Mount
+		Name <Collar Mount>
+		inv
+			MLauncher 8
+			sub
+				STC LM-20
+				magazine 4
+			end
+		end
+
+		Engine 5
+		Armor 2
+		HighPerformance
+		mass -1
+
+		Gyro
+		Armor 2
+		mass -1
+
+		HeavyActuator 2
+		mass -1
+
+		HoverJet 4
+	end
+	inv
+		BodyArmor 3
+		Mass -2
+	end
+
+Arm
+	Name <Right Arm>
+	Armor 3
+	mass -1
+	sub
+		Hand
+		name <Right Hand>
+		inv
+			Melee 9
+			name <Morning Star>
+			type <FLAIL BRUTAL>
+		end
+
+		Mount
+		Name <Right Arm Mount>
+		inv
+			Gun 6
+			name <Arena Cannon>
+			caliber <55mm shell>
+			Range 6
+			BV 2
+			mass -5
+			Magazine 60
+			sub
+				Ammo 6
+				caliber <55mm shell>
+			end
+		end
+
+		HeavyActuator 4
+		mass -2
+	end
+	inv
+		ArmArmor 4
+		Mass -2
+	end
+
+Arm
+	Name <Left Arm>
+	Armor 3
+	mass -1
+	sub
+		Hand
+		name <Left Hand>
+
+		Mount
+		Name <Left Arm Mount>
+
+		HeavyActuator 4
+		mass -2
+	end
+	inv
+		Shield 4
+		DefBonus 1
+		Mass -1
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 4
+	mass -1
+	sub
+		HoverJet 6
+	end
+	inv
+		LegArmor 2
+		Mass -1
+	end
+
+Leg
+	Name <Left Leg>
+	Armor 4
+	mass -1
+	sub
+		HoverJet 6
+	end
+	inv
+		LegArmor 2
+		Mass -1
+	end
+end
+
+

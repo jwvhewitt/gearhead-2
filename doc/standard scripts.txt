@@ -1,0 +1,32 @@
+********************
+***   OVERVIEW   ***
+********************
+
+Certain scripts get used over and over again in many places. Rather
+than copying them all over the place, the standard scripts mechanism
+allows them to be defined once and then used as needed.
+
+
+*******************************************
+***   REQUESTING  A  STANDARD  SCRIPT   ***
+*******************************************
+
+Only physical gears (those with G > 0) may request a standard script.
+The request is a string attribute which begins with *. For instance:
+
+*CLUE_SURVIVAL <*Survival_GetMeat 25>
+
+This will add a script to the gear's CLUE_SURVIVAL trigger. The script
+to be added is *SURVIVAL_GETMEAT, and it takes one parameter (25).
+
+Standard scripts are identified by their name. Names must be unique.
+
+
+*********************************
+***   SUBSTITUTION  STRINGS   ***
+*********************************
+
+	%id%		Script ID/Namespace
+	%1%..%8%	Parameters
+
+

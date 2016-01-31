@@ -1,0 +1,273 @@
+%%
+%% *CS_Duel Content
+%%
+%%
+%% The PC is about to duel somebody as part of the core story.
+%%
+%% The parent plot sets the plot status to this layer's ID when ready.
+%% This component should move the opponent from its current location to the
+%% contest location at update, and then move the opponent back to its
+%% original location at the end of the battle.
+%%
+%% Param1: The Challenger
+%% Param2: The Challenger's home scene, for the purpose of this component
+%% Param3: The outdoor scene where the duel will take place
+%%
+%% NEEDED SCRIPTS: To deal with the ending, the parent plot must define two
+%% scripts:
+%% 	.%id%_%plotid%_GoWin
+%% 	.%id%_%plotid%_GoLose
+%% These scripts should set story memos.
+%% %id% is the ID of the duel layer; so, if it was generated as subplot 1,
+%% the calling plot would use %id1%.
+
+Content
+	name <Asteroid Duel>
+	desc <The PC and the NPC will fight on an asteroid.>
+	requires <*CS_Duel 3:SPACE>
+	Size 5
+
+	% E1 is the challenger
+	% E2 is the challenger's home scene
+	% E3 is the outdoor scene where the duel will take place
+	% E4 is the duel encounter
+	Element4 <Prefab>
+	Place4 <%e3%>
+
+	% P%id%01 = Initialization Counter
+	update <if= P%id%01 0 MoveNPC %1% %4% SetNPCTeam %1% 2 NPCLevel %1% StoryDL P= %id%01 1>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop%  ifChatNPCInPlay else .%id%_GoNotInPlay Goto .%id%_GoChallenge>
+		*.%id%_GoChallenge <*ArenaChallenge .%id%_GoThemeInfo>
+		*.%id%_GoThemeInfo <*THEME_EXPO&Enemy NA>
+		*.%id%_GoNotInPlay <*WaitingForDuel %3%>
+
+		MetaScene 4 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		% L4 = Identity of enemy NPC
+		MapWidth 30
+		MapHeight 30
+		AsteroidMap
+		RockyTiles
+
+		% Suffocation effect...
+		Vacuum
+		SpaceBackdrop
+
+		special <ARENA SOLO>
+
+		Start <if= L2 0 L= 2 1   Alert 1 ForceChat %1%>
+		nu1 <if= T1 0  Return   if= L1 0 L= 1 1   MoveNPC %1% %2%  History 4  Print 2 LoseRenown  Trigger0 .%id%_%plotid%_GoLose>
+		nu2 <if= T2 0           if= L1 0 L= 1 2   MoveNPC %1% %2%  History 5  Print 2 AddRenown 1   XPV 100   Trigger0 .%id%_%plotid%_GoWin>
+
+		Msg1 <%name1% found a large asteroid to fight on>
+		Msg2 <%name1% returns to %name2%.>
+		Msg4 <You were defeated by %name1% in a duel.>
+		Msg5 <You defeated %name1% in a duel.>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			SetEnemy 1
+			ParaX 25
+			ParaY 25
+		end
+
+	end
+	inv
+		STC ENCOUNTER-DUEL
+		name <%name1%'s Mecha>
+		update <if= PlotStatus %plotid% %id% else GoHide ShowEncounter SetStat STAT_MetaVisibility 0  Goto GoSetOrders>
+	end
+
+Content
+	name <Battle Royale>
+	desc <The PC, the NPC, and all their henchmen will fight. Booyah!>
+	requires <*CS_Duel -1:PDASS ~1:THIEF ~1:EVIL_ -1:GOOD_ ~1:CRIHN ~+Gfa -!Ne ~!Hi ~!Ex>
+	Size 8
+
+	% E1 is the challenger
+	% E2 is the challenger's home scene
+	% E3 is the outdoor scene where the duel will take place
+	% E4 is the duel encounter
+	Element4 <Prefab>
+	Place4 <%e3%>
+
+	% P%id%01 = Initialization Counter
+	update <if= PlotStatus %plotid% %id% else %pop% if= P%id%01 0 MoveNPC %1% %4% SetNPCTeam %1% 2 NPCLevel %1% StoryDL P= %id%01 1>
+
+	sub
+		Persona 1
+		rumor%id% <%name1% plays by Martian rules.>
+		greeting <if= PlotStatus %plotid% %id% else %pop%  ifChatNPCInPlay else .%id%_GoNotInPlay Goto .%id%_GoChallenge>
+		*.%id%_GoNotInPlay <*WaitingForDuel %3%>
+		.%id%_GoChallenge <EndChat Say %id%01 AddChat %id%01 AddChat %id%02>
+
+		result%id%01 <EndChat Say %id%02 AddChat %id%03>
+		result%id%02 <EndChat Say %id%03 AddChat %id%03>
+		*result%id%03 <*THEME_EXPO&Enemy NA>
+
+		Msg%id%01 <This duel will be me and all of my lancemates against you and all of your lancemates. Whoever has the last mecha standing wins the match.>
+		Msg%id%01_1 <For this duel, we'll be using Martian rules. It's going to be me and my team against you and your team. Whichever side has the last lancemate standing wins.>
+		Msg%id%01_2 <This is going to be a battle royale match. You get to bring all of your lancemates, and I get to bring all of my lancemates.>
+		Msg%id%02 <Well, you should have thought of that before you agreed to this duel! Let's get this match underway.>
+		Msg%id%02_1 <It's a bit too late to be whining about that now! You should have thought of that before coming here.>
+		Msg%id%03 <That's the spirit! Let's get this match underway.>
+		Msg%id%03_1 <Now that we're all agreed, let's get this match underway.>
+		Msg%id%03_2 <Okay, now that the rules have been settled we can start the match.>
+		Prompt%id%01 <But I don't have any lancemates!>
+		CPrompt%id%01 <if= T-3 0 Accept>
+		Prompt%id%02 <That sounds fair.>
+		Prompt%id%02_1 <Sounds good.>
+		Prompt%id%02_2 <All right.>
+		Prompt%id%03 <[Continue]>
+
+		MetaScene 4 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		% L4 = Identity of enemy NPC
+		MapWidth 30
+		MapHeight 30
+
+		special <ARENA>
+
+		Start <if= L2 0 L= 2 1   ForceChat %1%>
+		nu1 <if= T1 0  Return   if= L1 0 L= 1 1   MoveNPC %1% %2%  History 4  Print 2 LoseRenown  Trigger0 .%id%_%plotid%_GoLose>
+		nu2 <if= T2 0           if= L1 0 L= 1 2   MoveNPC %1% %2%  History 5  Print 2 AddRenown 1   XPV 100  Salvage   Trigger0 .%id%_%plotid%_GoWin>
+
+		Msg2 <%name1% returns to %name2%.>
+		Msg4 <You were defeated by %name1% and \PPR %1% lancemates in a duel.>
+		Msg5 <You defeated %name1% and \PPR %1% lancemates in a duel.>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			SetEnemy 1
+			Deploy <SetSelfFaction NPCFac %1%   WMecha 2 StoryDL 70>
+			ParaX 25
+			ParaY 25
+		end
+
+	end
+	inv
+		STC ENCOUNTER-DUEL
+		name <%name1%'s Mecha>
+		update <if= PlotStatus %plotid% %id% else GoHide ShowEncounter SetStat STAT_MetaVisibility 0  Goto GoSetOrders>
+	end
+
+
+Content
+	name <Regular Duel>
+	desc <The PC and the NPC will fight. Nothing special happens.>
+	requires <*CS_Duel>
+	Size 5
+
+	% E1 is the challenger
+	% E2 is the challenger's home scene
+	% E3 is the outdoor scene where the duel will take place
+	% E4 is the duel encounter
+	Element4 <Prefab>
+	Place4 <%e3%>
+
+	% P%id%01 = Initialization Counter
+	update <if= PlotStatus %plotid% %id% else %pop% if= P%id%01 0 MoveNPC %1% %4% SetNPCTeam %1% 2 NPCLevel %1% StoryDL P= %id%01 1>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop%  ifChatNPCInPlay else .%id%_GoNotInPlay Goto .%id%_GoChallenge>
+		*.%id%_GoChallenge <*ArenaChallenge .%id%_GoThemeInfo>
+		*.%id%_GoThemeInfo <*THEME_EXPO&Enemy NA>
+		*.%id%_GoNotInPlay <*WaitingForDuel %3%>
+
+		MetaScene 4 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		% L4 = Identity of enemy NPC
+		MapWidth 30
+		MapHeight 30
+
+		special <ARENA SOLO>
+
+		Start <if= L2 0 L= 2 1   ForceChat %1%>
+		nu1 <if= T1 0  Return   if= L1 0 L= 1 1   MoveNPC %1% %2%  History 4  Print 2 LoseRenown  Trigger0 .%id%_%plotid%_GoLose>
+		nu2 <if= T2 0           if= L1 0 L= 1 2   MoveNPC %1% %2%  History 5  Print 2 AddRenown 1   XPV 100   Trigger0 .%id%_%plotid%_GoWin>
+
+		Msg2 <%name1% returns to %name2%.>
+		Msg4 <You were defeated by %name1% in a duel.>
+		Msg5 <You defeated %name1% in a duel.>
+
+		sub
+			team 1
+			SetEnemy 2
+			ParaX 5
+			ParaY 5
+
+			team 2
+			SetEnemy 1
+			ParaX 25
+			ParaY 25
+		end
+
+	end
+	inv
+		STC ENCOUNTER-DUEL
+		name <%name1%'s Mecha>
+		update <if= PlotStatus %plotid% %id% else GoHide ShowEncounter SetStat STAT_MetaVisibility 0  Goto GoSetOrders>
+	end
+
+%%
+%% *:CS_TournamentMatch Content
+%%
+%%  There's apparently a tournament going on. The PC will be able to challenge a NPC
+%%  to a duel, which will be handled by the above subplot type.
+%%
+%% NEEDED SCRIPTS: To deal with the ending, the parent plot must define two
+%% scripts:
+%% 	.%id%_%plotid%_GoWin
+%% 	.%id%_%plotid%_GoLose
+%%
+%% PARAM1: The NPC to be challenged
+%% PARAM2: The home scene for this NPC
+
+Content
+	name <Basic Tournament Match>
+	desc <You're going to challenge some guy.>
+	requires <*:CS_TournamentMatch>
+
+	% E1 is the NPC to be challenged
+	% E2 is the home scene for the NPC
+	% E3 is a location for the duel.
+	Element3 <Scene Environs !Near -7>
+
+	% As long as we're still at the first phase, the NPC's death will end the plot.
+	start <if= PlotStatus %plotid% %id% ifNPCDead %1% Goto .%id1%_%plotid%_GoLose>
+
+	% Resolution Scripts
+	.%id1%_%plotid%_GoWin  <WinSubPlot %plotid%   Trigger0 .%id%_%plotid%_GoWin>
+	.%id1%_%plotid%_GoLose <LoseSubPlot %plotid%  Trigger0 .%id%_%plotid%_GoLose>
+
+	% SubPlot1 is the duel itself
+	SubPlot1 <*CS_Duel&NoDerailment 1 2 3>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else %pop% Goto GoFirstTime>
+		*GoFirstTime <*PCChallengeNPC GoMakeChallenge GoWussOut>
+		GoMakeChallenge <History %id%01 PMemo %plotid% %id%01 SetPlotStatus %plotid1% %id1% Goto GoAcceptChallenge>
+		*GoAcceptChallenge <*IAcceptYourChallenge %3%>
+		*GoWussOut <*GodImBored>
+		Msg%id%01 <You challenged %name1% to a duel in \EXACT_SCENE %3% .>
+	end
+
+

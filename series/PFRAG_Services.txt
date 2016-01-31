@@ -1,0 +1,972 @@
+% TYPE: *SHOP_[whatever]
+%  Someone is gonna sell stuff to the PC.
+%  PARAM1: Exit script label
+
+% TYPE: *SHOP_ESSENTIALS
+
+	Persona
+	requires <*SHOP_ESSENTIALS>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <ESSENTIAL>
+	KEYWORDS <ESSENTIAL>
+	Msg%id%01 <There are a number of items that every cavalier needs. I've gathered all of these essentials in one place. How would you like to see my wares?>
+	Msg%id%02 <If you can't find what you're looking for today, remember that it might be here tomorrow.>
+	Prompt%id%01 <I'll take a look.>
+	Prompt%id%02 <I've already got everything I need.>
+
+% TYPE: *SHOP_CASINO
+
+	Persona
+	requires <*SHOP_CASINO>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <WEAPON ARMOR EXOTIC ANTIQUE MECHA>
+	Msg%id%01 <When you've won big in the casino, why not treat yourself to something nice? I carry a selection of high-end merchandise that's guaranteed to make any cavalier smile.>
+	Msg%id%02 <Take your time. If you see something that you can't afford, maybe you could try playing more games!>
+	Prompt%id%01 <Alright, I'll see what you have.>
+	Prompt%id%02 <No way, I'm saving my money.>
+
+
+% TYPE: *SHOP_SPECIALIST
+
+	Persona
+	requires <*SHOP_SPECIALIST ~restaurant ~cuisine>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <FOOD>
+	KEYWORDS <FOOD>
+	Msg%id%01 <This is \ChatNPC 's Grocery Mart. I carry a fine variety of packaged foods.>
+	Msg%id%02 <Yes, I think you should be able to find some of those here.>
+	Prompt%id%01 <I could use some rations.>
+	Prompt%id%02 <Maybe I'll be back when I'm hungry.>
+
+	Persona
+	requires <*SHOP_SPECIALIST Easygoing>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <ACCESSORY THROWN GRENADE>
+	KEYWORDS <ACCESSORY THROWN GRENADE>
+	Msg%id%01 <This is an accessory shop. Take a look, I'm sure you'll find something you just gotta have!>
+	Msg%id%02 <Prices should be marked on everything. I'll be over here if you need any help.>
+	Prompt%id%01 <Show me what you've got.>
+	Prompt%id%02 <Thanks, but I don't need anything.>
+
+	Persona
+	requires <*SHOP_SPECIALIST Passionate>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <MEXTRA>
+	KEYWORDS <MEXTRA>
+	Msg%id%01 <This is my customization shop. Here, you can get anything you need to juice up your ride.>
+	Msg%id%02 <We've got all kinds of parts. Find the ones that are right for your project.>
+	Prompt%id%01 <Let me see what you have.>
+	Prompt%id%02 <Nice. I'll be back later.>
+
+	Persona
+	requires <*SHOP_SPECIALIST Sociable>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <INSTRUMENT>
+	KEYWORDS <INSTRUMENT>
+	Msg%id%01 <This is a music shop. We have all kinds of musical instruments.>
+	Msg%id%02 <Feel free to try out the instruments before you buy. It's the only way to be sure which one suits you best.>
+	Prompt%id%01 <I'd like to take a look.>
+	Prompt%id%02 <Sorry, I can't use any of this.>
+
+	Persona
+	requires <*SHOP_SPECIALIST Pragmatic>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <CYBERWARE>
+	KEYWORDS <CYBERWARE>
+	Msg%id%01 <You could call this a self-improvement shop. I sell cyberware and physical augmentations.>
+	Msg%id%02 <The human body has its limits. With technology, we can move beyond those.>
+	Prompt%id%01 <Can you show me what you have?>
+	Prompt%id%02 <Thanks, but no thanks.>
+
+	Persona
+	requires <*SHOP_SPECIALIST Cheerful>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <SPORTS>
+	KEYWORDS <SPORTS>
+	Msg%id%01 <Welcome to \ChatNPC 's Sporting Goods. Whatever your game is, you'll find the equipment you need right here.>
+	Msg%id%02 <Take a look through the merchandise.>
+	Prompt%id%01 <Let me see what you have.>
+	Prompt%id%02 <This isn't what I'm looking for.>
+
+	Persona
+	requires <*SHOP_SPECIALIST Melancholy>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <SHIELD>
+	KEYWORDS <SHIELD>
+	Msg%id%01 <This is \ChatNPC 's Shield Source. In combat, a good shield might be the only thing standing between you and an early death.>
+	Msg%id%02 <Take a look through our selection. Choose the shield that's right for you.>
+	Prompt%id%01 <I'd like to buy a shield.>
+	Prompt%id%02 <I'll come back later.>
+
+	Persona
+	requires <*SHOP_SPECIALIST Shy>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <EXOTIC SCIENCE ODDITIES>
+	KEYWORDS <EXOTIC SCIENCE ODDITIES>
+	Msg%id%01 <Welcome to \ChatNPC 's Oddities and Antiquities. I have a fascinating variety of rare and unusual items for the discerning collector.>
+	Msg%id%02 <Take your time looking around... I know, it's all interesting.>
+	Prompt%id%01 <Let me see what you have.>
+	Prompt%id%02 <Maybe I'll take a look later.>
+
+% TYPE: *SHOP_HEALTHCLUB
+
+	Persona
+	requires <*SHOP_HEALTHCLUB>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 School .%id%_Skills Goto %1%>
+	.%id%_Skills <7 8 9>
+	result%id%02 <Goto %1%>
+	Msg%id%01 <This is a health club. We have all sorts of equipment for endurance, cardiovascular, and weight training.>
+	Msg%id%02 <Remember: no pain, no gain.>
+	Msg%id%02_1 <Give it everything you've got!>
+	Prompt%id%01 <I'd like to work out.>
+	Prompt%id%02 <Maybe I'll come back later.>
+
+	Persona
+	requires <*SHOP_HEALTHCLUB Passionate>
+	% V%id%01 = Have visited before
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+	result%id%01 <EndChat Say %id%02 V= %id%01 1 School .%id%_Skills Goto %1%>
+	.%id%_Skills <7 8 9>
+	result%id%02 <Goto %1%>
+	result%id%03 <V= %id%01 -1   AddCheerful -d10   Goto %1%>
+	Msg%id%01_1 <Say, you're looking a bit out of shape. Have you been gaining weight? What you need is some honest exercise.>
+	CMsg%id%01_1 <if# v%id%01 1 Accept>
+	Msg%id%01_2 <So you're back for more punishment, hey? I'm here to help you anytime you're ready.>
+	CMsg%id%01_2 <if= v%id%01 1 Accept>
+	Msg%id%02 <Good health is its own reward.>
+	Prompt%id%01 <Let's work out.>
+	Prompt%id%02 <Maybe some other time.>
+	Prompt%id%03 <Mind your own business..>
+	CPrompt%id%03 <if= V%id%01 0 Accept>
+	Prompt%id%03_1 <Buzz off, you ape.>
+	CPrompt%id%03_1 <ifPCMelancholy Accept>
+
+% TYPE: *SHOP_ELECTRONICS
+
+	Persona
+	requires <*SHOP_ELECTRONICS>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <ELECTRONICS SOFTWARE>
+	KEYWORDS <ELECTRONICS SOFTWARE>
+	Msg%id%01 <I sell all manner of electronics. Whatever kind of gadget you need, you'll find it here.>
+	Msg%id%02 <You can never go wrong by upgrading your current system.>
+	Prompt%id%01 <Let me see what you have.>
+	Prompt%id%02 <Thanks, I'll come back later.>
+
+	Persona
+	requires <*SHOP_ELECTRONICS Sociable>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <COMPUTER SOFTWARE COMMUNICATIONS>
+	KEYWORDS <COMPUTER SOFTWARE COMMUNICATIONS>
+	Msg%id%01 <This shop has a variety of computers, software, and communications equipment. See anything that interests you?>
+	Msg%id%02 <If you need help installing the software, just ask and I can show you how.>
+	Prompt%id%01 <I could use some new gear.>
+	Prompt%id%02 <There's nothing here I need.>
+
+	Persona
+	requires <*SHOP_ELECTRONICS Shy>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <COMPUTER SOFTWARE>
+	KEYWORDS <COMPUTER SOFTWARE>
+	Msg%id%01 <I sell computers. There's also a bit of software.>
+	Msg%id%02 <Make your selection, please.>
+	Prompt%id%01 <Show me what you have.>
+	Prompt%id%02 <Sorry, I don't need anything right now.>
+
+	Persona
+	requires <*SHOP_ELECTRONICS Cheerful>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <ELECTRONICS ENTERTAINMENT SOFTWARE>
+	KEYWORDS <ELECTRONICS ENTERTAINMENT SOFTWARE>
+	Msg%id%01 <Welcome to \ChatNPC 's software and game source. We have computers, games, and electronic devices.>
+	Msg%id%02 <If it looks like fun, it probably is!>
+	Prompt%id%01 <I'll take a look at your gear.>
+	Prompt%id%02 <Maybe I'll come back later.>
+
+
+% TYPE: *SHOP_MECHA
+
+	Persona
+	requires <*SHOP_MECHA>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <MECHA>
+	KEYWORDS <MECHA>
+	Msg%id%01 <This shop has all kinds of mecha, from pico-class scouts to giga-class dreadnoughts.>
+	Msg%id%02 <Take a look through the catalogues, let me know if you see anything you're interested in.>
+	Prompt%id%01 <I'll take a look at your stuff.>
+	Prompt%id%02 <Maybe I'll come back later.>
+
+	Persona
+	requires <*SHOP_MECHA Sociable>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <MECHA MEK_ARM>
+	KEYWORDS <MECHA MEK_ARM>
+	Msg%id%01 <A mecha is more than just a tool- it's also a fashion statement. Take a look at my selection of mecha and mecha armor, and design your own look.>
+	Msg%id%02 <Remember that the more expensive a mecha is, the cooler it is.>
+	Prompt%id%01 <Alright. Show me what you have.>
+	Prompt%id%02 <I don't really need a new mecha just yet.>
+
+	Persona
+	requires <*SHOP_MECHA Shy>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <MECHA MEXTRA>
+	KEYWORDS <MECHA MEXTRA>
+	Msg%id%01 <I stock mecha and mecha parts.>
+	Msg%id%02 <Sure. You can see everything here.>
+	Prompt%id%01 <Let me see what you have.>
+	Prompt%id%02 <Sorry, I don't need anything.>
+
+	Persona
+	requires <*SHOP_MECHA Easygoing>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <MECHA>
+	KEYWORDS <MECHA>
+	Msg%id%01 <I stock a variety of mecha. I don't know if there's anything you'd like, but it couldn't hurt to take a look.>
+	Msg%id%02 <Take your time. I'll be just over here.>
+	Prompt%id%01 <Alright, I'll take a look.>
+	Prompt%id%02 <I'm not interested.>
+
+	Persona
+	requires <*SHOP_MECHA Passionate>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <MECHA>
+	KEYWORDS <MECHA>
+	Msg%id%01 <This is a mecha shop. I've got all kinds of steel beasts just waiting for a new home.>
+	Msg%id%02 <The most important thing a cavalier can have is \PPR 0 mecha. It's your ride, your power, and sometimes your only friend...>
+	Prompt%id%01 <I could use a new mecha.>
+	Prompt%id%02 <I don't need anything right now.>
+
+	Persona
+	requires <*SHOP_MECHA Cheerful>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <MECHA MEK_WEP>
+	KEYWORDS <MECHA MEK_WEP>
+	Msg%id%01 <Here at \ChatNPC 's Mecha Mart you get more bang for your buck- literally! I carry a fine selection of mecha and mecha weapons.>
+	Msg%id%02 <Remember, for all this week I'm offering complimentary gum with each purchase.>
+	Prompt%id%01 <Show me the goods.>
+	Prompt%id%02 <There's nothing here I want.>
+
+	Persona
+	requires <*SHOP_MECHA Melancholy>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <MECHA>
+	KEYWORDS <MECHA>
+	Msg%id%01 <I stock a variety of mecha, both locally produced and imported.>
+	Msg%id%02 <The one constant in the life of a cavalier is that no matter how good you are, you're going to need a replacement mecha someday. I guess you could say that your misfortune is my business.>
+	Prompt%id%01 <I'd like to see what you have.>
+	Prompt%id%02 <Maybe I'll be back later...>
+
+	Persona
+	requires <*SHOP_MECHA Pragmatic>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <MECHA MEK_ENG>
+	KEYWORDS <MECHA MEK_ENG>
+	Msg%id%01 <I have a variety of mecha, and also spare parts for customizing your steed.>
+	Msg%id%02 <Take your time looking through the stock.>
+	Prompt%id%01 <Show me what you have.>
+	Prompt%id%02 <There's nothing here I need.>
+
+%       *SHOP_ARMOR
+
+	Persona
+	requires <*SHOP_ARMOR>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <ARMOR SHIELD>
+	KEYWORDS <ARMOR SHIELD>
+	Msg%id%01 <We have the latest in protective gear. Would you like to take a look?>
+	Msg%id%02 <We also perform fitting and customization at no extra charge.>
+	Prompt%id%01 <Let me see what you have.>
+	Prompt%id%02 <Maybe some other time.>
+
+	Persona
+	requires <*SHOP_ARMOR Sociable>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <CLOTHING>
+	KEYWORDS <CLOTHING>
+	Msg%id%01 <At this shop we carry a variety of different clothes.>
+	Msg%id%02 <If you need to try anything on, there's a changing room in the back.>
+	Prompt%id%01 <I'd like to buy something.>
+	Prompt%id%02 <Maybe some other time.>
+
+	Persona
+	requires <*SHOP_ARMOR Shy>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <ARMOR>
+	KEYWORDS <ARMOR>
+	Msg%id%01 <This shop sells armor. That's all.>
+	Msg%id%01_1 <This shop sells armor.>
+	Msg%id%02 <I'll be over here if you need any help.>
+	Prompt%id%01 <Let me see what you have.>
+	Prompt%id%02 <Sorry, I don't need to buy anything.>
+
+	Persona
+	requires <*SHOP_ARMOR Cheerful>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <CLOTHING ARMOR ACCESSORY>
+	KEYWORDS <CLOTHING ARMOR ACCESSORY>
+	Msg%id%01 <This is a cavalier fashion store. We sell armor, other clothes, and accessories.>
+	Msg%id%02 <I just know you'll find something you like!>
+	Prompt%id%01 <I'll take a look at what you have.>
+	Prompt%id%02 <Maybe I'll come back later.>
+
+	Persona
+	requires <*SHOP_ARMOR Charm ~Sociable>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <CLOTHING SHIELD ACCESSORY>
+	KEYWORDS <CLOTHING SHIELD ACCESSORY>
+	Msg%id%01 <This is \ChatNPC 's Style Source. We have a variety of clothes and accessories for the well-dressed mecha pilot. Would you like to take a look at our selection?>
+	Msg%id%02 <I'll be over here if you need any assistance.>
+	Msg%id%02_1 <I think we may even have some clothes in your size! If not, we also do alterations...>
+	CMsg%id%02_1 <ifG 12 PCCharm Accept>
+	Msg%id%02_2 <Absolutely everything in the store will look fabulous on you. Try some things on and let's see!>
+	CMsg%id%02_2 <ifG PCCharm 15 Accept>
+	Prompt%id%01 <Alright, that sounds good.>
+	Prompt%id%02 <No, not right now.>
+
+	Persona
+	requires <*SHOP_ARMOR Melancholy>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <ARMOR SHIELD>
+	KEYWORDS <ARMOR SHIELD>
+	Msg%id%01 <Death is always a risk for adventurers. That's why you need the best protective gear.>
+	Msg%id%02 <Armor can save your life. It never pays to try and scrimp on that.>
+	Prompt%id%01 <Show me what you have.>
+	Prompt%id%02 <Thanks, but I don't need anything.>
+
+	Persona
+	requires <*SHOP_ARMOR Easygoing>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <ARMOR CLOTHING>
+	KEYWORDS <ARMOR CLOTHING>
+	Msg%id%01 <This is \ChatNPC 's Armor Emporium. How'd you like to browse our extensive range of "AdventuWear"?>
+	Msg%id%02 <Take your time. We've got all kinds of products to choose from!>
+	Prompt%id%01 <Alright, I'll have a look.>
+	Prompt%id%02 <I'm not interested right now.>
+
+	Persona
+	requires <*SHOP_ARMOR Passionate>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <ARMOR MECHA>
+	KEYWORDS <ARMOR MECHA>
+	Msg%id%01 <To excel on the modern battlefield you need maximum protection. We carry everything, from basic field suits to Giga-class battroids.>
+	Msg%id%02 <Take a good look. Let me know if you see anything you like.>
+	Prompt%id%01 <I'd like to see what you have.>
+	Prompt%id%02 <Thanks, but not right now.>
+
+	Persona
+	requires <*SHOP_ARMOR Wangtta ~Sociable>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <CLOTHING TOOL>
+	KEYWORDS <CLOTHING TOOL>
+	Msg%id%01 <This is a second hand and factory reject outlet. We save on costs, and pass some of those savings on to you! Sure, our selection isn't the best, but for a cavalier on a budget this is the place to shop. Want to have a look?>
+	Msg%id%02 <If you find anything good in all this junk let me know and I'll tell you how much it is.>
+	Prompt%id%01 <Let me see what you have.>
+	Prompt%id%02 <No thanks.>
+
+	Persona
+	requires <*SHOP_ARMOR C:MUGLE>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <ARMOR CLOTHING>
+	KEYWORDS <ARMOR CLOTHING>
+	Msg%id%01 <This is MUGL Fashion. Experience the full range of our style and character goods.>
+	Msg%id%02 <Everything you see here has been designed for maximum cuteness.>
+	Prompt%id%01 <I'll see what you have.>
+	Prompt%id%02 <No thanks.>
+
+
+%       *SHOP_WEAPON
+
+	Persona
+	requires <*SHOP_WEAPON>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <WEAPON ACCESSORY>
+	KEYWORDS <WEAPON ACCESSORY>
+	Msg%id%01 <I have the latest weapons and accessories.>
+	Msg%id%02 <Take a look around. If you have any questions, I should be able to answer them.>
+	Prompt%id%01 <I'd like to see your wares.>
+	Prompt%id%02 <I'm just browsing, thanks.>
+
+
+	Persona
+	requires <*SHOP_WEAPON Melancholy>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <MISSILE GRENADE>
+	KEYWORDS <MISSILE GRENADE>
+	Msg%id%01 <This is \ChatNPC 's Guns. We sell rifles, pistols, assault weapons and the ammo for them.>
+	Msg%id%02 <Take a look through all of our killing tools.>
+	Prompt%id%01 <I'd like to buy a gun.>
+	Prompt%id%02 <Thanks, but I don't need anything.>
+
+	Persona
+	requires <*SHOP_WEAPON Easygoing>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <WEAPON>
+	KEYWORDS <WEAPON>
+	Msg%id%01 <At this store we sell weapons and ammo. That's two things every cavalier needs.>
+	Msg%id%02 <Look through the racks, see if we have anything you like.>
+	Prompt%id%01 <Let me see what you've got.>
+	Prompt%id%02 <Maybe some other time.>
+
+	Persona
+	requires <*SHOP_WEAPON Passionate>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <WEAPON Mecha Mek_Wep>
+	KEYWORDS <WEAPON Mecha Mek_Wep>
+	Msg%id%01 <When the going gets tough, what you need is more firepower! We have all kinds of personal and battlefield armaments.>
+	Msg%id%02 <Remember, bigger is better.>
+	Prompt%id%01 <I'd like to see your wares.>
+	Prompt%id%02 <I'll take a look later.>
+
+	Persona
+	requires <*SHOP_WEAPON Sociable>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <WEAPON GRENADE>
+	KEYWORDS <WEAPON GRENADE>
+	Msg%id%01 <This is \ChatNPC 's Armaments. I carry a full range of guns, weapons, and grenades.>
+	Msg%id%02 <Thanks to my distributor connections, you'll find that the selection of products here is second to none!>
+	Prompt%id%01 <I'd like to buy some weapons.>
+	Prompt%id%02 <Maybe I'll come here later.>
+
+	Persona
+	requires <*SHOP_WEAPON Shy>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <WEAPON>
+	KEYWORDS <WEAPON>
+	Msg%id%01 <Our shop has all the weapons you're ever going to need.>
+	Msg%id%01_1 <I have all the weapons you're ever going to need. Just weapons.>
+	Msg%id%02 <We don't carry any accessories, but when you can blow a hole in a titanium wall what more do you need?>
+	Prompt%id%01 <Let me have a look.>
+	Prompt%id%02 <Maybe I'll come back later.>
+
+	Persona
+	requires <*SHOP_WEAPON Pragmatic>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <WEAPON Mek_Wep>
+	KEYWORDS <WEAPON Mek_Wep>
+	Msg%id%01 <I stock all kinds of weapons- both those for personal use, and those you can install on your mecha.>
+	Msg%id%02 <Remember, don't try to lift the hundred ton hammer by yourself.>
+	Prompt%id%01 <Let me see what you have.>
+	Prompt%id%02 <Sorry, but I'm looking for something else.>
+
+	Persona
+	requires <*SHOP_WEAPON Spiritual ~FAITH>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <MELEE EXOTIC>
+	KEYWORDS <MELEE EXOTIC>
+	Msg%id%01 <A true warrior follows the code of the sword. Are you here to see my fine selection of blades?>
+	Msg%id%02 <Honor your weapon, and it will bring you victory in combat.>
+	Prompt%id%01 <Show me what you've got.>
+	Prompt%id%02 <There's nothing here I need.>
+
+% TYPE: *SHOP_BLACKMARKET
+%  Every black market shop should sell CONTRABAND, but other than that they can sell anything.
+
+	Persona
+	requires <*SHOP_BLACKMARKET Easygoing>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <WEAPON CONTRABAND>
+	KEYWORDS <BLACK MARKET>
+	Msg%id%01 <Hey, I just so happen to have all these great things lying about. I can't take any responsibility for the safety of these products, but if you'd like to take a look...>
+	Msg%id%02 <Be sure to go outside before testing any of these weapons. No warranty.>
+	Prompt%id%01 <Show me the goods.>
+	Prompt%id%02 <This place looks scary. I'm going.>
+
+	Persona
+	requires <*SHOP_BLACKMARKET Sociable>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <ifPCLawful else .%id%_GoR1Win EndChat Say %id%02 shop .%id%_badwares Goto %1%>
+	.%id%_GoR1Win <EndChat Say %id%03 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <WEAPON ARMOR GRENADE CLOTHING MEDICINE CYBERWARE ELECTRONICS TOOL CONTRABAND>
+	.%id%_badwares <TOOL CLOTHING Melee>
+	KEYWORDS <BLACK MARKET>
+	Msg%id%01 <Well then, are you here to buy something or just to chat? I can do either, it doesn't bother me either way.>
+	Msg%id%02 <Look around all you want. If you don't see it on the shelves, then I don't have it in stock.>
+	Msg%id%03 <If you'd like you can come see my back room- I've got all kinds of things back there that the regular customers wouldn't have much use for.>
+	Prompt%id%01 <I need to buy some equipment.>
+	Prompt%id%02 <Maybe I'll come back later.>
+
+	Persona
+	requires <*SHOP_BLACKMARKET>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <ifPCCriminal else .%id%_GoR1Fail EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	.%id%_GoR1Fail <EndChat Say %id%03 shop .%id%_badwares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <WEAPON GRENADE ARMOR CLOTHING SHIELD MEDICINE CYBERWARE ELECTRONICS TOOL FOOD CONTRABAND>
+	.%id%_badwares <TOOL FOOD>
+	KEYWORDS <BLACK MARKET>
+	Msg%id%01 <I have a fine selection of tools for the adventuring professional, if you catch my drift.>
+	Msg%id%02 <You look like the sort I can trust... I'll let you see the good stuff.>
+	Msg%id%03 <Here's everything I have in stock. Check back later and I may have something else.>
+	Prompt%id%01 <I'd like to see what you have.>
+	Prompt%id%02 <You don't have anything I want.>
+
+
+% TYPE: *SHOP_GENERAL
+
+	Persona
+	requires <*SHOP_GENERAL ~Village>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <WEAPON CLOTHING FOOD TOOL COMMUNICATIONS MECHA ESSENTIAL>
+	KEYWORDS <WEAPON CLOTHING FOOD TOOL COMMUNICATIONS MECHA>
+	Msg%id%01 <There's no way to keep everything in stock, so I stick to the basics. We have a variety of adventuring goods.>
+	Msg%id%02 <If there's something you need that I don't have, let me know and I'll try to order it. Might take a week or two to get here.>
+	Prompt%id%01 <I'll see what you have.>
+	Prompt%id%02 <Thanks, but I don't need anything.>
+
+	Persona
+	requires <*SHOP_GENERAL>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <MISSILE GRENADE TOOL CLOTHING FOOD MEDICINE ELECTRONICS ESSENTIAL>
+	KEYWORDS <MISSILE GRENADE TOOL CLOTHING FOOD MEDICINE ELECTRONICS>
+	Msg%id%01 <I have a fine selection of adventuring equipment.>
+	Msg%id%02 <You should be able to find anything you need. If not, we can get it in stock later.>
+	Prompt%id%01 <Let me see what you've got.>
+	Prompt%id%02 <Maybe some other time.>
+
+	Persona
+	requires <*SHOP_GENERAL Sociable>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <WEAPON CLOTHING ARMOR FOOD TOOL COMMUNICATIONS ESSENTIAL>
+	KEYWORDS <WEAPON CLOTHING ARMOR FOOD TOOL COMMUNICATIONS>
+	Msg%id%01 <I've spoken to a lot of cavaliers, and no matter what their specialty there's a couple of things that everyone needs. That's what I have in my store.>
+	Msg%id%02 <Here's my complete inventory. Take a nice long look through it all, and ask me if you have any problems.>
+	Prompt%id%01 <I could use some new gear.>
+	Prompt%id%02 <I don't need anything right now.>
+
+	Persona
+	requires <*SHOP_GENERAL Shy>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <TOOL CLOTHING FOOD ESSENTIAL>
+	KEYWORDS <TOOL CLOTHING FOOD>
+	Msg%id%01 <Our store has a good selection of tools, clothing, and food.>
+	Msg%id%02 <Take your time. Ask if you have any questions.>
+	Prompt%id%01 <I'd like to see your wares.>
+	Prompt%id%02 <Sorry, I don't need anything now.>
+
+	Persona
+	requires <*SHOP_GENERAL asteroid>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <TOOL COMMUNICATIONS SPACE FOOD ESSENTIAL>
+	KEYWORDS <TOOL COMMUNICATIONS SPACE FOOD>
+	Msg%id%01 <Our store has a good selection of survival goods. If you're planning to explore the outside, this is the stuff you'll need.>
+	Msg%id%02 <You'll need a complete spacesuit if you hope to survive after ejecting from your mecha.>
+	Prompt%id%01 <Alright, show me what you have.>
+	Prompt%id%02 <I don't need anything now.>
+
+	Persona
+	requires <*SHOP_GENERAL Spinner>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <MECHA SPACE FOOD ESSENTIAL>
+	KEYWORDS <MECHA SPACE FOOD>
+	Msg%id%01 <I stock a variety of exploration goods- rations, space gear, and even mecha.>
+	Msg%id%02 <In space, having the right equipment can mean the difference between life and death.>
+	Prompt%id%01 <I'd like to see what you have.>
+	Prompt%id%02 <Sorry, I don't need anything.>
+
+% TYPE: *SHOP_MONK
+%	What the hell is a monk shop? Well, one may encounter monks with shops
+%	throughout the game. These shops may do just about anything, from train
+%	the PC's skills to selling weapons or herbal medicine.
+
+	Persona
+	requires <*SHOP_MONK>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <RELIGION>
+	KEYWORDS <RELIGION>
+	Msg%id%01 <Welcome to my humble shrine. I create prayer beads and other goods for the faithful. Would you like to see what I have for sale?>
+	Msg%id%02 <May you find that which you seek.>
+	Prompt%id%01 <Alright, I'll take a look.>
+	Prompt%id%02 <Nope, not interested.>
+
+	Persona
+	requires <*SHOP_MONK Passionate>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 school .%id%_skills Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_skills <5 7 24>
+	KEYWORDS <RELIGION>
+	Msg%id%01 <I have studied martial arts for years. Now, it is time to pass on my knowledge to others. I offer lessons in martial arts, armed combat, and the ways of mysticism.>
+	Msg%id%02 <There is still much for you to learn. Let us begin.>
+	Prompt%id%01 <I'd like to study with you.>
+	Prompt%id%02 <Thanks, maybe some other time.>
+
+	Persona
+	requires <*SHOP_MONK Renowned>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <MELEE RELIGION>
+	KEYWORDS <MELEE RELIGION>
+	result%id%03 <EndChat ifPCSpiritual else .%id%_GoNoSpirit Say %id%03 shop .%id%_madskilz Goto %1%>
+	.%id%_GoNoSpirit <Say %id%04 school .%id%_badskilz Goto %1%>
+	.%id%_madskilz <4 5 6 11 24>
+	.%id%_badskilz <5 24>
+	Msg%id%01 <This is my dojo. If you would like to purchase a weapon I have a fine selection of blades. I also offer classes in martial arts, if that is more to your liking.>
+	Msg%id%02 <Master these blades, and you will have mastered yourself.>
+	Msg%id%03 <There is much I could teach a true adept like yourself. Come, let us practice together.>
+	Msg%id%04 <The path of martial arts leads to realization of the warrior spirit. Let us begin your lesson.>
+	Prompt%id%01 <I'd like to see your weapons.>
+	Prompt%id%02 <Maybe I'll come back later.>
+	Prompt%id%03 <I'd like to study martial arts.>
+
+
+% TYPE: *SKILL_TRAINING
+%	This NPC will train the PC's skills.
+%  PARAM1: Exit script label
+	Persona
+	requires <*SKILL_TRAINING>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 School .%id%_skills Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_skills <1 2 3 4 5 6>
+	Msg%id%01 <I can teach you many things about combat.>
+	Msg%id%02 <Keep studying and you'll see improvement eventually.>
+	Prompt%id%01 <I'd like to train.>
+	Prompt%id%02 <I'm just here to chat.>
+
+	Persona
+	requires <*SKILL_TRAINING POLIT Common>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 School .%id%_skills Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_skills <1 2 3 4 5 6  10 17 27>
+	Msg%id%01 <To be successful in politics you need to be both charismatic and observant. As a cavalier, you should probably also know how to pilot a mecha.>
+	Msg%id%02 <Money spent on training is never lost, though you may need to wait some time to see the effects.>
+	Prompt%id%01 <I'd like to train.>
+	Prompt%id%02 <I'm just here to chat.>
+
+	Persona
+	requires <*SKILL_TRAINING CORPO Common>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 School .%id%_skills Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_skills <1 2 3 4 5 6   13 18 15>
+	Msg%id%01 <To get ahead in this company you're going to need an edge; I can help you to achieve that.>
+	Msg%id%02 <Remember, the money you spend here is never wasted, unlike the money they spend in the R&D department.>
+	Prompt%id%01 <Let's train.>
+	Prompt%id%02 <Thanks, but I don't need any help right now.>
+
+	Persona
+	requires <*SKILL_TRAINING POLIC Common>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 School .%id%_skills Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_skills <1 2 3 4 5 6   16 20 27>
+	Msg%id%01 <As an officer of the law, you're going to need a wide variety of skills.>
+	Msg%id%02 <So, what do you want to study?>
+	Prompt%id%01 <I'm ready to learn.>
+	Prompt%id%02 <Sorry, I've got no time for training today.>
+
+	Persona
+	requires <*SKILL_TRAINING (MILIT|ADVEN) Common>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 School .%id%_skills Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_skills <1 2 3 4 5 6   11 16 26>
+	Msg%id%01 <To be a successful warrior you need to master many skills.>
+	Msg%id%02 <We'll begin your training slowly, then move on to the more dangerous lessons once you've proven yourself.>
+	Prompt%id%01 <Show me how to do it.>
+	Prompt%id%02 <Thanks, but I'm already a master.>
+
+
+% TYPE: *SERVICE_MECHANIC
+%  PARAM1: Exit script label
+
+	Persona
+	requires <*SERVICE_MECHANIC>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <>
+	Msg%id%01 <I do service on all kinds of machine. If you've got damage to fix, just bring it here.>
+	Msg%id%02 <Let me fire up the torch and see what I can do.>
+	Prompt%id%01 <I've got damage to fix.>
+	Prompt%id%02 <I don't need any service right now.>
+
+	Persona
+	requires <*SERVICE_MECHANIC SOCIABLE>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <TOOL MECHA>
+	Msg%id%01 <Our shop does service on all kinds of machine, and we also offer a variety of new and second hand mecha for sale.>
+	Msg%id%02 <Let me know what I can do for you.>
+	Prompt%id%01 <I need your services.>
+	Prompt%id%02 <Thanks, but I don't need anything now.>
+
+	Persona
+	requires <*SERVICE_MECHANIC PASSIONATE>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <MEK_ENG MEK_UP>
+	Msg%id%01 <We offer full repair services, and also offer a selection of mecha upgrades for the serious pilot.>
+	Msg%id%02 <Remember, you can never spend too much money on your mecha. Never.>
+	Prompt%id%01 <I'd like to see what you have.>
+	Prompt%id%02 <Sorry, I don't need any service.>
+
+	Persona
+	requires <*SERVICE_MECHANIC SPIRITUAL>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <MEXTRA>
+	Msg%id%01 <A mecha is more than just a machine- it's an extension of the pilot. I offer repair services and a selection of upgrade parts.>
+	Msg%id%02 <Take care of your ride, and it'll take care of you.>
+	Prompt%id%01 <I need some of that.>
+	Prompt%id%02 <There's nothing I need right now.>
+
+
+% TYPE: *SERVICE_BARTENDER
+%  PARAM1: Exit script label
+
+	Persona
+	requires <*SERVICE_BARTENDER>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 Cash+ -100 PCMoraleDmg -50 Mental>
+	result%id%02 <Goto %1%>
+	Msg%id%01 <Would you like something to drink? Cocktails are $100 each.>
+	Msg%id%02 <Here you go. Have a good time.>
+	Prompt%id%01 <Sure, I'll have a drink.>
+	CPrompt%id%01 <ifG PC$ 99 Accept>
+	Prompt%id%01_1 <Alright, give me one of whatever's on tap.>
+	Prompt%id%02 <No thanks.>
+	Prompt%id%02_1 <Sorry, I'm working now.>
+
+
+
+% TYPE: *SERVICE_DOCTOR
+%  PARAM1: Exit script label
+
+	Persona
+	requires <*SERVICE_DOCTOR>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <MEDICINE>
+	Keywords <MEDICINE>
+	Msg%id%01 <How are you feeling today?>
+	Msg%id%02 <Hop up on the table and I'll see what's wrong with you.>
+	Prompt%id%01 <I need some medical help.>
+	Prompt%id%02 <I'm fine.>
+
+	Persona
+	requires <*SERVICE_DOCTOR Cyberdoc>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <EndChat Say %id%02 shop .%id%_wares Goto %1%>
+	result%id%02 <Goto %1%>
+	.%id%_wares <MEDICINE CYBERWARE>
+	Keywords <MEDICINE CYBERWARE>
+	Msg%id%01 <I offer a full range of medical and cybernetic services. Whether you are in need of aid or augmentation I'll do my best to help.>
+	Msg%id%02 <Rest assured that you will receive the best possible care here.>
+	Prompt%id%01 <Let me see what you can do.>
+	Prompt%id%02 <Thankfully, I don't need any of that.>
+
+
+% TYPE: *SERVICE_RESTAURANT
+%  PARAM1: Exit script label
+
+	Persona
+	requires <*SERVICE_RESTAURANT>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	result%id%01 <NewChat ifG PC$ 74 else .%id%_GoNoMoney ifChatNPCInPlay else .%id%_GoNotHere Say %id%02 PCEat Cash+ -75>
+	.%id%_GoNoMoney <NewChat Say %id%03>
+	.%id%_GoNotHere <NewChat Say %id%04>
+	Keywords <FOOD RESTAURANT>
+	result%id%02 <Goto %1%>
+	Msg%id%01 <Welcome to the \SCENE RootSceneID Sandwich Stop. You can get a sandwich platter including two side dish choices for $75.>
+	Msg%id%02 <Here's your order. Enjoy your meal.>
+	Msg%id%03 <You don't have enough money to pay for this...>
+	Msg%id%04 <Sorry, I don't make deliveries. You'll have to come over here to order your sandwich.>
+	Prompt%id%01 <I'll take one.>
+	CPrompt%id%01 <ifG PCHunger 10 Accept>
+	Prompt%id%02 <No thanks, I'm not hungry.>
+
+	Persona
+	requires <*SERVICE_RESTAURANT Spinner Renowned>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+	result%id%01 <NewChat ifG PC$ 249 else .%id%_GoNoMoney ifChatNPCInPlay else .%id%_GoNotHere Say %id%02  PCEat Cash+ -250   PCMoraleDmg -15>
+	.%id%_GoNoMoney <NewChat Say %id%03>
+	.%id%_GoNotHere <NewChat Say %id%04>
+	Keywords <FOOD RESTAURANT>
+	result%id%02 <Goto %1%>
+	result%id%03 <Goto result%id%01>
+	Msg%id%01 <Welcome to \ChatNPC 's Kitchen. I serve only the freshest organic produce shipped directly from Earth. Try one of my entrees for only $250.>
+	Msg%id%02 <Please enjoy your meal.>
+	Msg%id%03 <I'm sorry, but importing foods from Earth is expensive. I can't afford to give this away for free.>
+	Msg%id%04 <You'll have to visit me in person if you want to eat. I can't exactly fax this meal over the phone.>
+	Prompt%id%01 <I'd like the eggplant and chicory fondue.>
+	CPrompt%id%01 <ifG PCHunger 10 Accept>
+	Prompt%id%02 <No thanks, I'm not hungry.>
+	Prompt%id%03 <I'd like the five bean casserole.>
+	CPrompt%id%03 <ifG PCHunger 10 Accept>
+
+	Persona
+	requires <*SERVICE_RESTAURANT L5PAT ~Renowned>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02>
+	Keywords <FOOD RESTAURANT>
+	result%id%01 <NewChat ifG PC$ 149 else .%id%_GoNoMoney ifChatNPCInPlay else .%id%_GoNotHere Say %id%02 PCEat Cash+ -150  PCMoraleDmg -8>
+	.%id%_GoNoMoney <NewChat Say %id%03>
+	.%id%_GoNotHere <NewChat Say %id%04>
+	result%id%02 <Goto %1%>
+	Msg%id%01 <This is \ChatNPC 's Bistro. We offer finely prepared tubesteak in beef, turkey, salmon, and banana flavors. The price is $150 per entree.>
+	Msg%id%02 <Please enjoy your meal.>
+	Msg%id%03 <Sorry, this restaurant is for paying customers only. Come back when you have some cash.>
+	Msg%id%04 <We don't do delivery. Why don't you come over here where you can sit and enjoy your meal?>
+	Prompt%id%01 <I'll take a steak, please.>
+	CPrompt%id%01 <ifG PCHunger 10 Accept>
+	Prompt%id%02 <Maybe some other time.>
+
+	Persona
+	requires <*SERVICE_RESTAURANT L5PAT ~Wangtta Young>
+	START <NewChat ifChatNPCInPlay else .%id%_GoNotHere Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03 AddChat %id%04>
+	Keywords <FOOD RESTAURANT>
+	.%id%_GoNotHere <Say %id%04>
+	result%id%01 <NewChat ifG PC$ 79 else .%id%_GoNoMoney Say %id%02 PCEat Cash+ -80>
+	.%id%_GoNoMoney <NewChat Say %id%03>
+	result%id%02 <Goto %1%>
+	result%id%03 <Goto result%id%01>
+	result%id%04 <Goto result%id%01>
+	Msg%id%01 <This is CometBurger. My name is \ChatNPC , and I will be your meal coordinator today. All items on our extra-value menu are $80.>
+	Msg%id%02 <Enjoy your meal and have a Comet Happy Fun day.>
+	Msg%id%03 <Sorry, you don't have enough money to pay for this order. I can't let you have it for free. That's a company policy.>
+	Msg%id%04 <Hello? This is Comet Burger. I'm not supposed to be using this phone for personal calls.>
+	Prompt%id%01 <I'll have a CometBurger.>
+	CPrompt%id%01 <ifG PCHunger 10 Accept>
+	Prompt%id%02 <No thanks.>
+	Prompt%id%03 <I'll have an order of CometNuggets.>
+	CPrompt%id%03 <ifG PCHunger 10 Accept>
+	Prompt%id%04 <I'll have some CometRings.>
+	CPrompt%id%04 <ifG PCHunger 10 Accept>
+
+
+% TYPE: *SERVICE_SHUTTLE
+%  PARAM1: Exit script label
+
+	Persona
+	requires <*SERVICE_SHUTTLE Spinner>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+	Keywords <SHUTTLE>
+	result%id%01 <EndChat Say %id%02 SHUTTLE Goto %1%>
+	result%id%02 <Goto %1%>
+	result%id%03 <EndChat Say %id%03 EXPRESSDELIVERY Goto %1%>
+	Msg%id%01 <There are regular flights to all the nearby colonies. Would you like to book a ticket, or do you need a package shipped?>
+	Msg%id%02 <Transportation for your mecha and pets is included in the ticket price.>
+	Msg%id%03 <Certainly. What is it that you need shipped?>
+	Prompt%id%01 <I need a ticket.>
+	Prompt%id%02 <Sorry, I don't need anything right now.>
+	Prompt%id%03 <I need something shipped.>
+
+	Persona
+	requires <*SERVICE_SHUTTLE>
+	START <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+	Keywords <SHUTTLE>
+	result%id%01 <EndChat Say %id%02 SHUTTLE Goto %1%>
+	result%id%02 <Goto %1%>
+	result%id%03 <EndChat Say %id%03 EXPRESSDELIVERY Goto %1%>
+	Msg%id%01 <We offer shuttle service to all nearby cities.>
+	Msg%id%02 <Transportation for your mecha and pets is included in the ticket price.>
+	Msg%id%03 <Certainly. What is it that you need shipped?>
+	Prompt%id%01 <I'd like a ticket, please.>
+	Prompt%id%02 <Thanks, but I don't want to go anywhere.>
+	Prompt%id%03 <I need some things delivered from another city.>
+
+

@@ -1,0 +1,98 @@
+RANDOM METASCENE CONTENT
+
+Requested during the map drawing process. Pregenerated maps cannot have random content.
+
+Map content gears are actually plots. During the map drawing process, their elements
+are selected and copied to the map along with personas and any scripts stored in the
+gear itself.
+
+Stored in the files "Series\RANCON_*.txt".
+
+
+CONTEXT
+
+Local scene context, type, desig, terrain, faction desig
+Root scene desig, faction desig, personatype
+World desig
+
+
+DIFFERENCES FROM PLOTS
+
+The elements can have two string attributes to describe the teams they should be placed
+in. "TEAM[n]" gives the name of the team this element should be assigned to. This only
+works if the existing teams are named, and a suitable team can be found. "TEAMDATA[n]"
+is a standard team description string to be used if the named team cannot be found.
+
+A door prototype may be included as a subcom, just as if the random scene content
+were a map feature.
+
+STANDARD TEAM NAMES
+
+Citizens, Guards
+
+REPLACEMENT STRINGS
+
+The SAtts located in the content and its subcoms will have the following strings replaced:
+
+  %id%		Replaced with content ID number
+  %param%	Replaced with the provided parameter
+  %1%..%8%	Replaced with the element ID numbers
+		IMPORTANT: Don't try to access E1..E2, P-variables, \ELEMENT, or EScene
+		in scene content! It's not a real plot and these things won't work! Use
+		the %1%..%8% replacement strings for the same effect.
+  %name1%..%name8%	The element names
+  %pop%		Replaced with the label of the line displaced by this one in the megalist
+
+
+REQUESTING CONTENT FROM MAPS AND MAP FEATURES
+
+  [Fill|Some (n) (%)|Variety (min) (max)] [Here|Sub] [CONTENT TYPE] [CONTENT PARAMETER]
+
+	FILL: Enough content will be added to use up all remaining cells.
+	SOME: Up to n content frags will be added, % chance each.
+	VARIETY: Between min and max frags will be added with no repetition.
+
+	HERE: The content is added directly to the source map feature.
+	SUB: The content is added to a new sub-zone of the map feature.
+
+
+REQUESTING CONTENT FROM CONTENT
+
+Often, a given piece of content will need more content to link to. The content request
+is stored in the content gear in string attributes "CONTENT[x]". Required content should
+be placed first in the list, and there should only be one required branch for any
+given content.
+
+  [OPTIONAL|REQUIRED] [CONTENT TYPE] [CONTENT PARAMETER] [LOCAL|DISTANT]
+
+
+
+CONTENT LABELS
+
+Combat/Social/Investigation 	- Describe the basic gist of the scene
+Dynamic/Static			- Describe whether this is a metascene or a perminant scene
+
+
+SUPERPROPS
+
+Superprops are not the same as random scene content, but act similarly so here they are.
+A superprop is a collection of props or other physical gears which are deployed on the
+map in a specific pattern. For example:
+
+	SuperProp
+	requires <*EnemyBase>
+
+Will load an "Enemy Base" superprop and assemble it in the parent map feature. The same context
+used for random scene content will be used.
+
+A superprop must be a subcom of a map feature. It will not function if simply placed as
+an invcom of the scene.
+
+May set Team1 to Team4. Depending on the superprop type, there may be several sub-groups into
+which the prop is divided. For example, for a spaceship there may be engines, weapons,
+and command sub-groups. If a specific team is not assigned, the team of the superprop request
+is used.
+
+Any scripts stored in the SuperProp request will be megalisted into all the component parts
+as it is assembled.
+

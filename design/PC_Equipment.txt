@@ -1,0 +1,2605 @@
+% GearHead PC Scale Equipment
+
+% In this file are the items used by all factions and throughout
+% the solar system. See the other PC_* files for items used in
+% specific locations.
+
+%%  SAMPLE LEGALITY LEVELS
+%%   -50 :	Absolutely legal everywhere
+%%   -25 :	Should be legal
+%%   -10 :	Tools that can be used as weapons
+%%    -5 :	Tasers and other non-deadly weapons
+%%     0 :	Most adventuring equipment
+%%     5 :	Advanced Weapons
+%%    10 :	Heavy Weapons, Combat Armor
+%%    25 :	Contraband in most places
+%%    50 :	GARU serum, Hunter-X pods
+
+%% Earth generally has a tolerance of 10, meaning that any items with a Legality
+%% score of 10 or less are freely available. Most space colonies have a tolerance
+%% of between 0 and 5, meaning that heavy weapons are not available but most "light"
+%% adventuring equipment is. Luna has a tolerance of -15, meaning that weapons
+%% cannot legally be purchased at all.
+
+%  ************************
+%  ***  MELEE  WEAPONS  ***
+%  ************************
+
+Melee 2
+Name <Knife>
+Type <THROWN>
+desc <A simple knife.>
+sdl_portrait <item_knife.png>
+category <WEAPON MELEE TOOL ESSENTIAL>
+factions <GENERAL>
+legality -10
+Acc 1
+Speed 5
+
+RepairTool 1
+name <Spanner>
+desc <A hefty wrench for working on mecha. It also makes a passable weapon.>
+factions <GENERAL>
+category <WEAPON MELEE TOOL>
+legality -15
+sub
+	Melee 7
+	name <Spanner Head>
+	Speed 3
+	Mass -3
+end
+
+
+SurvivalTool 1
+Name <Survival Knife>
+desc <A sturdy knife with a wide variety of uses.>
+sdl_portrait <item_knife.png>
+factions <GENERAL>
+category <WEAPON MELEE TOOL>
+legality -5
+sub
+	Melee 3
+	name <Serrated Edge>
+	Acc 1
+	Speed 5
+	Mass -2
+end
+
+Melee 4
+name <Lawn Dart>
+Type <THROWN ARMORPIERCING>
+desc <An extremely dangerous toy.>
+SDL_PORTRAIT <item_lawndart.png>
+category <CONTRABAND>
+factions <GENERAL>
+Mass -3
+
+Melee 8
+name <Sparkling Lawn Dart>
+Type <THROWN ARMORPIERCING BURN BRUTAL>
+desc <The inventor of this toy is currently serving eight consecutive life sentances on Phobos.>
+SDL_PORTRAIT <item_lawndart.png>
+category <CONTRABAND>
+factions <GENERAL>
+Legality 15
+Acc 1
+Mass -7
+
+
+Melee 3
+Name <Sickle>
+Type <ARMORPIERCING>
+desc <An extremely sharp curved blade.>
+category <WEAPON MELEE TOOL ODDITIES>
+factions <GENERAL>
+SDL_PORTRAIT <item_sickle.png>
+legality -10
+Acc 1
+Speed 4
+Mass -2
+
+Melee 5
+Name <Cutlass>
+desc <A curved short sword.>
+sdl_portrait <item_cutlass.png>
+category <WEAPON MELEE>
+factions <GENERAL>
+legality -10
+Acc 1
+Speed 4
+Mass -2
+
+Melee 5
+Name <Pick>
+desc <A tool for digging. Also a passable weapon.>
+UsesBody
+category <MINING TOOL>
+factions <GENERAL>
+SDL_PORTRAIT <item_pick.png>
+legality -10
+Mass 2
+Speed 1
+
+Melee 4
+Name <Cricket Bat>
+desc <An archaic sporting bat. Also a passable weapon.>
+UsesBody
+category <SPORTS>
+factions <GENERAL>
+SDL_PORTRAIT <item_cricketbat.png>
+legality -15
+
+Melee 7
+Name <Longsword>
+desc <A long-bladed sword capable of causing large amounts of damage through its swing velocity.>
+category <WEAPON MELEE ESSENTIAL>
+factions <GENERAL>
+SDL_PORTRAIT <item_longsword.png>
+legality -5
+Acc 1
+Speed 4
+Mass -3
+
+Melee 6
+Name <Mace>
+desc <A steel club.>
+category <WEAPON MELEE>
+factions <GENERAL>
+type <STUN>
+SDL_PORTRAIT <item_mace.png>
+legality -5
+Speed 3
+UsesBody
+
+Melee 8
+Name <War Hammer>
+desc <A big hammer weighted for combat.>
+type <STUN>
+category <WEAPON MELEE>
+factions <GENERAL>
+SDL_PORTRAIT <item_warhammer.png>
+legality 0
+UsesBody
+
+Melee 8
+Name <Katana>
+desc <A long sword emphasising sharpness, based on the ancient PreZero Japanese design.>
+category <WEAPON MELEE NINJA>
+factions <GENERAL>
+SDL_PORTRAIT <item_katana.png>
+legality 0
+Acc 2
+Speed 4
+Mass -5
+
+Melee 5
+Name <Rapier>
+desc <A light dueling sword with a thin blade. Designed for stabbing and lunging.>
+type <ARMORPIERCING>
+category <WEAPON MELEE>
+factions <GENERAL>
+SDL_PORTRAIT <item_rapier.png>
+legality 0
+Acc 3
+Speed 5
+Mass -3
+
+Melee 9
+Name <Trident>
+Type <EXTEND THROWN>
+Acc 1
+Mass -4
+Speed 3
+desc <A primitive melee weapon, consisting of a long handle and a pronged head.>
+category <WEAPON MELEE THROWN EXOTIC>
+factions <GENERAL>
+SDL_PORTRAIT <item_trident.png>
+legality 0
+
+Melee 2
+Name <Boomerang>
+Type <RETURN THROWN>
+Mass -1
+Speed 1
+desc <A throwing club that should return to its user, if thrown correctly.>
+category <WEAPON THROWN ODDITIES ESSENTIAL>
+factions <GENERAL SPORTS>
+SDL_PORTRAIT <item_boomerang.png>
+legality -10
+
+Melee 17
+Name <Scythe>
+Type <EXTEND>
+UsesReflexes
+Mass -9
+Acc -1
+desc <A primitive melee weapon. Originally used to harvest crops, but these models are created with lighter and sturdier materials.>
+category <WEAPON MELEE>
+factions <GENERAL>
+SDL_PORTRAIT <item_scythe.png>
+legality 5
+
+EMelee 19
+Name <Chainsaw>
+Type <BRUTAL>
+SDL_PORTRAIT <item_chainsaw.png>
+Mass 12
+Acc -1
+desc <An energy-cell powered cutting tool. Particularly suited for cutting through materials.>
+category <MELEE TOOL>
+factions <GENERAL>
+legality 0
+inv
+	PowerSource 4
+	mass -1
+	name <Power Cell 100>
+end
+
+EMelee 19
+Name <Combat Chainsaw>
+Type <BRUTAL>
+SDL_PORTRAIT <item_chainsaw.png>
+Mass 8
+Acc 1
+Speed 3
+desc <An energy-cell powered cutting tool. Particularly suited for cutting through materials.>
+category <MELEE TOOL>
+factions <GENERAL>
+legality 15
+inv
+	PowerSource 4
+	mass -1
+	name <Power Cell 100>
+end
+
+EMelee 14
+Name <Chainsword>
+Type <BRUTAL>
+SDL_PORTRAIT <item_chainsaw.png>
+legality 10
+UsesReflexes
+Mass 3
+Acc 1
+Speed 4
+desc <A sword with a spinning chainsaw for a blade. A trigger on the hilt controls the chain itself.>
+category <WEAPON MELEE>
+factions <GENERAL>
+inv
+	PowerSource 4
+	mass -2
+	name <Power Cell 100>
+end
+
+Melee 14
+Name <Gyro Mace>
+Type <BRUTAL>
+Mass -9
+legality 10
+Acc 2
+Speed 3
+desc <A combat mace with counterspinning contact heads for maximum damage potential.>
+category <WEAPON MELEE>
+factions <GENERAL>
+SDL_PORTRAIT <item_mace.png>
+
+Melee 9
+Name <Night Blade>
+Type <POISON>
+Acc 2
+legality 20
+Speed 4
+Mass -6
+desc <A longsword with an integrated venom dispenser. This weapon is favored by assassins, since even a grazing hit can be lethal.>
+sdl_portrait <item_cutlass.png>
+category <WEAPON MELEE NINJA>
+factions <GENERAL>
+
+Melee 10
+Name <MonoSword>
+Type <ARMORPIERCING>
+Acc 1
+legality 5
+Speed 6
+Mass -6
+desc <A ceram sword with a monomolecularly sharp edge.>
+sdl_portrait <item_longsword.png>
+category <WEAPON MELEE>
+factions <GENERAL>
+
+Melee 22
+Name <MonoScythe>
+Type <ARMORPIERCING EXTEND>
+UsesReflexes
+legality 10
+Mass -15
+desc <A ceram scythe with a monomolecularly sharp edge.>
+category <WEAPON MELEE>
+factions <GENERAL>
+SDL_PORTRAIT <item_scythe.png>
+
+Melee 2
+Name <Whip>
+Acc -2
+Speed 4
+UsesSpeed
+Type <EXTEND FLAIL>
+desc <A long flexible lash used for hitting people.>
+category <WEAPON MELEE>
+factions <GENERAL>
+legality -10
+SDL_PORTRAIT <item_whip.png>
+
+EMelee 3
+Name <Beam Knife>
+Speed 5
+desc <A small plasma-beam projector, useful for cutting through tough materials.>
+category <WEAPON MELEE>
+factions <GENERAL>
+SDL_PORTRAIT <item_beamknife.png>
+legality -5
+inv
+	PowerSource 1
+	mass -1
+	name <Power Cell 25>
+end
+
+
+%  ****************************
+%  ***  BALLISTIC  WEAPONS  ***
+%  ****************************
+
+
+Gun 5
+Name <Long Rifle>
+desig <L60>
+desc <The long rifled barrel of this firearm can increase the spin of its bullets, thus increasing its range without decreasing the gun's durability.>
+sdl_portrait <item_longrifle.png>
+category <WEAPON MISSILE ESSENTIAL>
+factions <GENERAL>
+caliber <5mm rifle>
+Mass -1
+Range 9
+Acc 1
+Speed 3
+magazine 30
+sub
+	Ammo 8
+	name <5mm Rifle Clip>
+	caliber <5mm rifle>
+	SDL_PORTRAIT <item_ammoclip.png>
+end
+
+Gun 6
+Name <Hunting Rifle>
+desig <L55>
+desc <A rifle designed for hunting animals.>
+sdl_portrait <item_huntingrifle.png>
+category <WEAPON MISSILE>
+factions <GENERAL>
+caliber <5mm rifle>
+Range 7
+Acc 1
+Magazine 30
+Legality -5
+sub
+	Ammo 8
+	name <5mm Rifle Clip>
+	caliber <5mm rifle>
+	SDL_PORTRAIT <item_ammoclip.png>
+end
+
+Gun 6
+Name <Combat Rifle>
+desig <Laver-2>
+desc <A single firing rifle.>
+sdl_portrait <item_combatrifle.png>
+caliber <5mm rifle>
+category <WEAPON MISSILE>
+factions <GENERAL>
+legality 0
+Mass -3
+Range 6
+Speed 5
+magazine 40
+sub
+	Ammo 8
+	name <5mm Rifle Clip>
+	caliber <5mm rifle>
+	category <AMMO>
+	factions <GENERAL>
+	SDL_PORTRAIT <item_ammoclip.png>
+end
+
+Gun 6
+Name <Assault Rifle>
+desig <FS Vaken>
+desc <A rapid-firing chemical rifle.>
+sdl_portrait <item_combatrifle.png>
+caliber <5mm rifle>
+category <WEAPON MISSILE>
+factions <GENERAL>
+legality 5
+Mass -4
+Range 6
+Speed 4
+BV 2
+magazine 60
+sub
+	Ammo 8
+	name <5mm Rifle Clip>
+	caliber <5mm rifle>
+	category <AMMO>
+	factions <GENERAL>
+	SDL_PORTRAIT <item_ammoclip.png>
+end
+
+Gun 12
+name <Shotgun>
+desc <>
+caliber <18mm shell>
+category <WEAPON MISSILE ESSENTIAL>
+factions <GENERAL>
+SDL_PORTRAIT <item_shotgun.png>
+mass -4
+Range 5
+Acc 1
+Recharge 3
+Legality 5
+magazine 16
+sub
+	Ammo 12
+	name <18mm Shotgun Clip>
+	caliber <18mm shell>
+	type <SCATTER>
+	category <AMMO>
+	factions <GENERAL>
+	SDL_PORTRAIT <item_shellsammo.png>
+end
+
+Gun 15
+name <Combat Shotgun>
+desc <>
+caliber <18mm shell>
+category <WEAPON MISSILE>
+factions <GENERAL>
+SDL_PORTRAIT <item_shotgun.png>
+mass -4
+Range 5
+Acc 1
+Recharge 5
+Legality 10
+magazine 32
+sub
+	Ammo 15
+	name <18mm Shotgun Clip>
+	caliber <18mm shell>
+	type <SCATTER>
+	category <AMMO>
+	factions <GENERAL>
+	SDL_PORTRAIT <item_shellsammo.png>
+end
+
+Gun 12
+name <Auto-Shotgun>
+desc <>
+caliber <18mm shell>
+category <WEAPON MISSILE>
+factions <GENERAL>
+SDL_PORTRAIT <item_shotgun.png>
+mass -4
+Range 5
+Acc 1
+Recharge 3
+BV 1
+Legality 15
+magazine 24
+sub
+	Ammo 12
+	name <18mm Shotgun Clip>
+	caliber <18mm shell>
+	type <SCATTER>
+	category <AMMO>
+	factions <GENERAL>
+	SDL_PORTRAIT <item_shellsammo.png>
+end
+
+Gun 5
+Name <Revolver>
+desig <Grant 6B>
+desc <A low velocity single firing chemically powered pistol.>
+Mass -3
+Range 3
+caliber <.32 revolver>
+category <WEAPON MISSILE ANTIQUE>
+factions <GENERAL>
+SDL_PORTRAIT <item_peacemakerrevolver.png>
+Legality -15
+Magazine 6
+sub
+	Ammo 5
+	name <Revolver Cylinder>
+	desc <A departure from the traditional cartridge, this clip comes in the form of a cylinder with the bullets preloaded.>
+	category <AMMO>
+	factions <GENERAL>
+	caliber <.32 revolver>
+end
+
+Gun 8
+Name <Revolver>
+desig <Quaker .32>
+desc <A low velocity single firing chemically powered pistol.>
+Mass -6
+Range 3
+speed 6
+caliber <.32 revolver>
+category <WEAPON MISSILE ANTIQUE>
+factions <GENERAL>
+SDL_PORTRAIT <item_peacemakerrevolver.png>
+Legality -10
+Magazine 6
+sub
+	Ammo 8
+	name <Revolver Cylinder>
+	desc <A departure from the traditional cartridge, this clip comes in the form of a cylinder with the bullets preloaded.>
+	caliber <.32 revolver>
+end
+
+Gun 17
+Name <Assault Cannon>
+desig <JTS-1P>
+desc <A heavy gatling-style magnetic cannon.>
+Type <SWARM>
+caliber <12mm auto>
+category <WEAPON MISSILE CONTRABAND>
+factions <GENERAL>
+Mass -9
+Range 7
+Speed 4
+BV 7
+Magazine 80
+UsesBody
+Legality 15
+sub
+	Ammo 17
+	Mass -3
+	caliber <12mm auto>
+end
+
+
+%  ********************
+%  ***  BEAM  GUNS  ***
+%  ********************
+
+BeamGun 8
+Name <Laser Rifle>
+desig <Zokk-33>
+desc <A popular and dependable laser rifle used throughout the solar system.>
+sdl_portrait <item_laserrifle.png>
+category <WEAPON MISSILE>
+factions <GENERAL>
+Range 5
+Mass -6
+Acc 1
+Speed 3
+Legality 5
+inv
+	PowerSource 4
+	name <Power Cell 100>
+	mass -2
+end
+
+BeamGun 20
+Name <Laser Cannon>
+desig <Kirb IV>
+desc <A shoulder-fired light laser cannon.>
+sdl_portrait <>
+category <WEAPON MISSILE>
+factions <GENERAL>
+Range 8
+Mass -8
+Acc 1
+Speed 2
+Legality 10
+inv
+	PowerSource 4
+	name <Power Cell 100>
+	mass -2
+end
+
+
+%  ***************************
+%  ***  MISSILE LAUNCHERS  ***
+%  ***************************
+
+
+
+%  ************************
+%  ***  WEAPON ADD-ONS  ***
+%  ************************
+
+MeleeAddOn 0
+Name <Long Haft>
+desc <Extends the reach of a weapon.>
+Category <ACCESSORY>
+Factions <GENERAL>
+Type <EXTEND>
+Acc 1
+Mass 1
+legality -5
+
+GunAddOn 0
+Name <Barrel Extension>
+desc <The increased barrel length provided by this addon will slightly increase range.>
+Category <ACCESSORY>
+Factions <GENERAL>
+Range 2
+
+GunAddOn 0
+Name <Red Dot Sight>
+desc <A low-powered targeting laser.>
+Category <ACCESSORY ESSENTIAL>
+Factions <GENERAL>
+Acc 1
+
+GunAddOn 0
+Name <Gas Vents>
+desc <Improves heat dissipation in firearms, allowing them to be fired more rapidly.>
+Category <ACCESSORY>
+Factions <GENERAL>
+Speed 1
+
+GunAddOn 0
+Name <Gyro Mount>
+desc <Reduces recoil in heavy weapons.>
+Category <ACCESSORY>
+Factions <GENERAL>
+Acc 1
+Speed 1
+
+GunAddOn 0
+Name <Bayonet>
+desc <Adds close-combat capabilities to a firearm.>
+Category <ACCESSORY>
+Factions <GENERAL>
+Mass -1
+sub
+	Melee 3
+	Name <Bayonet>
+	desc <A blade designed to be attached to a firearm.>
+	Mass -1
+end
+
+GunAddOn 0
+Name <Aux Grenade Launcher>
+desc <Provides heavy-weapon support to a firearm.>
+Category <ACCESSORY>
+Factions <GENERAL>
+legality 5
+sub
+	Gun 8
+	Name <Aux Grenade Launcher>
+	desc <A grenade launcher designed as auxiliary support for a lighter firearm.>
+	Mass -7
+	Integral
+	Range 6
+	caliber <20mm cannister>
+	UsesPerception
+	Magazine 5
+	sub
+		Ammo 8
+		name <AGL Clip>
+		desc <Explosive grenades designed exclusively for an Aux Grenade Launcher.>
+		caliber <20mm cannister>
+		Type <BLAST 4 BRUTAL>
+	end
+end
+
+MeleeAddOn 0
+Name <Ergonomic Grip>
+desc <A comfortable handle for close combat weapons.>
+Category <ACCESSORY>
+Factions <GENERAL>
+Acc 1
+legality -10
+
+MeleeAddOn 0
+Name <Counterbalance>
+desc <Reduces overswing in melee weapons.>
+Category <ACCESSORY>
+Factions <GENERAL>
+Speed 2
+legality -10
+
+MeleeAddOn 0
+Name <Haft Spike>
+desc <Adds a spike to the end of a close combat handle.>
+Category <ACCESSORY>
+Factions <GENERAL>
+Mass -1
+sub
+	Melee 3
+	Name <Spike>
+	desc <A metal spike.>
+	Mass -2
+end
+legality -5
+
+MeleeAddOn 1
+Name <Fire Token>
+desc <Creates a brief burst of heat along the impact surface of a melee weapon.>
+Category <ACCESSORY>
+Factions <GENERAL>
+Type <BURN>
+
+MeleeAddOn 1
+Name <Thunder Token>
+desc <This token releases an electric shock when the weapon it is attached to impacts.>
+Category <ACCESSORY>
+Factions <GENERAL>
+Type <HAYWIRE>
+
+MeleeAddOn 1
+Name <Deadly Token>
+desc <Releases a deadly poison when attached to a close combat weapon.>
+Category <ACCESSORY>
+Factions <GENERAL>
+Type <POISON>
+legality 25
+
+MeleeAddOn 0
+Name <Magnet Token>
+desc <Allows thrown close combat weapons to return to the wielder.>
+Category <ACCESSORY>
+Factions <GENERAL>
+Type <RETURN>
+Acc 1
+
+MeleeAddOn 0
+Name <Eris Token>
+desc <This token releases a mysterious glow...>
+Category <ACCESSORY>
+Factions <GENERAL>
+Type <MYSTERY STONE>
+Speed 1
+legality 10
+
+MeleeAddOn 2
+Name <Rocket Token>
+desc <Allows a melee weapon to be thrown.>
+Category <ACCESSORY>
+Factions <GENERAL>
+Type <THROWN>
+
+
+%  ******************
+%  ***  GRENADES  ***
+%  ******************
+
+Grenade 20
+Name <Heavy Smoke Grenade>
+desc <A tactical grenade used to provide heavy smoke cover.>
+sdl_portrait <item_grenade.png>
+Type <BLAST 6 SMOKE>
+Category <WEAPON GRENADE>
+Factions <GENERAL>
+legality -5
+
+Grenade 10
+Name <Smoke Grenade>
+desc <A tactical grenade used to provide smoke cover.>
+sdl_portrait <item_grenade.png>
+Category <WEAPON GRENADE NINJA>
+Factions <GENERAL>
+Type <BLAST 3 SMOKE>
+legality -5
+
+Grenade 20
+Name <Hellstorm Grenade>
+desc <A grenade that releases a fiery blast.>
+sdl_portrait <item_grenade.png>
+Category <WEAPON GRENADE>
+Factions <GENERAL>
+Type <ARMORPIERCING BLAST 2 BURN>
+legality 10
+
+Grenade 18
+Name <Concussion Grenade>
+desc <Used effectively, an explosion from this can render human targets helpless.>
+sdl_portrait <item_grenade.png>
+Category <WEAPON GRENADE>
+Factions <GENERAL>
+Type <BLAST 4>
+legality 0
+
+Grenade 15
+Name <EMP Grenade>
+desc <A conventional grenade containing thousands of tiny radio frequency emitters to cause electromagnetic interference.>
+sdl_portrait <item_grenade.png>
+Category <WEAPON GRENADE>
+Factions <GENERAL>
+Type <BLAST 3 HAYWIRE>
+legality 5
+
+Grenade 12
+Name <Acid Grenade>
+desc <A grenade containing acid.>
+sdl_portrait <item_grenade.png>
+Category <WEAPON GRENADE>
+Factions <GENERAL>
+Type <BLAST 2 RUST>
+legality 10
+
+Grenade 13
+Name <Toxin Grenade>
+desc <This grenade contains reactants that create toxic fumes when thrown.>
+sdl_portrait <item_grenade.png>
+Category <WEAPON GRENADE>
+Factions <GENERAL>
+Type <BLAST 5 TOXIN>
+legality 50
+
+Grenade 16
+Name <Plasma Grenade>
+desc <This plasma-based grenade is capable of circumventing armor.>
+sdl_portrait <item_grenade.png>
+Category <WEAPON GRENADE>
+Factions <GENERAL>
+Type <ARMORPIERCING BLAST 3>
+legality 10
+
+Grenade 10
+Name <Micro-Grenade>
+desc <This small grenade packs a punch.>
+sdl_portrait <item_grenade.png>
+Category <WEAPON GRENADE>
+Factions <GENERAL>
+Type <BLAST 2>
+Mass -1
+legality 5
+
+Grenade 14
+Name <Heavy Grenade>
+desc <A grenade with a large blast radius.>
+sdl_portrait <item_grenade.png>
+Category <WEAPON GRENADE>
+Factions <GENERAL>
+Type <BLAST 5>
+
+Grenade 12
+Name <Frag Grenade>
+desc <This grenade is packed with shrapnel.>
+sdl_portrait <item_grenade.png>
+Category <WEAPON GRENADE ESSENTIAL>
+Factions <GENERAL>
+Type <BLAST 3>
+
+Grenade 18
+Name <AntiArmor Grenade>
+desc <A grenade containing shards designed to penetrate armor.>
+sdl_portrait <item_grenade.png>
+Category <WEAPON GRENADE>
+Factions <GENERAL>
+Type <ARMORPIERCING SCATTER>
+Legality 5
+
+Grenade 8
+Name <Stick Bomb>
+desc <A grenade with a thin, cylindrical body.>
+sdl_portrait <item_grenade.png>
+Category <WEAPON GRENADE>
+Factions <GENERAL>
+Type <BLAST 1>
+
+Grenade 7
+Name <Oil Bomb>
+desc <This explosive releases highly volatile oil.>
+sdl_portrait <item_grenade.png>
+Category <WEAPON GRENADE>
+Factions <GENERAL>
+Type <BLAST 1 BURN>
+legality 5
+
+Grenade 5
+Name <Shuriken>
+desc <A PreZero ancient Japanese weapon, literally "thrown blade." The four-bladed shuriken was considered the best in that era, despite the existence of others.>
+Category <WEAPON MELEE EXOTIC NINJA>
+Factions <GENERAL>
+SDL_PORTRAIT <item_shurikens.png>
+Mass -1
+BV 4
+Type <SWARM>
+legality -5
+UsesSpeed
+
+Grenade 13
+Name <MonoShuriken>
+desc <A redesign of the shuriken, this is manufactured with a monomolecularly sharp edge.>
+Category <WEAPON MELEE EXOTIC NINJA>
+Factions <GENERAL>
+SDL_PORTRAIT <item_shurikens.png>
+Mass -1
+BV 9
+Type <ARMORPIERCING SWARM>
+UsesSpeed
+
+%  ***************
+%  ***  ARMOR  ***
+%  ***************
+
+BodyArmor 1
+Name <Leather Jacket>
+desc <A comfortable leather jacket with a zipper down the front.>
+sdl_portrait <item_leatherjacket.png>
+Category <CLOTHING>
+Factions <GENERAL>
+Mass 3
+legality -25
+
+BodyArmor 2
+Name <Armorweave Clothes>
+desc <Armor mesh has been integrated with these clothes, making them a little stiff.>
+Category <CLOTHING>
+Factions <GENERAL>
+Mass -3
+legality -15
+
+Set
+name <Flight Suit [set]>
+desc <A light sealed suit.>
+Category <CLOTHING SPACE ESSENTIAL>
+Factions <GENERAL>
+Legality -25
+inv
+	HeadArmor 1
+	name <Flight Helm>
+	desc <A light spacesuit helm with integrated rebreather.>
+	Category <CLOTHING SPACE>
+	SDL_PORTRAIT <item_lightspacehelm.png>
+	Mass -1
+	Sealed
+	Hardened
+
+	BodyArmor 1
+	name <Flight Suit>
+	desc <A light spacesuit.>
+	Category <CLOTHING SPACE>
+	Mass -1
+	Sealed
+	sub
+		SpaceFlight 1
+	end
+
+	ArmArmor 1
+	name <Flight Suit Sleeve>
+	desc <A light spacesuit.>
+	Category <CLOTHING SPACE>
+	Mass -1
+	Sealed
+
+	LegArmor 1
+	name <Flight Suit Legging>
+	desc <A light spacesuit.>
+	Category <CLOTHING SPACE>
+	Mass -1
+	Sealed
+
+	ArmArmor 1
+	name <Flight Suit Sleeve>
+	desc <A light spacesuit.>
+	Category <CLOTHING SPACE>
+	Mass -1
+	Sealed
+
+	LegArmor 1
+	name <Flight Suit Legging>
+	desc <A light spacesuit.>
+	Category <CLOTHING SPACE>
+	Mass -1
+	Sealed
+end
+
+Set
+name <Pilot Suit [set]>
+desc <A light spacesuit used by mecha pilots.>
+Category <CLOTHING SPACE>
+Factions <GENERAL>
+Legality -25
+inv
+	HeadArmor 2
+	name <Pilot Helm>
+	desc <A spacesuit helm with an integrated rebreather and communicator.>
+	Category <CLOTHING SPACE>
+	SDL_PORTRAIT <item_lightspacehelm.png>
+	Mass -4
+	Sealed
+	Hardened
+	Phone
+
+	BodyArmor 2
+	name <Pilot Suit>
+	desc <A light spacesuit used by mecha pilots.>
+	Category <CLOTHING SPACE>
+	Mass -3
+	Sealed
+	sub
+		SpaceFlight 2
+	end
+
+	ArmArmor 2
+	name <Pilot Suit Sleeve>
+	desc <A light spacesuit used by mecha pilots.>
+	Category <CLOTHING SPACE>
+	Mass -3
+	Sealed
+
+	LegArmor 2
+	name <Pilot Suit Legging>
+	desc <A light spacesuit used by mecha pilots.>
+	Category <CLOTHING SPACE>
+	Mass -3
+	Sealed
+	sub
+		SpaceFlight 1
+	end
+
+	ArmArmor 2
+	name <Pilot Suit Sleeve>
+	desc <A light spacesuit used by mecha pilots.>
+	Category <CLOTHING SPACE>
+	Mass -3
+	Sealed
+
+	LegArmor 2
+	name <Pilot Suit Legging>
+	desc <A light spacesuit used by mecha pilots.>
+	Category <CLOTHING SPACE>
+	Mass -3
+	Sealed
+	sub
+		SpaceFlight 1
+	end
+end
+
+Set
+name <Corporate Uniform [set]>
+desc <A lightly armored corporate uniform.>
+Category <ARMOR CLOTHING>
+Factions <COMET HOELL MUGLE>
+legality -25
+inv
+	BodyArmor 1
+	Name <Corporate Uniform>
+	desc <A lightly armored corporate uniform.>
+	Category <CLOTHING>
+	Factions <GENERAL>
+	legality -25
+	Mass -1
+
+	ArmArmor 1
+	Name <Corporate Uniform Sleeve>
+	desc <A lightly armored corporate uniform.>
+	Category <CLOTHING>
+	Mass -1
+	legality -25
+
+	ArmArmor 1
+	Name <Corporate Uniform Sleeve>
+	desc <A lightly armored corporate uniform.>
+	Category <CLOTHING>
+	Mass -1
+	legality -25
+
+	LegArmor 1
+	Name <Corporate Uniform Legging>
+	desc <A lightly armored corporate uniform.>
+	Category <CLOTHING>
+	Mass -1
+	legality -25
+
+	LegArmor 1
+	Name <Corporate Uniform Legging>
+	desc <A lightly armored corporate uniform.>
+	Category <CLOTHING>
+	Mass -1
+	legality -25
+end
+
+Set
+name <Saga Powered Armor [set]>
+desc <A light powered armor suit. Although considered "light", the protection provided by the Saga is considerably higher than most conventional armor.>
+Category <ARMOR>
+Factions <GENERAL>
+Legality 10
+inv
+	HeadArmor 5
+	name <Saga Helm>
+	desc <The Saga helm features an integrated rebreather and communications systems.>
+	Mass -5
+	Sealed
+	Phone
+	Email
+	Memo
+
+	BodyArmor 5
+	name <Saga Suit>
+	desc <A powered armor suit.>
+	Mass -6
+	Legality 10
+	Sealed
+	Body 10
+	sub
+		HeavyActuator 3
+	end
+
+	ArmArmor 5
+	name <Saga Sleeve>
+	desc <A powered armor suit.>
+	Mass -5
+	Sealed
+	Body 5
+	sub
+		HeavyActuator 3
+	end
+
+	ArmArmor 5
+	name <Saga Sleeve>
+	desc <A powered armor suit.>
+	Mass -5
+	Sealed
+	Body 5
+	sub
+		HeavyActuator 3
+	end
+
+	LegArmor 5
+	name <Saga Legging>
+	desc <A powered armor suit.>
+	Mass -5
+	Sealed
+	Body 5
+	sub
+		SpaceFlight 3
+	end
+
+	LegArmor 5
+	name <Saga Legging>
+	desc <A powered armor suit.>
+	Mass -5
+	Sealed
+	Body 5
+	sub
+		SpaceFlight 3
+	end
+end
+
+BodyArmor 2
+Name <Security Vest>
+desc <A standard vest issued to security guards.>
+sdl_portrait <item_securityvest.png>
+Category <ARMOR>
+Factions <GENERAL>
+Mass -1
+legality -5
+
+BodyArmor 5
+Name <Hazard Vest>
+desc <Armor used by rescuers traversing hazardous situations.>
+sdl_portrait <item_securityvest.png>
+Category <ARMOR>
+Factions <GENERAL>
+Mass -1
+legality -5
+
+HeadArmor 2
+Name <Sports Helmet>
+desc <A hard polymer helmet more suited to sports than combat.>
+Category <CLOTHING SPORTS>
+Factions <GENERAL>
+SDL_PORTRAIT <item_sportshelm.png>
+Mass -3
+legality -30
+
+HeadArmor 2
+Name <Light Helmet>
+desc <A light combat helmet, made from a combination of plastics and shock absorbers.>
+Category <ARMOR>
+Factions <GENERAL>
+SDL_PORTRAIT <item_lighthelmet.png>
+Mass -3
+legality -10
+
+HeadArmor 3
+Name <Combat Helmet>
+desc <An armored helmet with an integrated objective-storing system.>
+Category <ARMOR>
+Factions <GENERAL>
+SDL_PORTRAIT <item_lighthelmet.png>
+Mass -5
+Memo
+legality -10
+
+ArmArmor 1
+Name <Elbow Pad>
+desc <Protects elbows from grazes and other accidents.>
+Category <CLOTHING SPORTS>
+Factions <GENERAL>
+sdl_Portrait <item_elbowpad.png>
+Mass -1
+legality -25
+
+LegArmor 1
+Name <Knee Pad>
+desc <Protects knees from grazes and other accidents.>
+Category <CLOTHING SPORTS>
+Factions <GENERAL>
+sdl_Portrait <item_elbowpad.png>
+Mass -1
+legality -25
+
+ArmArmor 2
+Name <Heavy Elbow Pad>
+desc <Elbow pad that protects some of the forearm as well.>
+Category <CLOTHING SPORTS>
+Factions <GENERAL>
+sdl_Portrait <item_elbowpad.png>
+Mass -3
+legality -20
+
+LegArmor 2
+Name <Heavy Knee Pad>
+desc <Knee pad that protects part of the shins as well.>
+Category <CLOTHING SPORTS>
+Factions <GENERAL>
+sdl_Portrait <item_elbowpad.png>
+Mass -3
+legality -20
+
+ArmArmor 2
+Name <Spiked Bracer>
+desc <This forearm armor features a sharp spike that functions as a weapon.>
+Category <ARMOR>
+Factions <GENERAL>
+Mass -1
+legality 5
+sub
+	Melee 5
+	Mass -4
+	Speed 1
+	Name <Spike>
+	desc <A sharp spike.>
+end
+
+LegArmor 2
+Name <Spiked Legging>
+desc <This leg armor has a spike that can be used as a weapon.>
+Category <ARMOR>
+Factions <GENERAL>
+Mass -1
+legality 5
+sub
+	Melee 5
+	Mass -4
+	Speed 1
+	Name <Spike>
+	desc <A sharp spike.>
+end
+
+
+%  *****************
+%  ***  SHIELDS  ***
+%  *****************
+
+Shield 3
+Name <Plastic Shield>
+desc <A shield made from plastic.>
+Category <SHIELD>
+Factions <GENERAL>
+legality -5
+
+Shield 2
+Name <Plastic Buckler>
+desc <A solid plastic buckler.>
+Category <SHIELD>
+Factions <GENERAL>
+DefBonus -3
+legality -5
+
+Shield 4
+Name <Small Shield>
+desc <A small, but sturdy shield.>
+Category <SHIELD ESSENTIAL>
+Factions <GENERAL>
+DefBonus -2
+
+Shield 6
+Name <Large Shield>
+desc <This shield can deflect attacks from multiple heights easily.>
+Category <SHIELD ESSENTIAL>
+Factions <GENERAL>
+
+Shield 5
+Name <Riot Shield>
+desc <A light and transparent polymer shield used by crowd control forces.>
+sdl_portrait <item_riotshield.png>
+Category <SHIELD>
+Factions <GENERAL>
+DefBonus 2
+
+Shield 5
+Name <Gun-Shield>
+desc <This shield allows the wielder to both defend and attack simultaneously.>
+Category <SHIELD>
+Factions <GENERAL>
+legality 5
+sub
+	Gun 6
+	Name <Shield Cannon>
+	caliber <5mm rifle>
+	factions <GENERAL>
+	Mass -3
+	Range 7
+	Speed 5
+	magazine 40
+	sub
+		Ammo 6
+		name <5mm Rifle Clip>
+		caliber <5mm rifle>
+		category <AMMO>
+		factions <GENERAL>
+	end
+end
+
+%  *********************
+%  ***  ELECTRONICS  ***
+%  *********************
+
+Computer 1
+name <Databook>
+desc <A basic data storage and retrieval system. Also sports email retrieval.>
+Category <ELECTRONICS COMPUTER COMMUNICATIONS>
+Factions <GENERAL>
+SDL_PORTRAIT <item_databook.png>
+Memo
+Email
+Mass -1
+legality -25
+
+Computer 1
+name <Mediabook>
+desc <This databook also features media streaming technology, so you can stay on top of the latest news.>
+Category <ELECTRONICS COMPUTER COMMUNICATIONS>
+Factions <GENERAL>
+SDL_PORTRAIT <item_databook.png>
+Memo
+Email
+News
+legality -15
+Mass -1
+
+Treasure
+name <Mobile Phone>
+desc <A handheld communication device.>
+sdl_portrait <item_phone.png>
+Category <ELECTRONICS COMMUNICATIONS ESSENTIAL>
+Factions <GENERAL>
+Memo
+Email
+Phone
+legality -10
+
+Treasure
+name <Reader Phone>
+desc <A handheld communication device with an integrated news service.>
+sdl_portrait <item_phone.png>
+Category <ELECTRONICS COMMUNICATIONS>
+Factions <GENERAL>
+Memo
+Email
+Phone
+News
+legality -10
+
+Treasure
+name <Network Phone>
+desc <A handheld communication and social networking device.>
+sdl_portrait <item_phone.png>
+Category <ELECTRONICS COMMUNICATIONS>
+Factions <GENERAL>
+Memo
+Email
+Phone
+News
+Personadex
+legality -10
+
+Treasure
+Mass 1
+name <Personal Communicator>
+desc <A handheld communication device.>
+sdl_portrait <item_phone.png>
+Category <ELECTRONICS COMMUNICATIONS ESSENTIAL>
+Factions <GENERAL>
+Memo
+Email
+Phone
+legality -15
+
+BodyHarness 1
+name <CommSet Brooch>
+desc <A personal communicator integrated into a brooch. It is verbally activated and lacks certain functions of handheld models.>
+Category <ELECTRONICS COMMUNICATIONS>
+Factions <GENERAL>
+Phone
+legality -10
+mass -1
+
+HeadHarness 1
+name <CommSet Earring>
+desc <A personal communicator integrated into an earring. It is verbally activated and lacks certain functions of handheld models.>
+Category <ELECTRONICS COMMUNICATIONS>
+Factions <GENERAL>
+Phone
+legality -10
+mass -1
+
+ArmHarness 2
+name <Data Bracelet>
+Desc <A wearable computer that fits on the forearm. Includes a rechargable power source.>
+Category <ELECTRONICS COMPUTER COMMUNICATIONS>
+Factions <GENERAL>
+Memo
+Email
+News
+legality -15
+sub
+	Computer 3
+	mass -5
+
+	PowerSource 1
+	mass -1
+end
+
+HeadHarness 2
+name <Data Visor>
+Desc <A wearable computer incorporated into goggles. Includes a rechargable power source.>
+Category <ELECTRONICS COMPUTER>
+Factions <GENERAL>
+SDL_PORTRAIT <item_datavisor.png>
+Memo
+legality -15
+sub
+	Computer 3
+	mass -5
+
+	PowerSource 1
+	mass -1
+end
+
+
+%  ******************
+%  ***  SOFTWARE  ***
+%  ******************
+
+Software 1
+name <Vadel Inc Target System>
+Category <SOFTWARE MEXTRA>
+Factions <GENERAL>
+S_TRBoost
+S_BoostScale 2
+
+Software 2
+name <Laniac Mecha FCS>
+Category <SOFTWARE MEXTRA>
+Factions <GENERAL>
+S_TRBoost
+S_BoostScale 2
+
+Software 1
+name <Vadel Inc Maneuver System>
+Category <SOFTWARE MEXTRA>
+Factions <GENERAL>
+S_MVBoost
+S_BoostScale 2
+
+Software 2
+name <Expert Action Processing>
+Category <SOFTWARE MEXTRA>
+Factions <GENERAL>
+S_MVBoost
+S_BoostScale 2
+
+Software 1
+name <Movement Tracker>
+Category <SOFTWARE MEXTRA>
+Factions <GENERAL>
+S_SpeedComp
+S_BoostScale 2
+
+Software 2
+name <FreezeFrame>
+Category <SOFTWARE MEXTRA>
+Factions <GENERAL>
+S_SpeedComp
+S_BoostScale 2
+
+Software 3
+name <Advanced Prophecy>
+Category <SOFTWARE MEXTRA>
+Factions <GENERAL>
+S_SpeedComp
+S_BoostScale 2
+
+Software 2
+name <FreezeFrame Personal>
+Category <SOFTWARE>
+Factions <GENERAL>
+S_SpeedComp
+S_BoostScale 0
+
+Software 1
+name <Wildlife Recognition Guide>
+desc <A comprehensive encyclopedia of animals found throughout the solar system.>
+Category <SOFTWARE SCIENCE>
+Factions <GENERAL>
+S_Information
+SInfo_CreatureDex
+Legality -25
+
+Software 1
+name <Robot Buyer's Guide>
+desc <An interactive software guide to all commercially produced robots.>
+Category <SOFTWARE>
+Factions <GENERAL>
+S_Information
+SInfo_RobotDex
+Legality -15
+
+Software 1
+name <The Bioweapon Files>
+desc <A guide to synthetic lifeforms past and present; compiled from secret documents leaked on Thruweb.>
+Category <SOFTWARE SCIENCE CONTRABAND>
+Factions <GENERAL>
+S_Information
+SInfo_SynthDex
+Legality 15
+
+Software 1
+name <Target Analyzer>
+desc <Mecha identification and analysis software.>
+Category <SOFTWARE MEXTRA>
+Factions <GENERAL>
+S_Information
+SInfo_MechaDex
+Legality -10
+
+%  ***********************
+%  ***  POWER SOURCES  ***
+%  ***********************
+
+PowerSource 1
+name <Power Cell 25>
+Category <ELECTRONICS ACCESSORY>
+Factions <GENERAL>
+Legality -50
+
+PowerSource 2
+name <Power Cell 50>
+Category <ELECTRONICS ACCESSORY>
+Factions <GENERAL>
+Legality -50
+
+PowerSource 4
+name <Power Cell 100>
+Category <ELECTRONICS ACCESSORY>
+Factions <GENERAL>
+Legality -50
+
+PowerSource 6
+name <Power Cell 150>
+Category <ELECTRONICS ACCESSORY>
+Factions <GENERAL>
+Legality -50
+
+PowerSource 1
+name <Super Cell 25>
+mass -1
+Category <ELECTRONICS ACCESSORY>
+Factions <GENERAL>
+Legality -25
+
+PowerSource 2
+name <Super Cell 50>
+mass -2
+Category <ELECTRONICS ACCESSORY>
+Factions <GENERAL>
+Legality -25
+
+PowerSource 4
+name <Super Cell 100>
+mass -4
+Category <ELECTRONICS ACCESSORY>
+Factions <GENERAL>
+Legality -25
+
+PowerSource 2
+name <Ultra Cell 50>
+mass -3
+Category <ELECTRONICS ACCESSORY>
+Factions <GENERAL>
+Legality -15
+
+PowerSource 4
+name <Ultra Cell 100>
+mass -6
+Category <ELECTRONICS ACCESSORY>
+Factions <GENERAL>
+Legality -15
+
+BodyHarness 8
+name <Commando Powerpack>
+desc <A backpack containing a self-recharging superconducting power source.>
+Category <ELECTRONICS ACCESSORY>
+Factions <GENERAL>
+Legality 10
+sub
+	PowerSource 8
+	mass -12
+
+	PowerSource 8
+	mass -12
+end
+
+BodyHarness 4
+name <Power Backpack>
+desc <A backpack containing a self-recharging superconducting power source.>
+Category <ELECTRONICS ACCESSORY>
+Factions <GENERAL>
+sub
+	PowerSource 8
+	mass -9
+end
+
+BodyHarness 5
+name <Industrial Powerpack>
+desc <A backpack containing a heavy duty power source.>
+Category <TOOL>
+Factions <GENERAL>
+Legality -5
+sub
+	PowerSource 10
+	mass -8
+end
+
+ArmHarness 3
+name <Power Armband>
+desc <A rechargable power source built into a wristband. Easily interfaces with most portable devices.>
+Category <ELECTRONICS ACCESSORY>
+Factions <GENERAL>
+Legality -10
+sub
+	PowerSource 6
+	mass -9
+end
+
+
+%  *****************************
+%  ***  MUSICAL INSTRUMENTS  ***
+%  *****************************
+
+Instrument 0
+name <Ukelele>
+desc <A simple stringed instrument.>
+Category <INSTRUMENT ODDITIES>
+Factions <GENERAL>
+Legality -50
+
+Instrument 0
+name <Tambourine>
+desc <A simple instrument.>
+Category <TOOL INSTRUMENT ESSENTIAL>
+Factions <GENERAL>
+Legality -50
+
+Instrument 1
+name <Electric Guitar>
+desc <A popular instrument for aspiring muscians.>
+Category <TOOL INSTRUMENT>
+Factions <GENERAL>
+Legality -50
+Mass 1
+
+Instrument 1
+name <Acoustic Guitar>
+desc <A popular instrument for aspiring muscians.>
+Category <INSTRUMENT>
+Factions <GENERAL>
+Legality -50
+Mass 1
+
+Instrument 1
+name <Keyboard>
+desc <A popular instrument for aspiring muscians.>
+Category <TOOL INSTRUMENT ESSENTIAL>
+Factions <GENERAL>
+sdl_portrait <item_keyboard.png>
+Legality -50
+Mass 1
+
+Instrument 2
+name <Violin>
+desc <A stringed instrument.>
+sdl_portrait <item_violin.png>
+Category <INSTRUMENT>
+Factions <GENERAL>
+Legality -50
+
+
+%  ***************************
+%  ***  ADVENTURING TOOLS  ***
+%  ***************************
+
+AcrobatTool 2
+name <Ribbon>
+desc <This ribbon may be used for rythmic gymnastics.>
+Category <TOOL SPORTS>
+Factions <GENERAL>
+Legality -50
+
+AcrobatTool 2
+name <Razor Ribbon>
+desc <This ribbon may be used for rythmic gymnastics. It can also be used to kill people.>
+Category <EXOTIC NINJA>
+Factions <GENERAL>
+Legality 0
+sub
+	Melee 12
+	name <Razor Edge>
+	UsesSpeed
+	mass -12
+	type <EXTEND FLAIL ARMORPIERCING>
+end
+
+HolySymbol 1
+name <Prayer Beads>
+desc <>
+Category <TOOL Religion>
+Factions <GENERAL>
+Legality -50
+
+InsightTool 1
+name <Magnifying Glass>
+desc <Just the thing to make you look like an authentic detective!>
+Category <TOOL SCIENCE ODDITIES>
+Factions <GENERAL>
+Legality -50
+SDL_PORTRAIT <item_magnifyingglass.png>
+
+LockPick 0
+name <Locksmith Toolkit>
+desc <A variety of interfaces for repairing or circumventing locks.>
+Category <TOOL ESSENTIAL>
+factions <GENERAL>
+Legality -5
+
+LockPick 1
+name <Basic Lockpick>
+desc <A tool used to circumvent security devices.>
+Category <TOOL CONTRABAND ESSENTIAL>
+Factions <GENERAL>
+Legality 5
+
+LockPick 2
+name <Advanced Lockpick>
+desc <A tool used to circumvent security devices.>
+Category <TOOL CONTRABAND>
+Factions <GENERAL>
+Legality 15
+
+ScienceTool 3
+name <MultiScanner>
+desc <A multipurporse sensor unit, with an integrated computer and power source. It is somewhat cumbersome to use.>
+Category <TOOL SCIENCE>
+Factions <GENERAL>
+Legality -10
+sub
+	Computer 2
+	mass -2
+
+	PowerSource 2
+	mass -2
+end
+
+
+%  *********************
+%  ***  REPAIR FUEL  ***
+%  *********************
+
+MedicineFuel 30
+Name <Sticky Band>
+desc <This can bind wounds.>
+Category <MEDICINE ESSENTIAL>
+Factions <GENERAL>
+SDL_PORTRAIT <item_medicine.png>
+Mass 1
+legality -50
+
+MedicineFuel 60
+Name <Gauze>
+desc <Light cloth used for making bandages for wounds.>
+Category <MEDICINE>
+Factions <GENERAL>
+SDL_PORTRAIT <item_medicine.png>
+Mass 1
+legality -50
+
+MedicineFuel 90
+Name <Antiseptic Ointment>
+desc <An ointment that stops any chance of infection in a wound.>
+Category <MEDICINE>
+Factions <GENERAL>
+SDL_PORTRAIT <item_medicine.png>
+Mass 1
+legality -50
+
+MedicineFuel 120
+Name <Medicated Bandages>
+desc <Premedicated sterile bandages.>
+Category <MEDICINE>
+Factions <GENERAL>
+SDL_PORTRAIT <item_medicine.png>
+Mass 1
+legality -50
+
+MedicineFuel 150
+Name <Sutures>
+desc <Sterilised string used to bind open wounds and, in less fortunate circumstances, reattach limbs.>
+Category <MEDICINE ESSENTIAL>
+Factions <GENERAL>
+SDL_PORTRAIT <item_medicine.png>
+Mass 1
+legality -50
+
+MedicineFuel 300
+Name <First Aid Kit>
+desc <A kit containing a variety of supplies required for a wide range of injuries.>
+Category <MEDICINE TOOL>
+Factions <GENERAL>
+SDL_PORTRAIT <item_medicine.png>
+Mass 1
+legality -50
+
+MedicineFuel 600
+Name <Field Surgery Kit>
+desc <A kit often found in the possession of combat medics.>
+Category <MEDICINE>
+Factions <GENERAL>
+SDL_PORTRAIT <item_medicine.png>
+Mass 1
+legality -50
+
+
+RepairFuel 10
+Name <Scotch Tape>
+desc <Transparent tape used for binding things together.>
+Category <TOOL>
+Factions <GENERAL>
+Mass 1
+legality -50
+
+RepairFuel 50
+Name <Super Glue>
+desc <Strong glue capable of joining together cracks of hard materials.>
+Category <TOOL>
+Factions <GENERAL>
+Mass 1
+legality -50
+
+RepairFuel 75
+Name <Duct Tape>
+desc <Silvery adhesive tape generally used for binding sheets of metal.>
+Category <TOOL ESSENTIAL>
+Factions <GENERAL>
+Mass 1
+legality -50
+
+RepairFuel 100
+Name <Epoxy Putty>
+desc <A thick paste used as a strong adhesive.>
+Category <TOOL>
+Factions <GENERAL>
+Mass 1
+legality -50
+
+RepairFuel 170
+Name <Handyman's Kit>
+desc <Contains everything the modern-day handyman could ever ask for!>
+Category <TOOL>
+Factions <GENERAL>
+Mass 1
+legality -50
+
+RepairFuel 750
+Name <Basic Repair Kit>
+desc <Contains various adhesives, screws, nails, tools and other general repair supplies.>
+Category <TOOL>
+Factions <GENERAL>
+Mass 3
+legality -50
+
+RepairFuel 100
+Name <Sheet Metal>
+desc <Plain ol' sheet of metal.>
+Category <TOOL ESSENTIAL>
+Factions <GENERAL>
+Mass 2
+legality -50
+
+RepairFuel 125
+Name <Heavy-Duty Duct Tape>
+desc <Industrial-strength silvery duct tape.>
+Category <TOOL>
+Factions <GENERAL>
+Mass 1
+legality -50
+
+RepairFuel 50
+Name <Scratch Remover>
+desc <A fiberglass set designed to polish off and seal cracks.>
+Category <TOOL>
+Factions <GENERAL>
+Mass 1
+legality -50
+
+RepairFuel 500
+Name <Epoxy Bodyfiller>
+desc <Epoxy resin used to repair large structural damage.>
+Category <TOOL>
+Factions <GENERAL>
+Mass 3
+legality -20
+
+RepairFuel 1500
+Name <Mecha Patch Kit>
+desc <For the budding mecha engineer wanting to do their own repairs!>
+Category <TOOL>
+Factions <GENERAL>
+Mass 4
+legality -10
+
+RepairFuel 3000
+Name <Mecha Welding Set>
+desc <This heavy-duty mecha repair set is commonly found in mecha garages.>
+Category <TOOL>
+Factions <GENERAL>
+Mass 5
+legality -10
+
+
+BiotechFuel 500
+Name <Biotech Lab Set>
+desc <This contains the equipment needed to perform biotech experiments.>
+Category <SCIENCE ESSENTIAL>
+Factions <GENERAL>
+Mass 1
+legality 0
+
+%  *********************
+%  ***  CONSUMABLES  ***
+%  *********************
+
+Food 50
+Name <Adventuring Ration>
+FoodMorale -2
+Mass -3
+desc <It's not delicious, but it'll keep you alive.>
+Category <FOOD ESSENTIAL>
+Factions <GENERAL>
+SDL_PORTRAIT <item_ration.png>
+legality -50
+
+Food 50
+Name <Standard Ration>
+Mass -3
+desc <Packaged with survival as a priority.>
+Category <FOOD>
+Factions <GENERAL>
+SDL_PORTRAIT <item_ration.png>
+legality -50
+
+Food 50
+Name <Deluxe Ration>
+Mass -3
+FoodMorale 1
+desc <Contains nuts, chocolate and other high-calorie foods. Used by the military in particularly harsh conditions.>
+Category <FOOD ESSENTIAL>
+Factions <GENERAL>
+SDL_PORTRAIT <item_ration.png>
+legality -50
+
+Food 50
+Name <Standard Meal>
+desc <A small variety of meats, vegetables and grains.>
+Category <FOOD>
+Factions <GENERAL>
+SDL_PORTRAIT <item_ration.png>
+legality -50
+
+Food 40
+Name <Light Meal>
+Mass -6
+desc <A lightweight source of food.>
+Category <FOOD>
+Factions <GENERAL>
+SDL_PORTRAIT <item_ration.png>
+legality -50
+
+Food 40
+Name <Military Ration>
+Mass -3
+FoodMorale -2
+desc <It's not delicious, but it'll keep you alive.>
+Category <FOOD>
+Factions <GENERAL>
+SDL_PORTRAIT <item_ration.png>
+legality -50
+
+Food 20
+Name <Noodle Cup>
+Mass -2
+FoodMorale -1
+desc <Seems rather ordinary, even for noodles.>
+Category <FOOD>
+Factions <GENERAL>
+SDL_PORTRAIT <item_noodlecup.png>
+legality -50
+
+Food 20
+Name <Deluxe Noodle Cup>
+Mass -2
+FoodMorale 1
+desc <Contains an exciting combination of flavors and spices.>
+Category <FOOD>
+Factions <GENERAL>
+SDL_PORTRAIT <item_noodlecup.png>
+legality -50
+
+Set
+name <Survival Bar x3>
+desc <It's everything that a human needs to stay alive packaged in a crunchy bar!>
+Category <FOOD>
+Factions <GENERAL>
+legality -10
+inv
+	STC SurvivalBar
+	desig <>
+	STC SurvivalBar
+	desig <>
+	STC SurvivalBar
+	desig <>
+end
+
+Food 5
+Name <Chocolate Bar>
+FoodMorale 2
+desc <Some delicious chocolate.>
+Category <FOOD>
+Factions <GENERAL>
+legality -15
+
+Set
+name <Nutrient Pill x10>
+desc <Complete nutrition in pill form.>
+Category <MEDICINE>
+Factions <GENERAL>
+SDL_PORTRAIT <item_pills.png>
+legality -15
+inv
+	STC PILL_Nutrient
+	desig <>
+	STC PILL_Nutrient
+	desig <>
+	STC PILL_Nutrient
+	desig <>
+	STC PILL_Nutrient
+	desig <>
+	STC PILL_Nutrient
+	desig <>
+	STC PILL_Nutrient
+	desig <>
+	STC PILL_Nutrient
+	desig <>
+	STC PILL_Nutrient
+	desig <>
+	STC PILL_Nutrient
+	desig <>
+	STC PILL_Nutrient
+	desig <>
+end
+
+Set
+name <Quick Fix Pill x10>
+desc <This medicine promotes rapid cellular regeneration, and can instantly heal many injuries.>
+Category <MEDICINE>
+Factions <GENERAL>
+SDL_PORTRAIT <item_pills.png>
+legality -10
+inv
+	STC PILL_QuickFix
+	desig <>
+	STC PILL_QuickFix
+	desig <>
+	STC PILL_QuickFix
+	desig <>
+	STC PILL_QuickFix
+	desig <>
+	STC PILL_QuickFix
+	desig <>
+	STC PILL_QuickFix
+	desig <>
+	STC PILL_QuickFix
+	desig <>
+	STC PILL_QuickFix
+	desig <>
+	STC PILL_QuickFix
+	desig <>
+	STC PILL_QuickFix
+	desig <>
+end
+
+Set
+name <Quick Fix Pill x5>
+desc <This medicine promotes rapid cellular regeneration, and can instantly heal many injuries.>
+Category <MEDICINE>
+Factions <GENERAL>
+SDL_PORTRAIT <item_pills.png>
+legality -10
+inv
+	STC PILL_QuickFix
+	desig <>
+	STC PILL_QuickFix
+	desig <>
+	STC PILL_QuickFix
+	desig <>
+	STC PILL_QuickFix
+	desig <>
+	STC PILL_QuickFix
+	desig <>
+end
+
+Set
+name <Regen Boost Pill x5>
+desc <This medicine increases the body's ability to repair itself. While it is in effect injuries will be healed much faster than normal.>
+Category <MEDICINE>
+Factions <GENERAL>
+SDL_PORTRAIT <item_pills.png>
+legality 0
+inv
+	STC PILL_Regen
+	desig <>
+	STC PILL_Regen
+	desig <>
+	STC PILL_Regen
+	desig <>
+	STC PILL_Regen
+	desig <>
+	STC PILL_Regen
+	desig <>
+end
+
+Set
+name <Regen Boost Pill x10>
+desc <This medicine increases the body's ability to repair itself. While it is in effect injuries will be healed much faster than normal.>
+Category <MEDICINE>
+Factions <GENERAL>
+SDL_PORTRAIT <item_pills.png>
+legality 0
+inv
+	STC PILL_Regen
+	desig <>
+	STC PILL_Regen
+	desig <>
+	STC PILL_Regen
+	desig <>
+	STC PILL_Regen
+	desig <>
+	STC PILL_Regen
+	desig <>
+	STC PILL_Regen
+	desig <>
+	STC PILL_Regen
+	desig <>
+	STC PILL_Regen
+	desig <>
+	STC PILL_Regen
+	desig <>
+	STC PILL_Regen
+	desig <>
+end
+
+Set
+name <Poison Antidote x5>
+desc <A broad spectrum antivenom effective against most organic and synthetic poisons.>
+Category <MEDICINE ESSENTIAL>
+Factions <GENERAL>
+SDL_PORTRAIT <item_pills.png>
+legality -10
+inv
+	STC PILL_Antidote
+	desig <>
+	STC PILL_Antidote
+	desig <>
+	STC PILL_Antidote
+	desig <>
+	STC PILL_Antidote
+	desig <>
+	STC PILL_Antidote
+	desig <>
+end
+
+Set
+name <Antibiotic Pill x5>
+desc <A fast acting antiviral, antibacterial drug coupled with an immune system booster.>
+Category <MEDICINE>
+Factions <GENERAL>
+SDL_PORTRAIT <item_pills.png>
+legality -10
+inv
+	STC PILL_Antibiotic
+	desig <>
+	STC PILL_Antibiotic
+	desig <>
+	STC PILL_Antibiotic
+	desig <>
+	STC PILL_Antibiotic
+	desig <>
+	STC PILL_Antibiotic
+	desig <>
+end
+
+Food 5
+Name <Xozu>
+FoodFX:CauseStatus
+FoodMod:Stone
+FoodMorale 3
+desc <An alcoholic beverage.>
+Category <ENTERTAINMENT>
+Factions <GENERAL>
+legality -5
+
+%  *******************
+%  ***  CYBERWARE  ***
+%  *******************
+
+StatCyberware
+Name <Bone Weaving>
+desc <(SKELETON) Repair and reinforcement for damaged bones.>
+CyberSlot <SKELETON>
+Category <MEDICINE>
+Factions <GENERAL>
+Body 1
+Mass 25
+legality -20
+
+StatCyberware
+Name <Reinforced Skeleton>
+desc <(SKELETON) A structurally-strengthened skeleton.>
+CyberSlot <SKELETON>
+Category <CYBERWARE>
+Factions <GENERAL>
+Body 3
+Speed -1
+Mass 25
+legality 10
+
+StatCyberware
+Name <Lightened Skeleton>
+desc <(SKELETON) Does away with the weight caused by organically dense bones.>
+Category <CYBERWARE>
+Factions <GENERAL>
+CyberSlot <SKELETON>
+Body -1
+Speed 2
+Reflexes 1
+legality 5
+
+StatCyberware
+Name <Armored Spine>
+desc <(SPINE) Does away with the fragile nature of a human's organic spine.>
+Category <CYBERWARE>
+Factions <GENERAL>
+CyberSlot <SPINE>
+Body 3
+Ego 3
+Speed -1
+Mass 16
+legality 5
+
+StatCyberware
+Name <Replacement Spine>
+desc <(SPINE) A replacement for an injured spine.>
+Category <MEDICINE>
+Factions <GENERAL>
+CyberSlot <SPINE>
+Body 2
+Speed -1
+Mass 2
+legality -20
+
+StatCyberware
+Name <Optical Spine>
+desc <(SPINE) Replaces many of the spinal nerves with fiber-optic data transmission wires.>
+Category <CYBERWARE>
+Factions <GENERAL>
+CyberSlot <SPINE>
+Speed 2
+Craft 1
+Reflexes 1
+Knowledge 1
+Body -1
+Mass 10
+Legality 10
+
+StatCyberware
+Name <Predator Reflexes>
+desc <(BRAIN) Takes advantage of certain predator instincts found in animals of prey.>
+Category <CYBERWARE>
+Factions <GENERAL>
+CyberSlot <BRAIN>
+Body 1
+Reflexes 4
+Speed 3
+Perception 2
+Ego 1
+Knowledge -3
+Charm -1
+Mass 15
+legality 25
+
+StatCyberware
+Name <Heavy Myomer Muscles>
+desc <(MUSCULATURE) Replaces conventional muscles with a technologically-improved biomaterial.>
+Category <CYBERWARE>
+Factions <GENERAL>
+CyberSlot <MUSCULATURE>
+Body 3
+Mass 20
+legality 10
+
+StatCyberware
+Name <Rapid Strike Muscles>
+desc <(MUSCULATURE) Muscles tuned for quick reactions.>
+Category <CYBERWARE>
+Factions <GENERAL>
+CyberSlot <MUSCULATURE>
+Reflexes 2
+Speed 2
+Mass 20
+legality 15
+
+StatCyberware
+Name <Muscle Bonding>
+desc <(MUSCULATURE) Synthetic reinforcements for the augmentation or repair of muscles.>
+Category <MEDICINE>
+Factions <GENERAL>
+CyberSlot <MUSCULATURE>
+Body 1
+Mass 20
+legality -10
+
+StatCyberware
+Name <Cybereyes>
+desc <(EYES) These eyes include resolution enhancers.>
+Category <CYBERWARE MEDICINE>
+Factions <GENERAL>
+CyberSlot <EYES>
+Perception 1
+Charm -1
+Mass 1
+legality -5
+
+StatCyberware
+Name <Advanced Cybereyes>
+desc <(EYES) These eyes include resolution enhancers.>
+Category <CYBERWARE MEDICINE>
+Factions <GENERAL>
+CyberSlot <EYES>
+Reflexes 1
+Perception 2
+Charm -1
+Mass 1
+legality 10
+
+StatCyberware
+Name <Fashion Cybereyes>
+desc <(EYES) A pair of rather charming eyes.>
+Category <CYBERWARE MEDICINE>
+Factions <GENERAL>
+CyberSlot <EYES>
+Perception 1
+Charm 1
+Mass 1
+legality -5
+
+SkillCyberware
+Name <Targeter Eye>
+desc <(EYES) Provides highlighting of personal-scale targets.>
+Category <CYBERWARE>
+Factions <GENERAL>
+CyberSlot <EYES>
+Type <CHARA CYBER>
+SkillModRangedCombat
+SkillModAmount 1
+Mass 1
+legality 10
+
+StatCyberware
+Name <Cyber Ears>
+desc <(EARS) Improves the perception of sound.>
+Category <CYBERWARE>
+Factions <GENERAL>
+CyberSlot <EARS>
+Perception 1
+Mass 1
+legality -10
+
+SkillCyberware
+Name <Perfect Pitch Ears>
+desc <(EARS) Ears used by some performance judges to dissect and analyse music.>
+Category <CYBERWARE>
+Factions <GENERAL>
+CyberSlot <EARS>
+SkillModPerformance
+SkillModAmount 3
+Mass 1
+legality -5
+
+StatCyberware
+Name <Cyber Heart>
+desc <(HEART) A heavy-duty replacement for a conventional organic heart.>
+Category <CYBERWARE MEDICINE>
+Factions <GENERAL>
+CyberSlot <HEART>
+Body 2
+Mass 2
+legality -25
+
+SkillCyberware
+Name <Spinal Pilot Link>
+desc <(BRAINSTEM) Interacts with a piloted mecha and provides neural feedback to the pilot.>
+Category <CYBERWARE>
+Factions <SILKN COMET BIOCO>
+CyberSlot <BRAINSTEM>
+SkillModMechaPiloting
+SkillModAmount 3
+Mass 1
+legality 10
+
+StatCyberware
+Name <Data Link>
+desc <(BRAIN) Provides direct links between some parts of the brain.>
+Category <CYBERWARE>
+Factions <GENERAL>
+CyberSlot <BRAIN>
+Knowledge 1
+Mass 1
+legality -5
+
+StatCyberware
+Name <Neural Coprocessor>
+desc <(BRAIN) Removes some of the processing burden from the human brain.>
+Category <CYBERWARE>
+Factions <GENERAL>
+CyberSlot <BRAIN>
+Knowledge 2
+Mass 1
+legality 5
+
+StatCyberware
+Name <Sensory Amplifier>
+desc <(BRAIN) Tunes the mind to detect tiny inputs that would otherwise go unnoticed.>
+Category <CYBERWARE>
+Factions <GENERAL>
+CyberSlot <BRAIN>
+Perception 3
+Mass 2
+legality 5
+
+StatCyberware
+Name <Synaptic Booster>
+desc <(BRAIN) Works with the existing synapses of the brain to greatly boost data storage and retrieval capabilities.>
+Category <CYBERWARE>
+Factions <GENERAL>
+CyberSlot <BRAIN>
+Knowledge 3
+Mass 1
+legality 10
+
+%  ***********************
+%  ***  MISCELLANEOUS  ***
+%  ***********************
+
+
+set
+name <DIY BuruBuru Kit>
+desc <A must for mecha enthusiasts. This set contains all the parts needed to construct a BuruBuru mecha.>
+factions <GENERAL>
+Category <MECHA TOOL>
+scale 2
+Legality -20
+inv
+	Battroid 5
+	Name <Buru Buru>
+	Desig <KIT-01>
+	type <GROUND SPACE>
+	factions <GENERAL>
+	SDL_Sprite <btr_buruburu.png>
+	SDL_PORTRAIT <item_buruburu.png>
+	desc <One of the oldest designs still in common use, the BuruBuru is the dependable workhorse of the mecha world.>
+	Legality -15
+	sub
+		Torso
+		Armor 4
+		mass 3
+		sub
+			CPit
+			Armor 2
+
+			Mount
+			name <Collar Mount>
+		end
+	end
+
+	Head
+	size 5
+	Armor 4
+	mass 3
+	scale 2
+	sub
+		Sensor 4
+
+		STC LAS-3
+		type <INTERCEPT>
+	end
+
+
+	Arm
+	size 5
+	Name <Right Arm>
+	mass 3
+	Armor 4
+	scale 2
+	sub
+		Hand
+	end
+
+	Arm
+	size 5
+	Name <Left Arm>
+	mass 3
+	Armor 4
+	scale 2
+	sub
+		Hand
+	end
+
+	Leg
+	size 5
+	Name <Right Leg>
+	mass 3
+	Armor 4
+	scale 2
+	sub
+		HoverJet 5
+	end
+
+	Leg
+	size 5
+	Name <Left Leg>
+	mass 3
+	Armor 4
+	scale 2
+	sub
+		HoverJet 5
+	end
+end
+

@@ -1,0 +1,24 @@
+*****************************************************
+***   SAFE  vs  DANGEROUS,  LAWFUL  vs  LAWLESS   ***
+*****************************************************
+
+These types determine the defense and other patrols that will be encountered
+in this city.
+
+SAFE: No hostile patrols, no Rk2 combat missions.
+Normal: Defense patrols, nemesis hostile patrols, all missions OK
+DANGEROUS: As normal + extra hostile patrols
+
+LAWFUL: Unforgiving police patrols, no Rk2 police missions
+Normal: Regular police patrols, all police missions OK
+LAWLESS: No police patrols or missions at all
+
+A hostile patrol is defined as someone wandering around looking for fights- it
+may be the PC's nemesis, a faction enemy, or a group of bandits.
+
+
+******************************
+***   LOCAL  SPECIALTIES   ***
+******************************
+
+

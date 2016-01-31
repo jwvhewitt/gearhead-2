@@ -1,0 +1,1102 @@
+%%
+%% *MECHAMISSION_Capture Content
+%%
+%% The PC is going to capture an enemy vehicle.
+%%
+%% This mission gives salvage plus four FacXP points.
+%%
+%% This subplot is responsible for loading its own conclusions: typically, there will be
+%% one conclusion for winning the battle, one conclusion for losing the battle, and a third
+%% conclusion for running out of time.
+%%
+%% The master plot must have a PayRate set. The master plot is also responsible for E1's
+%% mission reminder message.
+%%
+%% Param1: The NPC offering the mission
+%% Param2: The outdoors scene where the encounter will be placed
+%% Param3: The enemy faction
+%%
+
+Content
+	name <Generic Capture Cruiser>
+	requires <*MECHAMISSION_Capture>
+	desc <The PC will capture a cruiser without destroying it.>
+
+	% E1: The Mission Provider
+	% E2: The scene where the encounter will be placed
+	% E3: The enemy faction
+	% E4: The combat scene
+	Element4 <Prefab>
+	Place4 <2>
+
+	% P%id%01 = Time Limit
+	% P%id%02 = Have entered combat
+	update <if= p%id%01 0 P= %id%01 ComTime P+ %id%01 86400>
+	start <ifG ComTime P%id%01 ifG p%id%01 0 if= P%id%02 0 SetPlotStatus %plotid% %id3%>
+
+	% SubPlot1 = Win the battle, get a reward
+	% SubPlot2 = Lose the battle, get scorned
+	% SubPlot3 = Run out of time, get email
+
+	SubPlot1 <*Util_WinMission&Mecha 1>
+	SubPlot2 <*Util_LoseMission&Mecha 1>
+	SubPlot3 <*Util_TimeOver 1>
+
+	sub
+		MetaScene 4 2
+		%% The ship's exterior
+		%% To capture the ship, defeat all the guards, weapons, and
+		%% thrusters. Damaging the cargo segments of the ship may result
+		%% in the ship being destroyed.
+
+		SetFaction 3
+
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		% L3 = "Just defeat the guards" message counter
+		% L4 = Initial headcount of Team 3
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= L2 0 L= 2 1  L= 4 t3   Alert 1  P= %id%02 1  PCFEnemy %3%>
+
+		nu1 <if= T1 0  Return   if= L1 0 L= 1 1  Goto GoLoseMission>
+		nu2 <if= T2 0  if= T4 0 if= T5 0   if= L1 0  L= 1 1  ifG t3 0 else GoLoseMission Goto GoWinMission>
+		GoLoseMission <Alert 2  Memo 2  LoseRenown                                  SetPlotStatus %plotid2% %id2%>
+		GoWinMission <Alert 3  Memo 3   AddRenown 1   XPV 100  FacXP+ NPCFac %1% 3  Salvage  SetPlotStatus %plotid1% %id1%>
+		nu4 <Goto nu2>
+		nu5 <Goto nu2>
+
+		end <SetEncounterInactive %2%>
+
+		Msg1 <You have found the enemy vessel. Disable its thrusters, weapons, and guard escort to capture it.>
+		Msg2 <You have failed %name1%'s mission.>
+		Msg3 <You have completed %name1%'s mission.>
+
+		% Random scene content- there's a chance that an enemy or an ally will show up.
+		Content1 <Some 1 15 Sub *CRC_Nemesis   na>
+		Content2 <Some 1 10 Sub *CRC_Backup    na>
+
+		sub
+			team 1
+			SetEnemy 2 4 5
+			SetAlly 6
+			ParaX 5
+			ParaY 25
+
+			team 2
+			name <Enemies>
+			type <DEFENSE>
+			SetEnemy 1 6
+			SetAlly 4 5
+			Deploy <SetSelfFaction %3%  WMecha 2 %threat% 100>
+			ParaX 45
+			ParaY 25
+
+			team 3
+			name <Cruiser Body>
+			% This team is neutral- the PC wants to capture these
+			% parts intact.
+
+			team 4
+			name <Cruiser Weapons>
+			setenemy 1 6
+			setally 2 3 5
+			% Destroy the weapons and propulsion to incapacitate the
+			% cruiser.
+
+			team 5
+			name <Cruiser Propulsion>
+			setenemy 1 6
+			setally 2 3 4
+
+			Team 6
+			name <Allies>
+			setally 1
+			setenemy 2 4 5
+
+			rect
+			name <Cruiser Zone>
+			special <SubZone>
+			width 12
+			height 12
+			MFX 37
+			MFY 19
+			sub
+				SuperProp
+				requires <*Cruiser>
+				Team1 3
+				Team2 4
+				Team3 5
+			end
+		end
+	end
+	inv
+		STC PLOT-MECHAMISSION-WANDER
+	end
+
+
+%%
+%% *MECHAMISSION_Escort Content
+%%
+%% The PC is going to defend a convoy against enemy mecha.
+%%
+%% This mission gives salvage plus four FacXP points.
+%%
+%% This subplot is responsible for loading its own conclusions: typically, there will be
+%% one conclusion for winning the battle, one conclusion for losing the battle, and a third
+%% conclusion for running out of time.
+%%
+%% The master plot must have a PayRate set. The master plot is also responsible for E1's
+%% mission reminder message.
+%%
+%% Param1: The NPC offering the mission
+%% Param2: The outdoors scene where the encounter will be placed
+%% Param3: The faction being defended
+%%
+
+Content
+	name <Escort Cruiser (Extreme Renown)>
+	requires <*MECHAMISSION_Escort !Ex>
+	desc <The PC will protect a cruiser from some enemy mecha.>
+
+	% E1: The Mission Provider
+	% E2: The scene where the encounter will be placed
+	% E3: The faction being defended
+	% E4: The faction attacking the convoy
+	% E5: The combat scene
+	Element4 <Faction !Enemy 3>
+	Element5 <Prefab>
+	Place5 <2>
+
+	% P%id%01 = Time Limit
+	% P%id%02 = Have entered combat
+	update <if= p%id%01 0 P= %id%01 ComTime P+ %id%01 86400>
+	start <ifG ComTime P%id%01 ifG p%id%01 0 if= P%id%02 0 SetPlotStatus %plotid% %id3%>
+
+	% SubPlot1 = Win the battle, get a reward
+	% SubPlot2 = Lose the battle, get scorned
+	% SubPlot3 = Run out of time, get email
+
+	SubPlot1 <*Util_WinMission&Mecha 1>
+	SubPlot2 <*Util_LoseMission&Mecha 1>
+	SubPlot3 <*Util_TimeOver 1>
+
+	sub
+		MetaScene 5 2
+		% L1 = Initialization Counter
+		% L2 = Victory Counter
+		MapWidth 50
+		MapHeight 50
+
+		% Set this metascene's faction to E4
+		SetFaction 4
+
+		% At startup, set the counter so the mission doesn't timeout
+		% while the PC is defending the factory. That would just be silly.
+		Start <if= L1 0  Alert 1  L= 1 1 P= %id%02 1>
+		nu1 <if= T1 0 Return if= L2 0 L= 2 1 Goto GoLoseMission>
+		nu2 <if= T2 0 if= L2 0 L= 2 1 Salvage ifG T3 0 else GoLoseMission Goto GoWinMission>
+		GoLoseMission <Alert 2  Memo 2  LoseRenown         SetPlotStatus %plotid2% %id2%>
+		GoWinMission  <Alert 3  Memo 3  AddRenown 1        XPV 100  FacXP+ %3% 1  SetPlotStatus %plotid1% %id1%>
+
+		Msg1 <While escorting the cruiser, you are attacked by mecha from %name4%!>
+		Msg2 <You have failed %name1%'s mission.>
+		Msg3 <You have completed %name1%'s mission.>
+
+		% Random scene content- there's a chance that an enemy or an ally will show up.
+		Content1 <Some 1 15 Sub *CRC_Nemesis   na>
+		Content2 <Some 1 10 Sub *CRC_Backup    na>
+
+		sub
+			Team 1
+			SetEnemy 2
+			SetAlly 3 4
+			home <Cruiser Zone>
+
+			Team 2
+			name <Enemies>
+			type <ASSAULT>
+			SetEnemy 1 3 4
+			Deploy <SetSelfFaction %4% WMecha 2 %threat% 100>
+			ParaX 45
+			ParaY 45
+
+			Team 3
+			name <Cruiser>
+			SetEnemy 2
+			SetAlly 1 4
+
+			team 4
+			name <Allies>
+			SetEnemy 2
+			SetAlly 1 3
+			ParaX 10
+			ParaY 10
+
+			rect
+			name <Cruiser Zone>
+			special <SubZone>
+			width 12
+			height 12
+			MFX 2
+			MFY 2
+			sub
+				SuperProp
+				requires <*Cruiser>
+				SetTeam 3
+			end
+		end
+
+	end
+	inv
+		STC CORE-STATIONARY
+		name <%name1%'s Mission>
+		Attack <  >
+	end
+
+
+Content
+	name <Escort Cruiser (High Renown)>
+	requires <*MECHAMISSION_Escort !Hi>
+	desc <The PC will protect a cruiser from some enemy mecha.>
+
+	% E1: The Mission Provider
+	% E2: The scene where the encounter will be placed
+	% E3: The faction being defended
+	% E4: The faction attacking the convoy
+	% E5: The combat scene
+	Element4 <Faction !Enemy 3>
+	Element5 <Prefab>
+	Place5 <2>
+
+	% P%id%01 = Time Limit
+	% P%id%02 = Have entered combat
+	update <if= p%id%01 0 P= %id%01 ComTime P+ %id%01 86400>
+	start <ifG ComTime P%id%01 ifG p%id%01 0 if= P%id%02 0 SetPlotStatus %plotid% %id3%>
+
+	% SubPlot1 = Win the battle, get a reward
+	% SubPlot2 = Lose the battle, get scorned
+	% SubPlot3 = Run out of time, get email
+
+	SubPlot1 <*Util_WinMission&Mecha 1>
+	SubPlot2 <*Util_LoseMission&Mecha 1>
+	SubPlot3 <*Util_TimeOver 1>
+
+	sub
+		MetaScene 5 2
+		% L1 = Initialization Counter
+		% L2 = Victory Counter
+		MapWidth 50
+		MapHeight 50
+
+		% Set this metascene's faction to E4
+		SetFaction 4
+
+		% At startup, set the counter so the mission doesn't timeout
+		% while the PC is defending the factory. That would just be silly.
+		Start <if= L1 0  Alert 1  L= 1 1 P= %id%02 1>
+		nu1 <if= T1 0 Return if= L2 0 L= 2 1 Goto GoLoseMission>
+		nu2 <if= T2 0 if= L2 0 L= 2 1 Salvage ifG T3 0 else GoLoseMission Goto GoWinMission>
+		GoLoseMission <Alert 2  Memo 2  LoseRenown         SetPlotStatus %plotid2% %id2%>
+		GoWinMission  <Alert 3  Memo 3  AddRenown 1        XPV 100  FacXP+ %3% 1  SetPlotStatus %plotid1% %id1%>
+
+		Msg1 <While escorting the cruiser, you are attacked by mecha from %name4%!>
+		Msg2 <You have failed %name1%'s mission.>
+		Msg3 <You have completed %name1%'s mission.>
+
+		% Random scene content- there's a chance that an enemy or an ally will show up.
+		Content1 <Some 1 15 Sub *CRC_Nemesis   na>
+		Content2 <Some 1 10 Sub *CRC_Backup    na>
+
+		sub
+			Team 1
+			SetEnemy 2
+			SetAlly 3 4
+			home <Cruiser Zone>
+
+			Team 2
+			name <Enemies>
+			type <ASSAULT>
+			SetEnemy 1 3 4
+			Deploy <SetSelfFaction %4% WMecha 2 %threat% 100>
+			ParaX 45
+			ParaY 45
+
+			Team 3
+			name <Cruiser>
+			SetEnemy 2
+			SetAlly 1 4
+
+			team 4
+			name <Allies>
+			SetEnemy 2
+			SetAlly 1 3
+			ParaX 10
+			ParaY 10
+
+			rect
+			name <Cruiser Zone>
+			special <SubZone>
+			width 12
+			height 12
+			MFX 11
+			MFY 11
+			sub
+				SuperProp
+				requires <*Cruiser>
+				SetTeam 3
+			end
+		end
+
+	end
+	inv
+		STC CORE-STATIONARY
+		name <%name1%'s Mission>
+		Attack <  >
+	end
+
+
+Content
+	name <Generic Escort Cruiser>
+	requires <*MECHAMISSION_Escort -!Hi -!Ex>
+	desc <The PC will protect a cruiser from some enemy mecha.>
+
+	% E1: The Mission Provider
+	% E2: The scene where the encounter will be placed
+	% E3: The faction being defended
+	% E4: The faction attacking the convoy
+	% E5: The combat scene
+	Element4 <Faction !Enemy 3>
+	Element5 <Prefab>
+	Place5 <2>
+
+	% P%id%01 = Time Limit
+	% P%id%02 = Have entered combat
+	update <if= p%id%01 0 P= %id%01 ComTime P+ %id%01 86400>
+	start <ifG ComTime P%id%01 ifG p%id%01 0 if= P%id%02 0 SetPlotStatus %plotid% %id3%>
+
+	% SubPlot1 = Win the battle, get a reward
+	% SubPlot2 = Lose the battle, get scorned
+	% SubPlot3 = Run out of time, get email
+
+	SubPlot1 <*Util_WinMission&Mecha 1>
+	SubPlot2 <*Util_LoseMission&Mecha 1>
+	SubPlot3 <*Util_TimeOver 1>
+
+	sub
+		MetaScene 5 2
+		% L1 = Initialization Counter
+		% L2 = Victory Counter
+		MapWidth 50
+		MapHeight 50
+
+		% Set this metascene's faction to E4
+		SetFaction 4
+
+		% At startup, set the counter so the mission doesn't timeout
+		% while the PC is defending the factory. That would just be silly.
+		Start <if= L1 0  Alert 1  L= 1 1 P= %id%02 1>
+		nu1 <if= T1 0 Return if= L2 0 L= 2 1 Goto GoLoseMission>
+		nu2 <if= T2 0 if= L2 0 L= 2 1 Salvage ifG T3 0 else GoLoseMission Goto GoWinMission>
+		GoLoseMission <Alert 2  Memo 2  LoseRenown         SetPlotStatus %plotid2% %id2%>
+		GoWinMission  <Alert 3  Memo 3  AddRenown 1        XPV 100  FacXP+ %3% 1  SetPlotStatus %plotid1% %id1%>
+
+		Msg1 <While escorting the cruiser, you are attacked by mecha from %name4%!>
+		Msg2 <You have failed %name1%'s mission.>
+		Msg3 <You have completed %name1%'s mission.>
+
+		% Random scene content- there's a chance that an enemy or an ally will show up.
+		Content1 <Some 1 15 Sub *CRC_Nemesis   na>
+		Content2 <Some 1 10 Sub *CRC_Backup    na>
+
+		sub
+			Team 1
+			SetEnemy 2
+			SetAlly 3 4
+			home <Cruiser Zone>
+
+			Team 2
+			name <Enemies>
+			type <ASSAULT>
+			SetEnemy 1 3 4
+			Deploy <SetSelfFaction %4% WMecha 2 %threat% 100>
+			ParaX 45
+			ParaY 45
+
+			Team 3
+			name <Cruiser>
+			SetEnemy 2
+			SetAlly 1 4
+
+			team 4
+			name <Allies>
+			SetEnemy 2
+			SetAlly 1 3
+			ParaX 10
+			ParaY 10
+
+			rect
+			name <Cruiser Zone>
+			special <SubZone>
+			width 12
+			height 12
+			MFX 19
+			MFY 19
+			sub
+				SuperProp
+				requires <*Cruiser>
+				SetTeam 3
+			end
+		end
+
+	end
+	inv
+		STC CORE-STATIONARY
+		name <%name1%'s Mission>
+		Attack <  >
+	end
+
+
+
+%%
+%% *MECHAMISSION_Defense Content
+%%
+%% The PC is going to defend a base against enemy mecha.
+%%
+%% This mission gives salvage plus 4 FacXP points.
+%%
+%% This subplot is responsible for loading its own conclusions: typically, there will be
+%% one conclusion for winning the battle, one conclusion for losing the battle, and a third
+%% conclusion for running out of time.
+%%
+%% The master plot must have a PayRate set. The master plot is also responsible for E1's
+%% mission reminder message.
+%%
+%% Param1: The NPC offering the mission
+%% Param2: The outdoors scene where the encounter will be placed
+%% Param3: The faction being defended
+%%
+
+Content
+	name <Generic Defend Base>
+	requires <*MECHAMISSION_Defense -2:SPACE>
+	desc <The PC will protect a base from some enemy mecha.>
+
+	% E1: The Mission Provider
+	% E2: The scene where the encounter will be placed
+	% E3: The faction being defended
+	% E4: The faction attacking the base
+	% E5: The combat scene
+	Element4 <Faction !Enemy 3>
+	Element5 <Prefab>
+	Place5 <2>
+
+	% P%id%01 = Time Limit
+	% P%id%02 = Have entered combat
+	update <if= p%id%01 0 P= %id%01 ComTime P+ %id%01 86400>
+	start <ifG ComTime P%id%01 ifG p%id%01 0 if= P%id%02 0 SetPlotStatus %plotid% %id3%>
+
+	% SubPlot1 = Win the battle, get a reward
+	% SubPlot2 = Lose the battle, get scorned
+	% SubPlot3 = Run out of time, get email
+
+	SubPlot1 <*Util_WinMission&Mecha 1>
+	SubPlot2 <*Util_LoseMission&Mecha 1>
+	SubPlot3 <*Util_TimeOver 1>
+
+	sub
+		MetaScene 5 2
+		% L1 = Initialization Counter
+		% L2 = Victory Counter
+		MapWidth 50
+		MapHeight 50
+
+		CityBlockMap
+		terrain <GROUND>
+
+		% Set this metascene's faction to E4
+		SetFaction 4
+
+		% At startup, set the counter so the mission doesn't timeout
+		% while the PC is defending the factory. That would just be silly.
+		Start <if= L1 0  Alert 1  L= 1 1 P= %id%02 1>
+		nu1 <if= T1 0 Return if= L2 0 L= 2 1 Goto GoLoseMission>
+		nu2 <if= T2 0 if= L2 0 L= 2 1 Salvage ifG T3 0 else GoLoseMission Goto GoWinMission>
+		GoLoseMission <Alert 2  Memo 2  LoseRenown                          SetPlotStatus %plotid2% %id2%>
+		GoWinMission  <Alert 3  Memo 3  AddRenown 1  XPV 100  FacXP+ %3% 3  SetPlotStatus %plotid1% %id1%>
+
+		Msg1 <You arrive just in time to defend the base against %name4%.>
+		Msg2 <You have failed %name1%'s mission.>
+		Msg3 <You have completed %name1%'s mission.>
+
+		% Random scene content- there's a chance that an enemy or an ally will show up.
+		Content1 <Some 1 20 Sub *CRC_Nemesis   na>
+		Content2 <Some 1  5 Sub *CRC_Backup    na>
+
+		sub
+			Team 1
+			SetEnemy 2
+			SetAlly 3 4
+			ParaX 7
+			ParaY 7
+
+			Team 2
+			name <Enemies>
+			type <ASSAULT>
+			SetEnemy 1 3 4
+			Deploy <SetSelfFaction %4% WMecha 2 %threat% 150>
+			ParaX 45
+			ParaY 45
+
+			Team 3
+			SetEnemy 2
+			SetAlly 1 4
+
+			team 4
+			name <Allies>
+			SetEnemy 2
+			SetAlly 1 3
+			ParaX 10
+			ParaY 10
+
+			rect
+			name <The Factory>
+			desig <NW>
+			sub
+				SuperProp
+				requires <*Fortress>
+				SetTeam 3
+			end
+		end
+
+	end
+	inv
+		STC CORE-STATIONARY
+		name <%name1%'s Mission>
+	end
+
+Content
+	name <Defend Asteroid Base>
+	requires <*MECHAMISSION_Defense 2:SPACE>
+	desc <The PC will protect a base from some enemy mecha.>
+
+	% E1: The Mission Provider
+	% E2: The scene where the encounter will be placed
+	% E3: The faction being defended
+	% E4: The faction attacking the base
+	% E5: The combat scene
+	Element4 <Faction !Enemy 3>
+	Element5 <Prefab>
+	Place5 <2>
+
+	% P%id%01 = Time Limit
+	% P%id%02 = Have entered combat
+	update <if= p%id%01 0 P= %id%01 ComTime P+ %id%01 86400>
+	start <ifG ComTime P%id%01 ifG p%id%01 0 if= P%id%02 0 SetPlotStatus %plotid% %id3%>
+
+	% SubPlot1 = Win the battle, get a reward
+	% SubPlot2 = Lose the battle, get scorned
+	% SubPlot3 = Run out of time, get email
+
+	SubPlot1 <*Util_WinMission&Mecha 1>
+	SubPlot2 <*Util_LoseMission&Mecha 1>
+	SubPlot3 <*Util_TimeOver 1>
+
+	sub
+		MetaScene 5 2
+		% L1 = Initialization Counter
+		% L2 = Victory Counter
+		MapWidth 50
+		MapHeight 50
+
+		AsteroidMap
+		RockyTiles
+
+		% Suffocation effect...
+		Vacuum
+		SpaceBackdrop
+
+		terrain <GROUND>
+
+		% Set this metascene's faction to E4
+		SetFaction 4
+
+		% At startup, set the counter so the mission doesn't timeout
+		% while the PC is defending the factory. That would just be silly.
+		Start <if= L1 0  Alert 1  L= 1 1 P= %id%02 1>
+		nu1 <if= T1 0 Return if= L2 0 L= 2 1 Goto GoLoseMission>
+		nu2 <if= T2 0 if= L2 0 L= 2 1 Salvage ifG T3 0 else GoLoseMission Goto GoWinMission>
+		GoLoseMission <Alert 2  Memo 2  LoseRenown                          SetPlotStatus %plotid2% %id2%>
+		GoWinMission  <Alert 3  Memo 3  AddRenown 1  XPV 100  FacXP+ %3% 3  SetPlotStatus %plotid1% %id1%>
+
+		Msg1 <You arrive just in time to defend the base against %name4%.>
+		Msg2 <You have failed %name1%'s mission.>
+		Msg3 <You have completed %name1%'s mission.>
+
+		% Random scene content- there's a chance that an enemy or an ally will show up.
+		Content1 <Some 1 20 Sub *CRC_Nemesis   na>
+		Content2 <Some 1  5 Sub *CRC_Backup    na>
+
+		sub
+			Team 1
+			SetEnemy 2
+			SetAlly 3 4
+			ParaX 7
+			ParaY 7
+
+			Team 2
+			name <Enemies>
+			type <ASSAULT>
+			SetEnemy 1 3 4
+			Deploy <SetSelfFaction %4% WMecha 2 %threat% 150>
+			ParaX 45
+			ParaY 45
+
+			Team 3
+			SetEnemy 2
+			SetAlly 1 4
+
+			team 4
+			name <Allies>
+			SetEnemy 2
+			SetAlly 1 3
+			ParaX 10
+			ParaY 10
+
+			rect
+			name <The Factory>
+			MFX 5
+			MFY 5
+			Width 5
+			Height 5
+			sub
+				SuperProp
+				requires <*Fortress>
+				SetTeam 3
+			end
+		end
+
+	end
+	inv
+		STC CORE-STATIONARY
+		name <%name1%'s Mission>
+	end
+
+
+%%
+%% *MECHAMISSION_Versus Content
+%%
+%% The PC has been sent to fight some mecha belonging to an enemy faction.
+%% This is going to result in an enemy faction being gained.
+%%
+%% This mission gives salvage.
+%%
+%% This subplot is responsible for loading its own conclusions: typically, there will be
+%% one conclusion for winning the battle, one conclusion for losing the battle, and a third
+%% conclusion for running out of time.
+%%
+%% The master plot must have a PayRate set. The master plot is also responsible for E1's
+%% mission reminder message.
+%%
+%% Param1: The NPC offering the mission
+%% Param2: The outdoors scene where the encounter will be placed
+%% Param3: The faction being fought
+
+Content
+	name <Generic Faction Enemies>
+	requires <*MECHAMISSION_Versus>
+	desc <The PC will fight some enemy mecha.>
+
+	% E1: The Mission Provider
+	% E2: The scene where the encounter will be placed
+	% E3: The faction being fought
+	% E4: The combat scene
+	Element4 <Prefab>
+	Place4 <2>
+
+	% P%id%01 = Time Limit
+	% P%id%02 = Have entered combat
+	update <if= PlotStatus %plotid% %id% else %pop% if= p%id%01 0 P= %id%01 ComTime P+ %id%01 86400>
+	start <if= PlotStatus %plotid% %id% else %pop% ifG ComTime P%id%01 ifG p%id%01 0 if= P%id%02 0 SetPlotStatus %plotid% %id3%>
+
+	% SubPlot1 = Win the battle, get a reward
+	% SubPlot2 = Lose the battle, get scorned
+	% SubPlot3 = Run out of time, get email
+
+	% SubPlot4 = Lancemate character development
+
+	SubPlot1 <*Util_WinMission&Mecha 1>
+	SubPlot2 <*Util_LoseMission&Mecha 1>
+	SubPlot3 <*Util_TimeOver 1>
+
+	sub
+		MetaScene 4 2
+		% L1 = Encounter Over Counter
+		MapWidth 50
+		MapHeight 50
+
+		% Set this metascene's faction to E3
+		SetFaction 3
+
+		Start <if= P%id%02 0   P= %id%02 1   PCFEnemy %3%  ifG 31 d100 StartPlot .side_story PCRenown>
+		.side_story <*CombatSideStory %e2% %e3%>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1   LoseRenown                     Memo 1  Alert 1   SetPlotStatus %plotid% %id2%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1            XPV 100   AddRenown 1  Salvage   Memo 2  Alert 2   SetPlotStatus %plotid% %id1%>
+
+		Msg1 <You lost %name1%'s mission.>
+		Msg2 <You have completed %name1%'s mission.>
+
+		% Random scene content- there's a chance that an enemy or an ally will show up.
+		Content1 <Some 1 15 Sub *CRC_Nemesis   na>
+		Content2 <Some 1  5 Sub *CRC_Backup    na>
+
+		sub
+			team 1
+			SetEnemy 2
+			SetAlly 3
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 3
+			Deploy <SetSelfFaction %3% WMecha 2 %threat% 100>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			name <Allies>
+			SetEnemy 2
+			SetAlly 1
+			ParaX 10
+			ParaY 5
+		end
+	end
+	inv
+		STC PLOT-MECHAMISSION-WANDER
+	end
+
+
+%%
+%% *MECHAMISSION_Basic Content
+%%
+%% The PC has been sent to fight some mecha, but hasn't been told who he'll be fighting
+%% or anything else about it. Therefore, this mission is a blank slate of violent goodness.
+%%
+%% This mission gives salvage.
+%%
+%% This subplot is responsible for loading its own conclusions: typically, there will be
+%% one conclusion for winning the battle, one conclusion for losing the battle, and a third
+%% conclusion for running out of time.
+%%
+%% The master plot must have a PayRate set. The master plot is also responsible for E1's
+%% mission reminder message.
+%%
+%% Param1: The NPC offering the mission
+%% Param2: The outdoors scene where the encounter will be placed
+
+Content
+	name <Generic Enemies>
+	requires <*MECHAMISSION_Basic>
+	desc <The PC will fight some factionless mecha.>
+
+	% E1: The Mission Provider
+	% E2: The scene where the encounter will be placed
+	% E3: The combat scene
+	Element3 <Prefab>
+	Place3 <2>
+
+	% P%id%01 = Time Limit
+	% P%id%02 = Have entered combat
+	update <if= PlotStatus %plotid% %id% else %pop% if= p%id%01 0 P= %id%01 ComTime P+ %id%01 86400>
+	start <if= PlotStatus %plotid% %id% else %pop% ifG ComTime P%id%01 ifG p%id%01 0 if= P%id%02 0 SetPlotStatus %plotid% %id3%>
+
+	% SubPlot1 = Win the battle, get a reward
+	% SubPlot2 = Lose the battle, get scorned
+	% SubPlot3 = Run out of time, get email
+	SubPlot1 <*Util_WinMission&Mecha 1>
+	SubPlot2 <*Util_LoseMission&Mecha 1>
+	SubPlot3 <*Util_TimeOver 1>
+
+	sub
+		MetaScene 3 2
+		% L1 = Encounter Over Counter
+		MapWidth 50
+		MapHeight 50
+
+		Start <if= P%id%02 0  P= %id%02 1>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1   LoseRenown                     Memo 1  Alert 1   SetPlotStatus %plotid% %id2%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1            XPV 100   AddRenown 1  Salvage   Memo 2  Alert 2   SetPlotStatus %plotid% %id1%>
+
+		Msg1 <You lost %name1%'s mission.>
+		Msg2 <You have completed %name1%'s mission.>
+
+		% Random scene content- there's a chance that an enemy or an ally will show up.
+		Content1 <Some 1 10 Sub *CRC_Nemesis   na>
+		Content2 <Some 1  5 Sub *CRC_Backup    na>
+
+		sub
+			team 1
+			SetEnemy 2
+			SetAlly 3
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 3
+			Deploy <WMecha 2 %threat% 100>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			name <Allies>
+			SetEnemy 2
+			SetAlly 1
+			ParaX 10
+			ParaY 5
+		end
+	end
+	inv
+		STC PLOT-MECHAMISSION-WANDER
+	end
+
+Content
+	name <Asteroid Encounter>
+	requires <*MECHAMISSION_Basic 2:SPACE>
+	desc <The PC will fight some factionless mecha... on an asteroid!>
+
+	% E1: The Mission Provider
+	% E2: The scene where the encounter will be placed
+	% E3: The combat scene
+	Element3 <Prefab>
+	Place3 <2>
+
+	% P%id%01 = Time Limit
+	% P%id%02 = Have entered combat
+	update <if= PlotStatus %plotid% %id% else %pop% if= p%id%01 0 P= %id%01 ComTime P+ %id%01 86400>
+	start <if= PlotStatus %plotid% %id% else %pop% ifG ComTime P%id%01 ifG p%id%01 0 if= P%id%02 0 SetPlotStatus %plotid% %id3%>
+
+	% SubPlot1 = Win the battle, get a reward
+	% SubPlot2 = Lose the battle, get scorned
+	% SubPlot3 = Run out of time, get email
+	SubPlot1 <*Util_WinMission&Mecha 1>
+	SubPlot2 <*Util_LoseMission&Mecha 1>
+	SubPlot3 <*Util_TimeOver 1>
+
+	sub
+		MetaScene 3 2
+		% L1 = Encounter Over Counter
+		MapWidth 50
+		MapHeight 50
+		AsteroidMap
+		RockyTiles
+
+		% Suffocation effect...
+		Vacuum
+		SpaceBackdrop
+
+		Start <if= P%id%02 0  P= %id%02 1 Alert 3>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1   LoseRenown                     Memo 1  Alert 1   SetPlotStatus %plotid% %id2%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1            XPV 100   AddRenown 1  Salvage   Memo 2  Alert 2   SetPlotStatus %plotid% %id1%>
+
+		Msg1 <You lost %name1%'s mission.>
+		Msg2 <You have completed %name1%'s mission.>
+		Msg3 <You locate your targets on a large asteroid.>
+
+		% Random scene content- there's a chance that an enemy or an ally will show up.
+		Content1 <Some 1 10 Sub *CRC_Nemesis   na>
+		Content2 <Some 1  5 Sub *CRC_Backup    na>
+
+		sub
+			team 1
+			SetEnemy 2
+			SetAlly 3
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 3
+			Deploy <WMecha 2 %threat% 100>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			name <Allies>
+			SetEnemy 2
+			SetAlly 1
+			ParaX 10
+			ParaY 5
+		end
+	end
+	inv
+		STC PLOT-MECHAMISSION-WANDER
+	end
+
+Content
+	name <Faction Enemies>
+	requires <*MECHAMISSION_Basic ~!Md ~!Hi ~!Ex>
+	desc <The PC will fight some enemies of the mission-giving NPC.>
+
+	% E1: The Mission Provider
+	% E2: The scene where the encounter will be placed
+	% E3: The combat scene
+	% E4: The enemy faction
+	Element3 <Prefab>
+	Place3 <2>
+	Element4 <Faction !Enemy 1>
+
+	% P%id%01 = Time Limit
+	% P%id%02 = Have entered combat
+	update <if= PlotStatus %plotid% %id% else %pop% if= p%id%01 0 P= %id%01 ComTime P+ %id%01 86400>
+	start <if= PlotStatus %plotid% %id% else %pop% ifG ComTime P%id%01 ifG p%id%01 0 if= P%id%02 0 SetPlotStatus %plotid% %id3%>
+
+	% SubPlot1 = Win the battle, get a reward
+	% SubPlot2 = Lose the battle, get scorned
+	% SubPlot3 = Run out of time, get email
+	SubPlot1 <*Util_WinMission&Mecha 1>
+	SubPlot2 <*Util_LoseMission&Mecha 1>
+	SubPlot3 <*Util_TimeOver 1>
+
+	sub
+		MetaScene 3 2
+		% L1 = Encounter Over Counter
+		MapWidth 50
+		MapHeight 50
+
+		% Set this metascene's faction to E4
+		SetFaction 4
+
+		Start <if= P%id%02 0  P= %id%02 1  ifG 21 d100 StartPlot .side_story PCRenown>
+		.side_story <*CombatSideStory %e2% %e4%>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1   LoseRenown                     Memo 1  Alert 1   SetPlotStatus %plotid% %id2%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1            XPV 100   AddRenown 1  Salvage   Memo 2  Alert 2   SetPlotStatus %plotid% %id1%>
+
+		Msg1 <You lost %name1%'s mission.>
+		Msg2 <You have completed %name1%'s mission.>
+
+		% Random scene content- there's a chance that an enemy or an ally will show up.
+		Content1 <Some 1 15 Sub *CRC_Nemesis   na>
+		Content2 <Some 1  5 Sub *CRC_Backup    na>
+
+		sub
+			team 1
+			SetEnemy 2
+			SetAlly 3
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1
+			Deploy <SetSelfFaction %4% WMecha 2 %threat% 100>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			name <Allies>
+			SetEnemy 2
+			SetAlly 1
+			ParaX 10
+			ParaY 5
+		end
+	end
+	inv
+		STC PLOT-MECHAMISSION-WANDER
+	end
+
+
+%%
+%% *MECHACAVE_Basic Content
+%%
+%% The PC has been sent to fight some mecha, but hasn't been told who he'll be fighting
+%% or anything else about it. Therefore, this mission is a blank slate of violent goodness.
+%%
+%% This mission gives salvage. It takes place in a cave.
+%%
+%% This subplot is responsible for loading its own conclusions: typically, there will be
+%% one conclusion for winning the battle, one conclusion for losing the battle, and a third
+%% conclusion for running out of time.
+%%
+%% The master plot must have a PayRate set. The master plot is also responsible for E1's
+%% mission reminder message.
+%%
+%% Param1: The NPC offering the mission
+%% Param2: The outdoors scene where the encounter will be placed
+
+Content
+	name <Generic Enemies (in a cave)>
+	requires <*MECHACAVE_Basic>
+	desc <The PC will fight some factionless mecha in a cave.>
+
+	% E1: The Mission Provider
+	% E2: The scene where the encounter will be placed
+	% E3: The combat scene
+	Element3 <Prefab>
+	Place3 <2>
+
+	% P%id%01 = Time Limit
+	% P%id%02 = Have entered combat
+	update <if= PlotStatus %plotid% %id% else %pop% if= p%id%01 0 P= %id%01 ComTime P+ %id%01 86400>
+	start <if= PlotStatus %plotid% %id% else %pop% ifG ComTime P%id%01 ifG p%id%01 0 if= P%id%02 0 SetPlotStatus %plotid% %id3%>
+
+	% SubPlot1 = Win the battle, get a reward
+	% SubPlot2 = Lose the battle, get scorned
+	% SubPlot3 = Run out of time, get email
+	SubPlot1 <*Util_WinMission&Mecha 1>
+	SubPlot2 <*Util_LoseMission&Mecha 1>
+	SubPlot3 <*Util_TimeOver 1>
+
+	sub
+		MetaScene 3 2
+		% L1 = Encounter Over Counter
+		MapWidth 40
+		MapHeight 40
+		CaveMap
+		RockyTiles
+		special <AddExit>
+		Ceiling
+		terrain <INSIDE>
+
+		Start <if= P%id%02 0  P= %id%02 1>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1   LoseRenown                     Memo 1  Alert 1   SetPlotStatus %plotid% %id2%>
+		nu2 <if= T2 0   if= V1 0 V= 1 1            XPV 100   AddRenown 1  Salvage   Memo 2  Alert 2   SetPlotStatus %plotid% %id1%>
+
+		Msg1 <You lost %name1%'s mission.>
+		Msg2 <You have completed %name1%'s mission.>
+
+		% Random scene content- there's a chance that an enemy or an ally will show up.
+		Content1 <Some 1 15 Sub *CRC_Nemesis   na>
+		Content2 <Some 1  2 Sub *CRC_Backup    na>
+
+		sub
+			team 1
+			SetEnemy 2
+			SetAlly 3
+
+			team 2
+			name <Enemies>
+			home <Enemy Zone>
+			type <ASSAULT>
+			SetEnemy 1 3
+			Deploy <WMecha 2 %threat% 100>
+
+			team 3
+			name <Allies>
+			SetEnemy 2
+			SetAlly 1
+
+			room
+			name <Enemy Zone>
+			Width 7
+			Height 7
+		end
+	end
+	inv
+		STC CORE-STATIONARY
+		name <%name1%'s Mission>
+		Attack <  >
+	end
+

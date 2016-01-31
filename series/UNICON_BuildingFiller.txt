@@ -1,0 +1,10 @@
+%%
+%% Contains all kind of rooms to add to buildings. Many of these rooms
+%% will contain things that unlawful characters can steal.
+%%
+
+%% *UNIVERSITY_X Content
+%%	Filler for universities. Professor's offices, student lounges, etc.
+%%	Minimaps open on one side.
+
+

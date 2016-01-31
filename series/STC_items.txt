@@ -1,0 +1,66 @@
+
+Food 15
+Name <Survival Bar>
+desig <SurvivalBar>
+Mass -2
+FoodMorale -3
+desc <It's everything that a human needs to stay alive packaged in a crunchy bar!>
+Category <FOOD>
+Factions <GENERAL>
+legality -10
+
+Food 35
+Name <Nutrient Pill>
+desig <PILL_Nutrient>
+FoodMorale -1
+Mass -70
+desc <Complete nutrition in pill form.>
+Category <MEDICINE>
+Factions <GENERAL>
+SDL_PORTRAIT <item_pills.png>
+legality -15
+
+Food 0
+Name <Quick Fix Pill>
+desig <PILL_QuickFix>
+FoodFX:Healing
+FoodMod 7
+desc <This medicine promotes rapid cellular regeneration, and can instantly heal many injuries.>
+Category <MEDICINE>
+Factions <GENERAL>
+SDL_PORTRAIT <item_pills.png>
+legality -10
+
+Food 0
+Name <Regen Boost Pill>
+desig <PILL_Regen>
+FoodFX:Regeneration
+FoodMod 6
+desc <This medicine increases the body's ability to repair itself. While it is in effect injuries will be healed much faster than normal.>
+Category <MEDICINE>
+Factions <GENERAL>
+SDL_PORTRAIT <item_pills.png>
+legality 0
+
+Food 0
+name <Poison Antidote>
+desig <PILL_Antidote>
+FoodFX:CureStatus
+FoodMod:Poison
+desc <A broad spectrum antivenom effective against most organic and synthetic poisons.>
+Category <MEDICINE ESSENTIAL>
+Factions <GENERAL>
+SDL_PORTRAIT <item_pills.png>
+legality -10
+
+Food 0
+name <Antibiotic Pill>
+desig <PILL_Antibiotic>
+FoodFX:CureStatus
+FoodMod:Sickness
+desc <A fast acting antiviral, antibacterial drug coupled with an immune system booster.>
+Category <MEDICINE>
+Factions <GENERAL>
+SDL_PORTRAIT <item_pills.png>
+legality -10
+

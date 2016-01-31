@@ -1,0 +1,289 @@
+%% *SHOP_MECHANIC CONTENT
+%%          &Factionless	Mechanic must not have a faction
+%%   Contains a mechanic and/or mecha shop.
+
+Content
+	requires <*MECHANIC_SHOP Rich>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		% V1 = Have purchased membership
+		&JoinCost <250000>
+		*greeting <*NiceToMeetYou GoShop>
+		GoShop <if= V1 0 else GoFullService ifG React 0 else GoBadService NewChat Say 3 AddChat 1 AddChat 2 AddChat 3>
+		GoBadService <NewChat Say 1 AddChat 1 AddChat 2>
+		GoFullService <NewChat Say 8 AddChat 8 AddCHat 7>
+		result1 <EndChat Say 2 Shop .nowares Goto GoBye>
+		result2 <Goto GoBye>
+		result3 <NewChat Say 4 AddChat 4 AddChat 5>
+		result4 <NewChat Say 5>
+		result5 <NewChat Say 6 V= 1 1 Cash+ -&JoinCost AddReact 10 AddChat 6 AddCHat 7>
+		result6 <Goto result8>
+		result7 <Goto GoBye>
+		result8 <EndChat Say 7 Shop .wares Goto GoBye>
+		.wares <MECHA>
+		Msg1 <Yes, may I help you?>
+		Msg2 <Let me see what's wrong with your things.>
+		Msg3 <Welcome to %name1%'s Custom Shop and Garage. Is there anything I can do for you?>
+		Msg4 <My repair services are open to the public, but in order to see the custom mecha you need to purchase a membership. This is a very exclusive club; it costs $ \VAL &JoinCost to join.>
+		Msg5 <Don't feel bad. If you think the membership fee is high, you wouldn't be able to afford anything in my shop anyhow.>
+		Msg6 <Here is your membership card; welcome to the club. Would you like to see my mecha now?>
+		Msg7 <Each of these mecha is a unique work of art. They've been upgraded and customized for optimum performance.>
+		Msg8 <Welcome back, \PC . Are you in the market for a new mecha today?>
+		Prompt1 <I need some repairs.>
+		Prompt2 <Nope, just looking around.>
+		Prompt3 <I'd like to buy a new mecha.>
+		Prompt4 <Um... no.>
+		Prompt5 <Alright, here you are. [Give $ \VAL &JoinCost ]>
+		CPrompt5 <ifG PC$ &JoinCost Accept>
+		Prompt6 <Show me what you have.>
+		Prompt7 <Maybe some other time.>
+		Prompt8 <I'd like to see what you have.>
+	end
+	inv
+		NPC Mechanic
+		Shopping 12
+		MechaEngineering 10
+		chardesc lawful sociable renowned renowned renowned
+	end
+
+Content
+	requires <*MECHANIC_SHOP (MAQUI|FCOMS) (NOFAC|COMET) -Seedy -SILKN -&Factionless>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		GoShop <if= PCFac 2 else GoBadShop NewChat Say 1 AddChat 1 AddChat 2>
+		GoBadShop <NewChat Say 2 AddChat 2 AddChat 3>
+		*GoBye <*GOODBYE>
+		result1 <EndChat Say 3 Shop .wares Goto GoBye>
+		.wares <MECHA>
+		result2 <Goto GoBye>
+		result3 <EndChat Say 4 Shop .nowares Goto GoBye>
+		Msg1 <I have some new line mecha available exclusively to Comet employees. Take my advice and pick up one of these beauties while they're still in stock.>
+		Msg2 <I offer a full range of repair services. Since you're not a member of Comet Metalworks, I'm afraid that I can't show you the complete selection.>
+		Msg3 <Most of these are prototype models. Some of them will go into production later on, while others won't.>
+		Msg4 <You have to keep your machine in top condition. The middle of battle is no time to find that your leg's gone wonky.>
+		Prompt1 <I'd like to see what you have.>
+		Prompt2 <Thanks, but I don't need anything.>
+		Prompt3 <I need some repairs.>
+	end
+	inv
+		NPC Mechanic
+		name <Dana>
+		SDL_PORTRAIT <por_f_hunter(--Y).png>
+		SDL_COLORS <234 180 88 255 212 195 166 47 32>
+		Chardesc Female Sociable Passionate Pragmatic
+		SetFaction 2
+		Age 4
+		MechaEngineering 10
+	end
+
+
+%% *SPECIAL_SHOP CONTENT
+%%   Contains an unusual or otherwise uncategorizable shop.
+
+Content
+	name <The Ninja Store>
+	requires <(*SPECIAL_SHOP|*BLACKMARKET_X) ~Sleazy ~Dangerous Static>
+	minimap <.......1.......##?##2...3>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	element2 <Prefab>
+	Element3 <Prefab>
+	sub
+		Persona 1
+		rumor <ninjas are tricky.>
+		special <UNLISTED>
+		Greeting <ifChatNPCUnknown else GoShop NewChat Say 3 AddChat 3>
+		GoShop <NewChat Say 1 AddChat 1 AddChat 2>
+		*GoBye <*GOODBYE>
+		result1 <EndChat Say 2 Shop .wares Goto GoBye>
+		.wares <MELEE THROWN EXOTIC CONTRABAND NINJA>
+		result2 <Goto GoBye>
+		result3 <Goto GoShop>
+		Msg1 <This is the Ninja Shop. Only cavaliers who have proven themselves worthy may shop here.>
+		Msg2 <Take a good look. There's no telling when any of these great deals could just disappear.>
+		Msg3 <So, you have penetrated the inner sanctum. I am Kent.>
+		Prompt1 <I'll take a look at what you have.>
+		Prompt2 <There's nothing here that I want.>
+		Prompt3 <What is this place?>
+	end
+	inv
+		NPC Thief
+		name <Kent>
+		SDL_Portrait <por_m_ninja(Y-Y).png>
+		SDL_Colors <10 25 80 112 28 28 210 35 41>
+		Age 2
+		Shopping 15
+		job <Ninja>
+		chardesc Male Shy Spiritual Cheerful
+
+		STC VIDEOGAME-1
+		PDir 0
+
+		STC VIDEOGAME-3
+		PDir 4
+	end
+
+%% *BLACKMARKET_SHOP CONTENT
+%%   Contains a black market shopkeeper.
+
+Content
+	requires <*BLACKMARKET_SHOP (MAQUI|FCOMS|RISHI|BOHEM|CRIHN)>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		special <UNLISTED>
+		*greeting <*NiceToMeetYou GoShop>
+		GoShop <NewChat Say 1 AddChat 1 AddChat 2>
+		*GoBye <*GOODBYE>
+		result1 <EndChat Say 2 Shop .wares Goto GoBye>
+		.wares <WEAPON ARMOR CONTRABAND PIRATE>
+		result2 <Goto GoBye>
+		Msg1 <You seem like the adventuring sort. I've got a nice selection of combat equipment. You want a big boom? You've come to the right place.>
+		Msg2 <That's the spirit. I usually advise people to buy the biggest gun they can lift. You wouldn't want to be outclassed, would you?>
+		Prompt1 <\PC want big boom.>
+		Prompt2 <Thanks, I have all the boom I need.>
+	end
+	inv
+		NPC Shopkeeper
+		Shopping 15
+		name <Aileen>
+		job <Pirate>
+		SDL_PORTRAIT <por_f_ladi_aileen(-AY).png>
+		SDL_COLORS <180 36 70 96 49 33 45 45 45>
+		statline 15 14 14 11 13 12 11 15
+		Combatant
+		SpotWeakness
+		SetFaction 8
+		Age 9
+		Chardesc Female Cheerful
+	end
+
+
+
+%% *BLACKMARKET_X CONTENT
+%%   A black market scene needs more than just the store. It also needs some extras.
+
+Content
+	requires <*BLACKMARKET_X (MAQUI|FCOMS|RISHI|BOHEM)>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		special <UNLISTED>
+		*greeting <*NiceToMeetYou GoChooseShop>
+		GoChooseShop <IFCHATNPCARCHENEMY else GoGoodShop NewChat Say 1 AddChat 1 AddChat 2>
+		GoGoodShop <NewChat Say 3 AddChat 2 AddChat 3>
+		*GoBye <*GOODBYE>
+		result1 <EndChat Say 2 Shop .nowares Goto GoBye>
+		result2 <Goto GoBye>
+		result3 <EndChat Say 4 Shop .wares Goto GoBye>
+		.wares <MECHA>
+		Msg1 <What do you want?>
+		Msg2 <Come on, then. Let's get this over with.>
+		Msg3 <I've been upgrading mecha for the Crihna. There's a lot out there who'd like to see us pirates destroyed. I also do repairs, if you need that.>
+		Msg4 <Here they are. Some of these meks have a little something extra.>
+		Prompt1 <I need repairs.>
+		Prompt2 <I don't need anything.>
+		Prompt3 <I'd like to see what you have.>
+
+	end
+	inv
+		NPC Mechanic
+		name <Goshin>
+		chardesc Male Criminal Melancholy
+		sdl_PORTRAIT <por_m_mechanic(-U-).png>
+		SDL_COLORS <123 63 0  199 188 162  130 143 114>
+		Age 18
+		statline 13 12 13 15  15 14 12 8
+		Shopping 10
+		MechaEngineering 7
+		SetFaction 8
+	end
+
+
+%% *VIDEOARCADE CONTENT
+%%   Contains a video arcade.
+
+Content
+	%% Video Arcade
+	requires <*VIDEOARCADE STATIC>
+	minimap <############5##3...41...2>
+	element1 <Prefab>
+	Element2 <Prefab>
+	Element3 <Prefab>
+	Element4 <Prefab>
+	Element5 <Prefab>
+	inv
+		STC VIDEOGAME-5
+		PDir 0
+
+		STC VIDEOGAME-3
+		PDir 4
+
+		STC VIDEOGAME-4
+		PDir 0
+
+		STC VIDEOGAME-2
+		PDir 4
+
+		Prop 10
+		name <Karaoke King>
+		PDir 2
+		Mesh 3
+		sdl_SKIN <tex_electronics.png>
+		roguechar <&>
+		%% This game uses the concert minigame. If the PC wins
+		%% a number of times, he will be crowned the Karaoke King
+		%% and get a bonus to Performance.
+		% V1 = Recharge Timer
+		% V2 = difficulty rating
+		% V3 = Concert result recorder
+		% V4 = Win big prize
+		use <ifG PC$ 99 else GoCantAfford if= V4 0 else GoBeat ifG Comtime V1 else GoDoNotWant ifYesNo 1 2 3 Cash+ -100 V= 1 ComTime V+ 1 80000 V+ 1 d100000 Goto GoPlayGame>
+		GoCantAfford <Print 4>
+		GoDoNotWant <Print 5>
+		GoBeat <Print 8>
+		GoPlayGame <Print 12 if= V2 0 else GoStartConcert V= 2 15 Goto GoStartConcert>
+		GoStartConcert <V= 3 Concert 5 SkillTar V2 ifG V3 90 else GoCheckMedium ifG v2 75 else GoMinorWin Print 6 History 7 PCMoraleDmg -25 SkillXP NAS_Performance 100 XPV 100 PCSkill+ NAS_Performance 1 V= 4 1>
+		GoMinorWin <V+ 2 d10 V+ 2 d10 V+ 2 d12 SkillXP NAS_Performance 50 PCMoraleDmg -15  Print 9>
+		GoCheckMedium <ifG V3 50 else GoLose SkillXP NAS_Performance 25 Print 10>
+		GoLose <PCMoraleDmg 15 Print 11>
+		Msg1 <This game is called Karaoke King. You have to sing a concert for a virtual audience.>
+		Msg2 <Play the game. [$100]>
+		Msg3 <Leave it alone.>
+		Msg4 <This game is called Karaoke King. You can't afford to play.>
+		Msg5 <You already played this game today.>
+		Msg6_1 <You have defeated the game at its highest level. You are hereby crowned the Karaoke King!>
+		CMsg6_1 <ifPCMale Accept>
+		Msg6_2 <You have defeated the game at its highest level. You are hereby crowned the Karaoke Queen!>
+		CMsg6_2 <ifPCFemale Accept>
+		Msg7_1 <You were crowned the Karaoke King.>
+		CMsg7_1 <ifPCMale Accept>
+		Msg7_2 <You were crowned the Karaoke Queen.>
+		CMsg7_2 <ifPCFemale Accept>
+		Msg8_1 <You were already crowned the Karaoke King.>
+		CMsg8_1 <ifPCMale Accept>
+		Msg8_2 <You were already crowned the Karaoke Queen.>
+		CMsg8_2 <ifPCFemale Accept>
+		Msg9 <You scored \VAL V3 points. Adjusting difficulty level.>
+		Msg10 <You scored \VAL V3 points. That's quite respectable.>
+		Msg11 <You scored \VAL V3 points. You ought to be ashamed.>
+		Msg12 <You begin to sing.>
+	end
+
+

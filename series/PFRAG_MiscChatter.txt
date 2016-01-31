@@ -1,0 +1,200 @@
+% TYPE: *MISC_CHATTER
+%  No Params
+	Persona
+	requires <*MISC_CHATTER>
+	START <NewChat SayAnything>
+
+	Persona
+	requires <*MISC_CHATTER Village>
+	START <NewChat if= V%id%01 1 else .%id%_GoSpecial if# d3 1 else .%id%_GoSpecial SayAnything>
+	.%id%_GoSpecial <V= %id%01 1 Say %id%01>
+	Msg%id%01 <Not much ever changes around these parts.>
+	Msg%id%01_1 <Around here, everybody knows everyone else. That's a good thing.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <It must be nice to live in a city, and not have anyone else know who you are...>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <This is a good place to live. Sure, it's boring on times, but there's a comfort that comes from knowing what to expect.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <I am so sick of this place... What I'd give to see the rest of the world!>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <I'm happy here. I'd like a bit more excitement sometimes, but this is my home.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <Nothing much ever changes here. At least, not for the better...>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+	Persona
+	requires <*MISC_CHATTER Rishi>
+	START <NewChat if= V%id%01 1 else .%id%_GoSpecial if# d3 1 else .%id%_GoSpecial SayAnything>
+	.%id%_GoSpecial <V= %id%01 1 Say %id%01>
+	Msg%id%01 <What kind of weather do they have scheduled for next week?>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <It's easy for the other spinners to talk about peace with the outliers- they aren't the ones being attacked!>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <I'd like to visit Luna some day, but they say that getting a visa is nearly impossible.>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <I hear that pirates attacked another freighter. They should know that the Rocket Stars are only going to pay them back tenfold.>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+
+	Persona
+	requires <*MISC_CHATTER Maqui>
+	START <NewChat if= V%id%01 1 else .%id%_GoSpecial if# d3 1 else .%id%_GoSpecial SayAnything>
+	.%id%_GoSpecial <V= %id%01 1 Say %id%01>
+	Msg%id%01 <What kind of weather do they have scheduled for next week?>
+	Msg%id%01_1 <Have you heard about "Quiet Burning"? Everyone's talking about "Quiet Burning". I want to find out as much about "Quiet Burning" as I can.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_101 <Have you heard about "Love Magnet"? Everyone's talking about "Love Magnet". I want to find out as much about "Love Magnet" as I can.>
+	CMsg%id%01_101 <ifNPCSociable Accept>
+	Msg%id%01_2 <Sometimes I wish I could run away to my own microstation.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <If Luna wants to attack us I say let them. That way, we can unleash the whole of the Silver Knights and the Privateer Fleet against them. The Aegis space force wouldn't stand a chance.>
+	CMsg%id%01_3 <ifNPCPassionate Accept>
+	Msg%id%01_4 <Do you think there's going to be a war with Luna? One single attack against our colony shell could be disasterous...>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <I'd like to visit Earth some day, but I hear that it's really dangerous up there...>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <Earthers are way too uptight. They've got to realize that we're living in the second century now!>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+	Msg%id%01_7 <Pirates are cool.>
+	CMsg%id%01_7 <ifNPCCriminal Accept>
+	Msg%id%01_8 <The Silver Knights are cool.>
+	CMsg%id%01_8 <ifNPCLawful Accept>
+	Msg%id%01_9 <As long as the Silver Knights are here to protect us, the colonies are perfectly safe.>
+	CMsg%id%01_9 <ifNPCCheerful Accept>
+	Msg%id%01_10 <I don't know whether I like "Quiet Burning" or "Love Magnet".>
+
+
+	Persona
+	requires <*MISC_CHATTER CAYLE>
+	START <NewChat if= V%id%01 1 else .%id%_GoSpecial if# d3 1 else .%id%_GoSpecial SayAnything>
+	.%id%_GoSpecial <V= %id%01 1 Say %id%01>
+	Msg%id%01 <I've heard that Hoeller was going to build a factory here, but nothing ever came of it.>
+	Msg%id%01_1 <Did you hear about...? Oh, I guess everybody's heard that by now.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <I don't think I could bear living in a spinner... Cayley Rock is crowded enough for me.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <This place is the gateway to the dusty ring. It's either the last outpost of civilization or the first citadel of anarchy, depending on your point of view.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <There's some wicked fun at the steelworks lounge.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <I think I'll ride a shuttle to Cesena Spinner when I get the chance. That should be fun.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <The main causes of death around here are faulty airlocks and boredom.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%01_7 <Do you know the real reason why the mine closed? It's because they discovered alien life down there!>
+	CMsg%id%01_7 <ifNPCSpiritual Accept>
+
+	Persona
+	requires <*MISC_CHATTER XIASP>
+	START <NewChat if= V%id%01 1 else .%id%_GoSpecial if# d3 1 else .%id%_GoSpecial SayAnything>
+	.%id%_GoSpecial <V= %id%01 1 Say %id%01>
+	Msg%id%01 <I heard there's a trading ship from Venus at the spaceport. You don't see those too often.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Why bother to travel, when the entire solar system comes to visit us here?>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+	Persona
+	requires <*MISC_CHATTER CSNSP>
+	START <NewChat if= V%id%01 1 else .%id%_GoSpecial if# d3 1 else .%id%_GoSpecial SayAnything>
+	.%id%_GoSpecial <V= %id%01 1 Say %id%01>
+	Msg%id%01 <All the best spaceships are built here.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <People come here from all over to buy mecha and spaceships. As long as there's violence somewhere, Cesena Spinner will prosper.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <War among the spinners would be disasterous to all involved. This fact has kept the peace for a hundred years, but I wonder how long before we go the way of Mars and Luna...>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+	Persona
+	requires <*MISC_CHATTER AthSp>
+	START <NewChat if= V%id%01 1 else .%id%_GoSpecial if# d3 1 else .%id%_GoSpecial SayAnything>
+	.%id%_GoSpecial <V= %id%01 1 Say %id%01>
+	Msg%id%01 <Have you seen the new act at the Garden Theater? I hear it's fabulous.>
+	Msg%id%01_1 <Did you hear about "Shimmer Video"? It's going to be the next big thing.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <I like to sit and watch the water in the garden. It's a good place to be alone with your thoughts.>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <There are all kinds of presentations in the garden. I like the comedies and musicals myself.>
+	CMsg%id%01_3 <ifNPCCheerful Accept>
+	Msg%id%01_4 <To create, you must destroy. It's impossible to be a great artist if you haven't known true suffering.>
+	CMsg%id%01_4 <ifNPCMelancholy Accept>
+	Msg%id%01_5 <You know, "Love Magnet" started right here on Athera Spinner.>
+	CMsg%id%01_5 <ifNPCEasygoing Accept>
+	Msg%id%01_6 <I came here because Athera Spinner has a creative energy not found anywhere else.>
+	CMsg%id%01_6 <ifNPCPassionate Accept>
+
+	Persona
+	requires <*MISC_CHATTER MaqSp>
+	START <NewChat if= V%id%01 1 else .%id%_GoSpecial if# d3 1 else .%id%_GoSpecial SayAnything>
+	.%id%_GoSpecial <V= %id%01 1 Say %id%01>
+	Msg%id%01 <I wouldn't want to live anywhere but Maquise Spinner.>
+	Msg%id%01_1 <Hey, what do you think of my new clothes? I just bought them at the mall. Everyone's wearing pants like these nowadays.>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <The one problem with living in Maquise Spinner is that there's no place to be alone...>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Maquise Spinner is the richest of the colonies. That's largely because of Comet Metalworks.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <Everything happens here first. In five or six cycles, the rest of the spinners might catch on.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <This place is the center of government. If you dream of becoming important, this is where you have to be.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <The central offices of the L5 Alliance are right here. If terrorists are going to attack one of the colonies, Maquise is the most likely target.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+	Msg%id%01_7 <The mall is the best place to buy things, but I hear they also have shops at the Privateer's Club and Comet Tower.>
+
+	Persona
+	requires <*MISC_CHATTER FucSp>
+	START <NewChat if= V%id%01 1 else .%id%_GoSpecial if# d3 1 else .%id%_GoSpecial SayAnything>
+	.%id%_GoSpecial <V= %id%01 1 Say %id%01>
+	Msg%id%01 <How was your lunch? Mine was pretty good.>
+	Msg%id%01_1 <>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <If I hear one more person reccomend the TubeVeal I'm moving to Cayley Rock...>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <Everyone around here is so obsessed about food... I won't complain, as long as there's enough of it.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <Do we eat that we might live, or live that we might eat? Obviously it's the latter.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <The food here is better than anywhere else in the colonies. It's because we care more.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <The only reason Fuchal Spinner joined the L5 Alliance is because we can't risk losing the fresh produce shipped from Earth.>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+	Persona
+	requires <*MISC_CHATTER Mall>
+	START <NewChat Say %id%01>
+	Msg%id%01 <So, what are you hoping to buy?>
+	Msg%id%01_7 <There are so many great deals here!>
+	Msg%id%01_1 <I really love to shop. In addition to the walking exercise, I also get to meet all kinds of people!>
+	CMsg%id%01_1 <ifNPCSociable Accept>
+	Msg%id%01_2 <This place is crowded, but you can't beat the value!>
+	CMsg%id%01_2 <ifNPCShy Accept>
+	Msg%id%01_3 <I should really be working right now, but I'd rather be shopping.>
+	CMsg%id%01_3 <ifNPCEasygoing Accept>
+	Msg%id%01_4 <Shopping is a passion. I could do this all day, every day.>
+	CMsg%id%01_4 <ifNPCPassionate Accept>
+	Msg%id%01_5 <It's fun looking in all the stores, even though I don't have the money to buy anything.>
+	CMsg%id%01_5 <ifNPCCheerful Accept>
+	Msg%id%01_6 <Everything here is so overpriced...>
+	CMsg%id%01_6 <ifNPCMelancholy Accept>
+
+

@@ -1,0 +1,16 @@
+Character description strings may be used to define a NPC's traits.
+
+******************************
+***   CHARDESC  COMMANDS   ***
+******************************
+
+Heroic, Villainous, Lawful, Criminal, Sociable, Shy, Easygoing, Passionate,
+Cheerful, Melancholy, Renowned, Wangtta, Pragmatic, Spiritual
+
+Male,Female	Sets the indicated gender
+
+Old	Character's age set to above 40
+Young	Character's age set to below 20
+
+PCFriend, PCFamily, PCLover, PCEnemy
+

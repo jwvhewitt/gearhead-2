@@ -1,0 +1,84 @@
+Battroid 4
+Name <Century>
+Desig <CNA-15>
+type <GROUND INSIDE>
+factions <PDASS>
+%%sdl_portrait <item_century.png>
+desc <A mecha designed by the now defunct Rupert Enterprises. There are still a few around in the Federated terriories and in hands of Profesional Duelists.>
+sub
+Head
+	Armor 4
+	sub
+		CPit
+		Armor 2
+
+		STC LAS-5
+		name <Intercept Laser>
+		type <INTERCEPT>
+		Integral
+
+		Sensor 5
+	end
+
+Torso
+	Armor 4
+	sub
+		MLauncher 8
+		Name <Rocket Launcher>
+		sub
+			Rockets 2
+			Name <Long Range Missiles>
+			Magazine 40
+			Range 12
+			Speed 1
+		end
+
+		Computer 1
+		sub
+			Software 1
+			name <R-Lam Tarcomp>
+			S_TRBoost
+			S_BoostScale 2
+		end
+	end
+
+Arm
+	Name <Right Arm>
+	Armor 4
+	sub
+		gun 10
+		name <Arm Autocannon>
+		range 5
+		Speed 3
+		type <Armorpiercing>
+		caliber <165mm caseless>
+		integral
+		Magazine 20
+		sub
+			Ammo 10
+			caliber <165mm caseless>
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	Armor 4
+	sub
+		Hand
+		inv
+			STC LAS-5
+			name <Laser Pistol>
+			Range 4
+			Recharge 2
+		end
+	end
+
+Leg
+	Name <Right Leg>
+	Armor 4
+
+Leg
+	Name <Left Leg>
+	Armor 4
+
+end

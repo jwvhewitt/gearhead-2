@@ -1,0 +1,181 @@
+Battroid 4
+Name <Phoenix>
+Desig <PL-912>
+Desc <A general purpose battroid from Ceres Robotics. It rose to prominence during the Martian civil war.>
+sdl_sprite <btr_phoenix.png>
+type <SPACE GROUND INSIDE>
+factions <GENERAL>
+
+ROLE_MAQUI <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+ROLE_SILKN <GENERAL:SUPPORT  DEFENSE:SUPPORT>
+ROLE_L5LAW <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+ROLE_FCOMS <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+ROLE_RISHI <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+ROLE_REDMA <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+ROLE_BOHEM <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+
+sub
+Head
+	Armor 4
+	Mass -3
+	sub
+		CPit
+		Armor 2
+		Mass -1
+
+		Sensor 6
+	end
+	inv
+		HeadArmor 4
+		Mass -3
+		sub
+			STC SML-5
+			mass -1
+		end
+	end
+
+Torso
+	Armor 4
+	Mass -4
+	sub
+		Gyro
+		Armor 1
+		Mass -1
+
+		Engine
+		Armor 1
+		Mass -1
+
+		Mount
+		Name <Collar Mount>
+		inv
+			MLauncher 6
+			sub
+				STC GM-10
+				Magazine 6
+			end
+		end
+
+		HeavyActuator 4
+		mass -2
+	end
+	inv
+		BodyArmor 5
+		Mass -5
+	end
+
+Storage
+	Armor 4
+	Mass -2
+	Name <Backpack>
+	sub
+		Flight 9
+
+		Mount
+		Name <Side Mount>
+		inv
+			Gun 12
+			Range 8
+			Name <L-Cannon>
+			Mass -5
+			caliber <130mm self-propelled>
+			Magazine 20
+			sub
+				Ammo 12
+				caliber <130mm self-propelled>
+				Name <L-Cannon Clip (EMP)>
+				Type <HAYWIRE>
+			end
+		end
+	end
+	inv
+		StorageArmor 4
+		Mass -3
+	end
+
+Arm
+	Name <Right Arm>
+	Armor 4
+	Mass -4
+	sub
+		Hand
+		Name <Right Hand>
+		inv
+			Gun 5
+			name <Phoenix Rifle>
+			caliber <40mm shell>
+			Range 5
+			BV 2
+			Speed 3
+			Acc 1
+			mass -3
+			Magazine 60
+			sub
+				Ammo 5
+				caliber <40mm shell>
+				mass -3
+			end
+		end
+
+		Mount
+		Name <Right Arm Mount>
+		inv
+			STC LAS-3
+			name <Intercept Laser>
+			type <INTERCEPT>
+		end
+
+		HeavyActuator 2
+		mass -1
+	end
+	inv
+		ArmArmor 4
+		Mass -3
+	end
+
+Arm
+	Name <Left Arm>
+	Armor 4
+	Mass -4
+	sub
+		Hand
+		Name <Left Hand>
+
+		Mount
+		Name <Left Arm Mount>
+
+		HeavyActuator 2
+		mass -1
+	end
+	inv
+		ArmArmor 4
+		Mass -3
+	end
+
+Leg
+	Name <Right Leg>
+	Size 5
+	Armor 4
+	Mass -4
+	sub
+		Flight 5
+	end
+	inv
+		LegArmor 5
+		Mass -5
+	end
+
+Leg
+	Name <Left Leg>
+	Size 5
+	Armor 4
+	Mass -4
+	sub
+		Flight 5
+	end
+	inv
+		LegArmor 5
+		Mass -5
+	end
+end
+

@@ -1,0 +1,79 @@
+%%
+%% Combat Random Scene Content- Random scene content that's all out of bubblegum!
+%%
+%%  This file contains random scene combat that's meant to be used in combat
+%%  missions. In order to use any of these things, your scene may need to meet
+%%  certain criteria:
+%%  - The faction of the scene is set to the faction being fought.
+%%  - There's a hostile team named "Enemies"
+%%  - There's a friendly team named "Allies"
+
+%%
+%% *CRC_Nemesis Content
+%%
+%%  One of your many enemies will show up to oppose you. This content
+%%  will not appear at !Ne renown, but will start showing up thereafter.
+%%
+
+Content
+	name <Assassin>
+	requires <*CRC_Nemesis (!Hi|!Ex)>
+
+	Element1 <.>
+	Element2 <Prefab>
+	Team2 <Enemies>
+	TeamData2 <SD Enemy>
+
+	start <if= L%id%01 0 else %pop% L= %id%01 1 ForceChat %2% Goto %pop%>
+	end <ifNPCOK %2% else %pop% FreezeNPC %2% Goto %pop%>
+
+	sub
+		Persona 2
+		special <UNLISTED NOESCAPE>
+		&LowAmount <Threat 70 5>
+		&MedAmount <Threat 70 10>
+		&HighAmount <Threat 70 20>
+		greeting <if= V1 0 else GoChat V= 1 1 EndChat Say 1 AddChat 1 AddChat 2 History 6>
+		GoChat <EndChat SayANything>
+		result1 <PCEnemy %2% Goto GoThemeExpo>
+		result2 <EndChat Say 2 AddChat 3 AddChat 4 AddChat 5 AddChat 6>
+		result3 <ifConversation HardSkillTar 70 else GoR3Fail Cash+ -&LowAmount Goto GoDefect>
+		GoR3Fail <EndChat Say 3 PCEnemy %2%>
+		GoDefect <EndChat Say 4 History 5 Print 7 PCAlly %2% GrabChatNPC GrabRoot GSetNAtt NAG_Location NAS_Team -1>
+		result4 <Cash+ -&HighAmount Goto GoDefect>
+		result5 <PCEnemy %2% Goto GoThemeExpo>
+		result6 <ifConversation SkillTar 70 else GoR3Fail Cash+ -&MedAmount Goto GoDefect>
+		*GoThemeExpo <*THEME_EXPO&Enemy na>
+		Msg1 <You've made some unfortunate enemies, \PC . They've sent me to remove you from the equation.>
+		Msg2 <What? That's not really any of your business... why do you ask?>
+		Msg3 <You think my skills can be bought so cheaply? I'll show you what they're really worth!>
+		Msg4 <Hmm... That is quite a bit more than I was offered to kill you, I'll admit... Consider us allies, for the time being.>
+		Msg5 <You bribed %name2% to change sides.>
+		Msg6 <Your enemies sent the assassin %name2% to kill you.>
+		Msg7 <You pay %name2%.>
+		Prompt1 <You aren't the first, and won't be the last.>
+		Prompt2 <Wait- how much are they paying you for this?>
+		CPrompt2 <ifShopping HardSkillTar 70 Accept>
+		Prompt3 <I can offer you $ \VAL &LowAmount instead.>
+		CPrompt3 <ifG PC$ &LowAmount Accept>
+		Prompt4 <I can offer you $ \VAL &HighAmount instead.>
+		CPrompt4 <ifG PC$ &HighAmount Accept>
+		Prompt5 <I just want to know how much they're wasting.>
+		Prompt6 <I can offer you $ \VAL &MedAmount instead.>
+		CPrompt6 <ifG PC$ &MedAmount Accept>
+	end
+	inv
+		NPC Assassin
+		Renown 70
+	end
+
+
+%%
+%% *CRC_Backup Content
+%%
+%%  One of your friends or allies will show up to provide backup.
+%%
+
+
+
+

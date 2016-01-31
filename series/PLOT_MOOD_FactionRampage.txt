@@ -1,0 +1,79 @@
+%%
+%% *FactionRampage Plots
+%%
+%% Mood Spec:
+%%  E1 is the rampaging faction
+%%
+%% A faction is running amok in this city. The player is likely to get
+%% attacked by them, whether they're enemies or not... The exact reason
+%% for this mood should be explained by the calling plot.
+%%
+
+Plot
+	name <Rampaging Rampagers>
+	desc <Some mecha from the rampaging faction may attack the PC.>
+	requires <*FactionRampage>
+
+	% E1 is an outdoors scene
+	% E2 is an encounter to place there
+	% E3 is the faction that's rampaging
+	Element1 <Scene Outdoors>
+	Element2 <Prefab>
+	Place2 <1>
+	Element3 <Grab 1>
+
+	% P1 = Time Limit/Initialization Counter
+	start <if# P1 0 ifG ComTime P1 EndPlot>
+	update <if= P1 0 P= 1 ComTime P+ 1 21600>
+
+	sub
+		MetaScene 2 2
+		% L1 = Encounter Over Counter
+		% L2 = Initialization Counter
+		MapWidth 50
+		MapHeight 50
+
+		SetFaction 3
+
+		start <if= L2 0 L= 2 1 Alert 1>
+		nu1 <if= T1 0   Return   if= V1 0 V= 1 1    AddRenown -1        EndPlot>
+		nu2 <if= T2 0   if= V1 0 V= 1 1   AddRenown 1 Alert 2   XPV 100   SALVAGE   EndPlot>
+
+		Msg1 <You are attacked by some mecha from %name3%!>
+		Msg2 <You have defeated the mecha.>
+
+		% Random scene content- there's a small chance that an enemy or an ally will show up.
+		Content1 <Some 1 5 Sub *CRC_Nemesis   na>
+		Content2 <Some 1 2 Sub *CRC_Backup    na>
+
+		sub
+			team 1
+			SetEnemy 2
+			SetAlly 3
+			ParaX 5
+			ParaY 5
+
+			team 2
+			name <Enemies>
+			SetEnemy 1 3
+			Deploy <SetSelfFaction %3% WMecha 2 %threat% 100>
+			ParaX 45
+			ParaY 45
+
+			team 3
+			name <Allies>
+			SetEnemy 2
+			SetAlly 3
+			ParaX 5
+			ParaY 5
+		end
+
+	end
+	inv
+		STC ENCOUNTER-WANDER
+		name <Rampagers>
+		EncounterMove 20
+	end
+
+
+

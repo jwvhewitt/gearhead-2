@@ -1,0 +1,89 @@
+%%
+%%  Plots for resorts and vacation spots.
+%%
+
+Plot
+	name <Holiday Dueling>
+	desc <While on a holiday, why not challenge another pilot to a mecha duel?>
+	requires <*GENERAL Resort>
+
+	% E1 is the city itself
+	% E2 is a local meeting or hotel scene
+	% E3 is the NPC to duel
+	% E4 is a location for the duel
+	% E5 is the NPC's home town
+	Element1 <Scene Town>
+	Element2 <Scene (Meeting|Hotel) Public>
+	Element3 <Character HasMecha -L5LAW  !Okay 1  !Far 1 !Global  Recharged>
+	Place3 <2 (Guards) sd ally>
+	Element4 <Scene Environs>
+	Element5 <Scene Town !Near 3 !Global>
+
+	% P%id%01 = Time Limit
+
+	update <if= PlotStatus %plotid% 0  SetPlotStatus %plotid% %id%  P= %id%01 ComTime P+ %id%01 86400>
+	start <if= PlotStatus %plotid% %id%  ifG ComTime P%id%01  MoveNPC %3% %5%  EndPlot>
+
+	.%id1%_%plotid1%_GoWin  <ifNPCOK %3% else .%id%_GoEnd PMemo %plotid% %id%01 SetPlotStatus %plotid2% %id2%>
+	.%id1%_%plotid1%_GoLose <ifNPCOK %3% else .%id%_GoEnd PMemo %plotid% %id%02 SetPlotStatus %plotid3% %id3%>
+	.%id%_GoEnd <EndPlot>
+
+	%% If E3 dies, end the plot.
+	end <if= PlotStatus %plotid% %id% ifNPCDead %3% EndPlot>
+
+	Msg%id%01 <You defeated %name3% in a duel. You should go talk with \OPR %3% at \EXACT_SCENE %2% .>
+	Msg%id%02 <You were defeated by %name3% in a duel. You should go talk with \OPR %3% at \EXACT_SCENE %2% .>
+
+	% SubPlot1 = The Duel
+	% SubPlot2 = Win the Duel
+	% SubPlot3 = Lose the Duel
+	SubPlot1 <*NC_Duel 3 2 4>
+	SubPlot2 <*NC_WinDuelReturn 3 5>
+	SubPlot3 <*NC_LoseDuelReturn 3 5>
+
+	sub
+		Persona 3
+		rumor%id% <%name3% is enjoying an exciting vacation at %name2%.>
+		special <UNLISTED>
+		% v%id%01 = Renown Calculator
+		greeting <if= PlotStatus %plotid% %id% else .%id%_GoChat ifChatNPCKnown else .%id%_GoUnknownGreeting Goto .%id%_GoKnownGreeting>
+		.%id%_GoChat <NewChat SayAnything>
+		*.%id%_GoUnknownGreeting <*NiceToMeetYou .%id%_GoChallenge>
+		*.%id%_GoKnownGreeting   <*HowAreYou     .%id%_GoChallenge>
+		.%id%_GoChallenge <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+		.%id%_GoStartDuel <PMemo %plotid% %id%03  SetPlotStatus %plotid1% %id1%  Goto .%id%_GoAcceptChallenge>
+		*.%id%_GoAcceptChallenge <*IAcceptYourChallenge %4%>
+		.%id%_GoFail <EndChat Say %id%04 Goto .%id%_GoEndPlot>
+		.%id%_GoEndPlot <MoveNPC %3% %5%  EndPlot>
+		*.%id%_GoBye <*GoodBye>
+
+		result%id%01 <V= %id%01 PCRenown V+ %id%01 d10 ifG ChatNPCRenown v%id%01 else .%id%_GoStartDuel  NewChat Say %id%02  AddChat %id%04  AddChat %id%05>
+		result%id%02 <ifConversation SocSkillTar %threat% else .%id%_GoFail  EndChat Say %id%05 AddChat %id%06>
+		result%id%03 <MoveNPC %3% %5%  EndPlot  Goto .%id%_GoBye>
+		result%id%04 <Goto result%id%03>
+		result%id%05 <ifIntimidation SkillTar ChatNPCRenown else .%id%_GoFail Goto .%id%_GoStartDuel>
+		result%id%06 <Alert %id%06 time 3600 NewChat Say %id%07 AddReact d10 CashPrize Reward %threat% 50  Goto .%id%_GoEndPlot>
+
+		Msg%id%01 <So, what is there to do around these parts?>
+		Msg%id%02 <You're hardly in my league... it wouldn't be a fair fight, now would it?>
+		Msg%id%03 <You challenged %name3% to a duel in \EXACT_SCENE %4% .>
+		Msg%id%04 <I'll just find something to do by myself, thanks.>
+		Msg%id%05 <Alright, I'd like that.>
+		Msg%id%06 <You bring %name3% on a tour of %name1%.>
+		Msg%id%07 <Thanks, \PC . I really enjoyed myself... Here's a small reward for your help!>
+
+		Prompt%id%01 <Why don't we have a practice match in \EXACT_SCENE %4% ?>
+		Prompt%id%01_1 <We could go have a practice match in \EXACT_SCENE %4% .>
+		Prompt%id%01_2 <Let's go have a practice fight in \EXACT_SCENE %4% !>
+
+		Prompt%id%02 <I could show you around, if you want.>
+		CPrompt%id%02 <if= %1% PCHomeTown Accept>
+
+		Prompt%id%03 <Why don't you go see for yourself?>
+
+		Prompt%id%04 <I guess not...>
+		Prompt%id%05 <I can take you.>
+		Prompt%id%06 <[Continue]>
+	end
+
+

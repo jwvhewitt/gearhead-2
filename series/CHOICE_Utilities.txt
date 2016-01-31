@@ -1,0 +1,22 @@
+Choice 0
+	name <Introductory Choice>
+	desc <You don't get to make this choice, it's the default state of the first episode.>
+	desig <INTRO>
+	requires <>
+
+Choice -1
+	name <Debugging Choice>
+	desc <The choice which is entered if no other choices are found.>
+	desig <DEBUG>
+
+	% E1 is the city for the next episode.
+	Element1 <Scene City !Far -7 !Ally -7 !Okay -3 !XClude -2>
+
+	Prompt <I think I should debug this story...>
+	Reply <Tell pyrrho12@yahoo.ca about the message you are about to recieve. Good luck.>
+	Alert <Tell pyrrho12@yahoo.ca about the message you are about to recieve.>
+
+	Choice <StoryNote %id%01 &SetEpisodeScene %1%>
+
+	Msg%id%01 <You decided to go seek work in %name1%.>
+

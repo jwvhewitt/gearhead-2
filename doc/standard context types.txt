@@ -1,0 +1,15 @@
+CONTEXT
+
+For a faction...
+	gov	Government faction (Aegis, FedCon, L5 Council)
+	mil	Military faction (Aegis, Solar Navy, Maquise Defense Force)
+	cor	Corporate (Kettel, Biocorp, Comet)
+
+For a scene...
+	pln	Planetside
+	spc	Space Colony
+	!Ne, !Lo, !Md, !Hi, !Ex		Difficulcy levels for dungeon
+				Negligible, Low, Medium, High, Extreme
+
+
+

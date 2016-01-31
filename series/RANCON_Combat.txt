@@ -1,0 +1,125 @@
+%%
+%% Combat Random Scene Content- Random scene content that's all out of bubblegum!
+%%
+%%  This file contains random scene combat that's meant to be used in combat
+%%  missions. In order to use any of these things, your scene may need to meet
+%%  certain criteria:
+%%  - The faction of the scene is set to the faction being fought.
+%%  - There's a hostile team named "Enemies"
+%%  - There's a friendly team named "Allies"
+
+%%
+%% *CRC_Nemesis Content
+%%
+%%  One of your many enemies will show up to oppose you. This content
+%%  will not appear at !Ne renown, but will start showing up thereafter.
+%%
+
+Content
+	name <Personal Nemesis>
+	requires <*CRC_Nemesis -!Ne>
+
+	Element1 <.>
+	Element2 <Character Nemesis HasMecha !Okay 1 !Global>
+	Team2 <Enemies>
+	TeamData2 <SD Enemy>
+
+	start <if= L%id%01 0 else %pop% L= %id%01 1 ForceChat %2% Goto %pop%>
+
+	sub
+		Persona 2
+		special <UNLISTED>
+		*greeting <*BattleChallenge GoThemeExpo na>
+		*GoThemeExpo <*THEME_EXPO&Enemy na>
+	end
+
+Content
+	name <Faction Enemy>
+	requires <*CRC_Nemesis -!Ne -!Lo>
+
+	Element1 <.>
+	Element2 <Character HasMecha !Comrade 1 !Global -NOFAC>
+	Team2 <Enemies>
+	TeamData2 <SD Enemy>
+
+	start <if= L%id%01 0 else %pop% L= %id%01 1 ForceChat %2% Goto %pop%>
+
+	sub
+		Persona 2
+		special <UNLISTED>
+		*greeting <*BattleChallenge GoThemeExpo na>
+		*GoThemeExpo <*THEME_EXPO&Enemy na>
+	end
+
+Content
+	name <Best Friend's Cousin's Girlfriend's Mother's Ex-Roommate>
+	% The relations are getting a bit thin by now...
+	requires <*CRC_Nemesis -!Ne -!Lo -!Md>
+
+	Element1 <.>
+	Element2 <Character HasMecha !Ally 1 -ArchAlly !Global -NOFAC>
+	Team2 <Enemies>
+	TeamData2 <SD Enemy>
+
+	start <if= L%id%01 0 else %pop% L= %id%01 1 ForceChat %2% Goto %pop%>
+
+	sub
+		Persona 2
+		special <UNLISTED>
+		*greeting <*BattleChallenge GoThemeExpo na>
+		*GoThemeExpo <*THEME_EXPO&Enemy na>
+	end
+
+
+%%
+%% *CRC_Backup Content
+%%
+%%  One of your friends or allies will show up to provide backup.
+%%
+
+Content
+	name <Personal Ally>
+	requires <*CRC_Backup Common>
+
+	Element1 <.>
+	Element2 <Character (Lancemate|Friend|Family|Lover) HasMecha !XClude 1 !Global>
+	Team2 <Allies>
+	TeamData2 <SD Ally>
+
+	start <if= L%id%01 0 else %pop% L= %id%01 1 ForceChat %2% Goto %pop%>
+
+	sub
+		Persona 2
+		special <UNLISTED>
+		greeting <if# V1 0 else GoFirstTime NewChat SayAnything>
+		GoFirstTime <v= 1 1 Goto GoGreet>
+		*GoGreet <*HereToHelpFight GoThemeExpo GoRejectAid na>
+		*GoThemeExpo <*THEME_EXPO&Ally na>
+		*GoRejectAid <*RejectAid GoRunAway>
+		GoRunAway <RunAway %2% AddReact -d5>
+	end
+
+Content
+	name <Faction Ally>
+	requires <*CRC_Backup -!Ne>
+
+	Element1 <.>
+	Element2 <Character PCFac HasMecha !Enemy 1 !Global>
+	Team2 <Allies>
+	TeamData2 <SD Ally>
+
+	start <if= L%id%01 0 else %pop% L= %id%01 1 ForceChat %2% Goto %pop%>
+
+	sub
+		Persona 2
+		special <UNLISTED>
+		greeting <if# V1 0 else GoFirstTime NewChat SayAnything>
+		GoFirstTime <v= 1 1 Goto GoGreet>
+		*GoGreet <*HereToHelpFight GoThemeExpo GoRejectAid na>
+		*GoThemeExpo <*THEME_EXPO&Ally na>
+		*GoRejectAid <*RejectAid GoRunAway>
+		GoRunAway <RunAway %2% AddReact -d5>
+	end
+
+
+

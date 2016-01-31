@@ -1,0 +1,18 @@
+% Default Encounter %
+name <Encounter>
+use <ifG StatVal STAT_MetaVisibility -1  Print -1 Exit Destination>
+ATTACK <ifG StatVal STAT_MetaVisibility -1   ifG PCScale 0    ifUStealth 15 else GoAutoAttack ifYesNo -3 -4 -5 else GoAvoidAttack Goto GoAutoAttack>
+GoAutoAttack <Alert -2 Exit Destination>
+GoAvoidAttack <Print -6 AddSociable -1>
+roguechar <*>
+Msg-1 <You enter the location.>
+Msg-2 <You are suddenly attacked!>
+Msg-3 <Without any warning, you are confronted by \SOURCE .>
+Msg-4 <Engage them in battle.>
+Msg-5 <Sneak away.>
+Msg-6 <You get away safely.>
+update <if# Destination 0 else GoSetOrders  ifSceneExists Destination else GoHide ifG 0 StatVal STAT_MetaVisibility else GoSetOrders  SetStat STAT_MetaVisibility 0  Goto GoSetOrders>
+GoHide <SetStat STAT_MetaVisibility -1 GrabSource GSetNAtt NAG_EpisodeData NAS_EncVis 0>
+GoSetOrders <>
+
+

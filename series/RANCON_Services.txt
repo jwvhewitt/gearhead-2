@@ -1,0 +1,1487 @@
+%% *SHOP_RANDOM CONTENT
+%%   Contains a business.
+Content
+	requires <*SHOP_RANDOM>
+	content <Required *GENERAL_SHOP - Local>
+
+Content
+	requires <*SHOP_RANDOM>
+	content <Required *WEAPON_SHOP - Local>
+
+Content
+	requires <*SHOP_RANDOM>
+	content <Required *ARMOR_SHOP - Local>
+
+Content
+	requires <*SHOP_RANDOM>
+	content <Required *MECHANIC_SHOP - Local>
+
+Content
+	requires <*SHOP_RANDOM>
+	content <Required *MECHA_SHOP - Local>
+
+Content
+	requires <*SHOP_RANDOM>
+	content <Required *ELECTRONICS_SHOP - Local>
+
+Content
+	requires <*SHOP_RANDOM>
+	content <Required *SPECIAL_SHOP - Local>
+
+
+%% *DECOR_FOR_SHOP CONTENT
+%%   Contains a layout for a shop and maybe some props.
+Content
+	requires <*DECOR_FOR_SHOP ~Mall>
+	minimap <....................&---&>
+
+Content
+	requires <*DECOR_FOR_SHOP>
+	minimap <....................&---&>
+
+Content
+	requires <*DECOR_FOR_SHOP Mall>
+	minimap <#...#...............&---&>
+
+Content
+	requires <*DECOR_FOR_SHOP ~Sleazy>
+	minimap <.#...+#.............&---&>
+
+Content
+	requires <*DECOR_FOR_SHOP ~Legit>
+	minimap <.#...=#.............&---&>
+
+Content
+	requires <*DECOR_FOR_SHOP Garage>
+	minimap <1#...=#.............&---&>
+	get%1% <if= L%id%01 0 L= %id%01 1 AddLawful -4 SetItemStolen %1%  ifNPCCanSeePC %param% Print %id%01 PCEnemy %param% AddRenown -1>
+	element1 <Prefab>
+	Msg%id%01 <\PERSONA %param% : Hey! Don't touch my stuff!>
+	Msg%id%01_1 <\PERSONA %param% : Keep your paws off the merchandise!>
+	Msg%id%01_2 <\PERSONA %param% : I saw that!>
+	inv
+		RepairFuel 5000
+		name <Mecha Parts>
+		mass 40
+	end
+
+Content
+	requires <*DECOR_FOR_SHOP Legit>
+	minimap <1#...=#.............&---&>
+	get%1% <if= L%id%01 0 L= %id%01 1 AddLawful -2  SetItemStolen %1%  ifNPCCanSeePC %param% Monologue %param% %id%01  PCEnemy %param% AddRenown -1>
+	element1 <Prefab>
+	Msg%id%01 <[ \PERSONA %param% ]: Hey! Don't touch my stuff!>
+	Msg%id%01_1 <[ \PERSONA %param% ]: Keep your paws off the merchandise!>
+	Msg%id%01_2 <[ \PERSONA %param% ]: I saw that!>
+	inv
+		RepairFuel 250
+		name <Spare Parts>
+		mass 10
+	end
+
+Content
+	requires <*DECOR_FOR_SHOP ~Public>
+	minimap <...1................&---&>
+	element1 <Prefab>
+	inv
+		STC TV
+		PDir 2
+	end
+
+Content
+	requires <*DECOR_FOR_SHOP ~Mall>
+	minimap <.1..................&---&>
+	element1 <Prefab>
+	inv
+		STC Vending-1
+		PDir 2
+	end
+
+%% *DECOR_FOR_GENERAL_SHOP CONTENT
+%%   Contains a layout for a shop and maybe some props.
+
+Content
+	requires <*DECOR_FOR_GENERAL_SHOP>
+	minimap <12345...............&---&STUFF>
+	element1 <Prefab>
+	element2 <Prefab>
+	element3 <Prefab>
+	element4 <Prefab>
+	element5 <Prefab>
+	inv
+		STC CRATE-AMMO
+		PDir 1
+
+		STC SHOPDISPLAY-ARMOR-1
+		PDir 2
+
+		STC SHOPDISPLAY-WEAPONS-1
+		PDir 2
+
+		STC MANNEKIN-F
+		PDir 3
+
+		STC TV
+		PDir 2
+	end
+
+Content
+	requires <*DECOR_FOR_GENERAL_SHOP>
+	minimap <12345...............&---&STUFF>
+	element1 <Prefab>
+	element2 <Prefab>
+	element3 <Prefab>
+	element4 <Prefab>
+	element5 <Prefab>
+	inv
+		STC VENDING-1
+		PDir 1
+
+		STC MANNEKIN-F
+		PDir 2
+
+		STC MANNEKIN-M
+		PDir 2
+
+		STC SHOPDISPLAY-WEAPONS-2
+		PDir 2
+
+		STC SHOPDISPLAY-ARMOR-1
+		PDir 2
+	end
+
+
+%% *DECOR_FOR_WEAPON_SHOP CONTENT
+%%   Contains a layout for a shop and maybe some props.
+
+Content
+	requires <*DECOR_FOR_WEAPON_SHOP>
+	minimap <12345...............&---&ARMS!>
+	element1 <Prefab>
+	element2 <Prefab>
+	element3 <Prefab>
+	element4 <Prefab>
+	element5 <Prefab>
+	inv
+		STC SHOPDISPLAY-WEAPONS-2
+		PDir 2
+
+		STC CRATE-AMMO
+		PDir 3
+
+		STC SHOPDISPLAY-WEAPONS-1
+		PDir 2
+
+		STC CRATE-AMMO
+		PDir 1
+
+		STC SHOPDISPLAY-WEAPONS-3
+		PDir 2
+	end
+
+Content
+	requires <*DECOR_FOR_WEAPON_SHOP>
+	minimap <12345...............&---&GUNS!>
+	element1 <Prefab>
+	element2 <Prefab>
+	element3 <Prefab>
+	element4 <Prefab>
+	element5 <Prefab>
+	inv
+		STC VIDEOGAME-1
+		PDir 2
+
+		STC CRATE-AMMO
+		PDir 2
+
+		STC SHOPDISPLAY-WEAPONS-3
+		PDir 2
+
+		STC SHOPDISPLAY-WEAPONS-1
+		PDir 2
+
+		STC CRATE-AMMO
+		PDir 3
+	end
+
+Content
+	requires <*DECOR_FOR_WEAPON_SHOP>
+	minimap <12345...............&---&ARMS=>
+	element1 <Prefab>
+	element2 <Prefab>
+	element3 <Prefab>
+	element4 <Prefab>
+	element5 <Prefab>
+	inv
+		STC SHOPDISPLAY-WEAPONS-3
+		PDir 2
+
+		STC SHOPDISPLAY-WEAPONS-1
+		PDir 2
+
+		STC SHOPDISPLAY-WEAPONS-2
+		PDir 2
+
+		STC SHOPDISPLAY-WEAPONS-1
+		PDir 2
+
+		STC SHOPDISPLAY-WEAPONS-2
+		PDir 2
+	end
+
+
+
+%% *DECOR_FOR_ARMOR_SHOP CONTENT
+%%   Contains a layout for a shop and maybe some props.
+
+Content
+	requires <*DECOR_FOR_ARMOR_SHOP>
+	minimap <12345...............&---&ARMOR>
+	element1 <Prefab>
+	element2 <Prefab>
+	element3 <Prefab>
+	element4 <Prefab>
+	element5 <Prefab>
+	inv
+		STC MANNEKIN-M
+		PDir 1
+
+		STC SHOPDISPLAY-ARMOR-1
+		PDir 2
+
+		STC SHOPDISPLAY-ARMOR-2
+		PDir 2
+
+		STC SHOPDISPLAY-ARMOR-1
+		PDir 2
+
+		STC MANNEKIN-F
+		PDir 3
+	end
+
+Content
+	requires <*DECOR_FOR_ARMOR_SHOP>
+	minimap <12345...............&---&ARMOR>
+	element1 <Prefab>
+	element2 <Prefab>
+	element3 <Prefab>
+	element4 <Prefab>
+	element5 <Prefab>
+	inv
+		STC MANNEKIN-F
+		PDir 1
+
+		STC MANNEKIN-M
+		PDir 2
+
+		STC MANNEKIN-F
+		PDir 2
+
+		STC MANNEKIN-M
+		PDir 2
+
+		STC MANNEKIN-F
+		PDir 3
+	end
+
+
+
+%% *SPECIAL_SHOP CONTENT
+%%   Contains an unusual or otherwise uncategorizable shop.
+
+Content
+	requires <*SPECIAL_SHOP Sleazy Common>
+	content <Required *BLACKMARKET_SHOP na Local>
+
+Content
+	requires <*SPECIAL_SHOP ~Mall ~City ~Legit>
+	content <Required *VIDEOARCADE na Local>
+
+Content
+	requires <*SPECIAL_SHOP City>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SERVICE_DOCTOR GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Cyberdoc
+		Shopping 10
+	end
+
+Content
+	requires <*SPECIAL_SHOP>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SERVICE_BARTENDER GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Bartender
+	end
+
+Content
+	requires <*SPECIAL_SHOP Common ~Poor -Rich>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_SPECIALIST GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+	end
+
+Content
+	requires <*SPECIAL_SHOP Common>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_SPECIALIST GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		Shopping 5
+		chardesc wangtta
+	end
+
+Content
+	requires <*SPECIAL_SHOP>
+	content <Required *DECOR_FOR_GENERAL_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_ESSENTIALS GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+	end
+
+Content
+	requires <*SPECIAL_SHOP Common ~Rich -Poor>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_SPECIALIST GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		Shopping 15
+		chardesc renowned
+	end
+
+Content
+	requires <*SPECIAL_SHOP>
+	minimap <#...#............1..&---&>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_HEALTHCLUB GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Athlete
+	end
+
+Content
+	requires <*SPECIAL_SHOP ~LEGIT>
+	minimap <#...#..2.........1..&---&>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	element2 <Prefab>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_MONK GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Monk
+		Shopping 8
+		STC SHRINE-1
+	end
+
+%% *VIDEOARCADE CONTENT
+%%   Contains a video arcade.
+
+Content
+	%% Video Arcade
+	requires <*VIDEOARCADE>
+	minimap <############5##3...41...2>
+	element1 <Prefab>
+	Element2 <Prefab>
+	Element3 <Prefab>
+	Element4 <Prefab>
+	Element5 <Prefab>
+	inv
+		STC VIDEOGAME-3
+		PDir 0
+
+		STC VIDEOGAME-2
+		PDir 4
+
+		STC VIDEOGAME-1
+		PDir 0
+
+		STC VIDEOGAME-5
+		PDir 4
+
+		STC VIDEOGAME-4
+		PDir 2
+	end
+
+
+Content
+	%% Video Arcade
+	requires <*VIDEOARCADE>
+	minimap <####################1...2>
+	element1 <Prefab>
+	Element2 <Prefab>
+	inv
+		STC VIDEOGAME-2
+		PDir 0
+
+		STC VIDEOGAME-1
+		PDir 4
+	end
+
+Content
+	%% Video Arcade
+	requires <*VIDEOARCADE>
+	minimap <####################1...2>
+	element1 <Prefab>
+	Element2 <Prefab>
+	inv
+		STC VIDEOGAME-1
+		PDir 0
+
+		STC VIDEOGAME-3
+		PDir 4
+	end
+
+Content
+	%% Video Arcade
+	requires <*VIDEOARCADE>
+	minimap <####################1...2>
+	element1 <Prefab>
+	Element2 <Prefab>
+	inv
+		STC VIDEOGAME-1
+		PDir 0
+
+		STC VIDEOGAME-4
+		PDir 4
+	end
+
+Content
+	%% Video Arcade
+	requires <*VIDEOARCADE>
+	minimap <####################1...2>
+	element1 <Prefab>
+	Element2 <Prefab>
+	inv
+		STC VIDEOGAME-1
+		PDir 0
+
+		STC VIDEOGAME-5
+		PDir 4
+	end
+
+Content
+	%% Video Arcade
+	requires <*VIDEOARCADE>
+	minimap <####################1...2>
+	element1 <Prefab>
+	Element2 <Prefab>
+	inv
+		STC VIDEOGAME-2
+		PDir 0
+
+		STC VIDEOGAME-3
+		PDir 4
+	end
+
+Content
+	%% Video Arcade
+	requires <*VIDEOARCADE>
+	minimap <####################1...2>
+	element1 <Prefab>
+	Element2 <Prefab>
+	inv
+		STC VIDEOGAME-2
+		PDir 0
+
+		STC VIDEOGAME-4
+		PDir 4
+	end
+
+Content
+	%% Video Arcade
+	requires <*VIDEOARCADE>
+	minimap <####################1...2>
+	element1 <Prefab>
+	Element2 <Prefab>
+	inv
+		STC VIDEOGAME-5
+		PDir 0
+
+		STC VIDEOGAME-2
+		PDir 4
+	end
+
+Content
+	%% Video Arcade
+	requires <*VIDEOARCADE>
+	minimap <####################1...2>
+	element1 <Prefab>
+	Element2 <Prefab>
+	inv
+		STC VIDEOGAME-3
+		PDir 0
+
+		STC VIDEOGAME-4
+		PDir 4
+	end
+
+Content
+	%% Video Arcade
+	requires <*VIDEOARCADE>
+	minimap <####################1...2>
+	element1 <Prefab>
+	Element2 <Prefab>
+	inv
+		STC VIDEOGAME-3
+		PDir 0
+
+		STC VIDEOGAME-5
+		PDir 4
+	end
+
+Content
+	%% Video Arcade
+	requires <*VIDEOARCADE>
+	minimap <####################1...2>
+	element1 <Prefab>
+	Element2 <Prefab>
+	inv
+		STC VIDEOGAME-5
+		PDir 0
+
+		STC VIDEOGAME-4
+		PDir 4
+	end
+
+
+
+%% *ELECTRONICS_SHOP CONTENT
+%%   Contains an electronics store.
+
+Content
+	requires <*ELECTRONICS_SHOP Common>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_ELECTRONICS GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+	end
+
+Content
+	requires <*ELECTRONICS_SHOP Common ~Poor -Rich>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_ELECTRONICS GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		Shopping 5
+		chardesc wangtta
+	end
+
+Content
+	requires <*ELECTRONICS_SHOP Common ~Rich -Poor>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_ELECTRONICS GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		Shopping 15
+		chardesc renowned
+	end
+
+
+
+%% *MECHA_SHOP CONTENT
+%%   Contains a mecha store.
+
+Content
+	requires <*MECHA_SHOP ~Poor -Rich>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_MECHA GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		Shopping 5
+		chardesc wangtta
+	end
+
+Content
+	requires <*MECHA_SHOP>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_MECHA GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+	end
+
+Content
+	requires <*MECHA_SHOP ~Rich -Poor>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_MECHA GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		Shopping 15
+		chardesc renowned
+	end
+
+Content
+	requires <*MECHA_SHOP ~Rich ~Industrial>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_MECHA GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Mechanic
+		Shopping 12
+	end
+
+Content
+	requires <*MECHA_SHOP (MAQUI|FCOMS|RISHI) -HOELL -MUGLE ~COMET>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_MECHA GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		SetFaction 2
+	end
+
+Content
+	requires <*MECHA_SHOP (MAQUI|FCOMS|RISHI) -COMET -MUGLE ~HOELL>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_MECHA GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		SetFaction 7
+	end
+
+Content
+	requires <*MECHA_SHOP (MAQUI|FCOMS|RISHI|BOHEM) -HOELL ~MUGLE -COMET>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_MECHA GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		SetFaction 13
+		CharDesc Cheerful Cheerful
+	end
+
+
+%% *SHOP_MECHANIC CONTENT
+%%            &Factionless	Mechanic must not have a faction
+%%   Contains a mechanic and/or mecha shop.
+
+Content
+	requires <*MECHANIC_SHOP>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_GENERAL GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Mechanic
+	end
+
+Content
+	requires <*MECHANIC_SHOP (MAQUI|FCOMS|RISHI) -HOELL -MUGLE -&Factionless>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_MECHA GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Mechanic
+		SetFaction 2
+	end
+
+Content
+	requires <*MECHANIC_SHOP (MAQUI|FCOMS|RISHI) -COMET -MUGLE -&Factionless>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_MECHA GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Mechanic
+		SetFaction 7
+	end
+
+Content
+	requires <*MECHANIC_SHOP>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SERVICE_MECHANIC GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Mechanic
+	end
+
+%% *SHOP_CASINO CONTENT
+%%   Casino shops sell WEAPONs, ARMOR, and EXOTICs.
+
+Content
+	requires <*SHOP_CASINO>
+	content <Required *DECOR_FOR_GENERAL_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_CASINO GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		Shopping 15
+		chardesc Sociable Cheerful
+	end
+
+%% *SHOP_GENERAL CONTENT
+%%   Contains a miscellaneous store.
+
+Content
+	requires <*GENERAL_SHOP ~Poor -Rich>
+	content <Required *DECOR_FOR_GENERAL_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_GENERAL GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		Shopping 5
+		chardesc wangtta
+	end
+
+Content
+	requires <*GENERAL_SHOP>
+	content <Required *DECOR_FOR_GENERAL_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_GENERAL GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+	end
+
+Content
+	requires <*GENERAL_SHOP ~Rich -Poor>
+	content <Required *DECOR_FOR_GENERAL_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_GENERAL GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		Shopping 15
+		chardesc renowned
+	end
+
+Content
+	requires <*GENERAL_SHOP Sleazy>
+	content <Required *DECOR_FOR_GENERAL_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_GENERAL GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		chardesc Criminal
+	end
+
+
+%% *SHOP_WEAPON CONTENT
+%%   Contains a weapon store.
+
+Content
+	requires <*WEAPON_SHOP ~Poor -Rich>
+	content <Required *DECOR_FOR_WEAPON_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_WEAPON GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		Shopping 5
+		chardesc wangtta
+	end
+
+Content
+	requires <*WEAPON_SHOP Sleazy>
+	content <Required *DECOR_FOR_WEAPON_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_WEAPON GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Bandit
+		NonCombatant
+		Shopping 8
+	end
+
+Content
+	requires <*WEAPON_SHOP>
+	content <Required *DECOR_FOR_WEAPON_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_WEAPON GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+	end
+
+Content
+	requires <*WEAPON_SHOP ~Rich -Poor>
+	content <Required *DECOR_FOR_WEAPON_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_WEAPON GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		Shopping 15
+		chardesc renowned
+	end
+
+Content
+	requires <*WEAPON_SHOP (MAQUI|FCOMS) -COMET ~HOELL -MUGLE>
+	content <Required *DECOR_FOR_WEAPON_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_WEAPON GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		SetFaction 7
+	end
+
+
+
+%% *SHOP_ARMOR CONTENT
+%%   Contains a weapon store.
+
+Content
+	requires <*ARMOR_SHOP ~Poor -Rich>
+	content <Required *DECOR_FOR_ARMOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_ARMOR GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		Shopping 5
+		chardesc wangtta
+	end
+
+Content
+	requires <*ARMOR_SHOP>
+	content <Required *DECOR_FOR_ARMOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_ARMOR GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+	end
+
+Content
+	requires <*ARMOR_SHOP ~Rich -Poor>
+	content <Required *DECOR_FOR_ARMOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_ARMOR GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		Shopping 15
+		chardesc renowned
+	end
+
+Content
+	requires <*ARMOR_SHOP (MAQUI|FCOMS|RISHI|BOHEM) -HOELL ~MUGLE -COMET>
+	content <Required *DECOR_FOR_ARMOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_ARMOR GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		SetFaction 13
+		CharDesc Cheerful Cheerful
+	end
+
+
+%% *BLACKMARKET_X CONTENT
+%%   A black market scene needs more than just the store. It also needs some extras.
+
+Content
+	requires <*BLACKMARKET_X>
+	content <Required *BLACKMARKET_SHOP na Local>
+
+Content
+	requires <*BLACKMARKET_X>
+	content <Required *BAR_SERVICE na Local>
+
+Content
+	requires <*BLACKMARKET_X>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		special <UNLISTED>
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_SPECIALIST GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		chardesc Criminal
+	end
+
+Content
+	requires <*BLACKMARKET_X>
+	content <Required *DECOR_FOR_WEAPON_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		special <UNLISTED>
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_WEAPON GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		chardesc Criminal
+	end
+
+Content
+	requires <*BLACKMARKET_X>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		special <UNLISTED>
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_MECHA GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Mechanic
+		chardesc Criminal
+	end
+
+
+%% *BLACKMARKET_SHOP CONTENT
+%%   Contains a black market shopkeeper.
+
+Content
+	requires <*BLACKMARKET_SHOP>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		special <UNLISTED>
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_BLACKMARKET GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Thief
+		Shopping 15
+		job <Smuggler>
+	end
+
+Content
+	requires <*BLACKMARKET_SHOP>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		special <UNLISTED>
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_BLACKMARKET GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Shopkeeper
+		job <Smuggler>
+		chardesc Criminal
+	end
+
+Content
+	requires <*BLACKMARKET_SHOP Sleazy>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		special <UNLISTED>
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_BLACKMARKET GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Thief
+		Shopping 10
+		job <Smuggler>
+	end
+
+
+%% *RESTAURANT CONTENT
+%%   Contains a restaurant
+Content
+	requires <*RESTAURANT>
+	minimap <....2.......1.......#---#>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	content <Optional *URBAN_X - Local>
+
+	element2 <Prefab>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SERVICE_RESTAURANT GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Cook
+
+		STC TV
+		PDir 2
+	end
+
+%% *SHUTTLESERVICE CONTENT
+%%   Contains a Transit Station
+Content
+	requires <*SHUTTLESERVICE>
+	minimap <............1.......#---#>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		special <NOPLOTS>
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SERVICE_SHUTTLE GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Ticket Agent
+	end
+
+
+%% *DECOR_FOR_HOSPITAL CONTENT
+
+Content
+	requires <*DECOR_FOR_HOSPITAL>
+	minimap <12..................#&+&#>
+	element1 <Prefab>
+	element2 <Prefab>
+	inv
+		STC BED-1
+		PDir 2
+
+		STC ENDTABLE-1
+		PDir 2
+	end
+
+Content
+	requires <*DECOR_FOR_HOSPITAL>
+	minimap <1...52...63...74...8#&+&#>
+	element1 <Prefab>
+	element2 <Prefab>
+	element3 <Prefab>
+	element4 <Prefab>
+	element5 <Prefab>
+	element6 <Prefab>
+	element7 <Prefab>
+	element8 <Prefab>
+	inv
+		STC BED-1
+		PDir 0
+
+		STC ENDTABLE-1
+		PDir 0
+
+		STC BED-1
+		PDir 0
+
+		STC ENDTABLE-1
+		PDir 0
+
+		STC BED-1
+		PDir 4
+
+		STC ENDTABLE-1
+		PDir 4
+
+		STC BED-1
+		PDir 4
+
+		STC ENDTABLE-1
+		PDir 4
+	end
+
+
+
+%% *DOCTOR CONTENT
+%%   Contains a doctor
+Content
+	requires <*DOCTOR City ~Rich>
+	content <Required *DECOR_FOR_HOSPITAL %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SERVICE_DOCTOR GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC CyberDoc
+	end
+
+Content
+	requires <*DOCTOR ~City ~Village>
+	content <Required *DECOR_FOR_HOSPITAL %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SERVICE_DOCTOR GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Doctor
+	end
+
+% *BAR_SERVICE Content
+
+Content
+	requires <*BAR_SERVICE ~Static>
+	minimap <#...##...##...##.1.##---#>
+	element1 <Prefab>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SERVICE_BARTENDER GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Bartender
+	end
+
+% *PDARENA_MECHANIC_SHOP Content
+%	Every arena needs a mechanic/mecha supplier. This is that person.
+
+Content
+	requires <*PDARENA_MECHANIC_SHOP>
+	content <Required *DECOR_FOR_SHOP %1% Local>
+	element1 <Prefab>
+	team1 <Citizens>
+	teamdata1 <ally pass>
+	sub
+		Persona 1
+		*greeting <*NiceToMeetYou GoShop>
+		*GoShop <*SHOP_MECHA GoBye>
+		*GoBye <*GOODBYE>
+	end
+	inv
+		NPC Mechanic
+		SetFaction 5
+		Shopping 10
+	end
+
+
+% *PDARENA_MISC Content
+%	Miscellaneous things for the arena. Mostly shops.
+
+Content
+	requires <*PDARENA_MISC>
+	content <Required *GARAGE_X %1% Local>
+
+Content
+	requires <*PDARENA_MISC>
+	content <Required *RESTAURANT %1% Local>
+
+
+% *CASINO_FLOOR Content
+%	Things to go in the boxmap at the center of a casino.
+
+Content
+	%% Gambling Machines
+	requires <*CASINO_FLOOR Common>
+	Element1 <Prefab>
+	Element2 <Prefab>
+	minimap <      .1.  .&.  .2.      >
+	inv
+		STC GAMBLING-1
+		PDir 6
+
+		STC GAMBLING-1
+		PDir 2
+	end
+
+Content
+	%% Game Machines
+	requires <*CASINO_FLOOR>
+	Element1 <Prefab>
+	Element2 <Prefab>
+	minimap <      .1.  .&.  .2.      >
+	inv
+		STC VIDEOGAME-4
+		PDir 6
+
+		STC VIDEOGAME-5
+		PDir 2
+	end
+
+
+% *CASINO_CELLS Content
+%	Things to go in the alcoves of a casino map.
+
+Content
+	requires <*CASINO_CELLS>
+	content <Required *RESTAURANT %1% Local>
+
+Content
+	requires <*CASINO_CELLS>
+	content <Required *SHOP_RANDOM %1% Local>
+
+Content
+	requires <*CASINO_CELLS>
+	content <Required *VIDEOARCADE %1% Local>
+
+Content
+	%% Gambling Spot
+	requires <*CASINO_CELLS>
+	minimap <####################1...2>
+	element1 <Prefab>
+	Element2 <Prefab>
+	inv
+		STC GAMBLING-1
+		PDir 0
+
+		STC GAMBLING-1
+		PDir 4
+	end
+

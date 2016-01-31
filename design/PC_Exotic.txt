@@ -1,0 +1,110 @@
+%%
+%%  Exotic items are difficult to find. They're strange, different...
+%%  not necessarily better than normal items, but possibly better for
+%%  certain characters. Exotic weapons will often use unusual stats.
+%%
+
+%  ************************
+%  ***  MELEE  WEAPONS  ***
+%  ************************
+
+	Melee 8
+	name <Skull Cane>
+	desc <A black cane topped by a silver skull.>
+	factions <GENERAL>
+	category <EXOTIC>
+	legality -5
+	mass -4
+	UsesEgo
+	Acc 1
+	Speed 3
+	sub
+		BeamGun 6
+		Name <Laser Eyes>
+		desc <The ruby eyes of the cane are capable of unleashing a powerful laser blast.>
+		Range 5
+		Mass -5
+		Acc 1
+		Speed 3
+		UsesEgo
+		Integral
+		inv
+			PowerSource 2
+			name <Skull Cell 50>
+			mass -2
+		end
+	end
+
+	Melee 12
+	name <Steel Fan>
+	desc <An elegant fan with a sharpened edge. When thrown it opens into a disc.>
+	mass -10
+	Speed 5
+	factions <GENERAL>
+	category <EXOTIC>
+	legality -5
+	type <ARMORPIERCING THROWN RETURN>
+	UsesCharm
+
+	Melee 7
+	name <Steel Sash>
+	mass -6
+	Speed 4
+	factions <GENERAL>
+	category <EXOTIC>
+	legality -10
+	type <EXTEND FLAIL ARMORPIERCING>
+	UsesCharm
+
+	Melee 9
+	Name <Gunsword>
+	desc <A longsword with a pistol integrated into the blade.>
+	category <EXOTIC>
+	factions <GENERAL>
+	SDL_PORTRAIT <>
+	legality -5
+	Acc 1
+	Speed 4
+	Mass -5
+	sub
+		Gun 8
+		Name <Revolver>
+		Mass -6
+		Range 5
+		speed 3
+		caliber <.32 revolver>
+		Integral
+		Magazine 9
+		sub
+			Ammo 8
+			name <Gunsword Cylinder>
+			desc <A departure from the traditional cartridge, this clip comes in the form of a cylinder with the bullets preloaded.>
+			caliber <.32 revolver>
+		end
+	end
+
+
+%  ****************************
+%  ***  BALLISTIC  WEAPONS  ***
+%  ****************************
+
+	Gun 10
+	name <Magna Crossbow>
+	desig <CT-72>
+	desc <This high tech crossbow uses a magnetic accelerator to launch pencil-thin bolts.>
+	sdl_portrait <>
+	category <EXOTIC>
+	factions <GENERAL>
+	caliber <20cm bolt>
+	Mass -5
+	Range 8
+	Acc 1
+	Speed 3
+	magazine 20
+	sub
+		Ammo 10
+		name <Magna Crossbow Clip>
+		caliber <20cm bolt>
+		SDL_PORTRAIT <>
+	end
+

@@ -1,0 +1,69 @@
+%%
+%%  Plots for cities which have the CUISINE type, or which are under this
+%%  type due to a local mood.
+%%
+
+Plot
+	name <Free Samples>
+	requires <*GENERAL cuisine>
+	desc <Hungry? A restaurant is giving out free samples.>
+
+	% E1 is the character with the free samples.
+	Element1 <Character Cook Recharged>
+
+	% P1 = Time Limit
+	start <ifNPCOK %1% else GoDelete if# P1 0  ifG ComTime P1  EndPlot>
+	GoDelete <EndPlot>
+	update <if= P1 0 P= 1 ComTime P+ 1 21600>
+
+	sub
+		Persona 1
+		rumor <%name1% is giving out some free samples.>
+		%% V%id%01 = React counter
+		greeting <ifChatNPCKnown else .%id%_GoUnknownGreeting Goto .%id%_GoKnownGreeting>
+		*.%id%_GoUnknownGreeting <*NiceToMeetYou .%id%_GoMakeOffer>
+		*.%id%_GoKnownGreeting <*HowAreYou .%id%_GoMakeOffer>
+		.%id%_GoMakeOffer <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+		.%id%_GoNotHere <NewChat Say %id%02>
+		*.%id%_GoGoodbye <*GoodBye>
+		result%id%01 <EndPlot  ifChatNPCInPlay else .%id%_GoNotHere ifG React d50 else .%id%_GoNotGood NewChat Say %id%03 PCEat PCMoraleDmg -d30 AddChat %id%04 AddChat %id%05>
+		.%id%_GoNotGood <ifG React -d10 else .%id%_GoBadFood  NewChat Say %id%03 PCEat AddChat %id%04 AddChat %id%05>
+		.%id%_GoBadFood <NewChat Say %id%03 PCEat PCMoraleDmg d50 AddChat %id%06>
+		result%id%02 <EndPlot Goto .%id%_GoGoodbye>
+		result%id%03 <NewChat Say %id%04>
+		result%id%04 <NewChat Say %id%05  v= %id%01 react AddCheerful  d6  ifG react v%id%01 AddReact d8>
+		result%id%05 <NewChat Say %id%06  v= %id%01 react AddCheerful -d6  ifG react v%id%01 AddReact d8>
+		result%id%06 <NewChat Say %id%06  ifNPCMelancholy AddReact d10>
+		Msg%id%01 <We're having a free sample event. For just a short time, everything on the menu is free! Would you like to try anything?>
+		Msg%id%01_1 <I'm holding a special promotion event. For a limited time you can order anything you want with no charge! How'd you like to try something?>
+		Msg%id%01_2 <For a short time only, this restaurant is offering a 100% discount on all menu items. You can't do better than that! Would you like to try our special?>
+		Msg%id%02 <Sorry, but this promotion isn't being offered in conjunction with delivery. In other words you'll have to come over here.>
+		Msg%id%02_1 <No delivery! You need to come here to take advantage of this special offer.>
+		Msg%id%03 <Here's your food. How do you like it?>
+		Msg%id%04 <Hurry back soon... this offer isn't going to last very long.>
+		Msg%id%05 <I'm glad you enjoyed it. Be sure to come back for another meal later!>
+		Msg%id%05_1 <That's good to hear. Remember, tell all your friends about this place!>
+		Msg%id%05_2 <Good. I hope you enjoyed it enough to come back for another meal when the promotion's over!>
+		Msg%id%06 <Heh. I guess now you know why I'm giving it away for free...>
+		Msg%id%06_1 <You think so? Well, there's no accounting for taste...>
+		Prompt%id%01 <Free? I'll take one of those!>
+		CPrompt%id%01 <ifG PCHunger 10 Accept>
+		Prompt%id%01_1 <Free is my favorite price. I'll have one.>
+		Prompt%id%01_2 <Alright, I'll try your cooking.>
+		Prompt%id%02 <Sorry, but I'm not hungry.>
+		Prompt%id%02_1 <No thanks, I don't want anything.>
+		Prompt%id%02_2 <I don't see anything that appeals to me...>
+		Prompt%id%03 <Maybe I'll come back later.>
+		Prompt%id%03_1 <Not now, but maybe later.>
+		Prompt%id%03_2 <I'll be back when I'm hungry.>
+		Prompt%id%04 <It was pretty good!>
+		Prompt%id%04_1 <That was delicious!>
+		Prompt%id%04_2 <That's the best thing I've ever tasted!>
+		Prompt%id%05 <Meh, it was okay...>
+		Prompt%id%05_1 <Well, I got what I paid for.>
+		Prompt%id%05_2 <It wasn't that great, actually.>
+		Prompt%id%06 <Yuck! That was terrible!>
+		Prompt%id%06_1 <That's the worst thing I've ever eaten!>
+	end
+
+

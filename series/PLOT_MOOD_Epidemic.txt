@@ -1,0 +1,148 @@
+%%
+%%  *Epidemic Plots
+%%
+%% A virus/bacteria is on the loose and for whatever reason the health
+%% authorities are having trouble with it. Just by being in town the PC risks
+%% getting sick (maybe).
+%%
+%% The following script will add PC-infection to your epidemic:
+%%	halfhour <ifPCSealed else GoNotSealed if= d20 1 ifUToughness 5 else GoGetSick>
+%%	GoNotSealed <if= d4 1 ifUToughness SkillTar %threat% else GoGetSick>
+%%	GoGetSick <Print 1 PCVerySick>
+%%	Msg1 <You don't feel very well...>
+%%
+%% Mood Spec:
+%%  - No Elements
+%%
+
+Plot
+	name <Doctor Allcome>
+	desc <The PC can volunteer at the local hospital.>
+	requires <*Epidemic>
+
+	% E1 is the doctor.
+	Element1 <Character (Doctor|Cyberdoc|Nurse) Recharged>
+
+	% V1 = Timer
+
+	% FAIL CONDITIONS-
+	% - E1 dies
+	end <ifNPCDead %1% EndPlot>
+
+	start <if# V1 0 ifG Comtime V1 EndPlot>
+	update <if= V1 0 V= 1 ComTime V+ 1 86400>
+
+	sub
+		Persona 1
+		rumor <%name1% could use some help dealing with the epidemic.>
+		&PledgeAmount <Reward PCHeroism 300>
+		greeting <NewChat Say %id%01 AddChat %id%01 AddChat %id%02 AddChat %id%03>
+		result%id%01 <EndPlot RevertPersona>
+		result%id%02 <NewChat Say %id%02 AddReact d3 Mental Mental Mental SkillXP NAS_Medicine 50 AddHeroic 1 EndPlot>
+		result%id%03 <NewChat Say %id%03 AddReact d12 Cash+ -&PledgeAmount EndPlot AddHeroic 1>
+		Msg%id%01 <This clinic has been overrun because of the epidemic. We're doing our best, but there are too many patients and resources are tight.>
+		Msg%id%01_1 <>
+		CMsg%id%01_1 <ifNPCSociable Accept>
+		Msg%id%01_2 <>
+		CMsg%id%01_2 <ifNPCShy Accept>
+		Msg%id%01_3 <>
+		CMsg%id%01_3 <ifNPCEasygoing Accept>
+		Msg%id%01_4 <>
+		CMsg%id%01_4 <ifNPCPassionate Accept>
+		Msg%id%01_5 <>
+		CMsg%id%01_5 <ifNPCCheerful Accept>
+		Msg%id%01_6 <>
+		CMsg%id%01_6 <ifNPCMelancholy Accept>
+		Msg%id%02 <Thanks. Having another medic on board means we can get through the patients faster.>
+		Msg%id%03 <Thanks. This money will help us to help more people.>
+		Prompt%id%01 <I need help myself.>
+		Prompt%id%02 <I'd like to volunteer to help.>
+		CPrompt%id%02 <ifPCHasSkill NAS_Medicine Accept>
+		Prompt%id%03 <I'd like to donate $ \VAL &PledgeAmount . [Give Money]>
+		CPrompt%id%03 <ifG PC$ &PledgeAmount Accept>
+	end
+
+Plot
+	name <Plague Bearer>
+	desc <A local has the flu. Watch out for sneezing!>
+	requires <*Epidemic>
+
+	% E1 is the character who's ill.
+	Element1 <Character Recharged -MEDIC>
+
+	% V1 = Timer
+	% V2 = NPC's scene
+	% V3 = Sneeze counter, you get one free warning
+
+	% FAIL CONDITIONS-
+	% - E1 dies
+	end <ifNPCDead %1% EndPlot>
+
+	start <if# V1 0 ifG Comtime V1 else GoCheckAwareness EndPlot>
+	GoCheckAwareness <if= SceneID V2 ifAwareness 5 Print 3>
+	update <if= V1 0 V= 1 ComTime V+ 1 18000 V+ 1 d12000 V= 2 NPCScene %1%>
+
+	% Check for a sneeze every 5 minutes.
+	5min <ifNPCOK %1% else End  if= SceneID v2  if= d3 1  Print 1  V+ 3 1  ifG V3 d4  ifPCSealed else GoNotSealed Goto GoSealed>
+	GoSealed <if= d10 1 ifUToughness 3 else GoGetSick>
+	GoNotSealed <if# d3 1 ifUToughness SkillTar %threat% else GoGetSick>
+	GoGetSick <Print 2 PCSick>
+
+	Msg1_1 <%name1% coughs.>
+	Msg1_2 <%name1% sneezes.>
+	Msg1_3 <%name1% blows \PPR %1% nose.>
+	Msg2 <You feel like you're coming down with something yourself.>
+	Msg2_1 <You don't feel so well yourself.>
+	Msg3 <You notice that %name1% looks sick.>
+
+	sub
+		Persona 1
+		greeting <NewChat Say %id%01 ifChatNPCinPlay AddChat %id%01 AddChat %id%02>
+		result%id%01 <EndChat Say %id%02 RunAway %1% Print %id%06 EndPlot>
+		result%id%02 <EndChat Say %id%03 AddChat %id%03>
+		result%id%03 <Mental ifMedicine HardSkillTar PCHeroism else .%id%_GoR3Fail NewChat Say %id%04 AddReact d4 EndPlot AddHeroic 1>
+		.%id%_GoR3Fail <EndChat Say %id%05 AddRenown -1 RunAway %1% Print %id%06 EndPlot>
+		Msg%id%01 <Ugh... I think I'm coming down with something.>
+		Msg%id%01_1 <I feel terrible... I hope I'm not coming down with that bug that's on the go. One of my friends caught it and was absolutely miserable.>
+		CMsg%id%01_1 <ifNPCSociable Accept>
+		Msg%id%01_2 <Sniffle... Sniffle...>
+		CMsg%id%01_2 <ifNPCShy Accept>
+		Msg%id%01_3 <I feel miserable... do you suppose it's that virus that's going around?>
+		CMsg%id%01_3 <ifNPCEasygoing Accept>
+		Msg%id%01_4 <I'm not sick... I just have to fight it off... Why does everything hurt?>
+		CMsg%id%01_4 <ifNPCPassionate Accept>
+		Msg%id%01_5 <I don't feel so well today...>
+		CMsg%id%01_5 <ifNPCCheerful Accept>
+		Msg%id%01_6 <Urrgh... I'm dying...>
+		CMsg%id%01_6 <ifNPCMelancholy Accept>
+		Msg%id%01_7 <I think I'm going to die... but I must keep working, for the sake of everyone else.>
+		CMsg%id%01_7 <ifNPCHeroic Accept>
+		Msg%id%01_8 <If I die from this flu I only hope I take as many of you with me as I can...>
+		CMsg%id%01_8 <ifNPCVillainous Accept>
+		Msg%id%01_9 <I've been praying that I can get over this flu... it doesn't seem to be working.>
+		CMsg%id%01_9 <ifNPCSpiritual Accept>
+		Msg%id%02 <You're right. Hopefully I'll feel better later...>
+		Msg%id%02_1 <Guess I don't have much choice...>
+		Msg%id%02_2 <Yeah, I'll do that...>
+		Msg%id%03 <You think you can help? Alright, it can't possibly make me feel any worse...>
+		Msg%id%03_1 <This isn't going to involve any needles is it?>
+		Msg%id%03_2 <They say the hospital's been turning patients away. I'll take all the help I can get.>
+		Msg%id%04 <Hmmm... I do feel better now. Thanks, \PC !>
+		Msg%id%04_1 <I can breathe again! Thanks, \PC .>
+		Msg%id%04_2 <Oh yeah, that's the ticket. Thanks \PC .>
+		Msg%id%05 <Eh, it's not working, I still feel like crap. I'm going home to sleep this off.>
+		Msg%id%05_1 <I don't feel any different... Maybe I should just sleep it off.>
+		Msg%id%05_2 <I dunno, I'm still weak all over... I'm just gonna go back home.>
+		Msg%id%06 <%name1% goes home.>
+		Prompt%id%01 <You should really take some time off.>
+		Prompt%id%01_1 <Go home! You're a danger to the rest of us.>
+		CPrompt%id%01_1 <ifPCMelancholy Accept>
+		Prompt%id%01_2 <You ought to go home and rest.>
+		Prompt%id%02 <I'm a medic; let me help you.>
+		CPrompt%id%02 <ifPCHasSkill NAS_Medicine Accept>
+		Prompt%id%02_1 <Maybe I can help you.>
+		Prompt%id%03 <[Treat Illness]>
+	end
+
+
+

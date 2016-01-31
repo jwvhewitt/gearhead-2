@@ -1,0 +1,76 @@
+%
+%  Plots based on the *CORE_R_ goals.
+%
+
+Plot
+	name <R_EXP: Engineer Mission>
+	desc <The NPC will direct you to a custom mecha.>
+	requires <*CORE_R_MEK ~P:++ Common>
+
+	% Element1 is the NPC to meet
+	% Element2 is the martial artist
+	% Element3 is the meeting scene
+	element1 <Character !Near -7 (Friend|Lover|Family|PCFac|Ally)>
+	Element2 <Prefab>
+	Element3 <Scene Building Public !Near -7 !Okay 2>
+
+	start <if= PlotStatus %plotid% 0 else .%id%_GoCheckDead if= RootSceneID &EpisodeScene Email %id%01 SetPlotStatus %plotid% %id%>
+	.%id%_GoCheckDead <if= PlotStatus %plotid% %id% ifNPCDead %1% LoseEpisode>
+
+	Msg%id%01 <%name1%@ \SCENE &EpisodeScene :// If you're in town I'd love to speak with you.>
+
+	% SubPlot1 is the conversation you're going to have.
+	subplot1 <*CS_Conversation 2>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else GoChat Goto .%id%_GoGreet>
+		rumor%id% <%name1% has been looking for you.>
+		GoChat <RevertPersona>
+		*.%id%_GoGreet <*HowAreYou .%id%_GoAdvise>
+		.%id%_GoAdvise <NewChat Say %id%01 SMemo %id%02 History %id%03 MoveNPC %2% %3% SetPlotStatus %plotid1% %id1%>
+		Msg%id%01 <How's your mecha holding out? %name2% at %name3% needs a cavalier for an upcoming mission, and the reward is a fully customized mecha. You'd be a fool to pass this up.>
+		Msg%id%02 <%name1% advised you to ask %name2% at %name3% for a mission.>
+		Msg%id%03 <%name1% told you about %name2%'s mission.>
+	end
+	inv
+		NPC Engineer
+		chardesc old renowned
+	end
+
+Plot
+	name <R_EXP: Ancient Master>
+	desc <The NPC will direct you to a skill trainer.>
+	requires <*CORE_R_EXP ~P:++ Common>
+
+	% Element1 is the NPC to meet
+	% Element2 is the martial artist
+	% Element3 is the meeting scene
+	element1 <Character !Near -7 (Friend|Lover|Family|PCFac|Ally)>
+	Element2 <Prefab>
+	Element3 <Scene Building Public !Near -7 !Okay 2>
+
+	start <if= PlotStatus %plotid% 0 else .%id%_GoCheckDead if= RootSceneID &EpisodeScene Email %id%01 SetPlotStatus %plotid% %id%>
+	.%id%_GoCheckDead <if= PlotStatus %plotid% %id% ifNPCDead %1% LoseEpisode>
+
+	Msg%id%01 <%name1%@ \SCENE &EpisodeScene :// Give me a call when you get in town.>
+
+	% SubPlot1 is the conversation you're going to have.
+	subplot1 <*CS_Conversation 2>
+
+	sub
+		Persona 1
+		greeting <if= PlotStatus %plotid% %id% else GoChat Goto .%id%_GoGreet>
+		rumor%id% <%name1% knows someone who can help you train.>
+		GoChat <RevertPersona>
+		*.%id%_GoGreet <*HowAreYou .%id%_GoAdvise>
+		.%id%_GoAdvise <NewChat Say %id%01 SMemo %id%02 History %id%03 MoveNPC %2% %3% SetPlotStatus %plotid1% %id1%>
+		Msg%id%01 <I heard that you're looking to improve your skills. The famous martial artist %name2% is in %name3%; maybe you can ask \OPR %2% to train you.>
+		Msg%id%02 <%name1% told you that %name2% in %name3% might be able to help you train.>
+		Msg%id%03 <%name1% told you to seek training from %name2%.>
+	end
+	inv
+		NPC Martial Artist
+		chardesc old renowned
+	end
+

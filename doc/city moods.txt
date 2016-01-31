@@ -1,0 +1,34 @@
+Moods are wonderous things. Basically they modify the plots which load in their
+attached cities. How do they do this? Several ways:
+- Moods alter the city's TYPE, thereby causing differnt plots to be loaded
+- Moods may load plots of types other than *GENERAL
+- Moods may have their own set of elements, like stories
+
+	{ CITYMOOD DEFINITION }
+	{  G = GG_CityMood     }
+	{  S = Undefined       }
+	{  V = Number of attached plots }
+	{ A mood may also have TYPE and a PLOT_TYPE string attributes. The first modifies the }
+	{ type of the city to which the mood is attached. The second determines what sort of plot }
+	{ will be loaded by this mood; the default value is *GENERAL. }
+	{ The ControllerID for a mood is assigned automatically. }
+
+
+Elements 1 through 9 add their context to the plot request.
+
+If a mood is defined as a prefab element, it may grab elements from the plot
+or story which generated it. Positive indicies indicate the plot, while negative
+indicies will grab directly from the story.
+
+When a mood is inserted, its time limit is set (ComTime + Value, if nonzero) and its
+UPDATE script is called.
+
+String Substitutions:
+	%city%				The name of the city
+	%me_name1% ... %me_name20%	Mood element names
+	%me_1% ... %me_20%		Mood Element IDs
+
+Moods also function as memes for the cities in which they are installed. To do this,
+include a MSG <> block in the mood. Make sure to include a good variety of phrases
+since unlike regular memes, moods don't have a maximum view limit.
+

@@ -1,0 +1,526 @@
+%%  **************************************
+%%  ***   [!Ne+]  BEGINNER  MISSIONS   ***
+%%  **************************************
+
+ArenaMission
+	name <Urban Encounter>
+	requires <*MISSION ArenaOK>
+	desc <Mecha from %name1% have been encountered in a city.>
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 400
+
+	CityBlockMap
+	terrain <GROUND>
+
+	Element1 <Faction Enemy>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	Start <if= L1 0 CommanderSays 1 L= 1 1>
+	nu1 <if= T1 0 if= L2 0 L= 2 1 Alert 2 LoseArenaMission>
+	nu2 <if= T2 0 if= L2 0 Salvage Return XPV 200 L= 2 1 Alert 3 WinArenaMission>
+
+	Msg1 <Enemy mecha have been spotted. Eliminate them all.>
+	Msg2 <The mission is a failure.>
+	Msg3 <The mission is a success.>
+
+	sub
+		Team 1
+		SetEnemy 2
+		ParaX 5
+		ParaY 5
+
+		Team 2
+		SetEnemy 1
+		Deploy <SetSelfFaction M1   WMecha 2 ArenaRenown 400>
+		ParaX 45
+		ParaY 45
+
+		rect
+		name <PC Deploy Spot>
+		desig <NW>
+
+		rect
+		name <Enemy Deploy Spot>
+		desig <SE>
+	end
+
+ArenaMission
+	name <Asteroid Encounter>
+	requires <*MISSION L5PAT>
+	desc <Mecha from %name1% have been encountered on an asteroid.>
+
+	AsteroidMap
+	terrain <GROUND>
+	RockyTiles
+	Vacuum
+	SpaceBackdrop
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 400
+
+	Element1 <Faction Enemy>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	Start <if= L1 0  CommanderSays 1  L= 1 1>
+	nu1 <if= T1 0 if= L2 0 L= 2 1 Alert 2 LoseArenaMission>
+	nu2 <if= T2 0 if= L2 0 Salvage Return XPV 200 L= 2 1 Alert 3 WinArenaMission>
+
+	Msg1 <Enemy mecha have been spotted. Eliminate them all.>
+	Msg2 <The mission is a failure.>
+	Msg3 <The mission is a success.>
+
+	sub
+		Team 1
+		SetEnemy 2
+		ParaX 5
+		ParaY 15
+
+		Team 2
+		SetEnemy 1
+		Deploy <SetSelfFaction M1   WMecha 2 ArenaRenown 400>
+		ParaX 45
+		ParaY 35
+	end
+
+ArenaMission
+	name <Wilderness Encounter>
+	requires <*MISSION ArenaOK>
+	desc <Mecha from %name1% have been encountered in the wilds.>
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 400
+
+	WildMap
+	terrain <GROUND>
+
+	Element1 <Faction Enemy>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	Start <if= L1 0 CommanderSays 1 L= 1 1>
+	nu1 <if= T1 0 if= L2 0 L= 2 1 Alert 2 LoseArenaMission>
+	nu2 <if= T2 0 if= L2 0 Salvage Return XPV 200 L= 2 1 Alert 3 WinArenaMission>
+
+	Msg1 <Enemy mecha have been spotted. Eliminate them all.>
+	Msg2 <The mission is a failure.>
+	Msg3 <The mission is a success.>
+
+	sub
+		Team 1
+		SetEnemy 2
+		ParaX 5
+		ParaY 15
+
+		Team 2
+		SetEnemy 1
+		Deploy <SetSelfFaction M1   WMecha 2 ArenaRenown 400>
+		ParaX 45
+		ParaY 35
+	end
+
+ArenaMission
+	name <Jungle Encounter>
+	requires <*MISSION ArenaOK>
+	desc <Mecha from %name1% have been encountered in the jungles of Earth.>
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 400
+
+	ForestMap
+	terrain <GROUND>
+
+	Element1 <Faction Enemy>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	Start <if= L1 0 CommanderSays 1 L= 1 1>
+	nu1 <if= T1 0 if= L2 0 L= 2 1 Alert 2 LoseArenaMission>
+	nu2 <if= T2 0 if= L2 0 Salvage Return XPV 200 L= 2 1 Alert 3 WinArenaMission>
+
+	Msg1 <Enemy mecha have been spotted. Eliminate them all.>
+	Msg2 <The mission is a failure.>
+	Msg3 <The mission is a success.>
+
+	sub
+		Team 1
+		SetEnemy 2
+		ParaX 5
+		ParaY 15
+
+		Team 2
+		SetEnemy 1
+		Deploy <SetSelfFaction M1   WMecha 2 ArenaRenown 400>
+		ParaX 45
+		ParaY 35
+	end
+
+ArenaMission
+	name <Space Encounter>
+	requires <*MISSION (SILKN|COMET|HOELL|PRIVA)>
+	desc <Mecha from %name1% have been encountered in space.>
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 400
+
+	SpaceMap
+	terrain <SPACE>
+	SpaceScroll
+	Microgravity
+	Vacuum
+	SpaceBackdrop
+
+	Element1 <Faction Enemy>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	Start <if= L1 0 CommanderSays 1 L= 1 1>
+	nu1 <if= T1 0 if= L2 0 L= 2 1 Alert 2 LoseArenaMission>
+	nu2 <if= T2 0 if= L2 0 Salvage Return XPV 200 L= 2 1 Alert 3 WinArenaMission>
+
+	Msg1 <Enemy mecha have been spotted. Eliminate them all.>
+	Msg2 <The mission is a failure.>
+	Msg3 <The mission is a success.>
+
+	sub
+		Team 1
+		SetEnemy 2
+		ParaX 5
+		ParaY 15
+
+		Team 2
+		SetEnemy 1
+		Deploy <SetSelfFaction M1   WMecha 2 ArenaRenown 400>
+		ParaX 45
+		ParaY 35
+	end
+
+%%  ****************************************
+%%  ***   [!Lo+]  LOW  LEVEL  MISSIONS   ***
+%%  ****************************************
+
+ArenaMission
+	name <Enemy Ace>
+	requires <*MISSION -!Ne>
+	desc <Enemy pilot %name2% of %name1% has been encountered in the wilds.>
+
+	WildMap
+	terrain <GROUND>
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 600
+
+	Element1 <Faction Enemy>
+	Element2 <Prefab>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	Start <if= L1 0 ForceChat M2 L= 1 1>
+	nu1 <if= T1 0 if= L2 0 L= 2 1 Alert 2 LoseArenaMission>
+	nu2 <if= T2 0 if= L2 0 Salvage Return XPV 200 L= 2 1 Alert 3 WinArenaMission>
+
+	Msg2 <The mission is a failure.>
+	Msg3 <The mission is a success.>
+
+	sub
+		Team 1
+		SetEnemy 2
+		ParaX 5
+		ParaY 15
+
+		Team 2
+		SetEnemy 1
+		Deploy <SetSelfFaction M1   WMecha 2 ArenaRenown 300>
+		ParaX 45
+		ParaY 35
+
+		Persona 2
+		Greeting <if= V1 1 else GoGreet EndChat Say 1>
+		*GoGreet <*BattleChallenge GoThemeInfo GoThemeInfo>
+		*GoThemeInfo <*THEME_EXPO&Enemy GoStartCombat>
+		GoStartCombat <V= 1 1>
+		Msg1 <Less talking! More killing!>
+	end
+	inv
+		NPC Mecha Pilot
+		SetFaction -1
+		SetTeam 2
+	end
+
+ArenaMission
+	name <Space Duel>
+	requires <*MISSION -!Ne>
+	desc <Your enemy %name2% of %name1% has been encountered in space.>
+
+	SpaceMap
+	terrain <SPACE>
+	SpaceScroll
+	Microgravity
+	Vacuum
+	SpaceBackdrop
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 600
+
+	Element1 <Faction Enemy>
+	Element2 <Prefab>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	Start <if= L1 0 ForceChat M2 L= 1 1>
+	nu1 <if= T1 0 if= L2 0 L= 2 1 Alert 2 LoseArenaMission>
+	nu2 <if= T2 0 if= L2 0 Salvage Return XPV 200 L= 2 1 Alert 3 WinArenaMission>
+
+	Msg2 <The mission is a failure.>
+	Msg3 <The mission is a success.>
+
+	sub
+		Team 1
+		SetEnemy 2
+		ParaX 5
+		ParaY 15
+
+		Team 2
+		SetEnemy 1
+		Deploy <SetSelfFaction M1   WMecha 2 ArenaRenown 300>
+		ParaX 45
+		ParaY 35
+
+		Persona 2
+		Greeting <if= V1 1 else GoGreet EndChat Say 1>
+		*GoGreet <*BattleChallenge GoThemeInfo GoThemeInfo>
+		*GoThemeInfo <*THEME_EXPO&Enemy GoStartCombat>
+		GoStartCombat <V= 1 1>
+		Msg1 <Less talking! More killing!>
+	end
+	inv
+		NPC Mecha Pilot
+		SetFaction -1
+		SetTeam 2
+	end
+
+ArenaMission
+	name <Meteor Base>
+	requires <*MISSION -!Ne>
+	desc <An asteroid base belonging to %name1% pilot %name2% has been found.>
+
+	AsteroidMap
+	terrain <GROUND>
+	RockyTiles
+	Vacuum
+	SpaceBackdrop
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 600
+
+	Element1 <Faction Enemy>
+	Element2 <Prefab>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	Start <if= L1 0 ForceChat M2 L= 1 1>
+	nu1 <if= T1 0 if= L2 0 L= 2 1 Alert 2 LoseArenaMission>
+	nu2 <if= T2 0 if= L2 0 Salvage Return XPV 200 L= 2 1 Alert 3 WinArenaMission>
+
+	Msg1 <Enemy mecha have been spotted. Eliminate them all.>
+	Msg2 <The mission is a failure.>
+	Msg3 <The mission is a success.>
+
+	sub
+		Team 1
+		SetEnemy 2
+		ParaX 5
+		ParaY 15
+
+		Team 2
+		SetEnemy 1
+		Deploy <SetSelfFaction M1   WMecha 2 ArenaRenown 200>
+		ParaX 45
+		ParaY 35
+
+		Persona 2
+		Greeting <if= V1 1 else GoGreet EndChat Say 1>
+		*GoGreet <*BattleChallenge GoThemeInfo GoThemeInfo>
+		*GoThemeInfo <*THEME_EXPO&Enemy GoStartCombat>
+		GoStartCombat <V= 1 1>
+		Msg1 <Less talking! More killing!>
+	end
+	inv
+		NPC Mecha Pilot
+		SetFaction -1
+		SetTeam 2
+	end
+
+ArenaMission
+	name <Defend The Base>
+	requires <*MISSION -!Ne>
+	desc <Our base is under attack by %name1%. You must defend it.>
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 800
+
+	WildMap
+	terrain <GROUND>
+
+	Element1 <Faction Enemy>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	% L3 = Destroy Base Counter
+	Start <if= L1 0  CommanderSays 1  L= 1 1>
+	nu1 <if= T1 0 Return if= L2 0 L= 2 1 if= L3 0 else GoLoseMission if= T2 0 else GoLoseMission Goto GoWinMission>
+	nu2 <if= T2 0 if= T4 0 if= L2 0 L= 2 1 Return if= L3 1 else GoWinMission Goto GoLoseMission>
+	nu3 <if= T3 0 if= L3 0 L= 3 1>
+	nu4 <Goto nu2>
+
+	GoWinMission <Salvage Alert 3 WinArenaMission XPV 200>
+	GoLoseMission <Alert 2 LoseArenaMission>
+
+	Msg1 <Defend the base against enemy mecha.>
+	Msg2 <The mission is a failure.>
+	Msg3 <The mission is a success.>
+
+	sub
+		Team 1
+		SetEnemy 2 4
+		SetAlly 3
+		home <The Base>
+
+		Team 2
+		SetAlly 4
+		SetEnemy 1 3
+		Deploy <SetSelfFaction M1 WMecha 2 ArenaRenown 300>
+		ParaX 20
+		ParaY 40
+
+		Team 3
+		SetEnemy 2 4
+		SetAlly 1
+		home <The Base>
+
+		Team 4
+		SetAlly 2
+		SetEnemy 1 3
+		Deploy <SetSelfFaction M1 WMecha 4 ArenaRenown 300>
+		ParaX 40
+		ParaY 20
+
+		rect
+		name <The Base>
+		MFX 5
+		MFY 5
+		Height 8
+		Width 8
+		FloorType 6
+		sub
+			SuperProp
+			requires <*Fortress>
+			SetTeam 3
+		end
+	end
+
+
+%%  *******************************************
+%%  ***   [!Md+]  MEDIUM  LEVEL  MISSIONS   ***
+%%  *******************************************
+
+
+%%  *****************************************
+%%  ***   [!Hi+]  HIGH  LEVEL  MISSIONS   ***
+%%  *****************************************
+
+ArenaMission
+	name <Destroy Spaceship>
+	requires <*MISSION ArenaOK (!Hi|!Ex)>
+	desc <You must destroy a spaceship belonging to %name1%.>
+
+	MapWidth 50
+	MapHeight 50
+
+	PayRate 3200
+
+	SpaceMap
+	terrain <SPACE>
+	SpaceScroll
+	Microgravity
+	Vacuum
+	SpaceBackdrop
+
+	Element1 <Faction Enemy>
+
+	% L1 = Initialization Counter
+	% L2 = Victory Counter
+	% L3 = Destroy Base Counter
+	Start <if= L1 0 CommanderSays 1 L= 1 1>
+	nu1 <if= T1 0 Return if= L2 0 L= 2 1 if= L3 1 else GoLoseMission Goto GoWinMission>
+	nu2 <if= T2 0 if= L3 1 if= L2 0 L= 2 1 Return Goto GoWinMission>
+	nu3 <if= T3 0 if= L3 0 L= 3 1 Print 5 XPV 200 if= T2 0 Return L= 2 1 Goto GoWinMission>
+
+	GoWinMission <Salvage Alert 3 WinArenaMission>
+	GoLoseMission <Alert 2 LoseArenaMission>
+
+	5Min <if= d2 1  WMecha 3 ArenaRenown 100>
+
+	Msg1 <Destroy the enemy spaceship.>
+	Msg2 <The mission is a failure.>
+	Msg3 <The mission is a success.>
+	Msg5 <The spaceship has been destroyed.>
+
+	sub
+		Team 1
+		SetEnemy 2 3
+		ParaX 45
+		ParaY 25
+
+		Team 2
+		SetEnemy 1
+		SetAlly 3
+		Deploy <SetSelfFaction M1   WMecha 2 ArenaRenown 550>
+		home <Enemy Zone>
+
+		Team 3
+		SetEnemy 1
+		SetAlly 2
+
+		void
+		name <Enemy Zone>
+		width 12
+		height 12
+		MFX 1
+		MFY 19
+		sub
+			SuperProp
+			requires <*Battleship>
+			SetTeam 3
+		end
+	end
+
+
+%%  ***************************************
+%%  ***   [!Ex]  ACE  LEVEL  MISSIONS   ***
+%%  ***************************************
+
+
+
+
+

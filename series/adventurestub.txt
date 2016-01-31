@@ -1,0 +1,15 @@
+% Adventure Stub
+Adventure
+
+UPDATE <UPDATEPROPS>
+
+5min <UPDATEPLOTS>
+start <UPDATEPLOTS>
+QUARTER <PUMPNEWS>
+
+inv
+	% Stick the plot item container here.
+	Gear -16 0 0
+	name <Plot Thing Collection>
+
+end

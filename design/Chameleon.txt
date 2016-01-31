@@ -1,0 +1,462 @@
+Battroid 3
+Name <Chameleon>
+Desig <CHA-02>
+type <GROUND INSIDE>
+SDL_PORTRAIT <item_chameleon.png>
+desc <The main battle mecha of Aegis Overlord. Because of Luna's shortage of metals, the Chameleon is made from advanced synthetic materials.>
+
+factions <AEGIS AEGSF>
+ROLE_AEGIS <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_AEGSF <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+
+sub
+Head
+	Size 2
+	Armor 2
+	sub
+		Sensor 6
+		mass -1
+	end
+
+Torso
+	Armor 2
+	sub
+		CPit
+		Armor 1
+
+		Gyro
+		Armor 1
+
+		BeamGun 2
+		Name <Small Laser>
+		Range 3
+		Acc 2
+
+		BeamGun 2
+		Name <Small Laser>
+		Range 3
+		Acc 2
+
+		Computer 2
+		sub
+			Software 1
+			name <C132 Reflex Control>
+			S_MVBoost
+			S_BoostScale 2
+
+			Software 1
+			name <C133 Firing Interface>
+			S_TRBoost
+			S_BoostScale 2
+		end
+	end
+
+Arm
+	Name <Right Arm>
+	Size 4
+	Armor 2
+	sub
+		Hand
+		name <Right Hand>
+		inv
+			BeamGun 1
+			Name <Pulse Rifle>
+			Range 5
+			Acc 1
+			Speed 6
+			BV 2
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	Size 4
+	Armor 2
+	sub
+		Hand
+		name <Left Hand>
+	end
+	inv
+		Shield 3
+		DefBonus 2
+	end
+
+Leg
+	Name <Right Leg>
+	Size 4
+	Armor 2
+	sub
+		Wheels 3
+	end
+
+Leg
+	Name <Left Leg>
+	Size 4
+	Armor 2
+	sub
+		Wheels 3
+	end
+end
+
+Battroid 3
+Name <Chameleon>
+Desig <CHA-02b Sniper>
+type <GROUND INSIDE>
+SDL_PORTRAIT <item_chameleon.png>
+desc <The main battle mecha of Aegis Overlord. Because of Luna's shortage of metals, the Chameleon is made from advanced synthetic materials.>
+
+factions <AEGIS AEGSF>
+ROLE_AEGIS <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+ROLE_AEGSF <GENERAL:SUPPORT  ASSAULT:SUPPORT  DEFENSE:SUPPORT>
+
+sub
+Head
+	Size 2
+	Armor 2
+	sub
+		Sensor 6
+		mass -1
+	end
+
+Torso
+	Armor 2
+	sub
+		CPit
+		Armor 1
+
+		Gyro
+		Armor 1
+
+		BeamGun 2
+		Name <Small Laser>
+		Range 3
+		Acc 2
+
+		BeamGun 2
+		Name <Small Laser>
+		Range 3
+		Acc 2
+
+		Computer 2
+		sub
+			Software 1
+			name <C132 Reflex Control>
+			S_MVBoost
+			S_BoostScale 2
+
+			Software 1
+			name <C133 Firing Interface>
+			S_TRBoost
+			S_BoostScale 2
+		end
+	end
+
+Arm
+	Name <Right Arm>
+	Size 4
+	Armor 2
+	sub
+		Hand
+		name <Right Hand>
+		inv
+			STC GR-12
+			Acc 2
+			Speed 2
+			Desig <ADM-A>
+		end
+
+		Mount
+		name <Right Arm Mount>
+		inv
+			MLauncher 3
+			sub
+				STC GHM-15
+				Magazine 2
+			end
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	Size 4
+	Armor 2
+	sub
+		Hand
+		name <Left Hand>
+
+		Mount
+		name <Left Arm Mount>
+		inv
+			MLauncher 3
+			sub
+				STC LR-1
+				Magazine 30
+			end
+		end
+	end
+	inv
+		Shield 3
+		DefBonus 2
+	end
+
+Leg
+	Name <Right Leg>
+	Size 4
+	Armor 2
+	sub
+		Wheels 3
+	end
+
+Leg
+	Name <Left Leg>
+	Size 4
+	Armor 2
+	sub
+		Wheels 3
+	end
+end
+
+
+Battroid 3
+Name <Chameleon>
+Desig <CHA-02q Star>
+type <SPACE>
+desc <The main battle mecha of Aegis Overlord. This is the space version.>
+SDL_PORTRAIT <item_chameleon.png>
+
+factions <RISHI AEGSF>
+ROLE_RISHI <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+ROLE_AEGSF <GENERAL:TROOPER  ASSAULT:TROOPER  DEFENSE:TROOPER>
+
+sub
+Head
+	Size 2
+	Armor 2
+	sub
+		Sensor 6
+		mass -1
+	end
+
+Torso
+	Armor 2
+	sub
+		CPit
+		Armor 1
+
+		Gyro
+		Armor 1
+
+		Computer 2
+		sub
+			Software 1
+			name <C132 Reflex Control>
+			S_MVBoost
+			S_BoostScale 2
+
+			Software 1
+			name <C133 Firing Interface>
+			S_TRBoost
+			S_BoostScale 2
+		end
+
+		BeamGun 2
+		Name <Small Laser>
+		Range 3
+		Acc 2
+
+		BeamGun 2
+		Name <Small Laser>
+		Range 3
+		Acc 2
+	end
+
+Storage
+	name <Flight Pack>
+	size 3
+	armor 2
+	mass -1
+	sub
+		Flight 8
+	end
+
+Arm
+	Name <Right Arm>
+	Size 4
+	Armor 2
+	sub
+		Hand
+		name <Right Hand>
+		inv
+			BeamGun 3
+			Name <Star Laser>
+			Range 6
+			Acc 1
+			Speed 3
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	Size 4
+	Armor 2
+	sub
+		Hand
+		name <Left Hand>
+	end
+	inv
+		Shield 3
+		DefBonus 2
+	end
+
+Leg
+	Name <Right Leg>
+	Size 4
+	Armor 2
+	sub
+		Wheels 3
+	end
+
+Leg
+	Name <Left Leg>
+	Size 4
+	Armor 2
+	sub
+		Wheels 3
+	end
+end
+
+Battroid 3
+Name <Chameleon>
+Desig <CHA-03c Command>
+type <GROUND INSIDE SPACE>
+SDL_PORTRAIT <item_chameleon.png>
+desc <The main battle mecha of Aegis Overlord. Because of Luna's shortage of metals, the Chameleon is made from advanced synthetic materials.>
+
+factions <AEGIS AEGSF>
+ROLE_AEGIS <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+ROLE_AEGSF <GENERAL:COMMAND  ASSAULT:COMMAND  DEFENSE:COMMAND>
+
+sub
+Head
+	Size 2
+	Armor 3
+	sub
+		Sensor 6
+		mass -1
+	end
+
+Torso
+	Armor 3
+	mass -1
+	sub
+		CPit
+		Armor 1
+
+		Gyro
+		Armor 1
+
+		Flight 6
+		Integral
+
+		Computer 2
+		sub
+			Software 1
+			name <C132 Reflex Control>
+			S_MVBoost
+			S_BoostScale 2
+
+			Software 1
+			name <C133 Firing Interface>
+			S_TRBoost
+			S_BoostScale 2
+		end
+	end
+	inv
+		BodyArmor 2
+		sub
+			Flight 2
+			Integral
+		end
+	end
+
+Arm
+	Name <Right Arm>
+	Size 4
+	Armor 3
+	mass -1
+	sub
+		Hand
+		name <Right Hand>
+		inv
+			BeamGun 5
+			name <Plasma Pistol>
+			Acc 1
+			Mass -3
+			Range 5
+		end
+
+		Mount
+		name <Right Arm Mount>
+		inv
+			MLauncher 3
+			sub
+				STC GHM-15
+				Magazine 2
+			end
+		end
+	end
+
+Arm
+	Name <Left Arm>
+	Size 4
+	Armor 3
+	mass -1
+	sub
+		Hand
+		name <Left Hand>
+		inv
+			Melee 4
+			name <Command Rapier>
+			Acc 2
+			mass -2
+		end
+
+		Mount
+		name <Left Arm Mount>
+		inv
+			MLauncher 3
+			sub
+				STC LR-1
+				Magazine 30
+			end
+		end
+	end
+	inv
+		Shield 3
+		DefBonus 2
+	end
+
+Leg
+	Name <Right Leg>
+	Size 4
+	Armor 3
+	mass -1
+	sub
+		Wheels 3
+		Flight 3
+		Integral
+	end
+
+Leg
+	Name <Left Leg>
+	Size 4
+	Armor 3
+	mass -1
+	sub
+		Wheels 3
+		Flight 3
+		Integral
+	end
+end
+
+

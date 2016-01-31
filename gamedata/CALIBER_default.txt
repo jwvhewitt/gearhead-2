@@ -1,0 +1,300 @@
+%%
+%% CALIBER INFO
+%%
+%% This file contains descriptions for custom ammunition types. It's divided
+%% into sets based on caliber type. Each set will contain custom ammo stubs
+%% with different TYPE strings.
+%%
+
+	Set
+	name <5mm rifle>
+	% Used all over for a wide variety of weapons
+	sub
+		Ammo
+		name <AP>
+		type <ArmorPiercing>
+
+		Ammo
+		name <Flechette>
+		type <Scatter>
+
+		Ammo
+		name <Incendiary>
+		type <Burn>
+		Legality 5
+
+		Ammo
+		name <EMP>
+		type <Scatter Haywire>
+		Legality 10
+
+		Ammo
+		name <Assassin>
+		type <Poison>
+		Legality 20
+
+		Ammo
+		name <Rubber>
+		type <NonLethal>
+		Legality -15
+	end
+
+	Set
+	name <5mm auto>
+	% Common in the L5 Region
+	sub
+		Ammo
+		name <AP>
+		type <ArmorPiercing>
+
+		Ammo
+		name <Flechette>
+		type <Scatter>
+
+		Ammo
+		name <Incendiary>
+		type <Burn>
+		Legality 5
+
+		Ammo
+		name <Rubber>
+		type <NonLethal>
+		Legality -15
+	end
+
+	Set
+	name <12mm auto>
+	% Used by miniguns
+	sub
+		Ammo
+		name <Carbide>
+		type <ArmorPiercing>
+		Legality 25
+
+		Ammo
+		name <Shard>
+		type <Brutal Scatter>
+		Legality 20
+
+		Ammo
+		name <Flechette>
+		type <Scatter>
+	end
+
+	Set
+	name <18mm shell>
+	% Shotgun shells
+	sub
+		Ammo
+		name <Solid>
+		Legality -15
+
+		Ammo
+		name <Incendiary>
+		type <Burn Line>
+		Legality 15
+
+		Ammo
+		name <Shard>
+		type <Brutal Scatter>
+		Legality 10
+
+		Ammo
+		name <Explosive>
+		type <Blast 2>
+		Legality 20
+
+		Ammo
+		name <Bio>
+		type <SICKNESS POISON>
+		Legality 35
+	end
+
+	Set
+	name <.32 revolver>
+	% Primitive missile weapon
+	sub
+		Ammo
+		name <AP>
+		type <ArmorPiercing>
+
+		Ammo
+		name <HE>
+		type <Blast 1 Brutal>
+		Legality 10
+
+		Ammo
+		name <Rubber>
+		type <NonLethal>
+		Legality -15
+	end
+
+	Set
+	name <Crystalline Shard>
+	% Used by the Glitter Pistol and Glitter Cannon in the L5 Region
+	sub
+		Ammo
+		name <Tox>
+		type <Scatter Poison>
+		Legality 20
+	end
+
+	Set
+	name <2mm ferrous>
+	% Used by man-pac railguns, like the Pin Rifle
+	sub
+		Ammo
+		name <Carbide>
+		type <ArmorPiercing>
+		Legality 5
+	end
+
+	Set
+	name <6mm pistol>
+	% Commonly used by handguns
+	sub
+		Ammo
+		name <AP>
+		type <ArmorPiercing>
+
+		Ammo
+		name <Rubber>
+		type <NonLethal>
+		Legality -15
+
+		Ammo
+		name <Flechette>
+		type <Scatter>
+
+		Ammo
+		name <Incendiary>
+		type <Burn>
+		Legality 5
+
+		Ammo
+		name <Assassin>
+		type <Poison>
+		Legality 20
+	end
+
+	Set
+	name <22mm cone>
+	% Cone Rifle
+	sub
+		Ammo
+		name <HE>
+		type <Blast 3 Brutal>
+		Legality 10
+
+		Ammo
+		name <Miasma>
+		type <Blast 2 Toxin>
+		Legality 50
+	end
+
+	Set
+	name <8mm self-propelled>
+	%% L5Pat rocket rifles
+	sub
+		Ammo
+		name <HE>
+		type <Blast 2>
+		Legality 10
+
+		Ammo
+		name <Smoke>
+		type <Blast 4 Smoke>
+		Legality -10
+
+		Ammo
+		name <Incendiary>
+		type <BRUTAL BURN>
+		Legality 5
+
+		Ammo
+		name <Frag>
+		type <Brutal Scatter>
+		Legality 5
+
+		Ammo
+		name <Acid>
+		type <Brutal Rust Scatter>
+		Legality 15
+	end
+
+	Set
+	name <20mm cannister>
+	sub
+		Ammo
+		name <Smoke>
+		type <Blast 6 Smoke>
+		Legality -10
+
+		Ammo
+		name <Incendiary>
+		type <Blast 3 Burn>
+		Legality 5
+
+		Ammo
+		name <Toxin>
+		type <Blast 1 Toxin>
+		Legality 50
+
+		Ammo
+		name <Plasma>
+		type <Blast 5 Brutal>
+		Legality 25
+	end
+
+	Set
+	name <60mm rocket>
+	% Bazooka
+	sub
+		Ammo
+		name <Buster>
+		type <Armorpiercing>
+
+		Ammo
+		name <Plasma>
+		type <Blast 4 Brutal>
+		Legality 25
+	end
+
+	Set
+	name <20cm bolt>
+	% Used in the Magna Crossbow and some other weapons
+	sub
+		Ammo
+		name <Carbide>
+		type <ArmorPiercing>
+
+		Ammo
+		name <Flare>
+		type <Brutal Burn>
+
+		Ammo
+		name <Cluster>
+		type <Scatter Brutal>
+		Legality 5
+
+		Ammo
+		name <HE>
+		type <Blast 2>
+		Legality 10
+
+		Ammo
+		name <EMP>
+		type <Blast 2 Haywire>
+		Legality 15
+
+		Ammo
+		name <Assassin>
+		type <Poison>
+		Legality 20
+
+		Ammo
+		name <Plasma>
+		type <Blast 3 Brutal>
+		Legality 25
+	end
+

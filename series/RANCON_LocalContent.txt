@@ -1,0 +1,45 @@
+%%
+%% RanCom Local Content- this random content will only show up in one location.
+%% So why is it RanCon instead of UniCon? Because multiple copies of the same
+%% content might show up.
+%%
+%% Most will use the following naming convention:
+%% NAME: *[city designation]_[building name abbreviated]_[content type]
+
+%% *THESP_RoMi_WeaponCache Content
+%% By searching the robot mill, it is possible to find weapons. Yay!
+
+Content
+	requires <*THESP_RoMi_WeaponCache !Ne>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 1000
+		Loot_Category <WEAPON>
+		Loot_Factions <FCOMS GENERAL>
+	end
+
+Content
+	requires <*THESP_RoMi_WeaponCache !Lo>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 8000
+		Loot_Category <WEAPON ACCESSORY>
+		Loot_Factions <FCOMS GENERAL>
+	end
+
+Content
+	requires <*THESP_RoMi_WeaponCache -!Ne -!Lo>
+	element1 <Prefab>
+	minimap <............1............>
+	inv
+		STC Crate
+		RandomLoot 20000
+		Loot_Category <WEAPON ACCESSORY ARMOR>
+		Loot_Factions <FCOMS GENERAL>
+	end
+
+
