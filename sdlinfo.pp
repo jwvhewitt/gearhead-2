@@ -425,7 +425,7 @@ const
 	StatName: Array [1..8] of String = (
 	'Re','Bo','Sp','Pe','Cr','Eg','Kn','Ch'
 	);
-	GutterWidth = 20;
+	GutterWidth = 8;
 var
 	CurP,MaxP: Integer;
 	msg: String;
@@ -438,19 +438,45 @@ begin
 	CurP := GearCurrentDamage( M );
 	MaxP := GearMaxDamage( M );
 	msg := BStr( CurP );
-	AI_PrintFromLeft( msg , CZone.W div 3 - GutterWidth , StatusColor( MaxP , CurP ) , Small_Font );
+	AI_PrintFromLeft( msg , CZone.W div 5 - GutterWidth , StatusColor( MaxP , CurP ) , Small_Font );
 
-	AI_PrintFromRight( 'SP:' , CZone.W div 3 + GutterWidth , NeutralGrey , Small_Font );
+	AI_PrintFromRight( 'SP:' , CZone.W div 5 + GutterWidth , NeutralGrey , Small_Font );
 	CurP := CurrentStamina( M );
 	MaxP := CharStamina( M );
 	msg := BStr( CurP );
-	AI_PrintFromLeft( msg , CZone.W * 2 div 3 - GutterWidth , EnduranceColor( MaxP , CurP ) , Small_Font );
+	AI_PrintFromLeft( msg , CZone.W * 2 div 5 - GutterWidth , EnduranceColor( MaxP , CurP ) , Small_Font );
 
-	AI_PrintFromRight( 'MP:' , CZone.W * 2 div 3 + GutterWidth , NeutralGrey , Small_Font );
+	AI_PrintFromRight( 'MP:' , CZone.W * 2 div 5 + GutterWidth , NeutralGrey , Small_Font );
 	CurP := CurrentMental( M );
 	MaxP := CharMental( M );
 	msg := BStr( CurP );
-	AI_PrintFromLeft( msg , CZone.W - GutterWidth , EnduranceColor( MaxP , CurP ) , Small_Font );
+	AI_PrintFromLeft( msg , CZone.W * 3 div 5 - GutterWidth , EnduranceColor( MaxP , CurP ) , Small_Font );
+
+	AI_PrintFromRight( 'Enc:' , CZone.W * 3 div 5 + GutterWidth , NeutralGrey , Small_Font );
+	CurP := EquipmentMass( M );
+
+	{ For the PC, the following encumberance penalties are applied based the the encumberance level: }
+	{ Speed penalty = EncumberanceLevel, Reflex penalty = EncumberanceLevel / 2 }
+	{ EncumberanceLevel = (EquipmentMass - (2 * GearEncumberance)) / GearEncumberance. }
+	{ Therefore, EncuberanceLevel = 1 when EquipmentMass = GearEncumberance * 3. }
+
+	MaxP := GearEncumberance( M ) * 3;
+
+	{ Convert mass points into kg. At SF:0 each point of mass = 0.5 kg. }
+
+	msg := BStr( CurP div 2 ) + '.' + BStr( ( CurP mod 2 ) * 5 );
+
+	{ EnduranceColor turns from green to red as the value approaches 0. }
+	{ Using (MaxP - CurP) it will change from green to red as EquipmentMass approaches EncumberanceLevel = 1. }
+
+	AI_PrintFromLeft( msg , CZone.W * 4 div 5 + GutterWidth , EnduranceColor( MaxP , MaxP - CurP ) , Small_Font );
+
+	{ Subtract 1 point from MaxP, so penalties won't occur until the displayed maximum is exceeded. }
+	MaxP := MaxP - 1;
+
+	AI_PrintFromRight( '/' , CZone.W - ( GutterWidth * 5 ) , NeutralGrey , Small_Font );
+	msg := BStr( MaxP div 2 ) + '.' + BStr( ( MaxP mod 2 ) * 5 ) + 'kg';
+	AI_PrintFromLeft( msg , CZone.W - ( GutterWidth div 2 ) , NeutralGrey , Small_Font );
 
 	CDest.Y := CDest.Y + TTF_FontLineSkip( Small_Font );
 	for t := 1 to 8 do begin
@@ -468,7 +494,7 @@ end;
 Procedure MechaMVTRSE( M: GearPtr );
 	{ Display the MV, TR, and SE for this model. }
 const
-	GutterWidth = 20;
+	GutterWidth = 8;
 var
 	CurP,MaxP: Integer;
 	msg: String;
@@ -478,15 +504,41 @@ begin
 
 	AI_PrintFromRight( 'MV:' , GutterWidth , NeutralGrey , Small_Font );
 	msg := SgnStr( MechaManeuver( M ) );
-	AI_PrintFromLeft( msg , CZone.W div 3 - GutterWidth , StatusOK , Small_Font );
+	AI_PrintFromLeft( msg , CZone.W div 5 - GutterWidth , StatusOK , Small_Font );
 
-	AI_PrintFromRight( 'TR:' , CZone.W div 3 + GutterWidth , NeutralGrey , Small_Font );
+	AI_PrintFromRight( 'TR:' , CZone.W div 5 + GutterWidth , NeutralGrey , Small_Font );
 	msg := SgnStr( MechaTargeting( M ) );
-	AI_PrintFromLeft( msg , CZone.W * 2 div 3 - GutterWidth , StatusOK , Small_Font );
+	AI_PrintFromLeft( msg , CZone.W * 2 div 5 - GutterWidth , StatusOK , Small_Font );
 
-	AI_PrintFromRight( 'SE:' , CZone.W * 2 div 3 + GutterWidth , NeutralGrey , Small_Font );
+	AI_PrintFromRight( 'SE:' , CZone.W * 2 div 5 + GutterWidth , NeutralGrey , Small_Font );
 	msg := SgnStr( MechaSensorRating( M ) );
-	AI_PrintFromLeft( msg , CZone.W - GutterWidth , StatusOK , Small_Font );
+	AI_PrintFromLeft( msg , CZone.W * 3 div 5 - GutterWidth , StatusOK , Small_Font );
+
+	AI_PrintFromRight( 'Enc:' , CZone.W * 3 div 5 + GutterWidth , NeutralGrey , Small_Font );
+	CurP := EquipmentMass( M );
+
+	{ For Mecha, the following encumberance penalties are applied based the the encumberance level: }
+	{ MV penalty = EncumberanceLevel, TR penalty = EncumberanceLevel }
+	{ EncumberanceLevel = (IntrinsicMass(in tons) / 7.5) + (EquipmentMass - GearEncumberance) / GearEncumberance. }
+	{ Therefore, EncuberanceLevel (of equipment) = 1 when EquipmentMass = GearEncumberance * 2. }
+
+	MaxP := GearEncumberance( M ) * 2;
+
+	{ Convert mass points into tons. At SF:2 each point of mass = 0.5 tons }
+	msg := BStr( CurP div 2 ) + '.' + BStr( ( CurP mod 2 ) * 5 );
+
+	{ EnduranceColor turns from green to red as the value approaches 0. }
+	{ Using (MaxP - CurP) it will change from green to red as EquipmentMass approaches EncumberanceLevel = 1. }
+
+	AI_PrintFromLeft( msg , CZone.W * 4 div 5 + GutterWidth , EnduranceColor( MaxP , MaxP - CurP ) , Small_Font );
+
+	{ Subtract 1 point from MaxP, so penalties won't occur until the displayed maximum is exceeded. }
+	MaxP := MaxP - 1;
+
+	AI_PrintFromRight( '/' , CZone.W - ( GutterWidth * 5 ) , NeutralGrey , Small_Font );
+	msg := BStr( MaxP div 2) + '.' + BStr( ( MaxP mod 2 ) * 5 ) + 't';
+	AI_PrintFromLeft( msg , CZone.W - ( GutterWidth ) , NeutralGrey , Small_Font );
+
 	MyDest.X := CZone.X;
 	MyDest.W := CZone.W;
 	MyDest.Y := CDest.Y + TTF_FontLineSkip( Small_Font );

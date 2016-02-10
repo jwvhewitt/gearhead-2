@@ -386,6 +386,8 @@ Procedure CharStatDisplay( M: GearPtr; X0,Y0: Integer );
 	{ Display the stats for this character. }
 var
 	T,S: Integer;
+	CurP,MaxP: Integer;
+	msg: String;
 begin
 	for t := 1 to 4 do begin
 		TextColor( LightGray );
@@ -404,11 +406,42 @@ begin
 		else TextColor( Green );
 		TextOut( X0 + ( T - 1 ) * 6 + 3 , Y0 + 1 , BStr( S ) );
 	end;
+
+	TextColor( LightGray );
+	TextOut( X0 + 7 , Y0 + 2 , 'Enc:' );
+	CurP := EquipmentMass( M );
+
+	{ For the PC, the following encumberance penalties are applied based the the encumberance level: }
+	{ Speed penalty = EncumberanceLevel, Reflex penalty = EncumberanceLevel / 2 }
+	{ EncumberanceLevel = (EquipmentMass - (2 * GearEncumberance)) / GearEncumberance. }
+	{ Therefore, EncuberanceLevel = 1 when EquipmentMass = GearEncumberance * 3. }
+
+	MaxP := GearEncumberance( M ) * 3;
+
+	{ Convert mass points into kg. At SF:0 each point of mass = 0.5 kg. }
+
+	msg := BStr( CurP div 2 ) + '.' + BStr( ( CurP mod 2 ) * 5 );
+
+	{ EnduranceColor turns from green to red as the value approaches 0. }
+	{ Using (MaxP - CurP) it will change from green to red as EquipmentMass approaches EncumberanceLevel = 1. }
+
+	TextColor( EnduranceColor( MaxP , MaxP - CurP ) );
+	TextOut( X0 + 16 - Length( msg ) , Y0 + 2 , msg );
+
+	{ Subtract 1 point from MaxP, so penalties won't occur until the displayed maximum is exceeded. }
+	MaxP := MaxP - 1;
+
+	TextColor( LightGray );
+	TextOut( X0 + 16 , Y0 + 2 , '/' );
+	msg := BStr( MaxP div 2 ) + '.' + BStr( ( MaxP mod 2 ) * 5 ) + 'kg';
+	TextColor( LightGray );
+	TextOut( X0 + 17 , Y0 + 2 , msg );
 end;
 
 Procedure MechaMVTRSE( M: GearPtr; X0,Y0: Integer );
 	{ Display the MV, TR, and SE for this model. }
 var
+	CurP,MaxP: Integer;
 	msg: String;
 begin
 	TextColor( LightGray );
@@ -423,6 +456,36 @@ begin
 	TextOut( X0 + 7 - Length( msg ) , Y0 + 1 , msg );
 	msg := SgnStr( MechaSensorRating( M ) );
 	TextOut( X0 + 7 - Length( msg ) , Y0 + 2 , msg );
+
+	TextColor( LightGray );
+	TextOut( X0 - 8 , Y0 + 3 , 'Enc:' );
+	CurP := EquipmentMass( M );
+
+	{ For Mecha, the following encumberance penalties are applied based the the encumberance level: }
+	{ MV penalty = EncumberanceLevel, TR penalty = EncumberanceLevel }
+	{ EncumberanceLevel = (IntrinsicMass(in tons) / 7.5) + (EquipmentMass - GearEncumberance) / GearEncumberance. }
+	{ Therefore, EncuberanceLevel (of equipment) = 1 when EquipmentMass = GearEncumberance * 2. }
+
+	MaxP := GearEncumberance( M ) * 2;
+
+	{ Convert mass points into tons. At SF:2 each point of mass = 0.5 tons }
+
+	msg := BStr( CurP div 2 ) + '.' + BStr( ( CurP mod 2 ) * 5 );
+
+	{ EnduranceColor turns from green to red as the value approaches 0. }
+	{ Using (MaxP - CurP) it will change from green to red as EquipmentMass approaches EncumberanceLevel = 1. }
+
+	TextColor( EnduranceColor( MaxP , MaxP - CurP ) );
+	TextOut( X0 + 1 - Length( msg ) , Y0 + 3 , msg );
+
+	{ Subtract 1 point from MaxP, so penalties won't occur until the displayed maximum is exceeded. }
+	MaxP := MaxP - 1;
+
+	TextColor( LightGray );
+	TextOut( X0 + 1 , Y0 + 3 , '/' );
+	msg := BStr( MaxP div 2 ) + '.' + BStr( ( MaxP mod 2 ) * 5 ) + 't';
+	TextColor( LightGray );
+	TextOut( X0 + 2 , Y0 + 3 , msg );
 end;
 
 Procedure DisplayModelStatus( GB: GameBoardPtr; M: GearPtr; Z: VGFX_Zone );
