@@ -350,6 +350,9 @@ begin
 		end;
 	end;
 
+	{ Make sure the body parts match the Body stat }
+	ResizeCharacter( NPC );
+
 	{ If this is a combatant character, set the skills to match the reputation. }
 	if IsACombatant( NPC ) then begin
 		Lvl := NAttValue( NPC^.NA , NAG_CharDescription , NAS_Renowned );

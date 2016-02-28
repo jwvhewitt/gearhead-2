@@ -1,3 +1,6 @@
+- Character limbs resized as Body stat changes (Michael Deutschmann patch)
+- Can transfer items in combat if nearby (Michael Deutschmann patch)
+- New portrait loaded if old portrait not found (sdlinfo.pp)
 - Fixed problem with character sprites on Linux (sdlmap.pp)
 - 3D interface, cute interface abandoned
 - Modified armor penetration algorithm (action.pp)

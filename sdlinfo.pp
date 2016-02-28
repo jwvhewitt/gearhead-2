@@ -83,6 +83,7 @@ var
 	Altimeter_Sprite,Speedometer_Sprite: SensibleSpritePtr;
 	StatusFX_Sprite,OtherFX_Sprite: SensibleSpritePtr;
 	Concert_Mob_Sprite,Concert_Mood_Sprite: SensibleSpritePtr;
+    Master_Portrait_List: SAttPtr;
 
 
 Procedure SetInfoZone( var Z: TSDL_Rect );
@@ -549,7 +550,7 @@ begin
 	{ Check the standard place first. If no portrait is defined, }
 	{ grab one from the IMAGE/ directory. }
 	it := SAttValue( NPC^.SA , 'SDL_PORTRAIT' );
-	if it = '' then begin
+	if (it = '') or not StringInList( it, Master_Portrait_List ) then begin
 		{ Create a portrait list based upon the character's gender. }
 		if NAttValue( NPC^.NA , NAG_CharDescription , NAS_Gender ) = NAV_Male then begin
 			PList := CreateFileList( Graphics_Directory + 'por_m_*.*' );
@@ -1361,5 +1362,10 @@ initialization
 
 	Concert_Mob_Sprite := LocateSprite( 'mini_audience.png' , 100 , 60 );
 	Concert_Mood_Sprite := LocateSprite( 'mini_mood.png' , 16 , 16 );
+
+	Master_Portrait_List := CreateFileList( Graphics_Directory + 'por_*.*' );
+
+finalization
+    DisposeSAtt( Master_Portrait_List );
 
 end.

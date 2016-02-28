@@ -52,6 +52,7 @@ Const
 	STAT_Armor = 1;
 	STAT_PrimaryModuleForm = 2;	{ Modules, like mecha, can be transformable. }
 	STAT_VariableModuleForm = 3;	{ In the event of transformation the primary form is favored. }
+    STAT_Resizable = 4;
 
 	{ This array tells which modules are usable by which forms. }
 	{ Some systems ( movers, sensors, cockpits ) will function no matter where they are mounted. }

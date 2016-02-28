@@ -1374,14 +1374,45 @@ end;
 Procedure TradeFrontend( GB: GameBoardPtr; PC , Item, LList: GearPtr );
 	{ Assign ITEM to a different master. Move it from the }
 	{ general inventory of PC into its new home. }
+const
+    Unsafe_Transfer_Range = 10;
 var
 	TI_Menu: RPGMenuPtr;
 	M: GearPtr;
 	Team,N: Integer;
+	X,Y: Integer;
+
+	Function Transferable_To ( Dest: GearPtr ) : Boolean;
+	var
+		DTeam, DX, DY : Integer;
+	begin
+		If Dest = PC then Exit(False);
+
+		{ Team check.  This could probably be simplified --
+		  How could the source Master's team be other than
+		  DefPlayer or Lancemate anyway? }
+  		DTeam := NAttValue( Dest^.NA , NAG_Location , NAS_Team );
+		if DTeam = NAV_LancemateTeam then DTeam := NAV_DefPlayerTeam;
+		if DTeam <> Team then Exit(False);
+		
+		if X = 0 then Exit(True); {safe area case}
+
+		{we're now in the unsafe area case, check for adjacency}
+		DX := NAttValue( Dest^.NA, NAG_Location, NAS_X);
+		DY := NAttValue( Dest^.NA, NAG_Location, NAS_Y);
+		if not OnTheMap(GB,DX,DY) then Exit(False); {cannot transfer to offmap stuff}
+
+		Transferable_To := ( Range(X,Y,DX,DY) <= Unsafe_Transfer_Range );
+	end;
+
 begin
-	if ( GB <> Nil ) and not IsSafeArea( GB ) then begin
-		DialogMsg( MsgSTring( 'TRANSFER_NOTHERE' ) );
-		Exit;
+	if ( GB = Nil ) or IsSafeArea( GB ) then begin
+		X := 0;
+		Y := 0;
+	end else begin
+		DialogMsg( MsgString( 'TRANSFER_UNSAFE' ) );
+		X := NAttValue(PC^.NA, NAG_Location, NAS_X);
+		Y := NAttValue(PC^.NA, NAG_Location, NAS_Y);
 	end;
 
 	{ Build the slot selection menu. }
@@ -1389,20 +1420,15 @@ begin
 	N := 1;
 	M := LList;
 	Team := NAttValue( PC^.NA , NAG_Location , NAS_Team );
+	if Team = NAV_LancemateTeam then Team := NAV_DefPlayerTeam;
 
 	{ This menu should contain all the masters from LList which }
 	{ belong to Team 1. }
 	while M <> Nil do begin
 		if ( GB = Nil ) and IsMasterGear( M ) and ( M <> PC ) then begin
 			AddRPGMenuItem( TI_Menu , TeamMateName( M ) , N );
-		end else if ( Team = NAV_DefPlayerTeam ) or ( Team = NAV_LancemateTeam ) then begin
-			if IsMasterGear( M ) and ( ( NAttValue( M^.NA , NAG_Location , NAS_Team ) = NAV_DefPlayerTeam ) or ( NAttValue( M^.NA , NAG_Location , NAS_Team ) = NaV_LancemateTeam ) ) and ( M <> PC ) then begin
-				AddRPGMenuItem( TI_Menu , TeamMateName( M ) , N );
-			end;
-		end else begin
-			if IsMasterGear( M ) and ( NAttValue( M^.NA , NAG_Location , NAS_Team ) = Team ) and ( M <> PC ) then begin
-				AddRPGMenuItem( TI_Menu , TeamMateName( M ) , N );
-			end;
+		end else if IsMasterGear( M ) and Transferable_To(M) then begin
+			AddRPGMenuItem( TI_Menu , GearName( M ) , N );
 		end;
 		M := M^.Next;
 		Inc( N );
@@ -1836,7 +1862,7 @@ begin
 			end else begin
 				AddRPGMenuItem( TIWS_Menu , ReplaceHash( MsgString( 'BACKPACK_UnequipItem' ) , GearName( Item ) ) , -3 );
 			end;
-			if ( LList <> Nil ) and (( GB = Nil ) or IsSafeArea( GB )) then AddRPGMenuItem ( TIWS_Menu , MsgString( 'BACKPACK_TradeItem' ) , -6 );
+			if ( LList <> Nil ) then AddRPGMenuItem ( TIWS_Menu , MsgString( 'BACKPACK_TradeItem' ) , -6 );
 			AddRPGMenuItem( TIWS_Menu , MsgString( 'BACKPACK_DropItem' ) , -4 );
 		end else if ( FindMaster( Item ) <> Nil ) and ( FindMaster( Item )^.G = GG_Mecha ) and CanBeExtracted( Item ) then begin
 			AddRPGMenuItem( TIWS_Menu , MsgString( 'BACKPACK_Remove' ) + GearName( Item ) , -7 );
