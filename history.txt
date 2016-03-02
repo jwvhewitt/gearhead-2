@@ -1,3 +1,6 @@
+- All usable skills, talents known by lancemates now in skill menu (pcaction.pp)
+- Automatically saves game when player quits (pcaction.pp)
+- Added InfoTier stat for modules (ghmodule.pp,sdlinfo.pp,coninfo.pp)
 - Character limbs resized as Body stat changes (Michael Deutschmann patch)
 - Can transfer items in combat if nearby (Michael Deutschmann patch)
 - New portrait loaded if old portrait not found (sdlinfo.pp)

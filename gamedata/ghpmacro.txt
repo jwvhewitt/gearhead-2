@@ -49,6 +49,9 @@ Overcharger   <Gear 6 6 ?3>
 SpaceFlight   <Gear 6 7 ?3>
 HeavyActuator <Gear 6 8 ?3>
 Armor         <Stat 1 ?0>
+HighTier      <Stat 5 1>
+MidTier       <Stat 5 2>
+LowTier       <Stat 5 3>
 Shield        <Gear 10 0 ?2>
 EShield       <Gear 10 1 ?2>
 StatCyberware  <Gear 19 1 1>

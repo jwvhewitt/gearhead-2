@@ -53,6 +53,7 @@ Const
 	STAT_PrimaryModuleForm = 2;	{ Modules, like mecha, can be transformable. }
 	STAT_VariableModuleForm = 3;	{ In the event of transformation the primary form is favored. }
     STAT_Resizable = 4;
+    STAT_InfoTier = 5;
 
 	{ This array tells which modules are usable by which forms. }
 	{ Some systems ( movers, sensors, cockpits ) will function no matter where they are mounted. }
@@ -302,7 +303,11 @@ begin
 		else if Part^.Stat[ STAT_VariableModuleForm ] > NumModule then Part^.Stat[ STAT_VariableModuleForm ] := 0;
 	end;
 
-	for t := 4 to NumGearStats do Part^.Stat[ T ] := 0;
+    { Stat 5 - InfoTier }
+    if Part^.Stat[ STAT_InfoTier ] < 0 then Part^.Stat[ STAT_InfoTier ] := 0
+    else if Part^.Stat[ STAT_InfoTier ] > 3 then Part^.Stat[ STAT_InfoTier ] := 3;
+
+	for t := 6 to NumGearStats do Part^.Stat[ T ] := 0;
 end;
 
 Function IsLegalModuleInv( Slot, Equip: GearPtr ): Boolean;

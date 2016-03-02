@@ -982,16 +982,16 @@ begin
 
 	{ Add all usable skills to the list, as long as the PC knows them. }
 	for N := 1 to NumSkill do begin
-		if ( SkillMan[ N ].Usage = USAGE_Clue ) and ( TeamHasSkill( GB , NAV_DefPlayerTeam , N ) or TeamHasTalent( GB , NAV_DefPlayerTeam , NAS_JackOfAll ) ) then begin
-			AddRPGMenuItem( RPM , MsgString( 'SKILLNAME_' + BStr( N ) ) , N , SkillDescription( N ) );
-		end else if ( SkillMan[ N ].Usage > 0 ) and HasSkill( PC , N ) then begin
+        { EXPERIMENTAL March 2 2016: This seems to work okay in GH1, so why }
+        { not here too? All skills known by the party are usable! Anarchy! }
+		if ( SkillMan[ N ].Usage > 0 ) and ( TeamHasSkill( GB , NAV_DefPlayerTeam , N ) or TeamHasTalent( GB , NAV_DefPlayerTeam , NAS_JackOfAll ) ) then begin
 			AddRPGMenuItem( RPM , MsgString( 'SKILLNAME_' + BStr( N ) ) , N , SkillDescription( N ) );
 		end;
 	end;
 
 	{ Add all usable talents to the list too. }
 	for N := 1 to NumTalent do begin
-		if ( Talent_Usage[ N ] > 0 ) and HasTalent( PC , N ) then begin
+		if ( Talent_Usage[ N ] > 0 ) and TeamHasTalent( GB, NAV_DefPlayerTeam , N ) then begin
 			AddRPGMenuItem( RPM , MsgString( 'TALENT' + BStr( N ) ) , -N , MsgString( 'TALENTDESC' + BStr( N ) ) );
 		end;
 	end;
@@ -3032,6 +3032,7 @@ begin
 			end else if A = KeyMap[ KMC_East ].KCode then begin
 				TravelTime := MoveOnWorld( Camp^.GB , PC , PCX , PCY , 0 );
 			end else if A = KeyMap[ KMC_QuitGame ].KCode then begin
+                if DoAutoSave then PCSaveCampaign( Camp , PC , True );
 				Camp^.GB^.QuitTheGame := True;
 
 			end else if A = KeyMap[ KMC_Help ].KCode then begin

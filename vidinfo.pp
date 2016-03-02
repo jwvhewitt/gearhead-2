@@ -226,52 +226,69 @@ Procedure DisplayModules( Mek: GearPtr; X0,Y0: Integer );
 	{ X0 is the center of the display, Y0 is the top of the display. }
 var
 	N: Integer;
-	MD: GearPtr;
 	Flayed, Gutted : Boolean;
-	Procedure AddPartsToDiagram( GS: Integer );
+    Procedure DrawThisPart( MD: GearPtr );
+    var
+		X: Integer;
+		FG, BG: Byte;
+    begin
+		FG := HitsColor( MD );
+		BG := ArmorDamageColor( MD );
+		
+		if (FG = DarkGray) And (BG <> Black)
+		    then FG := Black;
+
+		if Flayed Or (Gutted And (MD^.S = GS_Body)) 
+		then begin
+		    if Gutted
+		    then FG := White
+		    else FG := LightMagenta;
+		    BG := Red;
+		end;
+
+
+		if Odd( N ) then X := X0 - ( N div 2 ) - 1
+		else X := X0 + ( N div 2 );
+		Inc( N );
+		Case MD^.S of
+			GS_Head:	DrawGlyph( 'o' , X , Y0 , FG , BG );
+			GS_Turret:	DrawGlyph('=' , X , Y0 , FG , BG );
+			GS_Storage:	DrawGlyph('x' , X , Y0 , FG , BG );
+			GS_Body:	DrawGlyph('B' , X , Y0 , FG , BG );
+			GS_Arm:		DrawGlyph('+' , X , Y0 , FG , BG );
+			GS_Wing:	DrawGlyph('W' , X , Y0 , FG , BG );
+			GS_Tail:	DrawGlyph('t' , X , Y0 , FG , BG );
+			GS_Leg:		DrawGlyph('l' , X , Y0 , FG , BG );
+		end;
+    end;
+	Procedure AddPartsOfType( GS: Integer );
 		{ Add parts to the status diagram whose gear S value }
 		{ is equal to the provided number. }
 	var
-		X: Integer;
-		FG, BG: Byte;
+    	MD: GearPtr;
 	begin
 		MD := Mek^.SubCom;
 		while ( MD <> Nil ) do begin
 			if ( MD^.G = GG_Module ) and ( MD^.S = GS ) then begin
-
-				FG := HitsColor( MD );
-				BG := ArmorDamageColor( MD );
-				
-				if (FG = DarkGray) And (BG <> Black)
-				    then FG := Black;
-
-				if Flayed Or (Gutted And (GS = GS_Body)) 
-				then begin
-				    if Gutted
-				    then FG := White
-				    else FG := LightMagenta;
-				    BG := Red;
-				end;
-
-
-				if Odd( N ) then X := X0 - ( N div 2 ) - 1
-				else X := X0 + ( N div 2 );
-				Inc( N );
-				Case GS of
-					GS_Head:	DrawGlyph( 'o' , X , Y0 , FG , BG );
-					GS_Turret:	DrawGlyph('=' , X , Y0 , FG , BG );
-					GS_Storage:	DrawGlyph('x' , X , Y0 , FG , BG );
-					GS_Body:	DrawGlyph('B' , X , Y0 , FG , BG );
-					GS_Arm:		DrawGlyph('+' , X , Y0 , FG , BG );
-					GS_Wing:	DrawGlyph('W' , X , Y0 , FG , BG );
-					GS_Tail:	DrawGlyph('t' , X , Y0 , FG , BG );
-					GS_Leg:		DrawGlyph('l' , X , Y0 , FG , BG );
-				end;
+                DrawThisPart( MD );
 			end;
 			MD := MD^.Next;
 		end;
 	end;
-
+	Procedure AddPartsOfTier( Tier: Integer );
+		{ Add parts to the status diagram whose InfoTier value }
+		{ is equal to the provided number. }
+    var
+        MD: GearPtr;
+	begin
+		MD := Mek^.SubCom;
+		while ( MD <> Nil ) do begin
+			if ( MD^.G = GG_Module ) and ( MD^.Stat[ STAT_InfoTier ] = Tier ) then begin
+                DrawThisPart( MD );
+			end;
+			MD := MD^.Next;
+		end;
+	end;
 begin
 	if Mek^.G = GG_Prop then begin
 		DrawGlyph( '@' , X0 , Y0 + 1 , HitsColor( Mek ) , ArmorDamageColor( Mek ) );
@@ -290,24 +307,27 @@ begin
 		{ Draw the status diagram for this mek. }
 		{ Line One - Heads, Turrets, Storage }
 		N := 0;
-		AddPartsToDiagram( GS_Head );
-		AddPartsToDiagram( GS_Turret );
+		AddPartsOfType( GS_Head );
+		AddPartsOfType( GS_Turret );
 		if N < 1 then N := 1;	{ Want storage to either side of body. }
-		AddPartsToDiagram( GS_Storage );
+		AddPartsOfType( GS_Storage );
+        AddPartsOfTier( 1 );
 		Inc( Y0 );
 
 		{ Line Two - Torso, Arms, Wings }
 		N := 0;
-		AddPartsToDiagram( GS_Body );
-		AddPartsToDiagram( GS_Arm );
-		AddPartsToDiagram( GS_Wing );
+		AddPartsOfType( GS_Body );
+		AddPartsOfType( GS_Arm );
+		AddPartsOfType( GS_Wing );
+        AddPartsOfTier( 2 );
 		Inc( Y0 );
 
 		{ Line Three - Tail, Legs }
 		N := 0;
-		AddPartsToDiagram( GS_Tail );
+		AddPartsOfType( GS_Tail );
 		if N < 1 then N := 1;	{ Want legs to either side of body; tail in middle. }
-		AddPartsToDiagram( GS_Leg );
+		AddPartsOfType( GS_Leg );
+        AddPartsOfTier( 3 );
 		Inc( Y0 );
 	end;
 

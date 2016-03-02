@@ -82,6 +82,7 @@ Wing
 	Size 6
 	Armor 7
 	mass -8
+    HighTier
 	sub
 		Mount
 		Name <Right Wing 1 Mount>
@@ -107,6 +108,7 @@ Wing
 	Size 6
 	Armor 7
 	mass -8
+    HighTier
 	sub
 		Mount
 		Name <Left Wing 1 Mount>
@@ -132,6 +134,7 @@ Wing
 	Size 6
 	Armor 7
 	mass -8
+    LowTier
 	sub
 		Mount
 		Name <Right Wing 2 Mount>
@@ -151,6 +154,7 @@ Wing
 	Size 6
 	Armor 7
 	mass -8
+    LowTier
 	sub
 		Mount
 		Name <Left Wing 2 Mount>
