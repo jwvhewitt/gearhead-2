@@ -39,12 +39,14 @@ Speed 5
 RepairTool 1
 name <Spanner>
 desc <A hefty wrench for working on mecha. It also makes a passable weapon.>
+sdl_portrait <item_spanner.png>
 factions <GENERAL>
 category <WEAPON MELEE TOOL>
 legality -15
 sub
 	Melee 7
 	name <Spanner Head>
+	sdl_portrait <item_spanner.png>
 	Speed 3
 	Mass -3
 end
@@ -522,6 +524,7 @@ sub
 	category <AMMO>
 	factions <GENERAL>
 	caliber <.32 revolver>
+	SDL_PORTRAIT <item_ammo_cylinder.png>
 end
 
 Gun 8
@@ -542,6 +545,7 @@ sub
 	name <Revolver Cylinder>
 	desc <A departure from the traditional cartridge, this clip comes in the form of a cylinder with the bullets preloaded.>
 	caliber <.32 revolver>
+	SDL_PORTRAIT <item_ammo_cylinder.png>
 end
 
 Gun 17
