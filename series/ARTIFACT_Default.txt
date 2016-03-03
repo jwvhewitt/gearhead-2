@@ -106,6 +106,7 @@ sub
 	Ammo 8
 	name <Revolver Cartridge>
 	caliber <.45 Revolver>
+	SDL_PORTRAIT <item_ammo_cylinder.png>
 end
 
 

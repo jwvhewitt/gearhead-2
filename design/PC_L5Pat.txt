@@ -410,7 +410,7 @@ desig <Raketen Mk6>
 caliber <60mm rocket>
 category <WEAPON MISSILE CONTRABAND>
 factions <MAQUI FCOMS RISHI CRIHN BOHEM REDMA PRIVA>
-sdl_sprite <>
+sdl_sprite <item_bazooka.png>
 Range 9
 acc -1
 Speed 2
@@ -561,7 +561,7 @@ BeamGun 16
 Name <Laser Cannon>
 desig <T51>
 desc <A rapid firing light laser cannon.>
-sdl_portrait <>
+sdl_portrait <item_laserheavy.png>
 category <WEAPON MISSILE>
 factions <MAQUI FCOMS RISHI BOHEM  PRIVA CRIHN REDMA  HOELL COMET MUGLE  SILKN ROCKE AEGSF>
 Range 7

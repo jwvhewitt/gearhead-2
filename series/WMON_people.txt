@@ -189,10 +189,12 @@ armor 3
 			mass -3
 			recharge 6
 			caliber <8mm pistol>
+			sdl_portrait <item_miscpistol2.png>
 			sub
 				ammo 5
 				magazine 10
 				caliber <8mm pistol>
+				SDL_PORTRAIT <item_ammoclip.png>
 			end
 		end
 	end
@@ -245,6 +247,7 @@ armor 3
 			Name <Long Rifle>
 			desig <L60>
 			desc <The long rifled barrel of this firearm can increase the spin of its bullets, thus increasing its range without decreasing the gun's durability.>
+			sdl_portrait <item_longrifle.png>
 			category <WEAPON MISSILE>
 			factions <GENERAL>
 			caliber <5mm rifle>
@@ -258,6 +261,7 @@ armor 3
 				caliber <5mm rifle>
 				type <ARMORPIERCING>
 				magazine 30
+				SDL_PORTRAIT <item_ammoclip.png>
 			end
 		end
 	end
@@ -269,6 +273,7 @@ armor 3
 			Melee 6
 			name <Deathwing>
 			type <Thrown Return Poison>
+			SDL_PORTRAIT <item_deathwing.png>
 			scale 0
 			mass -5
 			recharge 1

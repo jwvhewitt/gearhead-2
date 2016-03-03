@@ -80,6 +80,7 @@
 			name <Gunsword Cylinder>
 			desc <A departure from the traditional cartridge, this clip comes in the form of a cylinder with the bullets preloaded.>
 			caliber <.32 revolver>
+			SDL_PORTRAIT <item_ammo_cylinder.png>
 		end
 	end
 
