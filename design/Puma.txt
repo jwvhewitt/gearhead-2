@@ -30,6 +30,10 @@ torso
 
 		ECM 2
 	end
+    inv
+		BodyArmor 3
+        name <Puma Armor>
+    end
 
 Arm
 	Name <Right Arm>
@@ -57,18 +61,27 @@ Arm
 			STC LAS-5
 		end
 	end
-
+	inv
+		EShield 2
+        name <Puma Shield>
+		DefBonus 1
+	end
 Leg
 	Name <Right Leg>
 	Armor 3
 	sub
 		Flight 4
 	end
-
+    inv
+		LegArmor 2
+    end
 Leg
 	Name <Left Leg>
 	Armor 3
 	sub
 		Flight 4
 	end
+    inv
+		LegArmor 2
+    end
 end
