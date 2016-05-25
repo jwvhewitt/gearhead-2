@@ -87,6 +87,7 @@ Content
 
 		Treasure
 		name <Burial Urn>
+		SDL_PORTRAIT <item_vase.png>
 		mass 1
 		Fudge 65000
 

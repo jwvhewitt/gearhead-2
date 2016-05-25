@@ -110,6 +110,7 @@ Content
 		Treasure
 		name <Datachip>
 		desc <A mysterious datachip. Who knows what it contains?>
+		SDL_PORTRAIT <item_datakey.png>
 	end
 
 
@@ -498,6 +499,7 @@ Content
 		Treasure
 		name <Watch>
 		desc <%name1%'s watch. It's not even all that nice, really.>
+		SDL_PORTRAIT <item_watch.png>
 	end
 
 Content
@@ -1154,6 +1156,7 @@ Content
 		Treasure
 		name <Bing Vase>
 		desc <A prezero vase decorated with pictures of a cartoon penguin. It must be worth a fortune.>
+		SDL_PORTRAIT <item_vasebing.png>
 		fudge 10000
 		StolenGoods
 	end
@@ -1208,6 +1211,7 @@ Content
 		Treasure
 		name <Grandma's Vase>
 		desc <%name1%'s family heirloom. You decide against checking to see what's inside.>
+		SDL_PORTRAIT <item_vase.png>
 	end
 
 

@@ -198,6 +198,7 @@ Content
 		name <Tiki Clock>
 		Mass 1
 		desc <A decorative souvenir clock, crafted in the style of an ancient Polynesian idol. It must be worth something to someone.>
+		SDL_PORTRAIT <item_tikiclock.png>
 		StolenGoods
 	end
 
@@ -213,6 +214,7 @@ Content
 	Inv
 		Treasure
 		name <Corporate Datachip>
+		SDL_PORTRAIT <item_datakey.png>
 		Fudge 40000
 		desc <There must be loads of valuable information stored here. The right people would pay a fortune for it.>
 		StolenGoods
