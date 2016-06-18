@@ -448,6 +448,7 @@ Content
 		Treasure
 		name <Shigeru Mushroom>
 		desc <A rare fungus with medicinal properties. It's not safe to eat in its unprocessed form.>
+		SDL_PORTRAIT <item_mushroom.png>
 	end
 
 Content
