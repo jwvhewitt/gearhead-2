@@ -335,6 +335,7 @@ Content
 		mass 5
 		name <Mop>
 		desc <A cleaning instrument.>
+		SDL_PORTRAIT <item_mop.png>
 	end
 
 Content
@@ -541,6 +542,7 @@ Content
 		mass 5
 		name <Mop>
 		desc <A cleaning instrument.>
+		SDL_PORTRAIT <item_mop.png>
 	end
 
 Content
@@ -555,6 +557,7 @@ Content
 		mass 5
 		name <Mop>
 		desc <A cleaning instrument.>
+		SDL_PORTRAIT <item_mop.png>
 
 		Food 5
 		Name <Imperialis Classico>
