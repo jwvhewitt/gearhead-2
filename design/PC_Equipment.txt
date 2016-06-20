@@ -2096,6 +2096,7 @@ desc <It's everything that a human needs to stay alive packaged in a crunchy bar
 Category <FOOD>
 Factions <GENERAL>
 legality -10
+SDL_PORTRAIT <item_survivalbar.png>
 inv
 	STC SurvivalBar
 	desig <>
@@ -2112,6 +2113,7 @@ desc <Some delicious chocolate.>
 Category <FOOD>
 Factions <GENERAL>
 legality -15
+SDL_PORTRAIT <item_chocolate.png>
 
 Set
 name <Nutrient Pill x10>
@@ -2291,6 +2293,7 @@ FoodMorale 3
 desc <An alcoholic beverage.>
 Category <ENTERTAINMENT>
 Factions <GENERAL>
+SDL_PORTRAIT <item_xozu.png>
 legality -5
 
 %  *******************

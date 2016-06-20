@@ -1518,7 +1518,9 @@ Name <Beef Tubesteak>
 desc <Cloned beef grown in zero gravity for superior texture and flavor.>
 Category <FOOD>
 Factions <MAQUI FCOMS RISHI BOHEM>
+SDL_PORTRAIT <item_tubesteak.png>
 legality -50
+
 
 Food 45
 Mass -4
@@ -1526,6 +1528,7 @@ Name <Turkey Tubesteak>
 desc <Cloned turkey meat grown in zero gravity for superior texture and flavor.>
 Category <FOOD>
 Factions <MAQUI FCOMS RISHI BOHEM>
+SDL_PORTRAIT <item_tubesteak.png>
 legality -50
 
 Food 45
@@ -1534,6 +1537,7 @@ Name <Bacon Tubesteak>
 desc <Cloned bacon loaf grown in zero gravity for superior texture and flavor.>
 Category <FOOD>
 Factions <MAQUI FCOMS RISHI BOHEM>
+SDL_PORTRAIT <item_tubesteak.png>
 legality -50
 
 
