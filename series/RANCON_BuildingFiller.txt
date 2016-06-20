@@ -563,5 +563,6 @@ Content
 		FoodMorale 10
 		Fudge 300000
 		desc <A vintage wine from the Age of Superpowers. It is extremely rare and extremely expensive.>
+		SDL_PORTRAIT <item_wine.png>
 	end
 

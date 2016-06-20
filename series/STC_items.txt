@@ -7,6 +7,7 @@ FoodMorale -3
 desc <It's everything that a human needs to stay alive packaged in a crunchy bar!>
 Category <FOOD>
 Factions <GENERAL>
+SDL_PORTRAIT <item_survivalbar.png>
 legality -10
 
 Food 35

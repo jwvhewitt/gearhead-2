@@ -534,10 +534,12 @@
 	Food 30
 	name <Boxed Lunch>
 	desig <FOOD-1>
+	SDL_PORTRAIT <item_boxedlunch.png>
 
 	Food 20
 	name <Hot Dog>
 	desig <FOOD-2>
+	SDL_PORTRAIT <item_hotdog.png>
 
 	Food 25
 	name <Meat>
@@ -559,6 +561,7 @@
 	Food 20
 	name <Salad>
 	desig <SALAD-1>
+	SDL_PORTRAIT <item_salad.png>
 
 	Food 25
 	name <Meat>

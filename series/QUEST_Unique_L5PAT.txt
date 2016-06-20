@@ -1255,6 +1255,7 @@ Content
 		Mass -8
 		FoodXP:Vitality
 		FoodXPAmount 100
+		SDL_PORTRAIT <item_perfectsamwich.png>
 	end
 
 Content
