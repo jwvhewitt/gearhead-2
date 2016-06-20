@@ -24,7 +24,7 @@
 		name <Cairngorm>
 		Category <TREASURE MINERAL>
 		Factions <GENERAL>
-		SDL_PORTRAIT <item_gemdiamond.png>
+		SDL_PORTRAIT <item_gemcairngorm.png>
 		Legality -50
 
 		Treasure
@@ -48,7 +48,7 @@
 		name <Onyx>
 		Category <TREASURE GEMSTONE MINERAL>
 		Factions <GENERAL>
-		SDL_PORTRAIT <>
+		SDL_PORTRAIT <item_gemonix.png>
 		Legality -50
 
 		Treasure
@@ -64,7 +64,7 @@
 		name <Rhodonite>
 		Category <TREASURE GEMSTONE MINERAL>
 		Factions <GENERAL>
-		SDL_PORTRAIT <>
+		SDL_PORTRAIT <item_gemcairngorm>
 		Legality -50
 
 		Treasure
@@ -81,7 +81,7 @@
 		name <Rhodocrosite>
 		Category <TREASURE GEMSTONE MINERAL>
 		Factions <GENERAL>
-		SDL_PORTRAIT <>
+		SDL_PORTRAIT <item_gemcairngorm>
 		Legality -50
 
 		Treasure
@@ -113,7 +113,7 @@
 		Fudge 32000
 		Category <TREASURE MINERAL>
 		Factions <GENERAL>
-		SDL_PORTRAIT <>
+		SDL_PORTRAIT <item_nuggetgold.png>
 		Legality -50
 
 		Treasure
@@ -130,7 +130,7 @@
 		Fudge 96000
 		Category <TREASURE MINERAL>
 		Factions <GENERAL>
-		SDL_PORTRAIT <>
+		SDL_PORTRAIT <item_nuggetgold.png>
 		Legality -50
 
 		Treasure
@@ -346,7 +346,7 @@
 	desc <An advanced polymer ring which changes color according to biometrics.>
 	Category <TREASURE JEWELRY>
 	Factions <GENERAL>
-	SDL_PORTRAIT <>
+	SDL_PORTRAIT <item_ring.png>
 	Legality -25
 
 	Treasure
@@ -355,7 +355,7 @@
 	desc <An attractive ring featuring a synthetic crystal stone.>
 	Category <TREASURE JEWELRY>
 	Factions <GENERAL>
-	SDL_PORTRAIT <>
+	SDL_PORTRAIT <item_ring.png>
 	Legality -25
 
 	Treasure
@@ -364,7 +364,7 @@
 	desc <A plain brass ring.>
 	Category <TREASURE JEWELRY>
 	Factions <GENERAL>
-	SDL_PORTRAIT <>
+	SDL_PORTRAIT <item_ring.png>
 	Legality -25
 
 	Treasure
@@ -373,7 +373,7 @@
 	desc <A plain steel ring.>
 	Category <TREASURE JEWELRY>
 	Factions <GENERAL>
-	SDL_PORTRAIT <>
+	SDL_PORTRAIT <item_ring.png>
 	Legality -25
 
 	Treasure
@@ -382,7 +382,7 @@
 	desc <A plain ceramic ring.>
 	Category <TREASURE JEWELRY>
 	Factions <GENERAL>
-	SDL_PORTRAIT <>
+	SDL_PORTRAIT <item_ring.png>
 	Legality -25
 
 	Treasure
@@ -391,7 +391,7 @@
 	desc <A plain silver ring.>
 	Category <TREASURE JEWELRY>
 	Factions <GENERAL>
-	SDL_PORTRAIT <>
+	SDL_PORTRAIT <item_ring.png>
 	Legality -25
 
 	Treasure
@@ -400,7 +400,7 @@
 	desc <A plain gold ring.>
 	Category <TREASURE JEWELRY>
 	Factions <GENERAL>
-	SDL_PORTRAIT <>
+	SDL_PORTRAIT <item_ring.png>
 	Legality -25
 
 	Treasure
@@ -409,7 +409,7 @@
 	desc <A plain platinum ring.>
 	Category <TREASURE JEWELRY>
 	Factions <GENERAL>
-	SDL_PORTRAIT <>
+	SDL_PORTRAIT <item_ring.png>
 	Legality -25
 
 	Treasure
@@ -418,7 +418,7 @@
 	desc <A plain ring made of impervium.>
 	Category <TREASURE JEWELRY>
 	Factions <GENERAL>
-	SDL_PORTRAIT <>
+	SDL_PORTRAIT <item_ring.png>
 	special <ARTIFACT>
 
 	Treasure
@@ -483,7 +483,7 @@
 	Charm 10
 	Category <TREASURE JEWELRY ANTIQUE>
 	Factions <GENERAL>
-	SDL_PORTRAIT <>
+	SDL_PORTRAIT <item_crown.png>
 	Legality -50
 
 	HeadArmor 6
@@ -495,7 +495,7 @@
 	Ego 10
 	Category <TREASURE JEWELRY ANTIQUE>
 	Factions <GENERAL>
-	SDL_PORTRAIT <>
+	SDL_PORTRAIT <item_crown.png>
 	Legality -50
 
 	HeadArmor 2
@@ -505,7 +505,7 @@
 	Charm 10
 	Category <TREASURE JEWELRY ANTIQUE>
 	Factions <GENERAL>
-	SDL_PORTRAIT <>
+	SDL_PORTRAIT <item_crown.png>
 	Legality -50
 
 %%

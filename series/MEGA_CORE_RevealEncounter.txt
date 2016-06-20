@@ -419,6 +419,7 @@ Content
 		Treasure
 		name <Henchman's Diary>
 		desc <An old fashioned paper diary obtained from the mecha of your enemy's henchman.>
+		SDL_PORTRAIT <item_book.png>
 		use <Alert 1>
 		GoNoUse <Print 2>
 		CLUE_SURVIVAL <Alert 7>
@@ -771,6 +772,7 @@ Content
 		Treasure
 		name <Treasure Map>
 		desc <An old fashioned holographic map obtained from a gang of pirates.>
+		SDL_PORTRAIT <item_map.png>
 		use <if= PlotStatus %plotid% %id1% else GoNoUse Alert 1>
 		GoNoUse <Print 2>
 		CLUE_SURVIVAL <if= PlotStatus %plotid% %id1% else GoNoUse ifSurvival SkillTar StoryDL else GoFail  Alert 3 Goto GoReveal>

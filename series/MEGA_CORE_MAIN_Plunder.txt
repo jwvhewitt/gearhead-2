@@ -612,6 +612,7 @@ Content
 	inv
 		Treasure
 		name <Datachip>
+		SDL_PORTRAIT <item_datakey.png>
 	end
 
 Content
@@ -682,6 +683,7 @@ Content
 	inv
 		Treasure
 		name <Datachip>
+		SDL_PORTRAIT <item_datakey.png>
 	end
 
 

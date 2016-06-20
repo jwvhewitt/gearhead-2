@@ -121,6 +121,7 @@ Content
 		Treasure
 		name <Shiny Rock>
 		desc <This rock is really shiny. It probably contains all kinds of valuable minerals.>
+		SDL_PORTRAIT <item_silvernugget.png>
 		CLUE_SCIENCE <Print 1>
 		CLUE_SURVIVAL <Print 1>
 		CLUE_INSIGHT <Print 1>
@@ -153,6 +154,7 @@ Content
 		Treasure
 		name <Huge Gold Nugget>
 		desc <This gold nugget is very big.>
+		SDL_PORTRAIT <item_nuggetgold.png>
 		Fudge 5500000
 		mass 32
 	end
@@ -181,6 +183,7 @@ Content
 		Treasure
 		name <Enormous Gold Nugget>
 		desc <This nugget is extremely large.>
+		SDL_PORTRAIT <item_nuggetgold.png>
 		Fudge 20000000
 		mass 45
 	end

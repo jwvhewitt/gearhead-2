@@ -198,6 +198,7 @@ Content
 		name <Tiki Clock>
 		Mass 1
 		desc <A decorative souvenir clock, crafted in the style of an ancient Polynesian idol. It must be worth something to someone.>
+		SDL_PORTRAIT <item_tikiclock.png>
 		StolenGoods
 	end
 
@@ -213,6 +214,7 @@ Content
 	Inv
 		Treasure
 		name <Corporate Datachip>
+		SDL_PORTRAIT <item_datakey.png>
 		Fudge 40000
 		desc <There must be loads of valuable information stored here. The right people would pay a fortune for it.>
 		StolenGoods
@@ -333,6 +335,7 @@ Content
 		mass 5
 		name <Mop>
 		desc <A cleaning instrument.>
+		SDL_PORTRAIT <item_mop.png>
 	end
 
 Content
@@ -539,6 +542,7 @@ Content
 		mass 5
 		name <Mop>
 		desc <A cleaning instrument.>
+		SDL_PORTRAIT <item_mop.png>
 	end
 
 Content
@@ -553,6 +557,7 @@ Content
 		mass 5
 		name <Mop>
 		desc <A cleaning instrument.>
+		SDL_PORTRAIT <item_mop.png>
 
 		Food 5
 		Name <Imperialis Classico>
@@ -561,5 +566,6 @@ Content
 		FoodMorale 10
 		Fudge 300000
 		desc <A vintage wine from the Age of Superpowers. It is extremely rare and extremely expensive.>
+		SDL_PORTRAIT <item_wine.png>
 	end
 
