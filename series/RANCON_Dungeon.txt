@@ -401,6 +401,7 @@ Content
 		FoodMorale 2
 		Fudge 3000
 		desc <A very large hunk of cheese. It hasn't been chewed on too badly.>
+		SDL_PORTRAIT <item_cheese.png>
 	end
 
 Content
