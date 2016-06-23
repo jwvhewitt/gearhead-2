@@ -1,4 +1,4 @@
-program gearhead;
+program gearhead2;
 {
 	GearHead2, a roguelike mecha CRPG
 	Copyright (C) 2005 Joseph Hewitt
@@ -190,6 +190,9 @@ var
 
 begin
 	RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_Title_Screen_Menu );
+    {$IFNDEF ASCII}
+    RPM^.mode := RPMNoCancel;
+    {$ENDIF}
 	AddRPGMenuItem( RPM , 'Create Character' , 1 );
 	AddRPGMenuItem( RPM , 'Load RPG Campaign' , 2 );
 	AddRPGMenuItem( RPM , 'Start RPG Campaign' , 3 );

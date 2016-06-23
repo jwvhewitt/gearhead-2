@@ -271,7 +271,7 @@ Procedure SetupFHQDisplay;
 Procedure SetupMemoDisplay;
 Procedure DrawMonologueBorder;
 
-Procedure InfoBox( Dest: TSDL_Rect );
+Procedure InfoBox( MyBox: TSDL_Rect );
 
 Procedure Idle_Display;
 
@@ -285,6 +285,9 @@ implementation
 const
 	WindowName: PChar = 'GearHead II (2D Version)';
 	IconName: PChar = 'GearHead II';
+
+var
+	Infobox_Border,Infobox_Backdrop: SensibleSpritePtr;
 
 Procedure DoFlip;
 	{ Flip out, man! This flips from the newly drawn screen to the physical screen. }
@@ -848,6 +851,9 @@ begin
 			pline := QuickPCopy( SA^.Info );
 			S_Temp := TTF_RenderText_Solid( game_font , pline , fg );
 			Dispose( pline );
+            {$IFDEF LINUX}
+	        if S_Temp <> Nil then SDL_SetColorKey( S_Temp , SDL_SRCCOLORKEY , SDL_MapRGB( S_Temp^.Format , 0 , 0, 0 ) );
+            {$ENDIF}
 
 			{ We may or may not be required to do centering of the text. }
 			if DoCenter then begin
@@ -1190,15 +1196,89 @@ begin
 	ClearExtendedBorder( ZONE_MonologuePortrait );
 end;
 
-Procedure InfoBox( Dest: TSDL_Rect );
-	{ Do a box for drawing something else inside of. }
+Function GrowRect( MyRect: TSDL_Rect; GrowX,GrowY: Integer ): TSDL_Rect;
+    { Expand this rect by the requested amount, remaining centered on the }
+    { original rect. }
 begin
-	Dest.X := Dest.X - 5;
-	Dest.Y := Dest.Y - 5;
-	Dest.W := Dest.W + 10;
-	Dest.H := Dest.H + 10;
-	ClearExtendedBorder( Dest );
-	SDL_FillRect( game_screen , @(Dest) , SDL_MapRGB( Game_Screen^.Format , 10 , 0 , 70 ) );
+    MyRect.x := MyRect.x - GrowX;
+    MyRect.y := MyRect.y - GrowY;
+    MyRect.w := MyRect.w + 2 * GrowX;
+    MyRect.h := MyRect.h + 2 * GrowY;
+    GrowRect := MyRect;
+end;
+
+Procedure FillRectWithSprite( MyRect: TSDL_Rect; MySprite: SensibleSpritePtr; MyFrame: Integer );
+    { Fill this area of the screen perfectly with the provided sprite. }
+var
+    MyDest: TSDL_Rect;
+    X,Y,GridW,GridH: Integer;
+begin
+	GridW := MyRect.W div MySprite^.W + 1;
+	GridH := MyRect.H div MySprite^.H + 1;
+	SDL_SetClipRect( Game_Screen , @MyRect );
+
+	{ Draw the backdrop. }
+	for X := 0 to GridW do begin
+		MyDest.X := MyRect.X + X * MySprite^.W;
+		for Y := 0 to GridH do begin
+			MyDest.Y := MyRect.Y + Y * MySprite^.H;
+			DrawSprite( MySprite , MyDest , MyFrame );
+		end;
+	end;
+
+	SDL_SetClipRect( Game_Screen , Nil );
+end;
+
+
+Procedure InfoBox( MyBox: TSDL_Rect );
+	{ Do a box for drawing something else inside of. }
+const
+	tex_width = 16;
+	border_width = tex_width div 2;
+	half_dat = border_width div 2;
+var
+    MyFill,Dest: TSDL_Rect;
+	X0,Y0,W32,H32,X,Y: Integer;
+begin
+    { Fill the middle of the box with the backdrop. }
+    MyFill := GrowRect( MyBox, 4, 4 );
+    FillRectWithSprite( MyFill, Infobox_Backdrop, 0 );
+
+    { Expand the rect to its full dimensions, and draw the outline. }
+    MyFill := GrowRect( MyBox, 8, 8 );
+	DrawSprite( Infobox_Border , MyFill , 0 );
+
+    Dest.X := MyFill.X;
+	Dest.Y := MyFill.Y + MyFill.H - 8;
+	DrawSprite( Infobox_Border , Dest , 4 );
+
+    Dest.X := MyFill.X + MyFill.W - 8;
+	Dest.Y := MyFill.Y;
+	DrawSprite( Infobox_Border , Dest , 3 );
+
+    Dest.X := MyFill.X + MyFill.W - 8;
+	Dest.Y := MyFill.Y + MyFill.H - 8;
+	DrawSprite( Infobox_Border , Dest , 5 );
+
+    MyFill := GrowRect( MyBox, 0, 8 );
+	SDL_SetClipRect( Game_Screen , @MyFill );
+	for X := 0 to ( MyFill.W div 8 + 1 ) do begin
+		Dest.X := MyFill.X + X * 8;
+		Dest.Y := MyFill.Y;
+		DrawSprite( Infobox_Border , Dest , 1 );
+		Dest.Y := MyFill.Y + MyFill.H - 8;
+		DrawSprite( Infobox_Border , Dest , 1 );
+	end;
+    MyFill := GrowRect( MyBox, 8, 0 );
+	SDL_SetClipRect( Game_Screen , @MyFill );
+	for Y := 0 to ( MyFill.H div 8 + 1 ) do begin
+		Dest.Y := MyFill.Y + Y * 8;
+		Dest.X := MyFill.X;
+		DrawSprite( Infobox_Border , Dest , 2 );
+		Dest.X := MyFill.X + MyFill.W - 8;
+		DrawSprite( Infobox_Border , Dest , 2 );
+	end;
+	SDL_SetClipRect( Game_Screen , Nil );
 end;
 
 Procedure Idle_Display;
@@ -1301,6 +1381,11 @@ initialization
 	end;
 
 	SDL_WM_SetCaption( WindowName , IconName );
+
+	Infobox_Border := LocateSprite( 'sys_boxborder.png' , 8 , 8 );
+	Infobox_Backdrop := LocateSprite( 'sys_boxbackdrop.png' , 16 , 16 );
+
+	if Transparent_Interface then SDL_SetAlpha( Infobox_Backdrop^.Img , SDL_SRCAlpha , 224 );
 
 
 finalization

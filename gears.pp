@@ -240,12 +240,7 @@ Const
 	{ fine. }
 	Default_File_Ending = '.txt';
 	Default_Search_Pattern = '*.txt';
-	Save_Game_DirName = 'savegame';
-	Save_Game_Directory = Save_Game_DirName + OS_Dir_Separator;
-	Save_Character_Base = Save_Game_Directory + 'CHA';
-	Save_Egg_Base = Save_Game_Directory + 'EGG';
-	Save_Unit_Base = Save_Game_Directory + 'GHU';
-	Save_Campaign_Base = Save_Game_Directory + 'RPG';
+
 	Design_DirName = 'design';
 	Design_Directory = Design_DirName + OS_Dir_Separator;
 	PC_Equipment_Pattern = 'PC_*.txt';
@@ -284,8 +279,6 @@ Const
 	Mecha_Help_File = Doc_Directory + 'man_umek.txt';
 	FieldHQ_Help_File = Doc_Directory + 'man_mecha.txt';
 	Chara_Help_File = Doc_Directory + 'man_chara.txt';
-
-	Config_File = 'gearhead.cfg';
 
 	Graphics_DirName = 'image';
 	Graphics_Directory = Graphics_Dirname + OS_Dir_Separator;
@@ -326,6 +319,11 @@ Type
 		invcom: GearPtr;	{Child External Gear}
 		parent: GearPtr;	{Parent of the current Gear.}
 	end;
+
+var
+	Save_Game_DirName,Save_Game_Directory,Save_Character_Base,Save_Egg_Base,Save_Unit_Base,Save_Campaign_Base: String;
+	Config_Directory,Config_File: String;
+
 
 
 Function CreateSAtt(var LList: SAttPtr): SAttPtr;
@@ -1440,22 +1438,6 @@ begin
 	end;
 end;
 
-Procedure CheckDirectoryPresent;
-	{ Make sure that the default save directory exists. If not, }
-	{ create it. }
-begin
-	if not DirectoryExists( Save_Game_DirName ) then begin
-		MkDir( Save_Game_DirName );
-	end;
-
-	{ Check to make sure all the other directories can be found. }
-	Startup_OK := DirectoryExists( Design_DirName );
-	Startup_OK := Startup_OK and DirectoryExists( Series_DirName );
-	Startup_OK := Startup_OK and DirectoryExists( Data_DirName );
-{$IFNDEF ASCII}
-	Startup_OK := Startup_OK and DirectoryExists( Graphics_DirName );
-{$ENDIF}
-end;
 
 Procedure Rescale( Part: GearPtr; SF: Integer );
 	{ Alter the scale of this part and all its subcoms. }
@@ -1511,7 +1493,49 @@ begin
 	DoAlongPath( Master^.InvCom );
 end;
 
+Procedure CheckDirectoryPresent;
+	{ Make sure that the default save directory exists. If not, }
+	{ create it. }
+begin
+	if not DirectoryExists( Config_Directory ) then begin
+		MkDir( Config_Directory );
+	end;
+	if not DirectoryExists( Save_Game_Directory ) then begin
+		MkDir( Save_Game_Directory );
+	end;
+
+
+	{ Check to make sure all the other directories can be found. }
+	Startup_OK := DirectoryExists( Design_DirName );
+	Startup_OK := Startup_OK and DirectoryExists( Series_DirName );
+	Startup_OK := Startup_OK and DirectoryExists( Data_DirName );
+{$IFNDEF ASCII}
+	Startup_OK := Startup_OK and DirectoryExists( Graphics_DirName );
+{$ENDIF}
+end;
+
+
 initialization
+	{ Make sure we have the required data directories. }
+    if paramcount() > 0 then begin
+        Config_Directory := IncludeTrailingPathDelimiter( paramstr(1) );
+    end else begin
+    {$IFDEF WINDOWS}
+        Config_Directory := GetUserDir() + OS_Dir_Separator + 'gearhead2' + OS_Dir_Separator;
+    {$ELSE}
+        Config_Directory := GetAppConfigDir(False);
+    {$ENDIF}
+    end;
+	Config_File := Config_Directory + 'gearhead2.cfg';
+
+	Save_Game_DirName := 'savegame';
+	Save_Game_Directory := Config_Directory + Save_Game_Dirname + OS_Dir_Separator;
+
+	Save_Character_Base := Save_Game_Directory + 'CHA';
+	Save_Egg_Base := Save_Game_Directory + 'EGG';
+	Save_Unit_Base := Save_Game_Directory + 'GHU';
+	Save_Campaign_Base := Save_Game_Directory + 'RPG';
+
 	{ Make sure we have the required data directories. }
 	CheckDirectoryPresent;
 end.

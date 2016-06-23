@@ -95,6 +95,8 @@ const
 
 	Splash_Screen_At_Start: Boolean = True;
 
+    Transparent_Interface: Boolean = True;
+
 	BV_Off = 1;
 	BV_Quarter = 2;
 	BV_Half = 3;
@@ -587,6 +589,10 @@ begin
 				end else if cmd = 'ERSATZ_MOUSE' then begin
 					Ersatz_Mouse := True;
 
+				end else if cmd = 'NO_TRANSPARENT_INTERFACE' then begin
+					Transparent_Interface := False;
+
+
 				end else if cmd = 'GIMMEGIMMECHOICE' then begin
 					XXRan_Wizard := True;
 				end else if cmd = 'XXRANDEBUG' then begin
@@ -686,6 +692,7 @@ begin
 	AddBoolean( 'PAPERDOLLS' , Use_Paper_Dolls );
 	AddBoolean( 'USEMESH' , Mesh_On );
 	AddBoolean( 'ERSATZ_MOUSE' , Ersatz_Mouse );
+    AddBoolean( 'NO_TRANSPARENT_INTERFACE' , not Transparent_Interface );
 
 	{ The "secret options" come at the end. These tokens only get }
 	{ included if they're already set. }

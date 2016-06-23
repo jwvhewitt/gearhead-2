@@ -96,6 +96,8 @@ var
 	lancemate_tactics_persona: GearPtr;	{ Persona for setting lancemate tactics. }
 	rumor_leads: GearPtr;			{ Mini-conversations for finding rumors. }
 
+    NeedGC: Boolean;
+
 
 Procedure SetLancemateOrders( GB: GameBoardPtr );
 Function NumLancemateSlots( Adv,PC: GearPtr ): Integer;
@@ -128,6 +130,7 @@ Procedure HandleTriggers( GB: GameBoardPtr );
 
 Function StartRescueScenario( GB: GameBoardPtr; PC: GearPtr; Context: String ): Boolean;
 
+Procedure DoScriptGC( GB: GameBoardPtr );
 
 implementation
 
@@ -2385,7 +2388,7 @@ begin
 		PC := PC^.Next;
 	end;
 
-	SaveStringList( FName + '.txt' , VList );
+	SaveStringList( Config_Directory + FName + '.txt' , VList );
 	MoreText( VList , 1 );
 	DisposeSAtt( VList );
 end;
@@ -3411,7 +3414,10 @@ begin
 		{ It's possible that our SOURCE is a PERSONA rather than }
 		{ a PLOT, so if SOURCE isn't a PLOT move to its parent. }
 		Source := PlotMaster( GB , Source );
-		if ( Source <> Nil ) and ( Source^.G = GG_Plot ) and ( NAttValue( Source^.NA , NAG_Narrative , NAS_PlotID ) > 0 ) then EndPlot( GB , Source^.Parent , Source );
+		if ( Source <> Nil ) and ( Source^.G = GG_Plot ) and ( NAttValue( Source^.NA , NAG_Narrative , NAS_PlotID ) > 0 ) then begin
+            EndPlot( GB , Source^.Parent , Source );
+            NeedGC := True;
+        end;
 		SetTrigger( GB , 'UPDATE' );
 	end;
 end;
@@ -3488,6 +3494,7 @@ begin
 
 		{ Mark the story for deletion. }
 		Source^.G := GG_AbsolutelyNothing;
+        NeedGC := True;
 
 		SetTrigger( GB , 'UPDATE' );
 	end;
@@ -5669,7 +5676,7 @@ begin
 			N := -1;
 		end;
 
-		if N >= 0 then begin
+		if ( N >= 0 ) and ( I_Persona <> Nil ) then begin
 			{ One of the placed options have been triggered. }
 			{ Attempt to find the appropriate script to }
 			{ invoke. }
@@ -5697,7 +5704,7 @@ begin
 			SetItemByPosition( IntMenu , 1 );
 		end;
 
-	until ( N = -1 ) or ( IntMenu^.NumItem < 1 ) or ( I_Endurance < 1 ) or ( I_NPC = Nil );
+	until ( N = -1 ) or ( IntMenu^.NumItem < 1 ) or ( I_Endurance < 1 ) or ( I_NPC = Nil ) or ( I_Persona = Nil );
 
 	{ If the menu is empty, pause for a minute. Or at least a keypress. }
 	if IntMenu^.NumItem < 1 then begin
@@ -5717,10 +5724,10 @@ begin
 
 	{ After the conversation is over, prune any ABSOLUTELYNOTHINGs that may }
 	{ have popped up. }
-	if Persona <> Nil then begin
-		Persona := FindRoot( Persona );
+	{if I_Persona <> Nil then begin
+		Persona := FindRoot( I_Persona );
 		PruneNothings( Persona );
-	end;
+	end;}
 
 	{ Set the ReTalk value. }
 	{ Base retalk time is 1500 ticks; may be raised or lowered depending }
@@ -5734,6 +5741,7 @@ begin
 	{ Set the NumberOfConversations counter. }
 	if I_NPC <> Nil then AddNAtt( NPC^.NA , NAG_Personal , NAS_NumConversation , 1 );
 	I_NPC := Nil;
+    I_Persona := Nil;
 
 	{ Get rid of the menu. }
 	DisposeRPGMenu( IntMenu );
@@ -5912,10 +5920,10 @@ begin
 			P2 := Plot^.Next;
 
 			{ Remove the plot, if it's been advanced. }
-			if Plot^.G = GG_AbsolutelyNothing then begin
+			{if Plot^.G = GG_AbsolutelyNothing then begin
 				if IsInvCom( Plot ) then RemoveGear( Plot^.Parent^.InvCom , Plot )
 				else if IsSubCom( Plot ) then RemoveGear( Plot^.Parent^.SubCom , Plot );
-			end;
+			end;}
 		end;
 		Plot := P2;
 	end;
@@ -5996,6 +6004,8 @@ begin
 			DisposeSAtt( TList );
 
 		end;
+
+        DoScriptGC( GB );
 	end;
 end;
 
@@ -6068,6 +6078,20 @@ begin
 	StartRescueScenario := ItWorked;
 end;
 
+Procedure DoScriptGC( GB: GameBoardPtr );
+    { Get rid of any ABSOLUTELYNOTHINGS that may be hanging about. }
+var
+    Adv: GearPtr;
+begin
+    if NeedGC then begin
+        Adv := GG_LocateAdventure( GB, Nil );
+        if Adv <> Nil then begin
+            PruneNothings( Adv^.SubCom );
+            PruneNothings( Adv^.InvCom );
+            NeedGC := False;
+        end;
+    end;
+end;
 
 initialization
 	SCRIPT_DynamicEncounter := Nil;
@@ -6085,7 +6109,10 @@ initialization
 	local_triggers := Nil;
 
 	I_NPC := Nil;
+    I_Persona := Nil;
 	IntMenu := Nil;
+
+    NeedGC := False;
 
 finalization
 	if SCRIPT_DynamicEncounter <> Nil then begin

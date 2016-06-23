@@ -1,3 +1,8 @@
+- Moved save files, config file to config folder (user folder on Windows)
+- Added updated InfoBox from GH1 (sdlgfx.pp)
+- Title screen menu set to RPMNoCancel in SDL (gharena.pas)
+- Fixed AutoTraining overspending bug (pcaction.pp)
+- Fixed possible crash from ending a story inside a conversation (arenascript.pp)
 - All usable skills, talents known by lancemates now in skill menu (pcaction.pp)
 - Automatically saves game when player quits (pcaction.pp)
 - Added InfoTier stat for modules (ghmodule.pp,sdlinfo.pp,coninfo.pp)
