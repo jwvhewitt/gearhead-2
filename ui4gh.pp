@@ -61,7 +61,7 @@ const
 	RPK_TimeEvent = #$91;
 	RPK_RightButton = #$92;
 
-	FrameDelay: Integer = 0;
+	FrameDelay: Integer = 30;
 {$ENDIF}
 
 	MenuBasedInput = 0;

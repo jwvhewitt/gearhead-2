@@ -413,11 +413,11 @@ begin
 	oldcolor := SAttValue( M^.SA , 'SDL_Colors' );
 
 	if M^.G = GG_Character then begin
-		newcolor := SelectColorPalette( colormenu_mode_character , portraitname , oldcolor , 100 , 150 , Redrawer );
+		newcolor := SelectColorPalette( colormenu_mode_character , portraitname , oldcolor , 100 , 150 , 0, Redrawer );
 	end else if M^.G = GG_Mecha then begin
-		newcolor := SelectColorPalette( colormenu_mode_mecha , portraitname , oldcolor , 100 , 150 , Redrawer );
+		newcolor := SelectColorPalette( colormenu_mode_mecha , portraitname , oldcolor , 100 , 150 , 0, Redrawer );
 	end else begin
-		newcolor := SelectColorPalette( colormenu_mode_allcolors , portraitname , oldcolor , 100 , 150 , Redrawer );
+		newcolor := SelectColorPalette( colormenu_mode_allcolors , portraitname , oldcolor , 100 , 150 , 0, Redrawer );
 	end;
 
 	SetSAtt( M^.SA , 'SDL_Colors <' + newcolor + '>' );

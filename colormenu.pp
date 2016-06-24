@@ -24,7 +24,7 @@ unit colormenu;
 
 interface
 
-uses 	gears,sdl,sdlgfx;
+uses 	gears,sdl,ui4gh,sdlgfx;
 
 const
 	colormenu_mode_allcolors = 0;
@@ -52,12 +52,12 @@ var
 	Num_Colors_Per_Set: Array [1..Num_Color_Sets] of Integer;
 
 
-Function SelectColorPalette( init_mode: Integer; image_name,color_palette: String; image_width,image_height: Integer; Redrawer: RedrawProcedureType ): String;
+Function SelectColorPalette( init_mode: Integer; image_name,color_palette: String; image_width,image_height,anim_frames: Integer; Redrawer: RedrawProcedureType ): String;
 Function RandomColorString( ColorSet: Integer ): String;
 
 implementation
 
-uses texutil,ui4gh;
+uses texutil;
 
 const
 	Swatch_Columns = 20;
@@ -103,6 +103,7 @@ var
 	colormenu_ReDrawer: RedrawProcedureType;
 	colormenu_imagename, colormenu_imagepalette: String;
 	colormenu_imagewidth, colormenu_imageheight: Integer;
+    colormenu_animframes: Integer;
 
 	cm_panel,cm_bits: SensibleSpritePtr;
 
@@ -124,6 +125,7 @@ const
 var
 	MyDest: TSDL_Rect;
 	T,X,Y,N: Integer;
+    myswatch: SensibleSpritePtr;
 begin
 	MyDest := Z;
 
@@ -131,13 +133,13 @@ begin
 	{ If the color set is out of range, set it to "0" for all colors. }
 	MyDest.X := MyDest.X + off_palettename_x;
 	MyDest.Y := MyDest.Y + off_palettename_y;
-	if ( CSet >= 0 ) and ( CSet <= Num_Color_Sets ) then QuickText( MsgString( 'ColorSet_' + BStr( CSet ) ) , MyDest , StdBlack , Game_Font )
+	if ( CSet >= 0 ) and ( CSet <= Num_Color_Sets ) then QuickText( MsgString( 'ColorSet_' + BStr( CSet ) ) , MyDest , StdBlack, Game_Font )
 	else CSet := 0;
 
 	{ Display the pen name. }
 	MyDest.X := Z.X + off_colorname_x;
-	if ( CPen >= 0 ) and ( CPen < Num_Available_Colors ) then QuickText( Available_Colors[ CPen ].name , MyDest , InfoHiLight , Game_Font )
-	else QuickText( '???' , MyDest , InfoHiLight , Game_Font );
+	if ( CPen >= 0 ) and ( CPen < Num_Available_Colors ) then QuickText( Available_Colors[ CPen ].name , MyDest , InfoHiLight, Game_Font )
+	else QuickText( '???' , MyDest , InfoHiLight, Game_Font );
 
 	{ Display the swatches. }
 	{ T will cycle through all colors; N will count the number of colors displayed so far. }
@@ -157,7 +159,9 @@ begin
 				{ Display the color first, then the cursor and selection check. }
 				MyDest.X := Z.X + off_swatches_x + X * Swatch_Width + 1;
 				MyDest.Y := Z.Y + off_swatches_y + Y * Swatch_Height + 1;
-				SDL_FillRect( game_screen , @MyDest , SDL_MapRGB( Game_Screen^.Format , Available_Colors[ T ].rgb.R , Available_Colors[ T ].rgb.G , Available_Colors[ T ].rgb.B ) );
+				{SDL_FillRect( game_screen , @MyDest , SDL_MapRGB( Game_Screen^.Format , Available_Colors[ T ].rgb.R , Available_Colors[ T ].rgb.G , Available_Colors[ T ].rgb.B ) );}
+                myswatch := LocateSprite('color_menu_swatch.png',BStr( Available_Colors[ T ].rgb.R) +' '+ Bstr(Available_Colors[ T ].rgb.G)+' '+BStr(Available_Colors[ T ].rgb.B)+' 0 0 0  0 0 0',Swatch_Width,Swatch_Height);
+                DrawSprite( myswatch, MyDest, 0 );
 
 				MyDest.X := MyDest.X - 1;
 				MyDest.Y := MyDest.Y - 1;
@@ -199,7 +203,12 @@ begin
 	if MySprite <> Nil then begin
 		MyDest.X := MyDest.X + ( MyDest.W div 2 ) - ( colormenu_imagewidth div 2 );
 		MyDest.Y := MyDest.Y + ( MyDest.H div 2 ) - ( colormenu_imageheight div 2 );
-		DrawSprite( MySprite , MyDest , 0 );
+        if colormenu_animframes > 0 then begin
+            t := Animation_Phase div 5 mod colormenu_animframes;
+        end else begin
+            t := 0;
+        end;
+		DrawSprite( MySprite , MyDest , t );
 	end;
 
 	{ Display the instructions. }
@@ -269,7 +278,7 @@ begin
 	end;
 end;
 
-Function SelectColorPalette( init_mode: Integer; image_name,color_palette: String; image_width,image_height: Integer; Redrawer: RedrawProcedureType ): String;
+Function SelectColorPalette( init_mode: Integer; image_name,color_palette: String; image_width,image_height, anim_frames: Integer; Redrawer: RedrawProcedureType ): String;
 	{ Select a color palette for this image name. }
 	{ init_mode tells what initial palettes to use. }
 var
@@ -282,6 +291,7 @@ begin
 	colormenu_imagename := image_name;
 	colormenu_imagewidth := image_width;
 	colormenu_imageheight := image_height;
+    colormenu_animframes := anim_frames;
 	colormenu_ReDrawer := Redrawer;
 
 	{ Initialize the selection variables. }
@@ -418,10 +428,12 @@ begin
 	end;
 end;
 
+
+
 initialization
 	LoadColorList;
-	cm_bits := LocateSprite( 'color_menu_bits.png' , Swatch_Width , Swatch_Height );
-	cm_panel := LocateSprite( 'color_menu.png' , cm_panel_width , cm_panel_height );
+	cm_bits := LocateSprite( 'color_menu_bits.png' , '', Swatch_Width , Swatch_Height );
+	cm_panel := LocateSprite( 'color_menu.png' , '', cm_panel_width , cm_panel_height );
 
 finalization
 

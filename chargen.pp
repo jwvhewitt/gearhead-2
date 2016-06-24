@@ -1382,7 +1382,7 @@ begin
 	RCDescMessage := '';
 	RCPromptMessage := MsgString( 'RANDCHAR_SelectColorsPrompt' );
 
-	if CanEdit then sdl_colors := SelectColorPalette( colormenu_mode_character, SAttValue( PC^.SA , 'SDL_PORTRAIT' ), SAttValue( PC^.SA , 'SDL_COLORS' ), 100, 150, @RandCharRedraw )
+	if CanEdit then sdl_colors := SelectColorPalette( colormenu_mode_character, SAttValue( PC^.SA , 'SDL_PORTRAIT' ), SAttValue( PC^.SA , 'SDL_COLORS' ), 100, 150, 0, @RandCharRedraw )
 	else sdl_colors := RandomColorString( CS_Clothing ) + ' ' + RandomColorString( CS_Skin ) + ' ' + RandomColorString( CS_Hair );
 
 	{ Record the colors. }

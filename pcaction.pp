@@ -1155,6 +1155,13 @@ begin
 			AddRPGMenuItem( RPM , 'Walls are Short' , 9 );
 		end;
 
+		if Names_Above_Heads then begin
+			AddRPGMenuItem( RPM , 'Disable Name Display' , 11 );
+		end else begin
+			AddRPGMenuItem( RPM , 'Enable Name Display' , 11 );
+		end;
+
+
 		AddRPGMenuItem( RPM , '  Exit Prefrences' , -1 );
 		SetItemByValue( RPM , N );
 
@@ -1203,6 +1210,9 @@ begin
 			end else begin
 				SetNAtt( Mek^.NA , NAG_Prefrences , NAS_UseNonLethalAttacks , 0 );
 			end;
+
+		end else if N = 11 then begin
+			Names_Above_Heads := Not Names_Above_Heads;
 
 		end;
 
@@ -2391,6 +2401,7 @@ begin
 	end else if KCode = KMC_Attack then begin
 		RLQuickAttack( Camp^.GB , Mek );
 	end else if KCode = KMC_QuitGame then begin
+		if DoAutoSave then PCSaveCampaign( Camp , Mek , True );
 		Camp^.GB^.QuitTheGame := True;
 
 	end else if KCode = KMC_Talk then begin
