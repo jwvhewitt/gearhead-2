@@ -456,6 +456,7 @@
 	Grenade 15
 	name <Flame Gland>
 	desig <FLAMEGLAND>
+	SDL_PORTRAIT <item_flamegland.png>
 	meat
 	Scale 0
 	type <Blast 2 BURN>
@@ -502,6 +503,7 @@
 	Food 30
 	name <Red Bear Liver>
 	desig <REDBEARLIVER>
+	SDL_PORTRAIT <item_bearliver.png>
 	FoodFX:Regeneration
 	FoodMod 16
 	FoodMorale -5
@@ -511,6 +513,7 @@
 	Food 20
 	name <Dragon Heart>
 	desig <DRAGONHEART>
+	SDL_PORTRAIT <item_dragonheart.png>
 	FoodFX:Healing
 	FoodMod 9
 	FoodMorale -2
@@ -520,41 +523,50 @@
 	Treasure
 	name <Pelt>
 	desig <PELT-1>
+	SDL_PORTRAIT <item_pelt.png>	
 	mass 1
 
 	Treasure
 	name <Pearl>
 	desig <PEARL-1>
+	SDL_PORTRAIT <item_pearl.png>
 
 	Food 30
 	name <Boxed Lunch>
 	desig <FOOD-1>
+	SDL_PORTRAIT <item_boxedlunch.png>
 
 	Food 20
 	name <Hot Dog>
 	desig <FOOD-2>
+	SDL_PORTRAIT <item_hotdog.png>
 
 	Food 25
 	name <Meat>
 	desig <FOOD-3>
+	SDL_PORTRAIT <item_meat.png>
 	FoodMorale -1
 
 	Food 20
 	name <Sashimi>
 	desig <FOOD-4>
+	SDL_PORTRAIT <item_sashimi.png>
 	FoodMorale 1
 
 	Food 15
 	name <Mushroom>
+	SDL_PORTRAIT <item_mushroom.png>
 	desig <EDIBLE-MUSHROOM>
 
 	Food 20
 	name <Salad>
 	desig <SALAD-1>
+	SDL_PORTRAIT <item_salad.png>
 
 	Food 25
 	name <Meat>
 	desig <TAINTED-MEAT>
+	SDL_PORTRAIT <item_meat.png>
 	FoodMorale -3
 	FoodFX:CauseStatus
 	FoodMod:Sickness
@@ -562,6 +574,7 @@
 	Food 20
 	name <Sashimi>
 	desig <TAINTED-SASHIMI>
+	SDL_PORTRAIT <item_sashimi.png>
 	FoodMorale -3
 	FoodFX:CauseStatus
 	FoodMod:Poison

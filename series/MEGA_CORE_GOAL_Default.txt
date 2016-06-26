@@ -343,6 +343,7 @@ Content
 		Treasure
 		name <Kroper's Guide to Mecha Piloting>
 		desc <An old and well-work book. The blurb on the cover promises that it can teach you some new tricks.>
+		SDL_PORTRAIT <item_book.png>
 		Fudge 450000
 		% V1 = Have read book already
 		use <if= V1 0 else GoAlreadyRead ifYesNo 1 2 3 else GoReadLater Alert 4 History 5 V= 1 1 Mental XPV 100 PCSkill+ NAS_MechaPiloting 1>

@@ -1255,6 +1255,7 @@ Content
 		Mass -8
 		FoodXP:Vitality
 		FoodXPAmount 100
+		SDL_PORTRAIT <item_perfectsamwich.png>
 	end
 
 Content
@@ -2271,6 +2272,7 @@ Content
 		Acc 1
 		mass -8
 		type <ARMORPIERCING>
+		SDL_PORTRAIT <item_gunsword.png>
 		sub
 			Gun 9
 			Name <Rocket Pistol>
@@ -2323,6 +2325,7 @@ Content
 		Acc 1
 		mass -8
 		type <STONE>
+		SDL_PORTRAIT <item_gunsword.png>
 		sub
 			Gun 9
 			Name <Rocket Pistol>

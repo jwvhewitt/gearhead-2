@@ -47,6 +47,7 @@ Treasure
 name <Cube of Koeneke>
 Fudge 15000
 requires <ITEM PREZERO !Ne>
+SDL_PORTRAIT <item_puzzlecube.png>
 Context <TL_Ne>
 desc <A puzzle box from the previous age. Once this game was very popular, but today very few working copies remain.>
 ITEM_DESC <It was a very popular mechanical puzzle during the age of superpowers.>

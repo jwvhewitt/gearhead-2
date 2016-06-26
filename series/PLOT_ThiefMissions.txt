@@ -65,7 +65,7 @@ Plot
 		Treasure
 		name <DataChip>
 		desc <Contains the location of a cruiser you can plunder.>
-
+		SDL_PORTRAIT <item_datakey.png>
 		STC CORE-ACTIVATABLE
 		name <the S.S. %r%>
 	end

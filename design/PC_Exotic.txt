@@ -61,7 +61,7 @@
 	desc <A longsword with a pistol integrated into the blade.>
 	category <EXOTIC>
 	factions <GENERAL>
-	SDL_PORTRAIT <>
+	SDL_PORTRAIT <item_gunsword.png>
 	legality -5
 	Acc 1
 	Speed 4

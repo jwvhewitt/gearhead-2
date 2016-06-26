@@ -15,6 +15,7 @@ Mass -7
 desc <A battle axe constructed from high tech composite materials.>
 category <WEAPON MELEE>
 factions <MAQUI FCOMS RISHI BOHEM  PRIVA CRIHN REDMA  HOELL COMET MUGLE  SILKN ROCKE AEGSF>
+SDL_PORTRAIT <item_waraxe.png>
 Legality 5
 
 Melee 20
@@ -744,6 +745,7 @@ inv
 	BodyArmor 1
 	Name <Armorweave Shirt>
 	desc <Comfortable armor for everyday use.>
+	SDL_PORTRAIT <item_armoredcasuals.png>
 	Category <CLOTHING>
 	legality -25
 
@@ -1142,6 +1144,7 @@ inv
 	name <Utility Suit>
 	desc <A cheaply made spacesuit.>
 	Category <CLOTHING SPACE>
+	SDL_PORTRAIT <item_spacesuit.png>
 	Sealed
 	sub
 		SpaceFlight 3
@@ -1151,6 +1154,7 @@ inv
 	name <Utility Sleeve>
 	desc <A cheaply made spacesuit.>
 	Category <CLOTHING SPACE>
+	SDL_PORTRAIT <item_spacesuitarm.png>
 	Mass -2
 	Sealed
 
@@ -1158,6 +1162,7 @@ inv
 	name <Utility Sleeve>
 	desc <A cheaply made spacesuit.>
 	Category <CLOTHING SPACE>
+	SDL_PORTRAIT <item_spacesuitarm.png>
 	Mass -2
 	Sealed
 
@@ -1165,6 +1170,7 @@ inv
 	name <Utility Legging>
 	desc <A cheaply made spacesuit.>
 	Category <CLOTHING SPACE>
+	SDL_PORTRAIT <item_spacesuitleg.png>
 	Mass -2
 	Sealed
 
@@ -1172,6 +1178,7 @@ inv
 	name <Utility Legging>
 	desc <A cheaply made spacesuit.>
 	Category <CLOTHING SPACE>
+	SDL_PORTRAIT <item_spacesuitleg.png>
 	Mass -2
 	Sealed
 
@@ -1179,6 +1186,7 @@ inv
 	name <Utility Helm>
 	desc <A cheaply made spacesuit.>
 	Category <CLOTHING SPACE>
+	SDL_PORTRAIT <item_spacesuithelm.png>
 	Mass -3
 	Sealed
 end
@@ -1194,6 +1202,7 @@ inv
 	name <Space Suit>
 	desc <A regular spacesuit.>
 	Category <ARMOR CLOTHING SPACE>
+	SDL_PORTRAIT <item_spacesuit.png>
 	Mass -4
 	Legality -15
 	Sealed
@@ -1205,6 +1214,7 @@ inv
 	name <Spacesuit Sleeve>
 	desc <A regular spacesuit.>
 	Category <ARMOR CLOTHING SPACE>
+	SDL_PORTRAIT <item_spacesuitarm.png>
 	Mass -4
 	Legality -15
 	Sealed
@@ -1213,6 +1223,7 @@ inv
 	name <Spacesuit Sleeve>
 	desc <A regular spacesuit.>
 	Category <ARMOR CLOTHING SPACE>
+	SDL_PORTRAIT <item_spacesuitarm.png>
 	Mass -4
 	Legality -15
 	Sealed
@@ -1221,6 +1232,7 @@ inv
 	name <Spacesuit Legging>
 	desc <A regular spacesuit.>
 	Category <ARMOR CLOTHING SPACE>
+	SDL_PORTRAIT <item_spacesuitleg.png>
 	Mass -4
 	Legality -15
 	Sealed
@@ -1229,6 +1241,7 @@ inv
 	name <Spacesuit Legging>
 	desc <A regular spacesuit.>
 	Category <ARMOR CLOTHING SPACE>
+	SDL_PORTRAIT <item_spacesuitleg.png>
 	Mass -4
 	Legality -15
 	Sealed
@@ -1313,6 +1326,7 @@ inv
 	name <Encounter Suit>
 	desc <A bulky spacesuit with added protection.>
 	Category <ARMOR SPACE>
+	SDL_PORTRAIT <item_spacesuit.png>
 	Factions <MAQUI>
 	Mass -4
 	Legality -15
@@ -1325,6 +1339,7 @@ inv
 	name <Encounter Sleeve>
 	desc <A bulky spacesuit with added protection.>
 	Category <ARMOR SPACE>
+	SDL_PORTRAIT <item_spacesuitarm.png>
 	Factions <MAQUI>
 	Mass -4
 	Legality -15
@@ -1334,6 +1349,7 @@ inv
 	name <Encounter Legging>
 	desc <A bulky spacesuit with added protection.>
 	Category <ARMOR SPACE>
+	SDL_PORTRAIT <item_spacesuitleg.png>
 	Factions <MAQUI>
 	Mass -4
 	Legality -15
@@ -1343,6 +1359,7 @@ inv
 	name <Encounter Sleeve>
 	desc <A bulky spacesuit with added protection.>
 	Category <ARMOR SPACE>
+	SDL_PORTRAIT <item_spacesuitarm.png>
 	Factions <MAQUI>
 	Mass -4
 	Legality -15
@@ -1352,6 +1369,7 @@ inv
 	name <Encounter Legging>
 	desc <A bulky spacesuit with added protection.>
 	Category <ARMOR SPACE>
+	SDL_PORTRAIT <item_spacesuitarm.png>
 	Factions <MAQUI>
 	Mass -4
 	Legality -15
@@ -1500,7 +1518,9 @@ Name <Beef Tubesteak>
 desc <Cloned beef grown in zero gravity for superior texture and flavor.>
 Category <FOOD>
 Factions <MAQUI FCOMS RISHI BOHEM>
+SDL_PORTRAIT <item_tubesteak.png>
 legality -50
+
 
 Food 45
 Mass -4
@@ -1508,6 +1528,7 @@ Name <Turkey Tubesteak>
 desc <Cloned turkey meat grown in zero gravity for superior texture and flavor.>
 Category <FOOD>
 Factions <MAQUI FCOMS RISHI BOHEM>
+SDL_PORTRAIT <item_tubesteak.png>
 legality -50
 
 Food 45
@@ -1516,6 +1537,7 @@ Name <Bacon Tubesteak>
 desc <Cloned bacon loaf grown in zero gravity for superior texture and flavor.>
 Category <FOOD>
 Factions <MAQUI FCOMS RISHI BOHEM>
+SDL_PORTRAIT <item_tubesteak.png>
 legality -50
 
 

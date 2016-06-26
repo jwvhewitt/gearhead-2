@@ -172,6 +172,7 @@ Content
 		name <MegaMem Cartridge>
 		Fudge 500000
 		desc <An experimental new memory cartridge, which should store ten times as much data as the nearest competitor.>
+		SDL_PORTRAIT <item_datakey.png>
 	end
 
 Content
@@ -184,6 +185,7 @@ Content
 		name <Twitch Processor>
 		Fudge 350000
 		desc <A new type of computer processor based on cutting edge physics. There are maybe five people in the solar system who can even understand how it works.>
+		SDL_PORTRAIT <item_datakey.png>
 		CLUE_SCIENCE <if= V1 0 else GoFail V= 1 1 ifScience 10 else GoFail Print 1 XPV 100>
 		GoFail <Print 2>
 		Msg1 <You examine the processor and learn some things.>

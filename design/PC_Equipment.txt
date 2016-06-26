@@ -514,7 +514,7 @@ Range 3
 caliber <.32 revolver>
 category <WEAPON MISSILE ANTIQUE>
 factions <GENERAL>
-SDL_PORTRAIT <item_peacemakerrevolver.png>
+SDL_PORTRAIT <item_smallrevolver.png>
 Legality -15
 Magazine 6
 sub
@@ -596,7 +596,7 @@ BeamGun 20
 Name <Laser Cannon>
 desig <Kirb IV>
 desc <A shoulder-fired light laser cannon.>
-sdl_portrait <>
+sdl_portrait <item_laserheavy.png>
 category <WEAPON MISSILE>
 factions <GENERAL>
 Range 8
@@ -942,10 +942,20 @@ legality -25
 BodyArmor 2
 Name <Armorweave Clothes>
 desc <Armor mesh has been integrated with these clothes, making them a little stiff.>
+SDL_PORTRAIT <item_armoredcasuals.png>
 Category <CLOTHING>
 Factions <GENERAL>
 Mass -3
 legality -15
+
+HeadArmor 2
+Name <Pilot Hat>
+desc <A reinforced leather hat and goggles favored by ancient PreZero pilots.>
+sdl_portrait <item_pilothat.png>
+Category <CLOTHING>
+Factions <PDASS EARTH>
+Mass -3
+legality -25
 
 Set
 name <Flight Suit [set]>
@@ -967,6 +977,7 @@ inv
 	name <Flight Suit>
 	desc <A light spacesuit.>
 	Category <CLOTHING SPACE>
+	SDL_PORTRAIT <item_spacesuit.png>
 	Mass -1
 	Sealed
 	sub
@@ -977,12 +988,14 @@ inv
 	name <Flight Suit Sleeve>
 	desc <A light spacesuit.>
 	Category <CLOTHING SPACE>
+	SDL_PORTRAIT <item_spacesuitarm.png>
 	Mass -1
 	Sealed
 
 	LegArmor 1
 	name <Flight Suit Legging>
 	desc <A light spacesuit.>
+	SDL_PORTRAIT <item_spacesuitleg.png>
 	Category <CLOTHING SPACE>
 	Mass -1
 	Sealed
@@ -991,6 +1004,7 @@ inv
 	name <Flight Suit Sleeve>
 	desc <A light spacesuit.>
 	Category <CLOTHING SPACE>
+	SDL_PORTRAIT <item_spacesuitarm.png>
 	Mass -1
 	Sealed
 
@@ -998,6 +1012,7 @@ inv
 	name <Flight Suit Legging>
 	desc <A light spacesuit.>
 	Category <CLOTHING SPACE>
+	SDL_PORTRAIT <item_spacesuitleg.png>
 	Mass -1
 	Sealed
 end
@@ -1014,7 +1029,7 @@ inv
 	desc <A spacesuit helm with an integrated rebreather and communicator.>
 	Category <CLOTHING SPACE>
 	SDL_PORTRAIT <item_lightspacehelm.png>
-	Mass -4
+	Mass -3
 	Sealed
 	Hardened
 	Phone
@@ -1023,6 +1038,7 @@ inv
 	name <Pilot Suit>
 	desc <A light spacesuit used by mecha pilots.>
 	Category <CLOTHING SPACE>
+	SDL_PORTRAIT <item_spacesuit.png>
 	Mass -3
 	Sealed
 	sub
@@ -1033,6 +1049,7 @@ inv
 	name <Pilot Suit Sleeve>
 	desc <A light spacesuit used by mecha pilots.>
 	Category <CLOTHING SPACE>
+	SDL_PORTRAIT <item_spacesuitarm.png>
 	Mass -3
 	Sealed
 
@@ -1040,6 +1057,7 @@ inv
 	name <Pilot Suit Legging>
 	desc <A light spacesuit used by mecha pilots.>
 	Category <CLOTHING SPACE>
+	SDL_PORTRAIT <item_spacesuitleg.png>
 	Mass -3
 	Sealed
 	sub
@@ -1050,6 +1068,7 @@ inv
 	name <Pilot Suit Sleeve>
 	desc <A light spacesuit used by mecha pilots.>
 	Category <CLOTHING SPACE>
+	SDL_PORTRAIT <item_spacesuitarm.png>
 	Mass -3
 	Sealed
 
@@ -1057,6 +1076,7 @@ inv
 	name <Pilot Suit Legging>
 	desc <A light spacesuit used by mecha pilots.>
 	Category <CLOTHING SPACE>
+	SDL_PORTRAIT <item_spacesuitleg.png>
 	Mass -3
 	Sealed
 	sub
@@ -1702,6 +1722,7 @@ name <Tambourine>
 desc <A simple instrument.>
 Category <TOOL INSTRUMENT ESSENTIAL>
 Factions <GENERAL>
+sdl_portrait <item_tamborine.png>
 Legality -50
 
 Instrument 1
@@ -1709,6 +1730,7 @@ name <Electric Guitar>
 desc <A popular instrument for aspiring muscians.>
 Category <TOOL INSTRUMENT>
 Factions <GENERAL>
+sdl_portrait <item_guitar.png>
 Legality -50
 Mass 1
 
@@ -1717,6 +1739,7 @@ name <Acoustic Guitar>
 desc <A popular instrument for aspiring muscians.>
 Category <INSTRUMENT>
 Factions <GENERAL>
+sdl_portrait <item_guitar.png>
 Legality -50
 Mass 1
 
@@ -2073,6 +2096,7 @@ desc <It's everything that a human needs to stay alive packaged in a crunchy bar
 Category <FOOD>
 Factions <GENERAL>
 legality -10
+SDL_PORTRAIT <item_survivalbar.png>
 inv
 	STC SurvivalBar
 	desig <>
@@ -2089,6 +2113,7 @@ desc <Some delicious chocolate.>
 Category <FOOD>
 Factions <GENERAL>
 legality -15
+SDL_PORTRAIT <item_chocolate.png>
 
 Set
 name <Nutrient Pill x10>
@@ -2268,6 +2293,7 @@ FoodMorale 3
 desc <An alcoholic beverage.>
 Category <ENTERTAINMENT>
 Factions <GENERAL>
+SDL_PORTRAIT <item_xozu.png>
 legality -5
 
 %  *******************
