@@ -1,3 +1,6 @@
+0.630   June 30 2016
+- Fixed shopkeepers never changing wares bug (services.pp)
+- Added more item sprites by Francisco Munoz
 - Added Names_Above_Heads to options menu (pcaction.pp)
 - Added updated ColorMenu from GH1 (colormenu.pp)
 - Game automatically saved upon quit (pcaction.pp)

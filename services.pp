@@ -1173,13 +1173,13 @@ begin
 	{ Set the random seed to something less than random... }
 	NPCSeed := NAttValue( NPC^.NA , NAG_PErsonal , NAS_RandSeed );
 	NPCRestock := NAttValue( NPC^.NA , NAG_PErsonal , NAS_RestockTime );
-	if NPCSeed = 0 then begin
+	if ( NPCSeed = 0 ) or ( GB^.Comtime > NPCRestock ) then begin
 		NPCSeed := Random( 2000000000 ) + 1;
-		NPCRestock := Random( 86400 ) + 1;
+		NPCRestock := 86400 + GB^.Comtime;
 		SetNAtt( NPC^.NA , NAG_PErsonal , NAS_RandSeed , NPCSeed );
 		SetNAtt( NPC^.NA , NAG_PErsonal , NAS_RestockTime , NPCRestock );
 	end;
-	RandSeed := ( ( GB^.ComTime + NPCRestock ) div 86400 ) + NPCSeed;
+	RandSeed := NPCSeed;
 
 	{ We've already got everything loaded from disk, in Standard_Equipment_List. }
 	{ Create a component list of legal parts. }
