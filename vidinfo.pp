@@ -514,7 +514,7 @@ var
 	MyDest: VGFX_Rect;
 	msg: String;
 begin
-	MyDest := ZoneToRect( Z );
+	MyDest := Z.GetRect();
 	InfoBox( ZONE_Info );
 	ClipZone( MyDest );
 
@@ -546,7 +546,7 @@ Procedure NPCPersonalInfo( NPC: GearPtr; Z: VGFX_Zone );
 var
 	R: VGFX_Rect;
 begin
-	R := ZoneToRect( Z );
+	R := Z.GetRect();
 	R.H := 1;
 	CMessage( GearName( NPC ) , R , LightGreen );
 	Inc( R.Y );
@@ -558,7 +558,7 @@ Procedure DoMonologueDisplay( GB: GameBoardPtr; NPC: GearPtr; msg: String );
 var
 	Z_Text: VGFX_Rect;
 begin
-	Z_Text := ZoneToRect( ZONE_MonologueText );
+	Z_Text := ZONE_MonologueText.GetRect();
 
 	InfoBox( ZONE_MonologueInfo );
 	InfoBox( Z_Text );
@@ -577,7 +577,7 @@ var
 begin
 	NPCPersonalInfo( NPC , ZONE_InteractName );
 
-	StatusRect := ZoneToRect( ZONE_InteractStatus );
+	StatusRect := ZONE_InteractStatus.GetRect();
 
 	if React > 0 then begin
 		msg := '';
@@ -622,7 +622,7 @@ begin
 	if PC = Nil then Exit;
 
 	{ Set up the display. }
-	MyDest := ZoneToRect( ZONE_CharacterDisplay );
+	MyDest := ZONE_CharacterDisplay.GetRect();
 	InfoBox( ZONE_CharacterDisplay );
 	ClipZone( MyDest );
 	ClrZone( MyDest );
@@ -802,7 +802,7 @@ var
 var
 	msg: String;
 begin
-	MyDest := ZoneToRect( ZONE_CharacterDisplay );
+	MyDest := ZONE_CharacterDisplay.GetRect();
 	Redraw;
 	InfoBox( MyDest );
 	ClrZone( MyDest );
@@ -827,7 +827,7 @@ var
 	X,YEnd,N: Integer;
 	Cost: LongInt;
 begin
-	MyDest := ZoneToRect( Z );
+	MyDest := Z.GetRect();
 	ClrZone( MyDest );
 	msg := GearName( Part );
 	TextColor( InfoHilight );
@@ -915,7 +915,7 @@ var
 	MyDest: VGFX_Rect;
 	msg: String;
 begin
-	MyDest := ZoneToRect( Z );
+	MyDest := Z.GetRect();
 	ClrZone( MyDest );
 	msg := GearName( Part );
 	TextColor( InfoHilight );
@@ -932,7 +932,7 @@ var
 	Fac: GearPtr;
 	Renown: Integer;
 begin
-	MyDest := ZoneToRect( Z );
+	MyDest := Z.GetRect();
 	TextColor( White );
 	msg := GearName( Source );
 	TextOut( MyDest.X + ( MyDest.W - Length( msg ) ) div 2 , MyDest.Y , msg );
@@ -958,7 +958,7 @@ var
 	MyDest: VGFX_Rect;
 begin
 	TimeLeft := TacticsRoundLength - ( GB^.ComTime - NAttValue( GB^.Scene^.NA , NAG_SceneData , NAS_TacticsTurnStart ) );
-	MyDest := ZoneToRect( ZONE_Clock );
+	MyDest := ZONE_Clock.GetRect();
 
 	TextColor( White );
 	TextOut( MyDest.X , MyDest.Y , 'TIME:' );
@@ -986,7 +986,7 @@ var
 	MyDest: VGFX_Rect;
 	T: Integer;
 begin
-	MyDest := ZoneToRect( ZONE_ConcertAudience );
+	MyDest := ZONE_ConcertAudience.GetRect();
 	CMessage( '=AUDIENCE=' , ZONE_ConcertAudience , DarkGray );
 	for t := 1 to MaxAudienceSize do begin
 		if AL[t].Mood <> MOOD_Absent then begin
@@ -1004,7 +1004,7 @@ var
 	MyDest: VGFX_Rect;
 	msg: String;
 begin
-	MyDest := ZoneToRect( Z );
+	MyDest := Z.GetRect();
 	ClipZone( MyDest );
 
 	TextColor( White );

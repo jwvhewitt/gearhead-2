@@ -1,0 +1,6 @@
+Persona 0
+	name <Blank Persona>
+	% A default persona used when no other persona exists.
+
+greeting <NewChat SayAnything>
+

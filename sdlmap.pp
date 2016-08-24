@@ -424,8 +424,8 @@ var
 	MyDest: TSDL_Rect;
 begin
 	if Current_Backdrop <> Nil then begin
-		for x := 0 to ( ScreenWidth div Backdrop_Size ) do begin
-			for y := 0 to ( ScreenHeight div Backdrop_Size ) do begin
+		for x := 0 to ( Game_Screen^.W div Backdrop_Size ) do begin
+			for y := 0 to ( Game_Screen^.H div Backdrop_Size ) do begin
 				MyDest.X := x * Backdrop_Size;
 				MyDest.Y := y * Backdrop_Size;
 				DrawSprite( Current_Backdrop , MyDest , 0 );
@@ -442,17 +442,17 @@ Procedure Render_Off_Map_Models;
 		MyDest: TSDL_Rect;
 	begin
 		if Quad = OM_East then begin
-			MyDest.Y := ( ScreenHeight * ( N + 1 ) ) div ( NumOMM + 2 );
-			MyDest.X := ScreenWidth - 16;
+			MyDest.Y := ( Game_Screen^.H * ( N + 1 ) ) div ( NumOMM + 2 );
+			MyDest.X := Game_Screen^.W - 16;
 		end else if Quad = OM_West then begin
-			MyDest.Y := ( ScreenHeight * ( N + 1 ) ) div ( NumOMM + 2 );
+			MyDest.Y := ( Game_Screen^.H * ( N + 1 ) ) div ( NumOMM + 2 );
 			MyDest.X := 1;
 		end else if Quad = OM_South then begin
-			MyDest.X := ( ( ScreenWidth * ( N + 1 ) ) div ( NumOMM + 2 ) );
+			MyDest.X := ( ( Game_Screen^.W * ( N + 1 ) ) div ( NumOMM + 2 ) );
 			MyDest.Y := 1;
 		end else begin
-			MyDest.X := ( ( ScreenWidth * ( N + 1 ) ) div ( NumOMM + 2 ) );
-			MyDest.Y := ScreenHeight - 12;
+			MyDest.X := ( ( Game_Screen^.W * ( N + 1 ) ) div ( NumOMM + 2 ) );
+			MyDest.Y := Game_Screen^.H - 12;
 		end;
 		DrawSprite( Off_Map_Model_Sprite , MyDest , OFF_MAP_MODELS[ Quad , N ] - 1 + ( Animation_Phase div 5 mod 2 ) * 3 );
 	end;
@@ -665,12 +665,12 @@ const
 	Function ScreenX( X,Y: Integer ): LongInt;
 		{ Return the screen coordinates of map column X. }
 	begin
-		ScreenX := RelativeX( X - VirtX( Origin_X , Origin_Y ) , Y - VirtY( Origin_X , Origin_Y ) ) + ( ScreenWidth div 2 );
+		ScreenX := RelativeX( X - VirtX( Origin_X , Origin_Y ) , Y - VirtY( Origin_X , Origin_Y ) ) + ( Game_Screen^.W div 2 );
 	end;
 	Function ScreenY( X,Y: Integer ): Integer;
 		{ Return the screen coordinates of map row Y. }
 	begin
-		ScreenY := RelativeY( X - VirtX( Origin_X , Origin_Y ) , Y - VirtY( Origin_X , Origin_Y ) ) + ( ScreenHeight div 2 );
+		ScreenY := RelativeY( X - VirtX( Origin_X , Origin_Y ) , Y - VirtY( Origin_X , Origin_Y ) ) + ( Game_Screen^.H div 2 );
 	end;
 	Function OnTheScreen( X , Y: Integer ): Boolean;
 		{ This function returns TRUE if the specified point is visible }
@@ -680,7 +680,7 @@ const
 	begin
 		SX := ScreenX( X , Y );
 		SY := ScreenY( X , Y );
-		if ( SX >= ( -64 ) ) and ( SX <= ( ScreenWidth ) ) and ( SY >= -64 ) and ( SY <= ( ScreenHeight ) ) then begin
+		if ( SX >= ( -64 ) ) and ( SX <= ( Game_Screen^.W ) ) and ( SY >= -64 ) and ( SY <= ( Game_Screen^.H ) ) then begin
 			OnTheScreen := True;
 		end else begin
 			OnTheScreen := False;
@@ -886,8 +886,8 @@ begin
 				{ as the origin. }
 				{ ***NOTE*** Lifted directly from GH1, don't fully understand }
 				{  everything going on here, let's hope it works. }
-				MyDest.X := ScreenX( VX , VY ) - ( ScreenWidth div 2 );
-				MyDest.Y := ScreenY( VX , VY ) - ( ScreenHeight div 2 );
+				MyDest.X := ScreenX( VX , VY ) - ( Game_Screen^.W div 2 );
+				MyDest.Y := ScreenY( VX , VY ) - ( Game_Screen^.H div 2 );
 
 				{ Use W to save the segment total length, and H to store the }
 				{ relative length. }

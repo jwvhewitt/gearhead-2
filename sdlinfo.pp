@@ -602,8 +602,8 @@ begin
 	MyDest.Y := Mouse_Y + 8;
 	MyDest.W := Model_Status_Width;
 	MyDest.H := Model_Status_Height;
-	if ( MyDest.X + MyDest.W ) > ( ScreenWidth - 10 ) then MyDest.X := MyDest.X - MyDest.W - 32;
-	if ( MyDest.Y + MyDest.H ) > ( ScreenHeight - 10 ) then MyDest.Y := MyDest.Y - MyDest.H - 32;
+	if ( MyDest.X + MyDest.W ) > ( Game_Screen^.W - 10 ) then MyDest.X := MyDest.X - MyDest.W - 32;
+	if ( MyDest.Y + MyDest.H ) > ( Game_Screen^.H - 10 ) then MyDest.Y := MyDest.Y - MyDest.H - 32;
 	DisplayModelStatus( GB , M , MyDest );
 end;
 

@@ -94,6 +94,7 @@ var
 				{ generic commands. }
 
 	lancemate_tactics_persona: GearPtr;	{ Persona for setting lancemate tactics. }
+    BLANK_PERSONA: GearPtr;         { Simple persona for default NPCs. }
 	rumor_leads: GearPtr;			{ Mini-conversations for finding rumors. }
 
     NeedGC: Boolean;
@@ -5624,7 +5625,8 @@ begin
 
 	{ Since the conversation can be switched by REVERTPERSONA and maybe some other }
 	{ effects, from this point onwards use I_PERSONA rather than PERSONA. }
-	I_Persona := Persona;
+	if Persona <> Nil then I_Persona := Persona
+    else I_Persona := BLANK_PERSONA;
 
 	{ Add a divider to the skill roll history. }
 	SkillCommentDivider;
@@ -5721,13 +5723,6 @@ begin
 		{ Overchatting is a SOCIABLE action. }
 		AddReputation( PC , 3 , 1 );
 	end;
-
-	{ After the conversation is over, prune any ABSOLUTELYNOTHINGs that may }
-	{ have popped up. }
-	{if I_Persona <> Nil then begin
-		Persona := FindRoot( I_Persona );
-		PruneNothings( Persona );
-	end;}
 
 	{ Set the ReTalk value. }
 	{ Base retalk time is 1500 ticks; may be raised or lowered depending }
@@ -6104,6 +6099,7 @@ initialization
 	Default_Scene_Scripts := LoadStringList( Data_Directory + 'scene.txt' );
 
 	lancemate_tactics_persona := LoadFile( 'lmtactics.txt' , Data_Directory );
+	BLANK_PERSONA := LoadFile( 'blankpersona.txt' , Data_Directory );
 	rumor_leads := LoadFile( 'rumor_leads.txt' , Data_Directory );
 
 	local_triggers := Nil;
@@ -6122,6 +6118,7 @@ finalization
 	DisposeSAtt( Value_Macros );
 	DisposeSAtt( Default_Scene_Scripts );
 	DisposeGear( lancemate_tactics_persona );
+	DisposeGear( BLANK_PERSONA );
 	DisposeGear( rumor_leads );
 	if local_triggers <> Nil then DisposeSATt( local_triggers );
 end.

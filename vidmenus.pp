@@ -250,7 +250,7 @@ begin
 	{Initialize the elements of the record.}
 	it^.itemcolor := icolor;
 	it^.selcolor := scolor;
-	it^.Menu_Zone := ZoneToRect( Z );
+	it^.Menu_Zone := Z.GetRect();
 	it^.Desc_Zone.W := 0; {A width value of 0 means there is no desc window.}
 	it^.Mode := RPMNormal;
 	it^.FirstItem := Nil;
@@ -274,7 +274,7 @@ end;
 Procedure AttachMenuDesc( RPM: RPGMenuPtr; Z: vgfx_zone );
 	{ Set the area for description items to zone Z. }
 begin
-	RPM^.Desc_Zone := ZoneToRect( Z );
+	RPM^.Desc_Zone := Z.GetRect();
 end;
 
 Procedure DisposeRPGMenu(var RPM: RPGMenuPtr);

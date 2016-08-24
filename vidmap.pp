@@ -472,7 +472,7 @@ var
 	MyDest: VGFX_Rect;
 	M: GearPtr;
 begin
-	MyDest := ZoneToRect( ZONE_WorldMap );
+	MyDest := ZONE_WorldMap.GetRect();
 	ClrZone( MyDest );
 	InfoBox( MyDest );
 

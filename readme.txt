@@ -8,21 +8,17 @@ tensions are running high and it looks like war is inevitable.
 
 GH2 is released under the terms of the LGPL; see license.txt for more details.
 
-To run the SDL version you need to have SDL, SDL_Image, SDL_ttf, and
-OpenGL installed. The precompiled Windows releases come with all needed
-dlls.
+To run the SDL version you need to have SDL, SDL_Image, and SDL_ttf installed.
+The precompiled Windows releases come with all needed dlls.
 
-As of v0.620 the SDL package comes with three executables:
+As of v0.630 the SDL package comes with two executables:
 
-  gearhead     - The 3D graphical version.
-  gearhead_2d  - A 2D isometric version, useful if your computer doesn't
-                 support OpenGL or if you just prefer the look.
+  gearhead2    - The 2D graphical version.
   cosplay2     - A color testing program. You can view the game images and
                  change their colors.
 
-For help with the game you can visit either the GearHead wiki or the forum:
-  Wiki:   http://gearhead.chaosforge.org/wiki/
-  Forum:  http://gearhead.chaosforge.org/forum/
+For help with the game you can visit the GearHead homepage:
+  http://gearheadrpg.com
 
 You can also contact the developer at pyrrho12@yahoo.ca.
 
@@ -91,22 +87,34 @@ The game seems to be more stable in a window than it is running fullscreen.
 ***   COMPILING   ***
 *********************
 
-First of all you need FreePascal, available from www.freepascal.org.
-To compile with graphics on Windows you also need the Jedi-SDL package,
-available from here: http://sourceforge.net/projects/jedi-sdl/
+First, you need a copy of the source code. If you are reading this you probably
+already have it. Next, you need to install FreePascal and the SDL 1.2 libraries.
+Open a terminal in the folder with the source code and type:
 
-On Linux, the SDL units come with the fpc compiler. Lucky you. Make sure that
-you have libsdl, libsdl_image, and libsdl_ttf installed if you plan to use the
-graphics version.
+    fpc gearhead2
 
-The default graphics mode is OpenGL. The game may be compiled to run in a
-terminal window by setting the -dASCII command line switch. The game may also
-be compiled in a less resource-intensive 2D graphical interface by setting the
--dCUTE command line switch.
+For the ASCII version, just type:
 
+    fpc -dASCII gearhead2
 
-Just type "ppc386 gearhead" and the program should compile.
-To get the ASCII version, type "ppc386 -dASCII gearhead".
+Ignore the notes and warnings. If everything you need has already been
+installed, that should be it.
+
+Windows Notes:
+- You need to download the 32 bit binaries for SDL 1.2, SDL_TTF for
+SDL 1.2, and SDL_IMAGE for SDL 1.2. Put the .dll files in the same folder
+as gharena.exe. You should download the 32 bit versions since it seems that
+FPC compiles to a 32 bit target on Windows by default, and these will run on a
+64 bit system just fine. There's probably some way to get a 64 bit executable;
+if you figure it out, let me know.
+- To open a terminal in a Windows folder, press shift and right click in the
+folder window. The option to open a terminal should be there. Alternatively,
+install Git for Windows and open a Git Bash shell by right clicking without
+shift.
+
+Linux Notes:
+- You need the packages libsdl1.2, libsdl1.2-dev, libsdl-image1.2,
+libsdl-image1.2dev, libsdl-ttf2.0-0, and libsdl-ttf2.0-0dev.
 
 If you get a blue screen and no graphics, try uncommenting Revert_Slower_Safer
 in gearhead.cfg.

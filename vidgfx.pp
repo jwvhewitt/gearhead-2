@@ -31,9 +31,10 @@ Type
 		X,Y,W,H: Byte;
 	end;
 
-	vgfx_zone = Record
+	vgfx_zone = Object
 		X_Anchor,X_Justify,W: Integer;
 		Y_Anchor,Y_Justify,H: Integer;
+        function GetRect: VGFX_Rect;
 	end;
 
 
@@ -341,7 +342,6 @@ Procedure TextBackground( C: Byte );
 Procedure TextOut(X,Y : Word;Const S : String);
 Procedure ClipZone( Z: vgfx_rect );
 Procedure MaxClipZone;
-Function ZoneToRect( Z: VGFX_Zone ): VGFX_Rect;
 Procedure DrawGlyph( img: Char; X,Y,FG,BG: Byte );
 
 Procedure GameMSG( msg: string; Z: vgfx_rect; C: Byte );
@@ -376,6 +376,29 @@ Procedure SetupTitleScreenDisplay;
 
 
 implementation
+
+Function VGFX_Zone.GetRect(): VGFX_Rect;
+	{ Convert the provided zone to a rect. }
+var
+	it: VGFX_Rect;
+begin
+	it.W := Self.W;
+	it.H := Self.H;
+	case Self.X_Anchor of
+		ANC_Low:	it.X := 1;
+		ANC_Mid:	it.X := ScreenColumns div 2;
+		ANC_High:	it.X := ScreenColumns;
+	end;
+	it.X := it.X + Self.X_Justify;
+	case Self.Y_Anchor of
+		ANC_Low:	it.Y := 1;
+		ANC_Mid:	it.Y := ScreenRows div 2;
+		ANC_High:	it.Y := ScreenRows;
+	end;
+	it.Y := it.Y + Self.Y_Justify;
+	GetRect := it;
+end;
+
 
 Procedure DoFlip;
 	{ Update the screen. }
@@ -606,28 +629,6 @@ begin
 	InC( vg_y );
 end;
 
-Function ZoneToRect( Z: VGFX_Zone ): VGFX_Rect;
-	{ Convert the provided zone to a rect. }
-var
-	it: VGFX_Rect;
-begin
-	it.W := Z.W;
-	it.H := Z.H;
-	case Z.X_Anchor of
-		ANC_Low:	it.X := 1;
-		ANC_Mid:	it.X := ScreenColumns div 2;
-		ANC_High:	it.X := ScreenColumns;
-	end;
-	it.X := it.X + Z.X_Justify;
-	case Z.Y_Anchor of
-		ANC_Low:	it.Y := 1;
-		ANC_Mid:	it.Y := ScreenRows div 2;
-		ANC_High:	it.Y := ScreenRows;
-	end;
-	it.Y := it.Y + Z.Y_Justify;
-	ZoneToRect := it;
-end;
-
 Procedure GameMSG( msg: string; Z: vgfx_rect; C: Byte );
 	{Prettyprint the string MSG with color C in screen zone Z.}
 var
@@ -688,7 +689,7 @@ end;
 Procedure GameMSG( msg: string; Z: vgfx_zone; C: Byte );
 	{ Convert the zone to a rect and send it to the above procedure. }
 begin
-	GameMsg( msg , ZoneToRect( Z ) , C );
+	GameMsg( msg , Z.GetRect() , C );
 end;
 
 Procedure CMessage( const msg: String; Z: VGFX_Rect; C: Byte );
@@ -714,7 +715,7 @@ end;
 Procedure CMessage( const msg: String; Z: VGFX_Zone; C: Byte );
 	{ Convert the zone to a rect, and print the message. }
 begin
-	CMessage( msg , ZoneToRect( Z ) , C );
+	CMessage( msg , Z.GetRect() , C );
 end;
 
 Procedure RedrawConsole;
@@ -950,7 +951,7 @@ end;
 Procedure SetupInteractDisplay( C: Byte );
 	{ Draw the backpack border. }
 begin
-	ClrZone( ZoneToRect( ZONE_InteractTotal ) );
+	ClrZone( ZONE_InteractTotal.GetRect() );
 	InfoBox( ZONE_InteractTotal );
 end;
 
@@ -994,7 +995,7 @@ Procedure InfoBox( Z: VGFX_Zone );
 var
 	MyDest: VGFX_Rect;
 begin
-	MyDest := ZoneToRect( Z );
+	MyDest := Z.GetRect();
 	InfoBox( MyDest );
 end;
 
@@ -1003,7 +1004,7 @@ Procedure ClockBorder;
 var
 	MyDest: VGFX_Rect;
 begin
-	MyDest := ZoneToRect( ZONE_Clock );
+	MyDest := ZONE_Clock.GetRect();
 	DrawGlyph( '[' , MyDest.X - 1 , MyDest.Y , BorderBlue , Black );
 	DrawGlyph( ']' , MyDest.X + MyDest.W + 1 , MyDest.Y , BorderBlue , Black );
 end;
@@ -1042,7 +1043,8 @@ begin
 	InfoBox( ZONE_Title_Screen_Top );
 	InfoBox( ZONE_Title_Screen_Menu );
 	CMessage( 'GearHead II' , ZONE_Title_Screen_Title , StdWhite );
-end;
+end;
+
 
 
 initialization

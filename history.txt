@@ -1,3 +1,8 @@
+- String input routine now uses DynamicRect (sdlgfx.pp)
+- SDL screen now resizable (sdlgfx.pp)
+- VGFX_Zone changed to object with GetRect method (vidgfx.pp)
+- Fixed "Ask About Rumors" abrupt conversation end (arenascript.pp)
+
 0.630   June 30 2016
 - Fixed shopkeepers never changing wares bug (services.pp)
 - Added more item sprites by Francisco Munoz

@@ -45,6 +45,11 @@ Type
 
 	RedrawProcedureType = Procedure;
 
+    DynamicRect = Object
+        dx,dy,w,h,anchor: Integer;
+        function GetRect: TSDL_Rect;
+    end;
+
 
 const
 	Avocado: TSDL_Color =		( r:136; g:141; b:101 );
@@ -79,11 +84,20 @@ const
 
 	Right_Column_Width = 180;
 
+    ANC_upperleft = 0;
+    ANC_upper = 1;
+    ANC_upperright = 2;
+    ANC_left = 3;
+    ANC_middle = 4;
+    ANC_right = 5;
+    ANC_lowerleft = 6;
+    ANC_lower = 7;
+    ANC_lowerright = 8;
 
-	ZONE_TextInputPrompt: TSDL_Rect = ( x:screenwidth div 2 - 210; y: screenheight div 2 - 35; w:420; h:30 );
-	ZONE_TextInput: TSDL_Rect = ( x:screenwidth div 2 - 210; y:screenheight div 2 + 5; w:420; h:30 );
-	ZONE_TextInputBigBox: TSDL_Rect = ( x:screenwidth div 2 - 220; y:screenheight div 2 - 45; w:440; h:90 );
-	ZONE_TextInputSmallBox: TSDL_Rect = ( x:screenwidth div 2 - 215; y:screenheight div 2; w:430; h:40 );
+	ZONE_TextInputPrompt: DynamicRect = ( dx:-210; dy:-51; w:420; h:16; anchor: ANC_middle );
+	ZONE_TextInput: DynamicRect = ( dx:-210; dy:-27; w:420; h:16; anchor: ANC_middle );
+	ZONE_TextInputBigBox: DynamicRect = ( dx:-220; dy:-61; w:440; h:56; anchor: ANC_middle );
+    ZONE_PhoneInstructions: DynamicRect = ( dx:-200; dy:15; w:400; h:16; anchor: ANC_middle );
 
 	Model_Status_Width =   250;
 	Model_Status_Height =  120;
@@ -283,11 +297,25 @@ Procedure SetupTitleScreenDisplay;
 implementation
 
 const
-	WindowName: PChar = 'GearHead II (2D Version)';
+	WindowName: PChar = 'GearHead II';
 	IconName: PChar = 'GearHead II';
 
 var
 	Infobox_Border,Infobox_Backdrop: SensibleSpritePtr;
+
+Function DynamicRect.GetRect: TSDL_Rect;
+    { Return the TSDL_Rect described by this DynamicRect, given the current }
+    { screen size. }
+var
+    MyRect: TSDL_Rect;
+begin
+    MyRect.W := Self.W;
+    MyRect.H := Self.H;
+    MyRect.X := Game_Screen^.W * (self.anchor mod 3) div 2 + Self.DX;
+    MyRect.Y := Game_Screen^.H * (self.anchor div 3) div 2 + Self.DY;
+    GetRect := MyRect;
+end;
+
 
 Procedure DoFlip;
 	{ Flip out, man! This flips from the newly drawn screen to the physical screen. }
@@ -679,6 +707,8 @@ var
 	event : TSDL_Event;
 	Procedure ProcessThatEvent;
 		{ An event has been recieved. Process it. }
+    var
+        width,height: Integer;
 	begin
 		if event.type_ = SDL_KEYDOWN then begin
 			{ Check to see if it was an ASCII character we recieved. }
@@ -701,13 +731,21 @@ var
 			end;
 
 		end else if ( event.type_ = SDL_MOUSEButtonDown ) then begin
-			{ Return a mousebutton event, and call GHFlip to set the mouse position }
+			{ Return a mousebutton event, and call DoFlip to set the mouse position }
 			{ variables. }
 			if event.button.button = SDL_BUTTON_LEFT then begin
 				a := RPK_MouseButton;
 			end else if event.button.button = SDL_BUTTON_RIGHT then begin
 				a := RPK_RightButton;
 			end;
+
+        end else if event.type_ = SDL_VIDEORESIZE then begin
+            width := event.resize.w;
+            if width < 800 then width := 800;
+            height := event.resize.h;
+            if height < 600 then height := 600;
+            Game_Screen := SDL_SetVideoMode(width, height, 0, SDL_HWSURFACE or SDL_DoubleBuf or SDL_RESIZABLE );
+
 		end;
 	end;
 var
@@ -939,27 +977,30 @@ end;
 Function GetStringFromUser( Prompt: String; ReDrawer: RedrawProcedureType ): String;
 	{ Does what it says. }
 const
-	AllowableCharacters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 1234567890()-=_+,.?"';
+	AllowableCharacters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 1234567890()-=_+,.?"*';
 	MaxInputLength = 80;
 var
 	A: Char;
 	it: String;
-	MyDest: TSDL_Rect;
+	MyBigBox,MyInputBox,MyDest: TSDL_Rect;
 begin
 	{ Initialize string. }
 	it := '';
 
 	repeat
+        MyBigBox := ZONE_TextInputBigBox.GetRect();
+        MyInputBox := ZONE_TextInput.GetRect();
+
 		{ Set up the display. }
 		if ReDrawer <> Nil then ReDrawer;
-		ClearExtendedBorder( ZONE_TextInputBigBox );
-		SDL_FillRect( game_screen , @ZONE_TextInputBigBox , SDL_MapRGB( Game_Screen^.Format , BorderBlue.R , BorderBlue.G , BorderBlue.B ) );
-		SDL_FillRect( game_screen , @ZONE_TextInputSmallBox , SDL_MapRGB( Game_Screen^.Format , StdBlack.R , StdBlack.G , StdBlack.B ) );
+		InfoBox( MyBigBox );
+		{SDL_FillRect( game_screen , @MyBigBox , SDL_MapRGB( Game_Screen^.Format , BorderBlue.R , BorderBlue.G , BorderBlue.B ) );}
+		SDL_FillRect( game_screen , @MyInputBox , SDL_MapRGB( Game_Screen^.Format , StdBlack.R , StdBlack.G , StdBlack.B ) );
 
-		CMessage( Prompt , ZONE_TextInputPrompt , StdWhite );
-		CMessage( it , ZONE_TextInput , InfoGreen );
-		MyDest.Y := ZONE_TextInput.Y + 2;
-		MyDest.X := ZONE_TextInput.X + ( ZONE_TextInput.W div 2 ) + ( TextLength( Game_Font , it ) div 2 );
+		CMessage( Prompt , ZONE_TextInputPrompt.GetRect() , StdWhite );
+		CMessage( it , MyInputBox , InfoGreen );
+		MyDest.Y := MyInputBox.Y + 2;
+		MyDest.X := MyInputBox.X + ( MyInputBox.W div 2 ) + ( TextLength( Game_Font , it ) div 2 );
 		DrawSprite( Cursor_Sprite , MyDest , ( Animation_Phase div 2 ) mod 4 );
 
 		DoFlip;
@@ -974,6 +1015,7 @@ begin
 
 	GetStringFromUser := it;
 end;
+
 
 Function MoreHighFirstLine( LList: SAttPtr ): Integer;
 	{ Determine the highest possible FirstLine value. }
@@ -1349,7 +1391,7 @@ initialization
 		Game_Screen := SDL_SetVideoMode(ScreenWidth, ScreenHeight, 32, SDL_DOUBLEBUF or SDL_FULLSCREEN );
 	end else begin
 {		Game_Screen := SDL_SetVideoMode(ScreenWidth, ScreenHeight, 0, SDL_DOUBLEBUF or SDL_HWSURFACE );}
-		Game_Screen := SDL_SetVideoMode(ScreenWidth, ScreenHeight, 0, SDL_DOUBLEBUF );
+		Game_Screen := SDL_SetVideoMode(ScreenWidth, ScreenHeight, 0, SDL_HWSURFACE or SDL_DoubleBuf or SDL_RESIZABLE );
 	end;
 
 	if Ersatz_Mouse then SDL_ShowCursor( SDL_Disable );
