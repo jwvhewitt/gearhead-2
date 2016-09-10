@@ -4,7 +4,7 @@ unit sdlmenus;
 	{ BUGS - If SelectMenu is handed an empty menu, all heck will }
 	{  break loose. This can be a particular problem for SelectFile. }
 {
-	GearHead2, a roguelike mecha CRPG
+	GearHead: Arena, a roguelike mecha CRPG
 	Copyright (C) 2005 Joseph Hewitt
 
 	This library is free software; you can redistribute it and/or modify it
@@ -23,19 +23,20 @@ unit sdlmenus;
 	along with this library; if not, write to the Free Software Foundation,
 	Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
 }
-{$LONGSTRINGS ON}
 
 interface
 
-uses sdl,sdl_ttf,dos,texutil,ui4gh,sdlgfx;
-
+{$IFDEF PLUSGL}
+uses SDL,SDL_TTF,dos,glgfx,texutil,ui4gh;
+{$ELSE}
+uses SDL,SDL_TTF,dos,sdlgfx,texutil,ui4gh;
+{$ENDIF}
 
 const
 	{These two constants are used to tell the SELECT procedure whether or not}
 	{the user is allowed to cancel.}
 	RPMNormal = 0;
 	RPMNoCancel = 1;
-	RPMEscCancel = 2;	{ Menu can be cancelled, but not by mouse click. }
 
 	RPMNoCleanup = 2; {If you want the menu left on the screen after we've finished, use this.}
 
@@ -43,23 +44,23 @@ type
 	RPGMenuKeyPtr = ^RPGMenuKey;
 	RPGMenuKey = Record
 		k: Char;
-		value: longint;		{The value returned when this key is pressed.}
+		value: integer;		{The value returned when this key is pressed.}
 		next: RPGMenuKeyPtr;
 	end;
 
 	RPGMenuItemPtr = ^RPGMenuItem;
 	RPGMenuItem = Record
 		msg: string;		{The text which appears in the menu}
-		value: longint;		{A value, returned by SelectMenu. -1 is reserved for Cancel}
+		value: integer;		{A value, returned by SelectMenu. -1 is reserved for Cancel}
 		desc: string;		{Pointer to the item description. If Nil, no desc.}
 		next: RPGMenuItemPtr;
 	end;
 	RPGMenu = Record
 		active: boolean;
 		itemcolor,selcolor,dtexcolor: TSDL_Color;
-		Menu_Zone,Desc_Zone: TSDL_Rect;
+		Menu_Zone,Desc_Zone: DynamicRect;
 		mode: Byte;
-		topitem,selectitem,numitem: longint; {fields holding info about the status of the menu.}
+		topitem,selectitem,numitem: integer; {fields holding info about the status of the menu.}
 		FirstItem: RPGMenuItemPtr;
 		FirstKey: RPGMenuKeyPtr;
 	end;
@@ -67,30 +68,28 @@ type
 
 
 
-Function AddRPGMenuItem(var RPM: RPGMenuPtr; const msg: string; value: longint; const desc: string): RPGMenuItemPtr;
-Function AddRPGMenuItem(var RPM: RPGMenuPtr; const msg: string; value: longint): RPGMenuItemPtr;
+Function AddRPGMenuItem(var RPM: RPGMenuPtr; const msg: string; value: integer; const desc: string): RPGMenuItemPtr;
+Function AddRPGMenuItem(var RPM: RPGMenuPtr; const msg: string; value: integer): RPGMenuItemPtr;
 Procedure DisposeRPGMenuItem( var LList: RPGMenuItemPtr );
 Procedure ClearMenu( RPM: RPGMenuPtr );
 Procedure RemoveRPGMenuItem(RPM: RPGMenuPtr; var LMember: RPGMenuItemPtr);
 
-Procedure AddRPGMenuKey(RPM: RPGMenuPtr; k: Char; value: longint);
-Function CreateRPGMenu(icolor,scolor: TSDL_Color; Z: TSDL_Rect): RPGMenuPtr;
-Procedure AttachMenuDesc( RPM: RPGMenuPtr; Z: TSDL_Rect );
+Procedure AddRPGMenuKey(RPM: RPGMenuPtr; k: Char; value: Integer);
+Function CreateRPGMenu(icolor,scolor: TSDL_Color; Z: DynamicRect): RPGMenuPtr;
+Procedure AttachMenuDesc( RPM: RPGMenuPtr; Z: DynamicRect );
 
 Procedure DisposeRPGMenu(var RPM: RPGMenuPtr);
 Procedure DisplayMenu( RPM: RPGMenuPtr; ReDrawer: RedrawProcedureType );
-Function RPMLocateByPosition(RPM: RPGMenuPtr; i: longint): RPGMenuItemPtr;
-Function RPMLocateByValue(RPM: RPGMenuPtr; i: longint): RPGMenuItemPtr;
-Function SelectMenu( RPM: RPGMenuPtr; ReDrawer: RedrawProcedureType ): longint;
+Function RPMLocateByPosition(RPM: RPGMenuPtr; i: integer): RPGMenuItemPtr;
+Function SelectMenu( RPM: RPGMenuPtr; ReDrawer: RedrawProcedureType ): integer;
 Procedure RPMSortAlpha(RPM: RPGMenuPtr);
 
 Function CurrentMenuItemValue( RPM: RPGMenuPtr ): longint;
-Function SetItemByValue( RPM: RPGMenuPtr ; V: longint ): RPGMenuItemPtr;
-Procedure SetItemByPosition( RPM: RPGMenuPtr ; N: longint );
+Function SetItemByValue( RPM: RPGMenuPtr ; V: Integer ): RPGMenuItemPtr;
+Procedure SetItemByPosition( RPM: RPGMenuPtr ; N: Integer );
 
 Procedure BuildFileMenu( RPM: RPGMenuPtr; const SearchPattern: String );
 Function SelectFile( RPM: RPGMenuPtr; ReDrawer: RedrawProcedureType ): String;
-
 
 implementation
 
@@ -107,7 +106,7 @@ begin
 	LastMenuItem := MIList;
 end;
 
-Function AddRPGMenuItem(var RPM: RPGMenuPtr; const msg: string; value: longint; const desc: string): RPGMenuItemPtr;
+Function AddRPGMenuItem(var RPM: RPGMenuPtr; const msg: string; value: integer; const desc: string): RPGMenuItemPtr;
 	{This procedure will add an item to the RPGToolMenu.}
 	{The new item will be added as the last item in the list.}
 var
@@ -145,7 +144,7 @@ begin
 	AddRPGMenuItem := it;
 end;
 
-Function AddRPGMenuItem(var RPM: RPGMenuPtr; const msg: string; value: longint): RPGMenuItemPtr;
+Function AddRPGMenuItem(var RPM: RPGMenuPtr; const msg: string; value: integer): RPGMenuItemPtr;
 	{ Just like the above, but no desc. }
 begin
 	AddRPGMenuItem := AddRPGMenuItem( RPM , msg , value , '' );
@@ -183,9 +182,6 @@ Procedure RemoveRPGMenuItem(RPM: RPGMenuPtr; var LMember: RPGMenuItemPtr);
 var
 	a,b: RPGMenuItemPtr;
 begin
-	{ Make sure LMember isn't Nil }
-	if LMember = Nil then Exit;
-
 	{Initialize A and B}
 	B := RPM^.FirstItem;
 	A := Nil;
@@ -220,7 +216,7 @@ begin
 	Dec(RPM^.NumItem);
 end;
 
-Procedure AddRPGMenuKey(RPM: RPGMenuPtr; k: Char; value: longint);
+Procedure AddRPGMenuKey(RPM: RPGMenuPtr; k: Char; value: Integer);
 	{Add a dynamically defined RPGMenuKey to the menu.}
 var
 	it: RPGMenuKeyPtr;
@@ -237,7 +233,7 @@ begin
 	RPM^.FirstKey := it;
 end;
 
-Function CreateRPGMenu(icolor,scolor: TSDL_Color; Z: TSDL_Rect): RPGMenuPtr;
+Function CreateRPGMenu(icolor,scolor: TSDL_Color; Z: DynamicRect): RPGMenuPtr;
 	{This function creates a new RPGMenu record, and returns the address.}
 var
 	it: ^RPGMenu;			{Here's a pointer for the menu we're making.}
@@ -272,7 +268,7 @@ begin
 	CreateRPGMenu := it;
 end;
 
-Procedure AttachMenuDesc( RPM: RPGMenuPtr; Z: TSDL_Rect );
+Procedure AttachMenuDesc( RPM: RPGMenuPtr; Z: DynamicRect );
 	{ Set the area for description items to zone Z. }
 begin
 	RPM^.Desc_Zone := Z;
@@ -304,11 +300,11 @@ begin
 	end;
 end;
 
-Function RPMLocateByPosition(RPM: RPGMenuPtr; i: longint): RPGMenuItemPtr;
+Function RPMLocateByPosition(RPM: RPGMenuPtr; i: integer): RPGMenuItemPtr;
 	{Locate the i'th element of the item list, then return its address.}
 var
 	a: RPGMenuItemPtr;	{Our pointer}
-	t: longint;		{Our counter}
+	t: integer;		{Our counter}
 begin
 	{Error check, first off.}
 	if i > RPM^.numitem then begin
@@ -326,26 +322,10 @@ begin
 	RPMLocateByPosition := a;
 end;
 
-Function RPMLocateByValue(RPM: RPGMenuPtr; i: longint): RPGMenuItemPtr;
-	{Locate the i'th element of the item list, then return its address.}
-var
-	t,a: RPGMenuItemPtr;	{Our counter and a pointer}
-begin
-	a := Nil;
-	t := RPM^.FirstItem;
-
-	while ( a = Nil ) and ( t <> Nil ) do begin
-		if t^.value = i then a := t;
-		t := t^.Next;
-	end;
-
-	RPMLocateByValue := a;
-end;
-
-Function MenuHeight( RPM: RPGMenuPtr ): longint;
+Function MenuHeight( RPM: RPGMenuPtr ): Integer;
 	{ Return the height of the menu, in text rows. }
 var
-	MH: longint;
+	MH: Integer;
 begin
 	MH := ( RPM^.Menu_Zone.h div TTF_FontLineSkip( game_font ) );
 	if MH < 1 then MH := 1;
@@ -357,7 +337,7 @@ Procedure RPMRefreshDesc(RPM: RPGMenuPtr);
 begin
 	{Check to make sure that this menu has a description box, first off.}
 	if RPM^.Desc_Zone.W > 0 then begin
-		CMessage( RPMLocateByPosition(RPM,RPM^.selectitem)^.desc , RPM^.Desc_Zone , RPM^.dtexcolor );
+		CMessage( RPMLocateByPosition(RPM,RPM^.selectitem)^.desc , RPM^.Desc_Zone.GetRect() , RPM^.dtexcolor );
 	end;
 end;
 
@@ -366,11 +346,13 @@ Procedure DisplayMenu( RPM: RPGMenuPtr; ReDrawer: RedrawProcedureType );
 var
 	topitem: RPGMenuItemPtr;
 	a: RPGMenuItemPtr;		{A pointer to be used while printing.}
-	t: longint;
-	height: longint;		{The width of the menu display.}
-	NextColor: TSDL_Color;
-	MyDest: TSDL_Rect;
-	Y,DY: longint;
+	t: integer;
+	height: integer;		{The width of the menu display.}
+	NextColor: PSDL_Color;
+	Item_Image: PSDL_Surface;
+	Item_PText: PChar;
+	MyRect,MyDest: TSDL_Rect;
+	Y,DY: Integer;
 begin
 	{Error check- make sure the menu has items in it.}
 	if RPM^.FirstItem = Nil then Exit;
@@ -378,7 +360,8 @@ begin
 	{ If a redraw procedure has been specified, call it. }
 	if ReDrawer <> Nil then ReDrawer;
 
-	SDL_SetClipRect( Game_Screen , @RPM^.Menu_Zone );
+    MyRect := RPM^.Menu_Zone.GetRect();
+	SDL_SetClipRect( Game_Screen , @MyRect );
 
 	{Calculate the height of the menu.}
 	height := MenuHeight( rpm );
@@ -386,8 +369,8 @@ begin
 	{Locate the top of the menu.}
 	topitem := RPMLocateByPosition(RPM,RPM^.topitem);
 
-	MyDest.X := RPM^.Menu_Zone.X;
-	Y := RPM^.Menu_Zone.Y;
+	MyDest.X := MyRect.X;
+	Y := MyRect.Y;
 	DY := TTF_FontLineSkip( game_font );
 	MyDest.W := RPM^.Menu_Zone.W;
 
@@ -398,11 +381,19 @@ begin
 
 		{If we're at the currently selected item, highlight it.}
 		if ((t + RPM^.topitem - 1) = RPM^.selectitem) and RPM^.Active then
-			NextColor := RPM^.selcolor
+			NextColor := @RPM^.selcolor
 		else
-			NextColor := RPM^.itemcolor;
+			NextColor := @RPM^.itemcolor;
 
-		QuickText( a^.msg , MyDest , NextColor , game_font );
+		Item_PText := QuickPCopy( a^.msg );
+		Item_Image := TTF_RenderText_Solid( game_font , Item_PText , NextColor^ );
+		Dispose( Item_PText );
+        {$IFDEF LINUX}
+	    if Item_Image <> Nil then SDL_SetColorKey( Item_Image , SDL_SRCCOLORKEY , SDL_MapRGB( Item_Image^.Format , 0 , 0, 0 ) );
+        {$ENDIF}
+
+		SDL_BlitSurface( Item_Image , Nil , Game_Screen , @MyDest );
+		SDL_FreeSurface( Item_Image );
 
 		a := a^.next;
 
@@ -498,17 +489,18 @@ begin
 end;
 
 
-Function SelectMenu( RPM: RPGMenuPtr; ReDrawer: RedrawProcedureType ): longint;
+Function SelectMenu( RPM: RPGMenuPtr; ReDrawer: RedrawProcedureType ): integer;
 	{This function will allow the user to browse through the menu and will}
 	{return a value based upon the user's selection.}
 var
 	getit: char;		{Character used to store user input}
-	r,I: longint;		{The value we'll be sending back.}
+	r,I: integer;		{The value we'll be sending back.}
 	m: RPGMenuKeyPtr;
 	UK: Boolean;		{Has a special MenuKey been pressed?}
-	OldMouseX, OldMouseY: longint; { TUNGINOBI: I got sick of the mouse cursor getting }
+	OldMouseX, OldMouseY: Integer; { TUNGINOBI: I got sick of the mouse cursor getting }
                           { in the way of the keyboard, so this will only }
                           { change the menu item if the mouse has moved. }
+    MyRect: TSDL_Rect;
 begin
 	{The menu is now active!}
 	RPM^.Active := True;
@@ -523,12 +515,11 @@ begin
 	{Initialize UK}
 	UK := False;
 
+    MyRect := RPM^.Menu_Zone.GetRect();
+
 	{Start the loop. Remain in this loop until either the player makes a selection}
 	{or cancels the menu using the ESC key.}
 	repeat
-		DisplayMenu(RPM,ReDrawer);
-		DoFlip;
-
 		{Read the input from the keyboard.}
 		getit := RPGKey;
 
@@ -538,16 +529,19 @@ begin
 			RPK_Up: RPMUpKey( RPM , True );
 			RPK_Down: RPMDownKey( RPM , True );
 			RPK_TimeEvent:
-				if Mouse_Active then begin
+				begin
+		            DisplayMenu(RPM,ReDrawer);
+            		DoFlip;
+
 					{ If the mouse pointer is around }
 					{ the menu, we may have to do something. }
-					if ( Mouse_X >= RPM^.Menu_Zone.X ) and ( Mouse_X <= ( RPM^.Menu_Zone.X + RPM^.Menu_Zone.W ) ) and (( Mouse_X <> OldMouseX ) or ( Mouse_Y <> OldMouseY )) then begin
-						if ( Mouse_Y < ( RPM^.Menu_Zone.Y ) ) then begin
+					if Mouse_Active and ( Mouse_X >= MyRect.X ) and ( Mouse_X <= ( MyRect.X + MyRect.W ) ) and (( Mouse_X <> OldMouseX ) or ( Mouse_Y <> OldMouseY )) then begin
+						if ( Mouse_Y < ( MyRect.Y ) ) then begin
 							if ( RPM^.SelectItem > 1 ) then RPMUpKey( RPM , False );
-						end else if ( Mouse_Y > ( RPM^.Menu_Zone.Y + RPM^.Menu_Zone.H ) ) then begin
+						end else if ( Mouse_Y > ( MyRect.Y + MyRect.H ) ) then begin
 							if ( (RPM^.selectitem - RPM^.topitem) < MenuHeight( RPM ) ) and ( RPM^.selectitem < RPM^.numitem ) then RPMDownKey( RPM , False );
 						end else begin
-							I := ( Mouse_Y - RPM^.Menu_Zone.Y ) div TTF_FontLineSkip( game_font );
+							I := ( Mouse_Y - MyRect.Y ) div TTF_FontLineSkip( game_font );
 							SetItemByPosition( RPM , RPM^.TopItem + I );
 							{ Upon setting an item directly, freeze the mouse. }
 							OldMouseX := Mouse_X;
@@ -556,17 +550,19 @@ begin
 					end;
 				end;
 			RPK_MouseButton:
-				{ If the mouse hit happened inside }
-				{ the menu area, it was a selection. }
-				{ Otherwise it was a cancel. }
-				if ( Mouse_X >= RPM^.Menu_Zone.X ) and ( Mouse_X <= ( RPM^.Menu_Zone.X + RPM^.Menu_Zone.W )) and ( Mouse_Y >= RPM^.Menu_Zone.Y ) and ( Mouse_Y <= ( RPM^.Menu_Zone.Y + RPM^.Menu_Zone.H )) then begin
-					getit := ' ';
-				end else begin
-					if ( RPM^.Mode <> RPMNoCancel ) and ( RPM^.Mode <> RPMEscCancel ) then getit := #27
-					else getit := ' ';
+				if Mouse_Active then begin
+					{ If the mouse hit happened inside }
+					{ the menu area, it was a selection. }
+					{ Otherwise it was a cancel. }
+					if ( Mouse_X >= MyRect.X ) and ( Mouse_X <= ( MyRect.X + MyRect.W )) and ( Mouse_Y >= MyRect.Y ) and ( Mouse_Y <= ( MyRect.Y + MyRect.H )) then begin
+						getit := ' ';
+					end else begin
+						if RPM^.Mode <> RPMNoCancel then getit := #27
+						else getit := ' ';
+					end;
 				end;
 			RPK_RightButton:
-				if ( RPM^.Mode <> RPMNoCancel ) and ( RPM^.Mode <> RPMEscCancel ) then getit := #27;
+				if ( RPM^.Mode <> RPMNoCancel ) and Mouse_Active then getit := #27;
 
 			{If we receive an ESC, better check to make sure we're in a}
 			{cancelable menu. If not, convert the ESC to an unused key.}
@@ -682,11 +678,11 @@ begin
 	end;
 end;
 
-Function SetItemByValue( RPM: RPGMenuPtr ; V: longint ): RPGMenuItemPtr;
+Function SetItemByValue( RPM: RPGMenuPtr ; V: Integer ): RPGMenuItemPtr;
 	{ Search through the list, and set the SelectItem }
 	{ field to the first menu item which matches V. }
 var
-	T: longint;
+	T: Integer;
 	MI: RPGMenuItemPtr;
 begin
 	if RPM = Nil then exit;
@@ -711,7 +707,7 @@ begin
 	SetItemByValue := MI;
 end;
 
-Procedure SetItemByPosition( RPM: RPGMenuPtr ; N: longint );
+Procedure SetItemByPosition( RPM: RPGMenuPtr ; N: Integer );
 	{ Search through the list, and set the SelectItem }
 	{ field to the Nth menu item. }
 begin
@@ -733,7 +729,7 @@ Procedure BuildFileMenu( RPM: RPGMenuPtr; const SearchPattern: String );
 	{ each of the files found to the menu. }
 var
 	F: SearchRec;
-	N: longint;
+	N: Integer;
 begin
 	N := 1;
 	FindFirst( SearchPattern , AnyFile , F );
@@ -750,7 +746,7 @@ Function SelectFile( RPM: RPGMenuPtr; ReDrawer: RedrawProcedureType ): String;
 	{ So, select one of the items and return the item name, which }
 	{ should be a filename. }
 var
-	N: longint;	{ The number of the file selected. }
+	N: Integer;	{ The number of the file selected. }
 	Name: String;	{ The name of the filename selected. }
 begin
 	{ Do the menu selection first. }
@@ -766,6 +762,7 @@ begin
 
 	SelectFile := Name;
 end;
+
 
 end.
 

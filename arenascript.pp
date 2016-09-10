@@ -5612,7 +5612,7 @@ var
 begin
 	{ Start by allocating the menu. }
 	IntMenu := CreateRPGMenu( MenuItem , MenuSelect , ZONE_InteractMenu );
-	IntMenu^.Mode := RPMEscCancel;
+	{IntMenu^.Mode := RPMEscCancel;}
 
 	{ If this persona has been marked as "NoEscape", make sure the PC }
 	{ can't quit the conversation just by pressing ESC. }

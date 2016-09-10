@@ -30,6 +30,7 @@ uses sdl,locale,gears,minitype,sdlgfx;
 Function InfoImageName( Part: GearPtr ): String;
 
 Procedure DisplayModelStatus( GB: GameBoardPtr; M: GearPtr;  MyDest: TSDL_Rect );
+Procedure DisplayModelStatus( GB: GameBoardPtr; M: GearPtr;  MyZone: DynamicRect );
 Procedure QuickModelStatus( GB: GameBoardPtr; M: GearPtr );
 
 Procedure NPCPersonalInfo( NPC: GearPtr; Z: TSDL_Rect );
@@ -37,17 +38,17 @@ Procedure DisplayInteractStatus( GB: GameBoardPtr; NPC: GearPtr; React,Endurance
 Procedure CharacterDisplay( PC: GearPtr; GB: GameBoardPtr );
 Procedure InjuryViewer( PC: GearPtr; redraw: RedrawProcedureType );
 
-Procedure BrowserInterfaceInfo( GB: GameBoardPtr; Part: GearPtr; Z: TSDL_Rect );
-Procedure BrowserInterfaceMystery( Part: GearPtr; Z: TSDL_Rect );
+Procedure BrowserInterfaceInfo( GB: GameBoardPtr; Part: GearPtr; Z: DynamicRect );
+Procedure BrowserInterfaceMystery( Part: GearPtr; MyZone: DynamicRect );
 
 Procedure DoMonologueDisplay( GB: GameBoardPtr; NPC: GearPtr; msg: String );
 
-Procedure ArenaTeamInfo( Source: GearPtr; Z: TSDL_Rect );
+Procedure ArenaTeamInfo( Source: GearPtr; Z: DynamicRect );
 Procedure TacticsTimeInfo( GB: GameBoardPtr );
 
 Procedure ConcertStatus( PC: GearPtr; AL: AudienceList );
 
-Procedure PersonadexInfo( NPC,HomeTown: GearPtr; Z: TSDL_Rect );
+Procedure PersonadexInfo( NPC,HomeTown: GearPtr; Z: DynamicRect );
 
 
 implementation
@@ -593,6 +594,12 @@ begin
 	else if M^.G = GG_Mecha then MechaMVTRSE( M );
 end;
 
+Procedure DisplayModelStatus( GB: GameBoardPtr; M: GearPtr; MyZone: DynamicRect );
+    { Alt version of above. }
+begin
+    DisplayModelStatus( GB, M, MyZone.GetRect() );
+end;
+
 Procedure QuickModelStatus( GB: GameBoardPtr; M: GearPtr );
 	{ Display the status of this model quickly in the caption area. }
 var
@@ -724,13 +731,14 @@ var
 	T,RStep: Integer;
 	SS: SensibleSpritePtr;
 begin
-	SetInfoZone( ZONE_InteractStatus );
+    MyDest := ZONE_InteractStatus.GetRect();
+	SetInfoZone( MyDest );
 
-	NPCPersonalInfo( NPC , ZONE_InteractStatus );
+	NPCPersonalInfo( NPC , ZONE_InteractStatus.GetRect() );
 
 	{ Prepare to draw the reaction indicators. }
-	ClrZone( ZONE_InteractInfo );
-	MyDest := ZONE_InteractInfo;
+	ClrZone( ZONE_InteractInfo.GetRect() );
+	MyDest := ZONE_InteractInfo.GetRect();
 	MyDest.Y := MyDest.Y + ( MyDest.H - 32 ) div 4;
 	MyDest.X := MyDest.X + ( MyDest.H - 32 ) div 4;
 	for t := 0 to 3 do begin
@@ -758,7 +766,7 @@ begin
 		DrawSprite( INTERACT_SPRITE , MyDest , 10 );
 	end;
 
-	MyDest := ZONE_InteractInfo;
+	MyDest := ZONE_InteractInfo.GetRect();
 	MyDest.Y := MyDest.Y + MyDest.H div 2 + ( MyDest.H - 32 ) div 4;
 	MyDest.X := MyDest.X + ( MyDest.H - 32 ) div 4;
 	for t := 4 to 7 do begin
@@ -778,14 +786,14 @@ begin
 	end;
 
 	{ Draw the portrait. }
-	DrawSprite( Backdrop_Sprite , ZONE_InteractPhoto , 0 );
+	DrawSprite( Backdrop_Sprite , ZONE_InteractPhoto.GetRect() , 0 );
 	SS := LOcateSprite( PortraitName( NPC ) , SpriteColor( GB , NPC ) , 100 , 150 );
 
 	{ If the current portrait doesn't work, clear the portrait attribute so a new one }
 	{ will be selected. }
 	if SS^.Img = Nil then SetSAtt( NPC^.SA , 'SDL_PORTRAIT <>' );
 
-	DrawSprite( SS , ZONE_InteractPhoto , 0 );
+	DrawSprite( SS , ZONE_InteractPhoto.GetRect() , 0 );
 end;
 
 
@@ -1137,29 +1145,29 @@ begin
 	end;
 end;
 
-Procedure BrowserInterfaceInfo( GB: GameBoardPtr; Part: GearPtr; Z: TSDL_Rect );
+Procedure BrowserInterfaceInfo( GB: GameBoardPtr; Part: GearPtr; Z: DynamicRect );
 	{ Display the "Browser Interface" info for this part. This information }
 	{ includes the mass, damage, stats, picture (in gfx mode), extended description }
 	{ and regular description. }
 var
-	MyDest: TSDL_Rect;
+	MyZone,MyDest: TSDL_Rect;
 	MyText: PSDL_Surface;
 	msg: String;
 	SS: SensibleSpritePtr;
 begin
-	SDL_SetClipRect( Game_Screen , @Z );
+    MyZone := Z.GetRect();
+    MyDest := MyZone;
+	SDL_SetClipRect( Game_Screen , @MyDest );
 
 	{ Draw the picture in the upper-left part of the zone. }
-	MyDest.X := Z.X;
-	MyDest.Y := Z.Y;
 	msg := SAttValue( Part^.SA , 'SDL_COLORS' );
 	SS := LocateSprite( InfoImageName( Part ) , msg , 100 , 150 );
 	DrawSprite( SS , MyDest , 0 );
 
 	{ Display the brief stats based on gear type. }
 	{ Calculate the brief stats window area. }
-	MyDest.X := Z.X + 100;
-	MyDest.Y := Z.Y;
+	MyDest.X := MyZone.X + 100;
+	MyDest.Y := MyZone.Y;
 	MyDest.W := Z.W - 100;
 	MyDest.H := 150;
 	if Part^.G = GG_Character then begin
@@ -1168,8 +1176,8 @@ begin
 		BriefGearStats( Part , MyDest );
 	end;
 
-	MyDest.X := Z.X;
-	MyDest.Y := Z.Y + 155;
+	MyDest.X := MyZone.X;
+	MyDest.Y := MyZone.Y + 155;
 
 	{ Display the extended description. }
 	msg := ExtendedDescription( GB , Part );
@@ -1183,9 +1191,9 @@ begin
 	end;
 
 	{ Display the description. }
-	if MyDest.Y < ( Z.Y + Z.H ) then begin
+	if MyDest.Y < ( MyZone.Y + Z.H ) then begin
 		MyDest.W := Z.W;
-		MyDest.H := Z.H + Z.Y - MyDest.Y - 5;
+		MyDest.H := Z.H + MyZone.Y - MyDest.Y - 5;
 		GameMsg( SAttValue( Part^.SA , 'DESC' ) , MyDest , InfoGreen );
 	end;
 
@@ -1193,15 +1201,16 @@ begin
 	SDL_SetClipRect( Game_Screen , Nil );
 end;
 
-Procedure BrowserInterfaceMystery( Part: GearPtr; Z: TSDL_Rect );
+Procedure BrowserInterfaceMystery( Part: GearPtr; MyZone: DynamicRect );
 	{ This gear is a mystery. Display its name, and that's about it. }
 var
-	MyDest: TSDL_Rect;
+	Z,MyDest: TSDL_Rect;
 	MyText: PSDL_Surface;
 	msg: String;
 	SS: SensibleSpritePtr;
 begin
-	SDL_SetClipRect( Game_Screen , @Z );
+    Z := MyZone.GetRect();
+	SDL_SetClipRect( Game_Screen , @MyZone );
 
 	{ Draw the picture in the upper-left part of the zone. }
 	MyDest.X := Z.X;
@@ -1228,13 +1237,15 @@ begin
 	SDL_SetClipRect( Game_Screen , Nil );
 end;
 
-Procedure ArenaTeamInfo( Source: GearPtr; Z: TSDL_Rect );
+Procedure ArenaTeamInfo( Source: GearPtr; Z: DynamicRect );
 	{ Print the important information for this team. }
 var
+    MyDest: TSDL_Rect;
 	Fac: GearPtr;
 	Renown: Integer;
 begin
-	SetInfoZone( Z );
+    MyDest := Z.GetRect();
+	SetInfoZone( MyDest );
 	AI_Title( GearName( Source ) , StdWhite );
 	AI_NextLine;
 	AI_Title( '$' + BStr( NAttValue( Source^.NA , NAG_Experience , NAS_Credits ) ) , InfoGreen );
@@ -1290,7 +1301,7 @@ begin
 	{ Draw each audience mob, and the symbol indicating their mood. }
 	for t := MaxAudienceSize downto 1 do begin
 		if AL[t].Mood <> MOOD_Absent then begin
-			MyDest := ZONE_ConcertAudience;
+			MyDest := ZONE_ConcertAudience.GetRect();
 			if AL[t].Mood <> MOOD_WalkOut then begin
 				Dance_Phase := ( Animation_Phase div ( 100 div ( AL[t].Mood * AL[t].Mood + 3 ) ) + T * 7 ) mod 4;
 			end else Dance_Phase := 0;
@@ -1311,12 +1322,12 @@ begin
 	SDL_SetClipRect( Game_Screen , Nil );
 
 	{ Draw the portrait of the singer. }
-	DrawSprite( Backdrop_Sprite , ZONE_ConcertPhoto , 0 );
+	DrawSprite( Backdrop_Sprite , ZONE_ConcertPhoto.GetRect() , 0 );
 	SS := LocateSprite( PortraitName( PC ) , SAttValue( PC^.SA , 'SDL_COLORS' ) , 100 , 150 );
-	DrawSprite( SS , ZONE_ConcertPhoto , 0 );
+	DrawSprite( SS , ZONE_ConcertPhoto.GetRect() , 0 );
 end;
 
-Procedure PersonadexInfo( NPC,HomeTown: GearPtr; Z: TSDL_Rect );
+Procedure PersonadexInfo( NPC,HomeTown: GearPtr; Z: DynamicRect );
 	{ Display personality info about this NPC. }
 	Procedure PersonaStats( MyZone: TSDL_Rect );
 		{ Display some brief stats on this character. }
@@ -1378,31 +1389,32 @@ Procedure PersonadexInfo( NPC,HomeTown: GearPtr; Z: TSDL_Rect );
 		end;
 	end;
 var
-	MyDest: TSDL_Rect;
+	MyZone,MyDest: TSDL_Rect;
 	MyText: PSDL_Surface;
 	msg: String;
 	SS: SensibleSpritePtr;
 begin
 	{ Set the clip rectangle. }
-	SDL_SetClipRect( Game_Screen , @Z );
+    MyZone := Z.GetRect();
+	SDL_SetClipRect( Game_Screen , @MyZone );
 
 	{ Draw the picture in the upper-left part of the zone. }
-	MyDest.X := Z.X;
-	MyDest.Y := Z.Y;
+	MyDest.X := MyZone.X;
+	MyDest.Y := MyZone.Y;
 	msg := SAttValue( NPC^.SA , 'SDL_COLORS' );
 	SS := LocateSprite( InfoImageName( NPC ) , msg , 100 , 150 );
 	DrawSprite( SS , MyDest , 0 );
 
 	{ Display the brief stats based on gear type. }
 	{ Calculate the brief stats window area. }
-	MyDest.X := Z.X + 100;
-	MyDest.Y := Z.Y;
-	MyDest.W := Z.W - 100;
+	MyDest.X := MyZone.X + 100;
+	MyDest.Y := MyZone.Y;
+	MyDest.W := MyZone.W - 100;
 	MyDest.H := 150;
 	PersonaStats( MyDest );
 
-	MyDest.X := Z.X;
-	MyDest.Y := Z.Y + 155;
+	MyDest.X := MyZone.X;
+	MyDest.Y := MyZone.Y + 155;
 
 	{ Display the JobAgeGender description. }
 	msg := JobAgeGenderDesc( NPC );
@@ -1416,9 +1428,9 @@ begin
 	end;
 
 	{ Display the biography. }
-	if MyDest.Y < ( Z.Y + Z.H ) then begin
+	if MyDest.Y < ( MyZone.Y + Z.H ) then begin
 		MyDest.W := Z.W;
-		MyDest.H := Z.H + Z.Y - MyDest.Y - 5;
+		MyDest.H := Z.H + MyZone.Y - MyDest.Y - 5;
 		GameMsg( SAttValue( NPC^.SA , 'BIO' ) , MyDest , InfoGreen );
 	end;
 

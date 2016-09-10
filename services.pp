@@ -107,10 +107,12 @@ begin
 		BrowserInterfaceInfo( SERV_GB , SERV_Info , ZONE_ItemsInfo );
 	end;
 
+    {$IFDEF ASCII}
 	if SERV_NPC <> Nil then NPCPersonalInfo( SERV_NPC , ZONE_ShopCaption );
 
 	CMessage( '$' + BStr( NAttValue( SERV_PC^.NA , NAG_Experience , NAS_Credits ) ) , ZONE_ItemsPCInfo , InfoHilight );
 	GameMsg( CHAT_Message , ZONE_ShopMsg , InfoHiLight );
+    {$ENDIF}
 end;
 
 Procedure SellStuffRedraw;
@@ -134,10 +136,12 @@ begin
 		BrowserInterfaceInfo( SERV_GB , SERV_Info , ZONE_ItemsInfo );
 	end;
 
+    {$IFDEF ASCII}
 	if SERV_NPC <> Nil then NPCPersonalInfo( SERV_NPC , ZONE_ShopCaption );
 
 	CMessage( '$' + BStr( NAttValue( SERV_PC^.NA , NAG_Experience , NAS_Credits ) ) , ZONE_ItemsPCInfo , InfoHilight );
 	GameMsg( CHAT_Message , ZONE_ShopMsg , InfoHiLight );
+    {$ENDIF}
 end;
 
 Procedure ServicesBackpackRedraw;
@@ -1837,7 +1841,11 @@ begin
 
 	{ Step One: Create the skills menu. }
 	SkillMenu := CreateRPGMenu( MenuItem , MenuSelect , ZONE_ShopMenu );
+    {$IFNDEF ASCII}
+	AttachMenuDesc( SkillMenu , ZONE_ShopInfo );
+    {$ELSE}
 	AttachMenuDesc( SkillMenu , ZONE_ItemsInfo );
+    {$ENDIF}
 
 	while Stuff <> '' do begin
 		N := ExtractValue( Stuff );
@@ -2100,7 +2108,11 @@ begin
 	{ must be within a certain range, and must have "DESTINATION" in their }
 	{ TYPE string attribute. }
 	RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_ShopMenu );
+    {$IFNDEF ASCII}
+	AttachMenuDesc( RPM , ZONE_ShopInfo );
+    {$ELSE}
 	AttachMenuDesc( RPM , ZONE_ItemsInfo );
+    {$ENDIF}
 	World := FindWorld( GB , GB^.Scene );
 	City := World^.SubCom;
 	Entrance := FindLocalGate( World , FindRootScene( GB^.Scene )^.S );
