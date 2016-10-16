@@ -53,6 +53,7 @@ Function ScreenDirToMapDir( D: Integer ): Integer;
 Function KeyboardDirToMapDir( D: Integer ): Integer;
 
 Function SpriteColor( GB: GameBoardPtr; M: GearPtr ): String;
+Function SpriteName( GB: GameBoardPtr; M: GearPtr ): String;
 
 Procedure Render_Off_Map_Models;
 
@@ -1217,8 +1218,9 @@ initialization
 	SDL_GetMouseState( Mouse_X , Mouse_Y );
 
 
-	tile_x := 1;
-	tile_y := 1;
+	tile_x := 0;
+	tile_y := 0;
+    tile_z := 0;
 
 	origin_d := 0;
 

@@ -110,7 +110,7 @@ const
 	ZONE_Menu1: DynamicRect = ( dx:  -Right_Column_Width - 10 ; dy:170; w:Right_Column_Width; h:130; anchor: ANC_upperright );
 	ZONE_Menu2: DynamicRect = ( dx:  - Right_Column_Width - 10 ; dy:310; w:Right_Column_Width; h:ScreenHeight - 350 - Dialog_Area_Height; anchor: ANC_upperright );
 
-	ZONE_Dialog: DynamicRect = ( dx: 400 - (30 + Model_Status_Width); dy: -Model_Status_Height-10; w: ScreenWidth - (50 + Model_Status_Width); h: Model_Status_Height; anchor: ANC_lower );
+	ZONE_Dialog: DynamicRect = ( dx: Model_Status_Width - 375; dy: -Model_Status_Height-10; w: 750 - Model_Status_Width; h: Model_Status_Height; anchor: ANC_lower );
 	ZONE_PCStatus: DynamicRect = ( dx: -380; dy: -Model_Status_Height - 10; w: Model_Status_Width; h: Model_Status_Height; anchor: ANC_lower );
 
 	KEY_REPEAT_DELAY = 200;
@@ -190,12 +190,11 @@ const
 	ZONE_ShopMsg: TSDL_Rect = ( x: ItemsZoneLeftTab; y:ScreenHeight Div 2 - 140; w:ItemsLeftWidth; h: 105 );
 	ZONE_ShopMenu: TSDL_Rect = ( x: ItemsZoneLeftTab; y:ScreenHeight Div 2 - 30; w:ItemsLeftWidth; h: 120 );
 }
-	ZONE_ItemsInfo: DynamicRect = ( dx: ItemsZoneRightTab; dy:ScreenHeight Div 2 - 210; w: ItemsRightWidth; h: 275; anchor: ANC_upperleft );
+	ZONE_ItemsInfo: DynamicRect = (dx:30; dY:-210; W: 250; H: 340; anchor: ANC_middle);
 	ZONE_ItemsPCInfo: TSDL_Rect = ( x: ItemsZoneRightTab; y:ScreenHeight Div 2 + 70; w: ItemsRightWidth; h: 30 );
 
     ZONE_FHQTitle: DynamicRect = ( dx:-165; dy:-255; w:300; h:20; anchor: ANC_middle ); 
     ZONE_FieldHQMenu: DynamicRect = ( dx:-280; dy:-210; w:292; h:340; anchor: ANC_middle );
-	ZONE_FHQInfo: DynamicRect = (dx:30; dY:-210; W: 250; H: 340; anchor: ANC_middle);
     ZONE_FHQMenu1: DynamicRect = ( dx:-280; dy:-210; w:292; h:180; anchor: ANC_middle );
     ZONE_FHQMenu2: DynamicRect = ( dx:-280; dy: -15; w:292; h:145; anchor: ANC_middle );
 
@@ -216,6 +215,11 @@ const
 	ZONE_SubCaption: TSDL_Rect = ( x: ScreenWidth div 2 - ( SubCaptionWidth div 2 ); y: 35 + Model_Status_Height; w: SubCaptionWidth; h: FontSize + 2 );
 
 	ZONE_CharacterInfo: TSDL_Rect = ( x: ScreenWidth div 2 - 275; y: ScreenHeight Div 2 - 200; w: 450; h: 295 );
+
+    ZONE_CharViewChar: DynamicRect = ( dx:-368; dy:-260; w: 500 ; h: 420; anchor: ANC_middle );
+	ZONE_CharViewMenu: DynamicRect = ( dx:148; dy:-100; w:220; h:230; anchor: ANC_middle );
+	ZONE_CharViewCaption: DynamicRect = ( dx:148; dy:140; w:220; h:20; anchor: ANC_middle );
+	ZONE_CharViewDesc: DynamicRect = ( dx:148; dy:-260; w:220; h:150; anchor: ANC_middle );
 
 	SideInfoWidth = FontSize * 16;
 	SideInfoHeight = ( FontSize + 2 ) * 6;
@@ -242,14 +246,14 @@ const
 
 	ZONE_WorldMap: TSDL_Rect = ( x: ScreenWidth div 2 - 160; y: ScreenHeight div 2 - 160; W:320; H:320 );
 
-	ZONE_Clock: TSDL_Rect = ( x: ScreenWidth - 150; y: 30; w: 120; H:20 );
+	ZONE_Clock: DynamicRect = ( dx: -150; dy: 30; w: 120; H:20; anchor: ANC_upperright );
 
 	Monologue_Width = 400;
 	Monologue_Height = 205;
-	ZONE_MonologueTotal: TSDL_Rect = ( x: Screenwidth div 2 - Monologue_Width div 2 - 10; y: ScreenHeight div 3 - Monologue_Height div 2 - 10; w: Monologue_Width + 20; h: Monologue_Height + 20 );
-	ZONE_MonologueInfo: TSDL_Rect = ( x: Screenwidth div 2 - Monologue_Width div 2; y: ScreenHeight div 3 - Monologue_Height div 2; w: Monologue_Width; h:30 );
-	ZONE_MonologueText: TSDL_Rect = ( x: Screenwidth div 2 - Monologue_Width div 2; y: ScreenHeight div 3 - Monologue_Height div 2 + 40; w: Monologue_Width - 110; h: Monologue_Height - 40 );
-	ZONE_MonologuePortrait: TSDL_Rect = ( x: Screenwidth div 2 + Monologue_Width div 2 - 100; y: ScreenHeight div 3 - Monologue_Height div 2 + 40; w: 100; h: 150 );
+	ZONE_MonologueTotal: DynamicRect = ( dx: -210; dy: -150; w: Monologue_Width + 20; h: Monologue_Height + 20; anchor: ANC_middle );
+	ZONE_MonologueInfo: DynamicRect = ( dx: -200; dy: -150; w: Monologue_Width; h:30; anchor: ANC_middle );
+	ZONE_MonologueText: DynamicRect = ( dx: -200; dy: -110; w: Monologue_Width - 110; h: Monologue_Height - 40; anchor: ANC_middle );
+	ZONE_MonologuePortrait: DynamicRect = ( dx: 100; dy: -110; w: 100; h: 150; anchor: ANC_middle );
 
 	Arena_List_Width = 240;
 	Arena_List_Height = ScreenHeight - ( Dialog_Area_Height + 40 );
@@ -301,12 +305,15 @@ function RPGKey: Char;
 Procedure ClrZone( const Z: TSDL_Rect );
 Procedure ClrScreen;
 
-Procedure GetNextLine( var TheLine , msg , NextWord: String; Width: Integer );
+Procedure GetNextLine( var TheLine , msg , NextWord: String; Width: Integer; MyFont: PTTF_Font );
+Function PrettyPrint( msg: string; Width: Integer; var FG: TSDL_Color; DoCenter: Boolean; MyFont: PTTF_Font ): PSDL_Surface;
 Function PrettyPrint( msg: string; Width: Integer; var FG: TSDL_Color; DoCenter: Boolean ): PSDL_Surface;
-Procedure CMessage( msg: String; Z: TSDL_Rect; var C: TSDL_Color );
-Procedure CMessage( msg: String; DZ: DynamicRect; var C: TSDL_Color );
-Procedure GameMSG( msg: string; Z: TSDL_Rect; var C: TSDL_Color );
-Procedure GameMSG( msg: string; DZ: DynamicRect; var C: TSDL_Color );
+Procedure CMessage( msg: String; Z: TSDL_Rect; C: TSDL_Color; MyFont: PTTF_Font );
+Procedure CMessage( msg: String; Z: TSDL_Rect; C: TSDL_Color );
+Procedure CMessage( msg: String; DZ: DynamicRect; C: TSDL_Color );
+Procedure GameMSG( msg: string; Z: TSDL_Rect; C: TSDL_Color; MyFont: PTTF_Font );
+Procedure GameMSG( msg: string; Z: TSDL_Rect; C: TSDL_Color );
+Procedure GameMSG( msg: string; DZ: DynamicRect; C: TSDL_Color );
 
 Function IsMoreKey( A: Char ): Boolean;
 Procedure MoreKey;
@@ -330,6 +337,8 @@ Procedure SetupServicesDisplay;
 Procedure SetupFHQDisplay;
 Procedure SetupMemoDisplay;
 Procedure DrawMonologueBorder;
+
+Procedure FillRectWithSprite( MyRect: TSDL_Rect; MySprite: SensibleSpritePtr; MyFrame: Integer );
 
 Procedure InfoBox( MyBox: TSDL_Rect );
 Procedure InfoBox( MyBox: DynamicRect );
@@ -862,7 +871,7 @@ begin
 	TextLength := W;
 end;
 
-Procedure GetNextLine( var TheLine , msg , NextWord: String; Width: Integer );
+Procedure GetNextLine( var TheLine , msg , NextWord: String; Width: Integer; MyFont: PTTF_Font );
 	{ Get a line of text of maximum width "Width". }
 var
 	LC: Boolean;	{ Loop Condition. So I wasn't very creative when I named it, so what? }
@@ -874,7 +883,7 @@ begin
 	repeat
 		NextWord := ExtractWord( Msg );
 
-		if TextLength( Game_Font , THEline + ' ' + NextWord) < Width then
+		if TextLength( MyFont , THEline + ' ' + NextWord) < Width then
 			THEline := THEline + ' ' + NextWord
 		else
 			LC := False;
@@ -890,7 +899,7 @@ begin
 
 end;
 
-Function PrettyPrint( msg: string; Width: Integer; var FG: TSDL_Color; DoCenter: Boolean ): PSDL_Surface;
+Function PrettyPrint( msg: string; Width: Integer; var FG: TSDL_Color; DoCenter: Boolean; MyFont: PTTF_Font ): PSDL_Surface;
 	{ Create a SDL_Surface containing all the text within "msg" formatted }
 	{ in lines of no longer than "width" pixels. Sound simple? Mostly just }
 	{ tedious, I'm afraid. }
@@ -913,7 +922,7 @@ begin
 
 	{Start the main processing loop.}
 	while TheLine <> '' do begin
-		GetNextLine( TheLine , msg , NextWord , Width );
+		GetNextLine( TheLine , msg , NextWord , Width, MyFont );
 
 		{ Output the line. }
 		{ Next append it to whatever has already been created. }
@@ -926,7 +935,8 @@ begin
 	{ Create a bitmap for the message. }
 	if SList <> Nil then begin
 		{ Create a big bitmap to hold everything. }
-		S_Total := SDL_CreateRGBSurface( SDL_SWSURFACE , width , TTF_FontLineSkip( game_font ) * NumSAtts( SList ) , 32 , $FF000000 , $00FF0000 , $0000FF00 , $000000FF );
+{		S_Total := SDL_CreateRGBSurface( SDL_SWSURFACE , width , TTF_FontLineSkip( MyFont ) * NumSAtts( SList ) , 16 , 0 , 0 , 0 , 0 );
+}		S_Total := SDL_CreateRGBSurface( SDL_SWSURFACE , width , TTF_FontLineSkip( MyFont ) * NumSAtts( SList ) , 32 , $FF000000 , $00FF0000 , $0000FF00 , $000000FF );
 		MyDest.X := 0;
 		MyDest.Y := 0;
 
@@ -934,22 +944,23 @@ begin
 		SA := SList;
 		while SA <> Nil do begin
 			pline := QuickPCopy( SA^.Info );
-			S_Temp := TTF_RenderText_Solid( game_font , pline , fg );
+			S_Temp := TTF_RenderText_Solid( MyFont , pline , fg );
+{$IFDEF LINUX}
+			SDL_SetColorKey( S_Temp , SDL_SRCCOLORKEY , SDL_MapRGB( S_Temp^.Format , 0 , 0, 0 ) );
+{$ENDIF}
+
 			Dispose( pline );
-            {$IFDEF LINUX}
-	        if S_Temp <> Nil then SDL_SetColorKey( S_Temp , SDL_SRCCOLORKEY , SDL_MapRGB( S_Temp^.Format , 0 , 0, 0 ) );
-            {$ENDIF}
 
 			{ We may or may not be required to do centering of the text. }
 			if DoCenter then begin
-				MyDest.X := ( Width - TextLength( Game_Font , SA^.Info ) ) div 2;
+				MyDest.X := ( Width - TextLength( MyFont , SA^.Info ) ) div 2;
 			end else begin
 				MyDest.X := 0;
 			end;
 
 			SDL_BlitSurface( S_Temp , Nil , S_Total , @MyDest );
 			SDL_FreeSurface( S_Temp );
-			MyDest.Y := MyDest.Y + TTF_FontLineSkip( game_font );
+			MyDest.Y := MyDest.Y + TTF_FontLineSkip( MyFont );
 			SA := SA^.Next;
 		end;
 		DisposeSAtt( SList );
@@ -962,14 +973,21 @@ begin
 	PrettyPrint := S_Total;
 end;
 
-Procedure CMessage( msg: String; Z: TSDL_Rect; var C: TSDL_Color );
+Function PrettyPrint( msg: string; Width: Integer; var FG: TSDL_Color; DoCenter: Boolean ): PSDL_Surface;
+    { Overloaded version of above, using default font. }
+begin
+    PrettyPrint( msg, width, FG, DoCenter, Game_Font );
+end;
+
+
+Procedure CMessage( msg: String; Z: TSDL_Rect; C: TSDL_Color; MyFont: PTTF_Font );
 	{ Print a message to the screen, centered in the requested rect. }
 	{ Clear the specified zone before doing so. }
 var
 	MyText: PSDL_Surface;
 	MyDest: TSDL_Rect;
 begin
-	MyText := PrettyPrint( msg , Z.W , C , True );
+	MyText := PrettyPrint( msg , Z.W , C , True, MyFont );
 	if MyText <> Nil then begin
 		MyDest := Z;
 		MyDest.Y := MyDest.Y + ( Z.H - MyText^.H ) div 2;
@@ -980,18 +998,24 @@ begin
 	end;
 end;
 
-Procedure CMessage( msg: String; DZ: DynamicRect; var C: TSDL_Color );
+Procedure CMessage( msg: String; Z: TSDL_Rect; C: TSDL_Color );
+    { Use the default font. }
+begin
+    CMessage( msg, Z, C, Game_Font );
+end;
+
+Procedure CMessage( msg: String; DZ: DynamicRect; C: TSDL_Color );
     { Print a message centered in a DynamicRect. }
 begin
     CMessage( msg, DZ.GetRect(), C );
 end;
 
-Procedure GameMSG( msg: string; Z: TSDL_Rect; var C: TSDL_Color );
-	{ As above, but no pageflip. }
+Procedure GameMSG( msg: string; Z: TSDL_Rect; C: TSDL_Color; MyFont: PTTF_Font );
+    { Print a game message. }
 var
 	MyText: PSDL_Surface;
 begin
-	MyText := PrettyPrint( msg , Z.W , C , True );
+	MyText := PrettyPrint( msg , Z.W , C , True, MyFont );
 	if MyText <> Nil then begin
 		SDL_SetClipRect( Game_Screen , @Z );
 		SDL_BlitSurface( MyText , Nil , Game_Screen , @Z );
@@ -1000,7 +1024,13 @@ begin
 	end;
 end;
 
-Procedure GameMSG( msg: string; DZ: DynamicRect; var C: TSDL_Color );
+Procedure GameMSG( msg: string; Z: TSDL_Rect; C: TSDL_Color );
+    { Overloaded version using default font. }
+begin
+    GameMsg( msg, Z, C, Game_Font );
+end;
+
+Procedure GameMSG( msg: string; DZ: DynamicRect; C: TSDL_Color );
 	{ As above, but no pageflip. }
 begin
     GameMsg( msg, DZ.GetRect(), C );
@@ -1208,7 +1238,7 @@ begin
 
 	{Start the main processing loop.}
 	while TheLine <> '' do begin
-		GetNextLine( TheLine , msg , NextWord , ZONE_Dialog.w );
+		GetNextLine( TheLine , msg , NextWord , ZONE_Dialog.w, Game_Font );
 
 		{ If appropriate, save the line. }
 		if TheLine <> '' then begin
@@ -1238,8 +1268,9 @@ begin
 	ClearExtendedBorder( ZONE_BPHeader.GetRect() );
 	ClearExtendedBorder( ZONE_BackpackInstructions.GetRect() );
 	ClearExtendedBorder( ZONE_BPInfo.GetRect() );
-    {FillRectWithSprite( ZONE_BPInfo.GetRect(), Infobox_Backdrop, 0 );}
+    FillRectWithSprite( ZONE_BPInfo.GetRect(), Infobox_Backdrop, 0 );
 end;
+
 
 
 Procedure DrawGetItemBorder;
@@ -1274,11 +1305,8 @@ end;
 Procedure SetupFHQDisplay;
 	{ Draw the display for the services interface. }
 begin
-	ClearExtendedBorder( ZONE_ItemsTotal );
-	SDL_FillRect( game_screen , @ZONE_ItemsTotal , SDL_MapRGB( Game_Screen^.Format , PlayerBlue.R , PlayerBlue.G , PlayerBlue.B ) );
-{	ClearExtendedBorder( ZONE_FieldHQMenu.GetRect() );
-	ClearExtendedBorder( ZONE_ItemsInfo );
-	ClearExtendedBorder( ZONE_ItemsPCInfo );}
+    InfoBox( ZONE_FieldHQMenu.GetRect() );
+    InfoBox( ZONE_ItemsInfo.GetRect() );
 end;
 
 Procedure SetupMemoDisplay;
@@ -1290,11 +1318,7 @@ end;
 Procedure DrawMonologueBorder;
 	{ Draw the border for the monologue. }
 begin
-	ClearExtendedBorder( ZONE_MonologueTotal );
-	SDL_FillRect( game_screen , @ZONE_MonologueTotal , SDL_MapRGB( Game_Screen^.Format , PlayerBlue.R , PlayerBlue.G , PlayerBlue.B ) );
-	ClearExtendedBorder( ZONE_MonologueInfo );
-	ClearExtendedBorder( ZONE_MonologueText );
-	ClearExtendedBorder( ZONE_MonologuePortrait );
+	InfoBox( ZONE_MonologueTotal.getRect() );
 end;
 
 Function GrowRect( MyRect: TSDL_Rect; GrowX,GrowY: Integer ): TSDL_Rect;

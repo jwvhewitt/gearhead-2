@@ -188,6 +188,25 @@ begin
 	CDest.Y := CDest.Y + TTF_FontLineSkip( Game_Font );
 end;
 
+Procedure AI_SmallTitle( msg: String; C: TSDL_Color );
+	{ Draw a centered message on the current line. }
+var
+	MyImage: PSDL_Surface;
+	PLine: PChar;
+begin
+	pline := QuickPCopy( msg );
+	MyImage := TTF_RenderText_Solid( Small_Font , pline , C );
+	Dispose( pline );
+
+	CDest.X := CZone.X + ( ( CZone.W - MyImage^.W ) div 2 );
+
+	SDL_BlitSurface( MyImage , Nil , Game_Screen , @CDest );
+	SDL_FreeSurface( MyImage );
+
+	CDest.Y := CDest.Y + TTF_FontLineSkip( Small_Font );
+end;
+
+
 
 Procedure AI_PrintFromRight( msg: String; Tab: Integer; C: TSDL_Color; F: PTTF_Font );
 	{ Draw a left justified message on the current line. }
@@ -203,8 +222,128 @@ begin
 	QuickTextRJ( msg , CDest , C , F );
 end;
 
+Procedure AI_Text( msg: String; C: TSDL_Color );
+	{ Draw a text message starting from the current line. }
+var
+	MyText: PSDL_Surface;
+	PLine: PChar;
+begin
+    MyText := PrettyPrint( msg , CDest.W, C, True, Small_Font );
+	if MyText <> Nil then begin
+		SDL_SetClipRect( Game_Screen , @CZone );
+		SDL_BlitSurface( MyText , Nil , Game_Screen , @CDest );
+        CDest.Y := CDest.Y + MyText^.H + 8;
+		SDL_FreeSurface( MyText );
+		SDL_SetClipRect( Game_Screen , Nil );
+	end;
+end;
 
-Procedure DisplayModules( Mek: GearPtr );
+Function PortraitName( NPC: GearPtr ): String;
+	{ Return a name for this NPC's protrait. }
+var
+	it,Criteria: String;
+	PList,P,P2: SAttPtr;	{ Portrait List. }
+	IsOld: Integer;	{ -1 for young, 0 for medium, 1 for old }
+	IsCharming: Integer;	{ -1 for low Charm, 0 for medium, 1 for high charm }
+	HasMecha: Boolean;	{ TRUE if NPC has a mecha, FALSE otherwise. }
+		{ Y Must have positive value }
+		{ N Must have negative valie }
+		{ - May have either value }
+	PisOK: Boolean;
+begin
+	{ Error check - better safe than sorry, unless in an A-ha song. }
+	if NPC = Nil then Exit( '' );
+
+	{ Check the standard place first. If no portrait is defined, }
+	{ grab one from the IMAGE/ directory. }
+	it := SAttValue( NPC^.SA , 'SDL_PORTRAIT' );
+	if (it = '') or not StringInList( it, Master_Portrait_List ) then begin
+		{ Create a portrait list based upon the character's gender. }
+		if NAttValue( NPC^.NA , NAG_CharDescription , NAS_Gender ) = NAV_Male then begin
+			PList := CreateFileList( Graphics_Directory + 'por_m_*.*' );
+		end else begin
+			PList := CreateFileList( Graphics_Directory + 'por_f_*.*' );
+		end;
+
+		{ Filter the portrait list based on the NPC's traits. }
+		if NAttValue( NPC^.NA , NAG_CharDescription , NAS_DAge ) < 6 then begin
+			IsOld := -1;
+		end else if NAttValue( NPC^.NA , NAG_CharDescription , NAS_DAge ) > 15 then begin
+			IsOld :=  1;
+		end else IsOld := 0;
+		if NPC^.Stat[ STAT_Charm ] < 10 then begin
+			IsCharming := -1;
+		end else if NPC^.Stat[ STAT_Charm ] >= 15 then begin
+			IsCharming :=  1;
+		end else IsCharming := 0;
+		HasMecha := IsACombatant( NPC );
+		P := PList;
+		while P <> Nil do begin
+			P2 := P^.Next;
+			Criteria := RetrieveBracketString( P^.Info );
+			PisOK := True;
+			if Length( Criteria ) >= 3 then begin
+				{ Check youth. }
+				Case Criteria[1] of
+					'O':	PisOK := IsOld > 0;
+					'Y':	PisOK := IsOld < 0;
+					'A':	PisOK := IsOld > -1;
+					'J':	PisOK := IsOld < 1;
+				end;
+
+				{ Check charm. }
+				if PisOK then Case Criteria[2] of
+					'C':	PisOK := IsCharming > 0;
+					'U':	PisOK := IsCharming < 0;
+					'P':	PisOK := IsCharming < 1;
+					'A':	PisOK := IsCharming > -1;
+				end;
+
+				{ Check mecha. }
+				if PisOK then Case Criteria[3] of
+					'Y':	PisOK := HasMecha;
+					'N':	PisOK := not HasMecha;
+				end;
+			end;
+			if not PisOK then RemoveSAtt( PList , P );
+			P := P2;
+		end;
+
+		{ As long as we found some appropriate files, select one of them }
+		{ randomly and save it for future reference. }
+		if PList <> Nil then begin
+			it := SelectRandomSAtt( PList )^.Info;
+			DisposeSAtt( PList );
+			SetSAtt( NPC^.SA , 'SDL_PORTRAIT <' + it + '>' );
+		end;
+	end;
+
+	PortraitName := it;
+end;
+
+
+Procedure DrawPortrait( GB: GameBoardPtr; NPC: GearPtr; MyDest: TSDL_Rect; WithBackground: Boolean );
+    { Draw this character's portrait in the requested area. }
+    { Note that if we have a pet rather than a character, }
+    { draw its sprite instead. }
+var
+    SS: SensibleSpritePtr;
+begin
+{    if NAttValue( NPC^.NA, NAG_CharDescription, NAS_Sentience ) = NAV_IsCharacter then begin}
+	    if WithBackground then DrawSprite( Backdrop_Sprite , MyDest , 0 );
+	    SS := LocateSprite( PortraitName( NPC ) , SpriteColor( GB , NPC ) , 100 , 150 );
+    	if SS^.Img = Nil then SetSAtt( NPC^.SA , 'SDL_PORTRAIT <>' );
+	    DrawSprite( SS , MyDest , 0 );
+{    end else begin
+        MyDest.X := MyDest.X + 18;
+        MyDest.Y := MyDest.Y + 43;
+        SS := LocateSprite( SpriteName(Nil,NPC) , SpriteColor( GB , NPC ) , 64 , 64 );
+	    if SS <> Nil then DrawSprite( SS , MyDest , Animation_Phase div 5 mod 8 );
+    end;}
+end;
+
+
+Procedure DisplayModules( Mek: GearPtr; MyZone: TSDL_Rect );
 	{ Draw a lovely little diagram detailing this mek's modules. }
 var
 	X0: LongInt;	{ Midpoint of the info display. }
@@ -233,34 +372,6 @@ var
 			PartArmorImage := ( MD^.S * 9 ) + 71 - ( CuD * 8 div MxD );
 		end;
 	end;
-
-	Function PropStructImage(): Integer;
-		{ Return the correct image to use in the diagram. }
-	var
-		MxD,CuD: Integer;
-	begin
-		MxD := GearMaxDamage( Mek );
-		CuD := GearCurrentDamage( Mek );
-		if ( MxD > 0 ) and ( CuD < 1 ) then begin
-			PropStructImage := 8;
-		end else begin
-			PropStructImage := 8 - ( CuD * 8 div MxD );
-		end;
-	end;
-
-	Function PropArmorImage(): Integer;
-		{ Return the correct image to use in the diagram. }
-	var
-		MxD,CuD: Integer;
-	begin
-		MxD := MaxTArmor( Mek );
-		CuD := CurrentTArmor( Mek );
-		if CuD < 1 then begin
-			PropArmorImage := 18;
-		end else begin
-			PropArmorImage := 18 - ( CuD * 8 div MxD );
-		end;
-	end;
     Procedure DrawThisPart( MD: GearPtr );
         { Display part MD. }
 	var
@@ -284,11 +395,10 @@ var
 
 		end;
     end;
-
 	Procedure AddPartsOfType( GS: Integer );
 		{ Add parts to the status diagram whose gear S value }
-		{ is equal to the provided number. }
-	var
+		{ is equal to the provided number and haven't overridden their tier. }
+    var
         MD: GearPtr;
 	begin
 		MD := Mek^.SubCom;
@@ -299,7 +409,6 @@ var
 			MD := MD^.Next;
 		end;
 	end;
-
 	Procedure AddPartsOfTier( Tier: Integer );
 		{ Add parts to the status diagram whose InfoTier value }
 		{ is equal to the provided number. }
@@ -315,42 +424,33 @@ var
 		end;
 	end;
 begin
-	if Mek^.G = GG_Prop then begin
-		MyDest.Y := CDest.Y + 8;
-		MyDest.X := CZone.X + ( CZone.W div 2 ) - 16;
-		DrawSprite( PropStatus_Sprite , MyDest , PropStructImage );
-		DrawSprite( PropStatus_Sprite , MyDest , PropArmorImage );
+	{ Draw the status diagram for this mek. }
+	{ Line One - Heads, Turrets, Storage }
+	MyDest.Y := MyZone.Y;
+	X0 := MyZone.X + ( MyZone.W div 2 ) - 7;
 
-	end else begin
-		{ Draw the status diagram for this mek. }
-		{ Line One - Heads, Turrets, Storage }
-		MyDest.Y := CDest.Y;
-		X0 := CZone.X + ( CZone.W div 2 ) - 7;
+	N := 0;
+	AddPartsOfType( GS_Head );
+	AddPartsOfType( GS_Turret );
+	if N < 1 then N := 1;	{ Want pods to either side of body; head and/or turret in middle. }
+	AddPartsOfType( GS_Storage );
+    AddPartsOfTier( 1 );
 
-		N := 0;
-		AddPartsOfType( GS_Head );
-		AddPartsOfType( GS_Turret );
-		if N < 1 then N := 1;	{ Want pods to either side of body; head and/or turret in middle. }
-		AddPartsOfType( GS_Storage );
-        AddPartsOfTier( 1 );
+	{ Line Two - Torso, Arms, Wings }
+	N := 0;
+	MyDest.Y := MyDest.Y + 17;
+	AddPartsOfType( GS_Body );
+	AddPartsOfType( GS_Arm );
+	AddPartsOfType( GS_Wing );
+    AddPartsOfTier( 2 );
 
-		{ Line Two - Torso, Arms, Wings }
-		N := 0;
-		MyDest.Y := MyDest.Y + 17;
-		AddPartsOfType( GS_Body );
-		AddPartsOfType( GS_Arm );
-		AddPartsOfType( GS_Wing );
-        AddPartsOfTier( 2 );
-
-		{ Line Three - Tail, Legs }
-		N := 0;
-		MyDest.Y := MyDest.Y + 17;
-		AddPartsOfType( GS_Tail );
-		if N < 1 then N := 1;	{ Want legs to either side of body; tail in middle. }
-		AddPartsOfType( GS_Leg );
-        AddPartsOfTier( 3 );
-	end;
-	AI_NextLine;
+	{ Line Three - Tail, Legs }
+	N := 0;
+	MyDest.Y := MyDest.Y + 17;
+	AddPartsOfType( GS_Tail );
+	if N < 1 then N := 1;	{ Want legs to either side of body; tail in middle. }
+	AddPartsOfType( GS_Leg );
+    AddPartsOfTier( 3 );
 end;
 
 Procedure DisplayStatusFX( Part: GearPtr );
@@ -582,10 +682,10 @@ begin
 	SetInfoZone( MyDest );
 
 	name := MechaPilotName( M );
-	GameMsg( name , MyDest , StdWhite );
+	GameMsg( name , CDest , StdWhite );
 	AI_NextLine;
 	if IsMasterGear( M ) then begin
-		DisplayModules( M );
+		DisplayModules( M, CDest );
 		DisplayMoveStatus( GB , M );
 		DisplayStatusFX( M );
 	end;
@@ -614,88 +714,6 @@ begin
 	DisplayModelStatus( GB , M , MyDest );
 end;
 
-Function PortraitName( NPC: GearPtr ): String;
-	{ Return a name for this NPC's protrait. }
-var
-	it,Criteria: String;
-	PList,P,P2: SAttPtr;	{ Portrait List. }
-	IsOld: Integer;	{ -1 for young, 0 for medium, 1 for old }
-	IsCharming: Integer;	{ -1 for low Charm, 0 for medium, 1 for high charm }
-	HasMecha: Boolean;	{ TRUE if NPC has a mecha, FALSE otherwise. }
-		{ Y Must have positive value }
-		{ N Must have negative valie }
-		{ - May have either value }
-	PisOK: Boolean;
-begin
-	{ Error check - better safe than sorry, unless in an A-ha song. }
-	if NPC = Nil then Exit( '' );
-
-	{ Check the standard place first. If no portrait is defined, }
-	{ grab one from the IMAGE/ directory. }
-	it := SAttValue( NPC^.SA , 'SDL_PORTRAIT' );
-	if (it = '') or not StringInList( it, Master_Portrait_List ) then begin
-		{ Create a portrait list based upon the character's gender. }
-		if NAttValue( NPC^.NA , NAG_CharDescription , NAS_Gender ) = NAV_Male then begin
-			PList := CreateFileList( Graphics_Directory + 'por_m_*.*' );
-		end else begin
-			PList := CreateFileList( Graphics_Directory + 'por_f_*.*' );
-		end;
-
-		{ Filter the portrait list based on the NPC's traits. }
-		if NAttValue( NPC^.NA , NAG_CharDescription , NAS_DAge ) < 6 then begin
-			IsOld := -1;
-		end else if NAttValue( NPC^.NA , NAG_CharDescription , NAS_DAge ) > 15 then begin
-			IsOld :=  1;
-		end else IsOld := 0;
-		if NPC^.Stat[ STAT_Charm ] < 10 then begin
-			IsCharming := -1;
-		end else if NPC^.Stat[ STAT_Charm ] >= 15 then begin
-			IsCharming :=  1;
-		end else IsCharming := 0;
-		HasMecha := IsACombatant( NPC );
-		P := PList;
-		while P <> Nil do begin
-			P2 := P^.Next;
-			Criteria := RetrieveBracketString( P^.Info );
-			PisOK := True;
-			if Length( Criteria ) >= 3 then begin
-				{ Check youth. }
-				Case Criteria[1] of
-					'O':	PisOK := IsOld > 0;
-					'Y':	PisOK := IsOld < 0;
-					'A':	PisOK := IsOld > -1;
-					'J':	PisOK := IsOld < 1;
-				end;
-
-				{ Check charm. }
-				if PisOK then Case Criteria[2] of
-					'C':	PisOK := IsCharming > 0;
-					'U':	PisOK := IsCharming < 0;
-					'P':	PisOK := IsCharming < 1;
-					'A':	PisOK := IsCharming > -1;
-				end;
-
-				{ Check mecha. }
-				if PisOK then Case Criteria[3] of
-					'Y':	PisOK := HasMecha;
-					'N':	PisOK := not HasMecha;
-				end;
-			end;
-			if not PisOK then RemoveSAtt( PList , P );
-			P := P2;
-		end;
-
-		{ As long as we found some appropriate files, select one of them }
-		{ randomly and save it for future reference. }
-		if PList <> Nil then begin
-			it := SelectRandomSAtt( PList )^.Info;
-			DisposeSAtt( PList );
-			SetSAtt( NPC^.SA , 'SDL_PORTRAIT <' + it + '>' );
-		end;
-	end;
-
-	PortraitName := it;
-end;
 
 Procedure NPCPersonalInfo( NPC: GearPtr; Z: TSDL_Rect );
 	{ Display the name, job, age, and gender of the NPC. }
@@ -712,15 +730,8 @@ var
 	SS: SensibleSpritePtr;
 begin
 	DrawMonologueBorder;
-	NPCPersonalInfo( NPC , ZONE_MonologueInfo );
-	DrawSprite( Backdrop_Sprite , ZONE_MonologuePortrait , 0 );
-	SS := LOcateSprite( PortraitName( NPC ) , SpriteColor( GB , NPC ) , 100 , 150 );
-
-	{ If the current portrait doesn't work, clear the portrait attribute so a new one }
-	{ will be selected. }
-	if SS^.Img = Nil then SetSAtt( NPC^.SA , 'SDL_PORTRAIT <>' );
-
-	DrawSprite( SS , ZONE_MonologuePortrait , 0 );
+	NPCPersonalInfo( NPC , ZONE_MonologueInfo.GetRect() );
+    DrawPortrait( GB, NPC, ZONE_MonologuePortrait.GetRect(), True );
 	GameMsg( Msg , ZONE_MonologueText , InfoHiLight );
 end;
 
@@ -786,14 +797,7 @@ begin
 	end;
 
 	{ Draw the portrait. }
-	DrawSprite( Backdrop_Sprite , ZONE_InteractPhoto.GetRect() , 0 );
-	SS := LOcateSprite( PortraitName( NPC ) , SpriteColor( GB , NPC ) , 100 , 150 );
-
-	{ If the current portrait doesn't work, clear the portrait attribute so a new one }
-	{ will be selected. }
-	if SS^.Img = Nil then SetSAtt( NPC^.SA , 'SDL_PORTRAIT <>' );
-
-	DrawSprite( SS , ZONE_InteractPhoto.GetRect() , 0 );
+    DrawPortrait( GB, NPC, ZONE_InteractPhoto.GetRect(), True );
 end;
 
 
@@ -910,15 +914,7 @@ begin
 	{ Show the character portrait. }
 	MyDest.X := ZONE_CharacterInfo.X + ( ZONE_CharacterInfo.W * 5 div 6 ) - 50;
 	MyDest.Y := Y0;
-	DrawSprite( Backdrop_Sprite , MyDest , 0 );
-	SS := LocateSprite( PortraitName( PC ) , SAttValue( PC^.SA , 'SDL_COLORS' ) , 100 , 150 );
-
-	{ If the current portrait doesn't work, clear the portrait attribute so a new one }
-	{ will be selected. }
-	if SS^.Img = Nil then SetSAtt( PC^.SA , 'SDL_PORTRAIT <>' );
-
-	DrawSprite( SS , MyDest , 0 );
-
+    DrawPortrait( GB, PC, MyDest, True );
 
 	{ Print the biography. }
 	MyDest.X := ZONE_CharacterInfo.X + 49;
@@ -1145,6 +1141,203 @@ begin
 	end;
 end;
 
+
+Procedure LFGI_ForItems( Part: GearPtr; gb: GameBoardPtr );
+    { Longform info for whatever the heck this is. }
+var
+    AI_Dest: TSDL_Rect;
+    msg: String;
+	N: LongInt;
+begin
+    msg := GenericName( Part );
+    if msg <> GearName( Part ) then begin
+        AI_SmallTitle( msg, InfoGreen );
+        AI_NextLine();
+    end;
+
+	{ Display the part's damage rating. }
+	N := GearCurrentDamage( Part );
+	if N > 0 then msg := BStr( N )
+	else msg := '-';
+	AI_PrintFromRight( 'Damage: ' + msg, 8 , HitsColor( Part ), Small_Font );
+    AI_NextLine;
+
+	{ Display the part's armor rating. }
+	N := GearCurrentArmor( Part );
+	if N > 0 then msg := BStr( N )
+	else msg := '-';
+	AI_PrintFromRight( 'Armor: ' + msg, 8 , ArmorColor( Part ), Small_Font );
+    AI_NextLine;
+
+	AI_PrintFromRight( 'Mass: ' + MassString( Part ) , 8 , InfoGreen, Small_Font );
+	AI_NextLine;
+	AI_NextLine;
+
+    if Part^.G = GG_Weapon then begin
+
+	end else if Part^.G < 0 then begin
+		AI_NextLine;
+		AI_PrintFromRight( Bstr( Part^.G ) + ',' + BStr( Part^.S ) + ',' + BStr( Part^.V ) , CZone.W div 2 , StdWhite, Small_Font );
+	end;
+
+    CDest.X := CZone.X;
+    CDest.W := CZone.W;
+    AI_Text( ExtendedDescription( GB, Part ) , InfoGreen );
+    msg := SAttValue( Part^.SA , 'DESC' );
+    if msg <> '' then AI_Text( msg, InfoGreen );
+end;
+
+Procedure LFGI_ForMecha( Part: GearPtr; gb: GameBoardPtr; ReallyLong: Boolean );
+    { Longform info for whatever the heck this is. }
+var
+    MyDest: TSDL_Rect;
+    msg: String;
+    n,mm,mspeed,hispeed,CurM,MaxM: Integer;
+    SS: SensibleSpritePtr;
+begin
+    msg := SpriteColor( GB , Part );
+    CDest.X := CZone.X;
+	SS := LocateSprite( SAttValue(Part^.SA,'SDL_PORTRAIT') , msg , 160 , 160 );
+	if (SS = Nil) or (SS^.Img = Nil) then SS := LocateSprite( 'mecha_noimage.png', msg, 160 , 160 );
+	if SS <> Nil then DrawSprite( SS , CDest , 0 );
+    CDest.X := CDest.X + 173;
+    SS := LocateSprite( SpriteName(Nil,Part) , msg , 64 , 64 );
+	if SS <> Nil then DrawSprite( SS , CDest , Animation_Phase div 5 mod 8 );
+
+    CDest.X := CZone.X + 160;
+    CDest.Y := CDest.Y + 72;
+    CDest.W := CZone.W - 160;
+    DisplayModules( Part, CDest );
+    CDest.Y := CDest.Y + 50;
+    n := PercentDamaged( Part );
+    msg := BStr(n) + '%';
+    CMessage( msg, CDest, StatusColor( 100, n ) );
+
+    if ReallyLong then begin
+        CDest.Y := CZone.Y + 174;
+	    AI_SmallTitle( MassString( Part ) + ' ' + MsgString('FORMNAME_'+BStr(Part^.S)) + '  PV:' + BStr( GearValue( Part ) ) , InfoHilight );
+
+        { Get the current mass of carried equipment. }
+        CurM := EquipmentMass( Part );
+
+        { Get the maximum mass that can be carried before encumbrance penalties are incurred. }
+        MaxM := ( GearEncumberance( Part ) * 2 ) - 1;
+        AI_SmallTitle( 'Enc: ' + MakeMassString( CurM, Part^.Scale ) + '/' + MakeMassString( MaxM, Part^.Scale ), EnduranceColor( ( MaxM + 1  ) , ( MaxM + 1  ) - CurM ) );
+
+        CDest.Y := CDest.Y + 5;
+        n := CDest.Y;
+        CDest.X := CZone.X;
+	    AI_PrintFromRight( 'MV:' + SgnStr(MechaManeuver(Part)) , 175, InfoGreen, Small_Font );
+	    AI_NextLine;
+	    AI_PrintFromRight( 'TR:' + SgnStr(MechaTargeting(Part)) , 175, InfoGreen, Small_Font );
+	    AI_NextLine;
+	    AI_PrintFromRight( 'SE:' + SgnStr(MechaSensorRating(Part)) , 175, InfoGreen, Small_Font );
+	    AI_NextLine;
+        hispeed := 0;
+        for mm := 1 to NumMoveMode do begin
+            mspeed := AdjustedMoveRate( GB^.Scene, Part , MM , NAV_NormSpeed );
+            if mspeed > 0 then begin
+            	{AI_PrintFromRight( MoveDesc(Part,MM), 175, InfoGreen, Small_Font );}
+            	AI_NextLine;
+            end;
+            if MoveLegal( GB^.Scene, Part, MM, NAV_FullSpeed, 0 ) then begin
+                mspeed := AdjustedMoveRate( GB^.Scene, Part , MM , NAV_FullSpeed );
+                if mspeed > hispeed then hispeed := mspeed;
+            end;
+        end;
+    	AI_PrintFromRight( ReplaceHash(MsgString('MAX_SPEED'),BStr(hispeed)), 175, InfoGreen, Small_Font );
+    	AI_NextLine;
+
+	    MyDest.X := CZone.X;
+	    MyDest.Y := n;
+	    MyDest.W := 170;
+	    MyDest.H := CZone.Y + CZone.H - n;
+	    GameMsg( SAttValue( Part^.SA, 'DESC' ) , MyDest , InfoGreen );
+    end;
+end;
+
+Procedure LFGI_ForCharacters( Part: GearPtr; gb: GameBoardPtr );
+    { Longform info for whatever the heck this is. }
+var
+    MyDest: TSDL_Rect;
+    msg: String;
+    n,sval,CurM,MaxM: Integer;
+    SS: SensibleSpritePtr;
+begin
+    msg := SpriteColor( GB , Part );
+    CDest.X := CZone.X;
+    DrawPortrait( GB, Part, CDest, False );
+
+    N := CDest.Y;
+	AI_NextLine;
+
+	{ Print HP, ME, and SP. }
+	AI_PrintFromLeft( 'HP:' , 170 , InfoGreen, Small_Font );
+	AI_PrintFromRight( BStr( GearCurrentDamage(Part)) + '/' + BStr( GearMaxDamage(Part)) , 175 , HitsColor( Part ), Small_Font );
+	AI_NextLine;
+	AI_PrintFromLeft( 'St:' , 170 , InfoGreen, Small_Font );
+	AI_PrintFromRight( BStr( CurrentStamina(Part)) + '/' + BStr( CharStamina(Part)) , 175 , EnduranceColor( CharStamina(Part) , CurrentStamina(Part) ), Small_Font );
+	AI_NextLine;
+	AI_PrintFromLeft( 'Me:' , 170 , InfoGreen, Small_Font );
+	AI_PrintFromRight( BStr( CurrentMental(Part)) + '/' + BStr( CharMental(Part)) , 175 , EnduranceColor( CharMental(Part) , CurrentMental(Part) ), Small_Font );
+	AI_NextLine;
+    { Get the current mass, max mass of carried equipment. }
+    CurM := EquipmentMass( Part );
+    MaxM := ( GearEncumberance( Part ) * 2 ) - 1;
+	AI_PrintFromLeft( 'Enc:' , 170 , InfoGreen, Small_Font );
+	AI_PrintFromRight( MakeMassString( CurM, Part^.Scale ), 175 , EnduranceColor( ( MaxM + 1  ) , ( MaxM + 1  ) - CurM ), Small_Font );
+    AI_NextLine;
+
+    CDest.X := CZone.X + 160;
+    CDest.Y := N + 72;
+    CDest.W := CZone.W - 160;
+    DisplayModules( Part, CDest );
+    CDest.Y := CDest.Y + 50;
+    n := PercentDamaged( Part );
+    msg := BStr(n) + '%';
+    CMessage( msg, CDest, StatusColor( 100, n ) );
+
+    CDest.X := CZone.X;
+    CDest.Y := CZone.Y + 174;
+
+
+    for n := 1 to 4 do begin
+	    AI_PrintFromRight( MsgString( 'STATNAME_'+BStr(n)) + ':' , 8 , InfoGreen, Small_Font );
+	    AI_PrintFromLeft( BStr( CStat( Part, n ) ) , CZone.W div 2 - 8 , InfoGreen, Small_Font );
+	    AI_PrintFromRight( MsgString( 'STATNAME_'+BStr(n+4)) + ':' , CZone.W div 2 + 8 , InfoGreen, Small_Font );
+	    AI_PrintFromLeft( BStr( CStat( Part, n+4 ) ) , CZone.W - 8 , InfoGreen, Small_Font );
+	    AI_NextLine;
+    end;
+
+    MyDest := CZone;
+    MyDest.X := MyDest.X + 10;
+    MyDest.Y := CDest.Y + TTF_FontLineSkip( Small_Font );
+    MyDest.W := MyDest.W - 20;
+    MyDest.H := MyDest.H - ( CDest.Y - CZone.Y ) - 40 - TTF_FontLineSkip( Small_Font );
+    GameMsg( SAttValue( Part^.SA, 'BIO1' ) , MyDest , InfoGreen, Small_Font );
+end;
+
+Procedure LFGI_ForScenes( Part: GearPtr; gb: GameBoardPtr );
+    { Longform info for a scene. }
+var
+    MyDest: TSDL_Rect;
+    SS: SensibleSpritePtr;
+begin
+    CDest.X := CZone.X;
+    CDest.Y := CDest.Y + 8;
+	SS := LocateSprite( SAttValue(Part^.SA,'SDL_PORTRAIT') , '' , 250 , 150 );
+	if (SS = Nil) or (SS^.Img = Nil) then SS := LocateSprite( 'scene_default.png', '' , 250 , 150 );
+	if SS <> Nil then DrawSprite( SS , CDest , 0 );
+
+    MyDest := CZone;
+    MyDest.X := MyDest.X + 10;
+    MyDest.Y := CZone.Y + TTF_FontLineSkip( Small_Font ) + 165;
+    MyDest.W := MyDest.W - 20;
+    MyDest.H := MyDest.H - ( CDest.Y - CZone.Y ) - 40 - TTF_FontLineSkip( Small_Font );
+    GameMsg( SAttValue( Part^.SA , 'DESC' ) , MyDest , InfoGreen );
+end;
+
+
 Procedure BrowserInterfaceInfo( GB: GameBoardPtr; Part: GearPtr; Z: DynamicRect );
 	{ Display the "Browser Interface" info for this part. This information }
 	{ includes the mass, damage, stats, picture (in gfx mode), extended description }
@@ -1155,7 +1348,18 @@ var
 	msg: String;
 	SS: SensibleSpritePtr;
 begin
-    MyZone := Z.GetRect();
+    MyDest := Z.GetRect();
+	SetInfoZone( MyDest );
+
+	{ Show the part's name. }
+	AI_Title( FullGearName(Part) , InfoHilight );
+
+    if Part^.G = GG_Mecha then LFGI_ForMecha( Part, gb, True )
+    else if Part^.G = GG_Character then LFGI_ForCharacters( Part, gb )
+    else if Part^.G = GG_Scene then LFGI_ForScenes( Part, gb )
+    else LFGI_ForItems( Part, gb );
+
+{    MyZone := Z.GetRect();
     MyDest := MyZone;
 	SDL_SetClipRect( Game_Screen , @MyDest );
 
@@ -1198,7 +1402,7 @@ begin
 	end;
 
 	{ Restore the clip zone. }
-	SDL_SetClipRect( Game_Screen , Nil );
+	SDL_SetClipRect( Game_Screen , Nil );}
 end;
 
 Procedure BrowserInterfaceMystery( Part: GearPtr; MyZone: DynamicRect );
@@ -1267,7 +1471,7 @@ var
 	MyDest: TSDL_Rect;
 begin
 	TimeLeft := TacticsRoundLength - ( GB^.ComTime - NAttValue( GB^.Scene^.NA , NAG_SceneData , NAS_TacticsTurnStart ) );
-	MyDest := ZONE_Clock;
+	MyDest := ZONE_Clock.GetRect();
 	QuickText( 'TIME:' , MyDest , StdWhite , game_font );
 	W := TextLength( Game_Font , 'TIME:' ) + 5;
 
@@ -1322,9 +1526,7 @@ begin
 	SDL_SetClipRect( Game_Screen , Nil );
 
 	{ Draw the portrait of the singer. }
-	DrawSprite( Backdrop_Sprite , ZONE_ConcertPhoto.GetRect() , 0 );
-	SS := LocateSprite( PortraitName( PC ) , SAttValue( PC^.SA , 'SDL_COLORS' ) , 100 , 150 );
-	DrawSprite( SS , ZONE_ConcertPhoto.GetRect() , 0 );
+    DrawPortrait( Nil, PC, ZONE_ConcertPhoto.GetRect(), True );
 end;
 
 Procedure PersonadexInfo( NPC,HomeTown: GearPtr; Z: DynamicRect );
@@ -1402,8 +1604,7 @@ begin
 	MyDest.X := MyZone.X;
 	MyDest.Y := MyZone.Y;
 	msg := SAttValue( NPC^.SA , 'SDL_COLORS' );
-	SS := LocateSprite( InfoImageName( NPC ) , msg , 100 , 150 );
-	DrawSprite( SS , MyDest , 0 );
+    DrawPortrait( Nil, NPC, MyDest, False );
 
 	{ Display the brief stats based on gear type. }
 	{ Calculate the brief stats window area. }

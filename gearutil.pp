@@ -60,6 +60,7 @@ Function ScaleDP( DP , Scale , Material: Integer ): Integer;
 Function UnscaledMaxDamage( Part: GearPtr ): Integer;
 Function GearMaxDamage(Part: GearPtr): Integer;
 Function GearMaxArmor(Part: GearPtr): Integer;
+Function GenericName(Part: GearPtr): String;
 Function GearName(Part: GearPtr): String;
 Function FullGearName(Part: GearPtr): String;
 
@@ -557,6 +558,40 @@ begin
 	GearMaxArmor := it;
 end;
 
+Function GenericName(Part: GearPtr): String;
+	{Determine the name of Part based upon}
+	{Part's type.}
+begin
+	if Part = Nil then Exit( '' );
+	case Part^.G of
+		GG_Module:	GenericName := ModuleName(Part);
+		GG_Mecha:	GenericName := MechaName(Part);
+		GG_Character:	GenericName := MsgString( 'CHARANAME' );
+		GG_Cockpit:	GenericName := MsgString( 'CPITNAME' );
+		GG_Weapon:	GenericName := WeaponName(Part);
+		GG_Ammo:	GenericName := AmmoName(Part);
+		GG_MoveSys:	GenericName := MoveSysName(Part);
+		GG_Holder:	GenericName := HolderName( Part );
+		GG_Sensor:	GenericName := SensorName( Part );
+		GG_Support:	GenericName := SupportName( Part );
+		GG_Shield:	GenericName := ShieldName( Part );
+		GG_ExArmor:	GenericName := ArmorName( Part );
+		GG_Scene:	GenericName := 'Scene ' + BStr( Part^.S );
+		GG_Treasure:	GenericName := MsgString( 'SWAGNAME' );
+		GG_Prop:	GenericName := MsgString( 'PROPNAME' );
+		GG_MetaTerrain: GenericName := MsgString( 'SCENERYNAME' );
+		GG_Tool:	GenericName := MsgString( 'TOOLNAME' );
+		GG_RepairFuel:	GenericName := RepairFuelName( Part );
+		GG_Consumable:	GenericName := MsgString( 'FOODNAME' );
+		GG_WeaponAddOn:	GenericName := MsgString( 'ACCNAME' );
+		GG_PowerSource: GenericName := MsgString( 'BATTERYNAME' );
+		GG_Computer:	GenericName := MsgString( 'COMPUTERNAME' );
+		GG_Software:	GenericName := MsgString( 'SOFTWARENAME' );
+		GG_Usable:	GenericName := MsgString( 'USABLENAME_' + BStr( Part^.S ) );
+		else GenericName := {MsgString( 'UNKNOWNNAME' ) +} BStr( Part^.G ) + '/' + BStr( Part^.S ) + '/' + BStr( Part^.V );
+	end;
+end;
+
 Function GearName(Part: GearPtr): String;
 	{Determine the name of Part. If Part has a NAME attribute,}
 	{this is easy. If not, locate a default name based upon}
@@ -570,36 +605,13 @@ begin
 
 	it := SAttValue(Part^.SA,'NAME');
 
-	if it = '' then case Part^.G of
-		GG_Module:	it := ModuleName(Part);
-		GG_Mecha:	it := MechaName(Part);
-		GG_Character:	it := MsgString( 'CHARANAME' );
-		GG_Cockpit:	it := MsgString( 'CPITNAME' );
-		GG_Weapon:	it := WeaponName(Part);
-		GG_Ammo:	it := AmmoName(Part);
-		GG_MoveSys:	it := MoveSysName(Part);
-		GG_Holder:	it := HolderName( Part );
-		GG_Sensor:	it := SensorName( Part );
-		GG_Support:	it := SupportName( Part );
-		GG_Shield:	it := ShieldName( Part );
-		GG_ExArmor:	it := ArmorName( Part );
-		GG_Scene:	it := 'Scene ' + BStr( Part^.S );
-		GG_Treasure:	it := MsgString( 'SWAGNAME' );
-		GG_Prop:	it := MsgString( 'PROPNAME' );
-		GG_MetaTerrain:	it := MsgString( 'SCENERYNAME' );
-		GG_Tool:	it := MsgString( 'TOOLNAME' );
-		GG_RepairFuel:	it := RepairFuelName( Part );
-		GG_Consumable:	it := MsgString( 'FOODNAME' );
-		GG_WeaponAddOn:	it := MsgString( 'ACCNAME' );
-		GG_PowerSource: it := MsgString( 'BATTERYNAME' );
-		GG_Computer:	it := MsgString( 'COMPUTERNAME' );
-		GG_Software:	it := MsgString( 'SOFTWARENAME' );
-		GG_Usable:	it := MsgString( 'USABLENAME_' + BStr( Part^.S ) );
-		else it := {MsgString( 'UNKNOWNNAME' ) +} BStr( Part^.G ) + '/' + BStr( Part^.S ) + '/' + BStr( Part^.V );
-	end;
+	if it = '' then it := GenericName( Part );
+
+    if Part^.g = GG_AbsolutelyNothing then it := '~!' + it;
 
 	GearName := it;
 end;
+
 
 Function FullGearName(Part: GearPtr): String;
 	{ Return the name + designation for this gear. }
