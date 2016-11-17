@@ -1,3 +1,6 @@
+- Improve Stats menu shows stat descriptions (training.pp)
+- Default weapon name should now be correct (ghweapon.pp)
+- Color menu is properly recentered when screen resizes (colormenu.pp)
 - String input routine now uses DynamicRect (sdlgfx.pp)
 - SDL screen now resizable (sdlgfx.pp)
 - VGFX_Zone changed to object with GetRect method (vidgfx.pp)

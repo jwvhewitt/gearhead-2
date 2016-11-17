@@ -985,6 +985,7 @@ USABLENAME_2 <Force Field Projector>
 USABLENAME_3 <Hologram Projector>
 USABLENAME_4 <Long Range Scanner>
 USABLE_CLASS <Class>
+MODIFIERNAME <Modifier>
 INTRINSIC_1 <Memo>
 INTRINSIC_2 <Email>
 INTRINSIC_3 <News>
@@ -1067,6 +1068,8 @@ Model_Disappeared <# rapidly disintegrates.>
 REPAIRTYPE_0 <Repair>
 REPAIRTYPE_1 <Medical>
 REPAIRTYPE_2 <Biotech>
+REPAIR_KIT_NAME <# Supplies>
+SETNAME <Set>
 ABadge1 <You have become a pop star.>
 ABadge2 <You have become an arena champion.>
 ABadge3 <You have earned a second lancemate slot.>

@@ -2390,7 +2390,12 @@ begin
 	end;
 
 	SaveStringList( Config_Directory + FName + '.txt' , VList );
+    {$IFDEF ASCII}
 	MoreText( VList , 1 );
+    {$ELSE}
+    ASRD_GameBoard := GB;
+    MoreText( VList , 1 , @ArenaScriptReDraw );
+    {$ENDIF}
 	DisposeSAtt( VList );
 end;
 
@@ -4651,8 +4656,12 @@ begin
 				FormatMessageString( L^.Info , GB , Source );
 				L := L^.Next;
 			end;
-
+            {$IFDEF ASCII}
 			MoreText( txt , 1 );
+            {$ELSE}
+            ASRD_GameBoard := GB;
+            MoreText( txt , 1 , @ArenaScriptReDraw );
+            {$ENDIF}
 			DisposeSAtt( txt );
 		end;
 	end;

@@ -68,8 +68,8 @@ const
 	cm_panel_width = 600;
 	cm_panel_height = 456;
 
-	cm_window_x = 100;
-	cm_window_y = 65;
+	cm_window_dx = -cm_panel_width div 2;
+	cm_window_dy = -230;
 
 	cm_image_x_offset = 20;
 	cm_image_y_offset = 20;
@@ -84,6 +84,22 @@ const
 	off_swatches_x = 3;
 	off_swatches_y = 19;
 
+	ZONE_colormenu_base: DynamicRect =  ( dx: cm_window_dx; dy: cm_window_dy; w: cm_panel_width; h: cm_panel_height; anchor: ANC_MIDDLE );
+	ZONE_colormenu_sprite: DynamicRect =  ( dx: cm_image_x_offset+cm_window_dx; dy: cm_window_dy + cm_image_y_offset; w: 211; h: 308; anchor: ANC_MIDDLE );
+
+	ZONE_colorselectionboxes: Array [1..3] of DynamicRect = (
+		( dx: cm_window_dx + cm_swatchzone_x_offset; dy: cm_window_dy + cm_swatchzone_y_start; w: 600; h: 145; anchor: ANC_MIDDLE ),
+		( dx: cm_window_dx + cm_swatchzone_x_offset; dy: cm_window_dy + cm_swatchzone_y_start + cm_swatchzone_height; w: 600; h: 145; anchor: ANC_MIDDLE ),
+		( dx: cm_window_dx + cm_swatchzone_x_offset; dy: cm_window_dy + cm_swatchzone_y_start + 2 * cm_swatchzone_height; w: 600; h: 145; anchor: ANC_MIDDLE )
+	);
+
+	ZONE_swatch_area: Array [1..3] of DynamicRect = (
+		( dx: cm_window_dx + cm_swatchzone_x_offset + off_swatches_x; dy: cm_window_dy + cm_swatchzone_y_start + off_swatches_y; w: Swatch_Width * Swatch_Columns; h: Swatch_Height * Swatch_Rows; anchor: ANC_MIDDLE ),
+		( dx: cm_window_dx + cm_swatchzone_x_offset + off_swatches_x; dy: cm_window_dy + cm_swatchzone_y_start + cm_swatchzone_height + off_swatches_y; w: Swatch_Width * Swatch_Columns; h: Swatch_Height * Swatch_Rows; anchor: ANC_MIDDLE ),
+		( dx: cm_window_dx + cm_swatchzone_x_offset + off_swatches_x; dy: cm_window_dy + cm_swatchzone_y_start + 2 * cm_swatchzone_height + off_swatches_y; w: Swatch_Width * Swatch_Columns; h: Swatch_Height * Swatch_Rows; anchor: ANC_MIDDLE )
+	);
+
+{
 	ZONE_colormenu_base: TSDL_Rect =  ( x: cm_window_x; y: cm_window_y; w: cm_panel_width; h: cm_panel_height );
 	ZONE_colormenu_sprite: TSDL_Rect =  ( x: cm_window_x + cm_image_x_offset; y: cm_window_y + cm_image_y_offset; w: 211; h: 308 );
 
@@ -98,7 +114,7 @@ const
 		( x: cm_window_x + cm_swatchzone_x_offset + off_swatches_x; y: cm_window_y + cm_swatchzone_y_start + cm_swatchzone_height + off_swatches_y; w: Swatch_Width * Swatch_Columns; h: Swatch_Height * Swatch_Rows ),
 		( x: cm_window_x + cm_swatchzone_x_offset + off_swatches_x; y: cm_window_y + cm_swatchzone_y_start + 2 * cm_swatchzone_height + off_swatches_y; w: Swatch_Width * Swatch_Columns; h: Swatch_Height * Swatch_Rows )
 	);
-
+}
 var
 	colormenu_ReDrawer: RedrawProcedureType;
 	colormenu_imagename, colormenu_imagepalette: String;
@@ -193,13 +209,14 @@ begin
 	if colormenu_ReDrawer <> Nil then colormenu_ReDrawer;
 
 	{ Display the panel. }
-	ClearExtendedBorder( ZONE_colormenu_base );
-	SDL_FillRect( game_screen , @ZONE_colormenu_base , SDL_MapRGB( Game_Screen^.Format , PlayerBlue.R , PlayerBlue.G , PlayerBlue.B ) );
-	DrawSprite( cm_panel , ZONE_colormenu_base , 0 );
+    MyDest := ZONE_colormenu_base.GetRect();
+	ClearExtendedBorder( MyDest );
+	SDL_FillRect( game_screen , @MyDest , SDL_MapRGB( Game_Screen^.Format , PlayerBlue.R , PlayerBlue.G , PlayerBlue.B ) );
+	DrawSprite( cm_panel , MyDest , 0 );
 
 	{ Display the sprite we're editing. }
 	MySprite := LocateSprite( colormenu_imagename, colormenu_imagepalette, colormenu_imagewidth, colormenu_imageheight );
-	MyDest := ZONE_colormenu_sprite;
+	MyDest := ZONE_colormenu_sprite.GetRect();
 	if MySprite <> Nil then begin
 		MyDest.X := MyDest.X + ( MyDest.W div 2 ) - ( colormenu_imagewidth div 2 );
 		MyDest.Y := MyDest.Y + ( MyDest.H div 2 ) - ( colormenu_imageheight div 2 );
@@ -216,9 +233,9 @@ begin
 	{ Display the three color swatch areas. }
 	for t := 1 to 3 do begin
 		if t = colormenu_channel then begin
-			DrawColorSelectionBox( ZONE_colorselectionboxes[t], colormenu_colorset[ t ], colormenu_currentpen[ t ], colormenu_rowoffset[ t ], colormenu_Curs_X, colormenu_Curs_Y );
+			DrawColorSelectionBox( ZONE_colorselectionboxes[t].GetRect(), colormenu_colorset[ t ], colormenu_currentpen[ t ], colormenu_rowoffset[ t ], colormenu_Curs_X, colormenu_Curs_Y );
 		end else begin
-			DrawColorSelectionBox( ZONE_colorselectionboxes[t], colormenu_colorset[ t ], colormenu_currentpen[ t ], colormenu_rowoffset[ t ], -1, -1 );
+			DrawColorSelectionBox( ZONE_colorselectionboxes[t].GetRect(), colormenu_colorset[ t ], colormenu_currentpen[ t ], colormenu_rowoffset[ t ], -1, -1 );
 		end;
 	end;
 end;
@@ -254,15 +271,17 @@ Procedure ProcessMouseHit;
 	{ Alright, so the mouse button has just been pressed. Figure out if it hit anything }
 	{ interesting and maybe change one of the color pens. }
 var
+    MyHit: TSDL_Rect;
 	T,C,HitX,HitY: Integer;
 begin
 	{ There are three color channels to worry about. See if it hit any of those. }
 	for t := 1 to 3 do begin
-		if ( Mouse_X >= ZONE_swatch_area[t].X ) and ( Mouse_Y >= ZONE_swatch_area[t].Y ) and ( Mouse_X < ( ZONE_swatch_area[t].X + ZONE_swatch_area[t].W ) ) and ( Mouse_Y < ( ZONE_swatch_area[t].Y + ZONE_swatch_area[t].H ) ) then begin
+        MyHit := ZONE_swatch_area[t].GetRect();
+		if ( Mouse_X >= MyHit.X ) and ( Mouse_Y >= MyHit.Y ) and ( Mouse_X < ( MyHit.X + MyHit.W ) ) and ( Mouse_Y < ( MyHit.Y + MyHit.H ) ) then begin
 			{ Alright, we're in the hit box. We've definitely hit a swatch, if there's one at this position. }
 			{ Determine HitX and HitY. }
-			HitX := ( Mouse_X - ZONE_swatch_area[t].X ) div Swatch_Width;
-			HitY := ( Mouse_Y - ZONE_swatch_area[t].Y ) div Swatch_Height;
+			HitX := ( Mouse_X - MyHit.X ) div Swatch_Width;
+			HitY := ( Mouse_Y - MyHit.Y ) div Swatch_Height;
 
 			{ Now the question becomes, is there a color at this area? }
 			colormenu_channel := T;

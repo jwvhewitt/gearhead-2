@@ -84,35 +84,48 @@ Const
 
 var
 	SERV_GB: GameBoardPtr;
-	SERV_PC,SERV_NPC,SERV_Info: GearPtr;
+	SERV_PC,SERV_NPC,SERV_Info,SERV_CUSTOMER: GearPtr;
 	SERV_Menu: RPGMenuPtr;
 	Standard_Caliber_List: GearPtr;
 
-
-Procedure ServiceRedraw;
-	{ Redraw the screen for whatever service is going to go on. }
-var
-	Part: GearPtr;
+Procedure BasicServiceRedraw;
+    { Redraw the services interface without any of the bells and whistles. }
 begin
 	CombatDisplay( SERV_GB );
-	SetupServicesDisplay;
-
-	if ( SERV_Info <> Nil ) and ( Serv_Menu <> Nil ) then begin
-		Part := RetrieveGearSib( SERV_Info , CurrentMenuItemValue( SERV_Menu ) );
-		if Part <> Nil then begin
-			BrowserInterfaceInfo( SERV_GB , Part , ZONE_ItemsInfo );
-
-		end;
-	end else if Serv_Info <> Nil then begin
-		BrowserInterfaceInfo( SERV_GB , SERV_Info , ZONE_ItemsInfo );
-	end;
+    SetupServicesDisplay();    
 
     {$IFDEF ASCII}
 	if SERV_NPC <> Nil then NPCPersonalInfo( SERV_NPC , ZONE_ShopCaption );
 
 	CMessage( '$' + BStr( NAttValue( SERV_PC^.NA , NAG_Experience , NAS_Credits ) ) , ZONE_ItemsPCInfo , InfoHilight );
 	GameMsg( CHAT_Message , ZONE_ShopMsg , InfoHiLight );
+    {$ELSE}
+    if SERV_NPC <> Nil then begin
+        DrawPortrait( SERV_GB, SERV_NPC, ZONE_ShopNPCPortrait.GetRect(), False );
+	    CMessage( GearName(SERV_NPC) , ZONE_ShopNPCName.GetRect() , InfoHilight );
+    end;
+    DrawPortrait( SERV_GB, SERV_Customer, ZONE_ShopPCPortrait.GetRect(), False );
+	CMessage( GearName(SERV_Customer) , ZONE_ShopPCName.GetRect() , InfoHilight );
+	CMessage( '$' + BStr( NAttValue( SERV_PC^.NA , NAG_Experience , NAS_Credits ) ) , ZONE_ShopCash.GetRect() , InfoHilight );
+	GameMsg( CHAT_Message , ZONE_ShopText.GetRect() , InfoHiLight );
     {$ENDIF}
+end;
+
+Procedure ServiceRedraw;
+	{ Redraw the screen for whatever service is going to go on. }
+var
+	Part: GearPtr;
+begin
+    BasicServiceRedraw();
+
+	if ( SERV_Info <> Nil ) and ( Serv_Menu <> Nil ) then begin
+		Part := RetrieveGearSib( SERV_Info , CurrentMenuItemValue( SERV_Menu ) );
+		if Part <> Nil then begin
+			BrowserInterfaceInfo( SERV_GB , Part , ZONE_ShopInfo );
+		end;
+	end else if Serv_Info <> Nil then begin
+		BrowserInterfaceInfo( SERV_GB , SERV_Info , ZONE_ShopInfo );
+	end;
 end;
 
 Procedure SellStuffRedraw;
@@ -121,27 +134,19 @@ var
 	N: Integer;
 	Part: GearPtr;
 begin
-	CombatDisplay( SERV_GB );
-	SetupServicesDisplay;
+    BasicServiceRedraw();
 
 	if ( SERV_Info <> Nil ) and ( Serv_Menu <> Nil ) then begin
 		N := CurrentMenuItemValue( SERV_Menu );
 		if N > 0 then begin
 			Part := LocateGearByNumber( SERV_Info , N );
 			if Part <> Nil then begin
-				BrowserInterfaceInfo( SERV_GB , Part , ZONE_ItemsInfo );
+				BrowserInterfaceInfo( SERV_GB , Part , ZONE_ShopInfo );
 			end;
 		end;
 	end else if Serv_Info <> Nil then begin
-		BrowserInterfaceInfo( SERV_GB , SERV_Info , ZONE_ItemsInfo );
+		BrowserInterfaceInfo( SERV_GB , SERV_Info , ZONE_ShopInfo );
 	end;
-
-    {$IFDEF ASCII}
-	if SERV_NPC <> Nil then NPCPersonalInfo( SERV_NPC , ZONE_ShopCaption );
-
-	CMessage( '$' + BStr( NAttValue( SERV_PC^.NA , NAG_Experience , NAS_Credits ) ) , ZONE_ItemsPCInfo , InfoHilight );
-	GameMsg( CHAT_Message , ZONE_ShopMsg , InfoHiLight );
-    {$ENDIF}
 end;
 
 Procedure ServicesBackpackRedraw;
@@ -1703,6 +1708,7 @@ begin
 	SERV_GB := GB;
 	SERV_NPC := NPC;
 	SERV_PC := PC;
+    SERV_CUSTOMER:= PC;
 
 	{ Gather up all the PC's mechas and salvage. }
 	GatherFieldHQ( GB );
@@ -1834,6 +1840,7 @@ begin
 	SERV_GB := GB;
 	SERV_NPC := NPC;
 	SERV_PC := PC;
+    SERV_CUSTOMER := PC;
 
 	{ When using a school, can always learn directly. }
 	DSLTemp := Direct_Skill_Learning;
@@ -1844,7 +1851,7 @@ begin
     {$IFNDEF ASCII}
 	AttachMenuDesc( SkillMenu , ZONE_ShopInfo );
     {$ELSE}
-	AttachMenuDesc( SkillMenu , ZONE_ItemsInfo );
+	AttachMenuDesc( SkillMenu , ZONE_ShopInfo );
     {$ENDIF}
 
 	while Stuff <> '' do begin
@@ -1994,6 +2001,7 @@ begin
 	SERV_GB := GB;
 	SERV_NPC := NPC;
 	SERV_PC := PC;
+    SERV_CUSTOMER := PC;
 
 	repeat
 		RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_ShopMenu );
@@ -2102,6 +2110,7 @@ begin
 	SERV_GB := GB;
 	SERV_NPC := NPC;
 	SERV_PC := PC;
+    SERV_CUSTOMER := PC;
 
 	{ Create a shopping list of the available scenes. These must not be }
 	{ enemies of the current scene, must be located on the same world, }
@@ -2111,7 +2120,7 @@ begin
     {$IFNDEF ASCII}
 	AttachMenuDesc( RPM , ZONE_ShopInfo );
     {$ELSE}
-	AttachMenuDesc( RPM , ZONE_ItemsInfo );
+	AttachMenuDesc( RPM , ZONE_ShopInfo );
     {$ENDIF}
 	World := FindWorld( GB , GB^.Scene );
 	City := World^.SubCom;

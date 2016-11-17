@@ -588,6 +588,9 @@ begin
 		GG_Computer:	GenericName := MsgString( 'COMPUTERNAME' );
 		GG_Software:	GenericName := MsgString( 'SOFTWARENAME' );
 		GG_Usable:	GenericName := MsgString( 'USABLENAME_' + BStr( Part^.S ) );
+        GG_Modifier: GenericName := MsgString( 'MODIFIERNAME' );
+        GG_Set: GenericName := MsgString( 'SETNAME' );
+
 		else GenericName := {MsgString( 'UNKNOWNNAME' ) +} BStr( Part^.G ) + '/' + BStr( Part^.S ) + '/' + BStr( Part^.V );
 	end;
 end;

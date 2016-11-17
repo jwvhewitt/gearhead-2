@@ -108,8 +108,8 @@ Procedure ViewCharRedraw;
 	{ Redraw the view character screen. }
 begin
 	CombatDisplay( PCACTIONRD_GB );
-	CharacterDisplay( PCACTIONRD_PC , PCACTIONRD_GB );
-	InfoBox( ZONE_Menu );
+	CharacterDisplay( PCACTIONRD_PC , PCACTIONRD_GB, ZONE_CharViewChar );
+	InfoBox( ZONE_CharViewMenu );
 end;
 
 Procedure FHQ_Rename( GB: GameBoardPtr; NPC: GearPtr );
@@ -281,7 +281,7 @@ begin
 	PCACTIONRD_PC := NPC;
 	PCACTIONRD_GB := GB;
 
-	RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_Menu );
+	RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CharViewMenu );
 	if IsSafeArea( GB ) or OnTheMap( GB, NPC ) then AddRPGMenuItem( RPM , MsgString( 'FHQ_LMV_Equip' ) , 1 );
 	AddRPGMenuItem( RPM , MsgString( 'FHQ_LMV_Train' ) , 2 );
 
@@ -1240,7 +1240,12 @@ begin
 		end;
 
 		if HList <> Nil then begin
+            {$IFDEF ASCII}
 			MoreText( HList , 1 );
+            {$ELSE}
+            PCACTIONRD_GB := GB;
+    		MoreText( HList , 1 , @PCActionRedraw );
+            {$ENDIF}
 			DisposeSAtt( HList );
 		end;
 	end;
@@ -1256,7 +1261,7 @@ var
 	N: Integer;
 begin
 
-	RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_Menu );
+	RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CharViewMenu );
 
 	AddRPGMenuItem( RPM , MsgString( 'PCVIEW_BackPack' ) , 1 );
 	AddRPGMenuItem( RPM , MsgString( 'PCVIEW_Injuries' ) , 3 );
@@ -1288,7 +1293,7 @@ begin
 			5:	SetPlayOptions( GB , PC );
 			6:	BrowsePersonalHistory( GB , PC );
 {$IFNDEF ASCII}
-			7:	SelectColors( PC , @ViewCharRedraw );
+			7:	SelectColors( PC , @PCActionRedraw );
 			8:	SelectSprite( PC , @ViewCharRedraw );
 {$ENDIF}
 
@@ -1775,9 +1780,14 @@ begin
 	txt := LoadStringList( FName );
 
 	if txt <> Nil then begin
+        {$IFDEF ASCII}
 		MoreText( txt , 1 );
-		DisposeSAtt( txt );
 		CombatDisplay( GB );
+        {$ELSE}
+        PCACTIONRD_GB := GB;
+		MoreText( txt , 1 , @PCActionRedraw );
+        {$ENDIF}
+		DisposeSAtt( txt );
 	end;
 end;
 
@@ -2471,8 +2481,12 @@ begin
 		DoQuickFire( Camp^.GB, Mek );
 
 	end else if KCode = KMC_RollHistory then begin
+        {$IFDEF ASCII}
 		MoreText( Skill_Roll_History , MoreHighFirstLine( Skill_Roll_History ) );
-
+        {$ELSE}
+        PCACTIONRD_GB := Camp^.GB;
+		MoreText( Skill_Roll_History , MoreHighFirstLine( Skill_Roll_History ) , @PCActionRedraw );
+        {$ENDIF}
 	end else if KCode = KMC_PartyMode then begin
 		SwitchPartyMode( Camp^.GB );
 		GotMove := True;
@@ -3095,7 +3109,12 @@ begin
 				DirectScript( Camp^.GB );
 
 			end else if A = '$' then begin
-				MoreText( Skill_Roll_History , MoreHighFirstLine( Skill_Roll_History ) );
+                {$IFDEF ASCII}
+		        MoreText( Skill_Roll_History , MoreHighFirstLine( Skill_Roll_History ) );
+                {$ELSE}
+                PCACTIONRD_GB := Camp^.GB;
+		        MoreText( Skill_Roll_History , MoreHighFirstLine( Skill_Roll_History ) , @PCActionRedraw );
+                {$ENDIF}
 
 			end;
 

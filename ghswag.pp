@@ -136,7 +136,7 @@ end;
 Function RepairFuelName( Part: GearPtr ): String;
 	{ Returns a default name for some repairfuel. }
 begin
-	RepairFuelName := MsgString( 'SKILLNAME_' + BStr( Part^.S ) ) + ' Kit';
+	RepairFuelName := ReplaceHash(MSgString('REPAIR_KIT_NAME'), MsgString( 'REPAIRTYPE_' + BStr( Part^.S ) ));
 end;
 
 Procedure CheckRepairFuelRange( Part: GearPtr );

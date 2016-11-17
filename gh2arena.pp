@@ -211,7 +211,7 @@ Procedure AddPilotRedraw;
 	{ for ADR_SOURCE. }
 begin
 	BasicArenaRedraw;
-	if ADR_Source <> Nil then CharacterDisplay( ADR_Source , Nil );
+	if ADR_Source <> Nil then CharacterDisplay( ADR_Source , Nil, ZONE_CharViewChar );
 end;
 
 Procedure PurchaseHardwareRedraw;

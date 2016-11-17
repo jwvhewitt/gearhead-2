@@ -70,6 +70,7 @@ uses ability,effects,gearutil,ghchars,ghweapon,rpgdice,texutil,movement,
 
 var
 	NPC_Chatter_Standard: SAttPtr;
+    Redraw_GB: GameBoardPtr;
 
 
 Procedure BattleMapDisplay( GB: GameBoardPtr );
@@ -131,6 +132,13 @@ begin
 		BattleMapDisplay( GB );
 	end;
 end;
+
+Procedure ComDispRedraw();
+    { A very simple redraw procedure. }
+begin
+    CombatDisplay( Redraw_GB );
+end;
+
 
 Procedure BeginTurn( GB: GameBoardPtr; M: GearPtr );
 	{ A player-controlled model is starting their tactics turn. Let the player }
@@ -697,8 +705,14 @@ end;
 Procedure DisplayConsoleHistory( GB: GameBoardPtr );
 	{ Display the console history, then restore the display. }
 begin
+    {$IFDEF ASCII}
 	MoreText( Console_History , MoreHighFirstLine( Console_History ) );
 	CombatDisplay( GB );
+    {$ELSE}
+    Redraw_GB := GB;
+	MoreText( Console_History , MoreHighFirstLine( Console_History ), @ComDispRedraw );
+
+    {$ENDIF}
 end;
 
 Function GetTauntString( NPC: GearPtr; Msg_Label: String ): String;

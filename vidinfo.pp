@@ -35,7 +35,7 @@ Procedure NPCPersonalInfo( NPC: GearPtr; Z: VGFX_Zone );
 Procedure DoMonologueDisplay( GB: GameBoardPtr; NPC: GearPtr; msg: String );
 Procedure DisplayInteractStatus( GB: GameBoardPtr; NPC: GearPtr; React,Endurance: Integer );
 
-Procedure CharacterDisplay( PC: GearPtr; GB: GameBoardPtr );
+Procedure CharacterDisplay( PC: GearPtr; GB: GameBoardPtr; DZone: VGFX_Zone );
 Procedure InjuryViewer( PC: GearPtr; redraw: RedrawProcedureType );
 
 Procedure BrowserInterfaceInfo( GB: GameBoardPtr; Part: GearPtr; Z: VGFX_Zone );
@@ -607,7 +607,7 @@ begin
 
 end;
 
-Procedure CharacterDisplay( PC: GearPtr; GB: GameBoardPtr );
+Procedure CharacterDisplay( PC: GearPtr; GB: GameBoardPtr; DZone: VGFX_Zone );
 	{ Display the character stats, background, etc. }
 var
 	MyDest: VGFX_Rect;
@@ -622,8 +622,8 @@ begin
 	if PC = Nil then Exit;
 
 	{ Set up the display. }
-	MyDest := ZONE_CharacterDisplay.GetRect();
-	InfoBox( ZONE_CharacterDisplay );
+	MyDest := DZone.GetRect();
+	InfoBox( DZone );
 	ClipZone( MyDest );
 	ClrZone( MyDest );
 
@@ -802,7 +802,7 @@ var
 var
 	msg: String;
 begin
-	MyDest := ZONE_CharacterDisplay.GetRect();
+	MyDest := ZONE_CharViewChar.GetRect();
 	Redraw;
 	InfoBox( MyDest );
 	ClrZone( MyDest );

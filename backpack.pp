@@ -431,7 +431,7 @@ var
 	RPM: RPGMenuPtr;
 	fname: String;
 begin
-	RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_Menu );
+	RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CharViewMenu );
 	if NAttValue( M^.NA , NAG_CharDescription , NAS_Gender ) = NAV_Female then begin
 		BuildFileMenu( RPM , Graphics_Directory + 'cha_f_*.*' );
 	end else begin

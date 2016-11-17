@@ -574,7 +574,11 @@ begin
 		end;
 	end;
 	if Memo <> Nil then begin
+        {$IFDEF ASCII}
 		MoreText( Memo , 1 );
+        {$ELSE}
+		MoreText( Memo , 1 , Nil );
+        {$ENDIF}
 		DisposeSAtt( Memo );
 	end;
 end;

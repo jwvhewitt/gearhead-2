@@ -80,7 +80,7 @@ Procedure RandCharRedraw;
 	{ Redraw the screen for SDL. }
 begin
 	ClrScreen;
-	if RCPC <> Nil then CharacterDisplay( RCPC , Nil );
+	if RCPC <> Nil then CharacterDisplay( RCPC , Nil, ZONE_CharGenChar );
 	InfoBox( ZONE_CharGenDesc );
 	InfoBox( ZONE_CharGenPrompt );
 	InfoBox( ZONE_CharGenCaption );
@@ -1519,7 +1519,7 @@ begin
 	if M = MODE_Regular then begin
 		N := SelectAge;
 		SetNAtt( PC^.NA , NAG_CharDescription , NAS_DAge , N );
-		CharacterDisplay( PC , Nil );
+		CharacterDisplay( PC , Nil , ZONE_CharGenChar );
 	end else begin
 		N := Random( 10 ) - Random( 5 );
 		SetNAtt( PC^.NA , NAG_CharDescription , NAS_DAge , N );
@@ -1544,7 +1544,7 @@ begin
 	{ Allocate stat points. }
 	if M = MODE_Regular then begin
 		AllocateStatPoints( PC , StatPt );
-		CharacterDisplay( PC , Nil );
+		CharacterDisplay( PC , Nil, ZONE_CharGenChar );
 	end else begin
 		EasyStatPoints( PC , StatPt );
 	end;
@@ -1552,7 +1552,7 @@ begin
 	{ Allocate skill points. }
 	if M = MODE_Regular then begin
 		AllocateSkillPoints( PC , SkillPt );
-		CharacterDisplay( PC , Nil );
+		CharacterDisplay( PC , Nil, ZONE_CharGenChar );
 	end else begin
 		RandomSkillPoints( PC , SkillPt , False );
 	end;
@@ -1569,7 +1569,7 @@ begin
 	{ Set personality traits. }
 	if M = MODE_Regular then begin
 		SetTraits( PC );
-		CharacterDisplay( PC , Nil );
+		CharacterDisplay( PC , Nil, ZONE_CharGenChar );
 	end;
 
 	{ The background and so forth may have started the PC with a bad reputation. }
@@ -1589,7 +1589,7 @@ begin
 	if  Name <> '' then begin
 		SetSAtt( PC^.SA , 'NAME <'+name+'>');
 		if PC^.Next <> Nil then SetSAtt( PC^.Next^.SA , 'PILOT <' + name + '>' );
-		CharacterDisplay( PC , Nil );
+		CharacterDisplay( PC , Nil, ZONE_CharGenChar );
 
 	end else begin
 		DisposeGear( Egg );

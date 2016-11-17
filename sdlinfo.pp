@@ -28,6 +28,7 @@ interface
 uses sdl,locale,gears,minitype,sdlgfx;
 
 Function InfoImageName( Part: GearPtr ): String;
+Procedure DrawPortrait( GB: GameBoardPtr; NPC: GearPtr; MyDest: TSDL_Rect; WithBackground: Boolean );
 
 Procedure DisplayModelStatus( GB: GameBoardPtr; M: GearPtr;  MyDest: TSDL_Rect );
 Procedure DisplayModelStatus( GB: GameBoardPtr; M: GearPtr;  MyZone: DynamicRect );
@@ -35,7 +36,7 @@ Procedure QuickModelStatus( GB: GameBoardPtr; M: GearPtr );
 
 Procedure NPCPersonalInfo( NPC: GearPtr; Z: TSDL_Rect );
 Procedure DisplayInteractStatus( GB: GameBoardPtr; NPC: GearPtr; React,Endurance: Integer );
-Procedure CharacterDisplay( PC: GearPtr; GB: GameBoardPtr );
+Procedure CharacterDisplay( PC: GearPtr; GB: GameBoardPtr; DZone: DynamicRect );
 Procedure InjuryViewer( PC: GearPtr; redraw: RedrawProcedureType );
 
 Procedure BrowserInterfaceInfo( GB: GameBoardPtr; Part: GearPtr; Z: DynamicRect );
@@ -195,7 +196,7 @@ var
 	PLine: PChar;
 begin
 	pline := QuickPCopy( msg );
-	MyImage := TTF_RenderText_Solid( Small_Font , pline , C );
+	MyImage := TTF_RenderText_Solid( Info_Font , pline , C );
 	Dispose( pline );
 
 	CDest.X := CZone.X + ( ( CZone.W - MyImage^.W ) div 2 );
@@ -203,7 +204,7 @@ begin
 	SDL_BlitSurface( MyImage , Nil , Game_Screen , @CDest );
 	SDL_FreeSurface( MyImage );
 
-	CDest.Y := CDest.Y + TTF_FontLineSkip( Small_Font );
+	CDest.Y := CDest.Y + TTF_FontLineSkip( Info_Font );
 end;
 
 
@@ -228,7 +229,7 @@ var
 	MyText: PSDL_Surface;
 	PLine: PChar;
 begin
-    MyText := PrettyPrint( msg , CDest.W, C, True, Small_Font );
+    MyText := PrettyPrint( msg , CDest.W, C, True, Info_Font );
 	if MyText <> Nil then begin
 		SDL_SetClipRect( Game_Screen , @CZone );
 		SDL_BlitSurface( MyText , Nil , Game_Screen , @CDest );
@@ -801,7 +802,7 @@ begin
 end;
 
 
-Procedure CharacterDisplay( PC: GearPtr; GB: GameBoardPtr );
+Procedure CharacterDisplay( PC: GearPtr; GB: GameBoardPtr; DZone: DynamicRect );
 	{ Display the important stats for this PC in the map zone. }
 var
 	msg,job: String;
@@ -810,7 +811,7 @@ var
 	C: TSDL_Color;
 	X0,X1,Y0: Integer;
 	Mek: GearPtr;
-	MyDest: TSDL_Rect;
+	MyZone,MyDest: TSDL_Rect;
 	SS: SensibleSpritePtr;
 begin
 	{ Begin with one massive error check... }
@@ -818,8 +819,9 @@ begin
 	if PC^.G <> GG_Character then PC := LocatePilot( PC );
 	if PC = Nil then Exit;
 
-	SetInfoZone( ZONE_CharacterInfo );
-	InfoBox( ZONE_CharacterInfo );
+    MyZone := DZone.GetRect();
+	SetInfoZone( MyZone );
+	InfoBox( MyZone );
 
 	AI_Title( GearName( PC ) , NeutralGrey );
 	AI_Title( JobAgeGenderDesc( PC ) , InfoGreen );
@@ -829,7 +831,7 @@ begin
 	Y0 := CDest.Y;
 
 	MyDest.Y := CDest.Y;
-	X0 := ZONE_CharacterInfo.X + ( ZONE_CharacterInfo.W div 3 );
+	X0 := MyZone.X + ( MyZone.W div 3 );
 
 	for t := 1 to NumGearStats do begin
 		{ Find the adjusted stat value for this stat. }
@@ -845,7 +847,7 @@ begin
 		else C := InfoGreen;
 
 		{ Do the output. }
-		MyDest.X := ZONE_CharacterInfo.X + 10;
+		MyDest.X := MyZone.X + 10;
 		QuickText( MsgString( 'StatName_' + BStr( T ) ) , MyDest , NeutralGrey , game_font );
 		msg := BStr( S );
 		MyDest.X := X0 - 30 - TextLength( Game_Font , msg );
@@ -856,8 +858,8 @@ begin
 
 	{ Set column measurements for the next column. }
 	MyDest.Y := Y0;
-	X0 := ZONE_CharacterInfo.X + ( ZONE_CharacterInfo.W div 3 );
-	X1 := ZONE_CharacterInfo.X + ( ZONE_CharacterInfo.W * 2 div 3 ) - 10;
+	X0 := MyZone.X + ( MyZone.W div 3 );
+	X1 := MyZone.X + ( MyZone.W * 2 div 3 ) - 10;
 
 	MyDest.X := X0;
 	QuickText( MsgString( 'INFO_XP' ) , MyDest , NeutralGrey , game_font );
@@ -912,13 +914,13 @@ begin
 	end;
 
 	{ Show the character portrait. }
-	MyDest.X := ZONE_CharacterInfo.X + ( ZONE_CharacterInfo.W * 5 div 6 ) - 50;
+	MyDest.X := MyZone.X + ( MyZone.W * 5 div 6 ) - 50;
 	MyDest.Y := Y0;
     DrawPortrait( GB, PC, MyDest, True );
 
 	{ Print the biography. }
-	MyDest.X := ZONE_CharacterInfo.X + 49;
-	MyDest.W := ZONE_CharacterInfo.W - 98;
+	MyDest.X := MyZone.X + 49;
+	MyDest.W := MyZone.W - 98;
 	MyDest.Y := Y0 + 160;
 	MyDest.H := 80;
 
@@ -956,13 +958,15 @@ Procedure InjuryViewer( PC: GearPtr; redraw: RedrawProcedureType );
 	Procedure RealInjuryDisplay;
 	var
 		SP,MP,T: Integer;
+        MyDest: TSDL_Rect;
 	begin
 		{ Begin with one massive error check... }
 		if PC = Nil then Exit;
 		if PC^.G <> GG_Character then PC := LocatePilot( PC );
 		if PC = Nil then Exit;
 
-		SetInfoZone( ZONE_CharacterInfo );
+        MyDest := ZONE_MoreText.GetRect();
+		SetInfoZone( MyDest );
 
 		AI_Title( MsgString( 'INFO_InjuriesTitle' ) , StdWhite );
 
@@ -1019,7 +1023,7 @@ var
 begin
 	repeat
 		Redraw;
-		InfoBox( ZONE_CharacterInfo );
+		InfoBox( ZONE_MoreText );
 		RealInjuryDisplay;
 		DoFlip;
 		A := RPGKey;
@@ -1147,7 +1151,9 @@ Procedure LFGI_ForItems( Part: GearPtr; gb: GameBoardPtr );
 var
     AI_Dest: TSDL_Rect;
     msg: String;
+    OriginalY: Integer;
 	N: LongInt;
+    SS: SensibleSpritePtr;
 begin
     msg := GenericName( Part );
     if msg <> GearName( Part ) then begin
@@ -1155,32 +1161,34 @@ begin
         AI_NextLine();
     end;
 
+    { Display the part's portrait. }
+    OriginalY := CDest.Y;
+    CDest.X := CZone.X;
+	msg := SAttValue( Part^.SA , 'SDL_COLORS' );
+	SS := LocateSprite( InfoImageName( Part ) , msg , 100 , 150 );
+	DrawSprite( SS , CDest , 0 );
+
+
 	{ Display the part's damage rating. }
 	N := GearCurrentDamage( Part );
 	if N > 0 then msg := BStr( N )
 	else msg := '-';
-	AI_PrintFromRight( 'Damage: ' + msg, 8 , HitsColor( Part ), Small_Font );
+	AI_PrintFromRight( 'Damage: ' + msg, 108 , HitsColor( Part ), Info_Font );
     AI_NextLine;
 
 	{ Display the part's armor rating. }
 	N := GearCurrentArmor( Part );
 	if N > 0 then msg := BStr( N )
 	else msg := '-';
-	AI_PrintFromRight( 'Armor: ' + msg, 8 , ArmorColor( Part ), Small_Font );
+	AI_PrintFromRight( 'Armor: ' + msg, 108 , ArmorColor( Part ), Info_Font );
     AI_NextLine;
 
-	AI_PrintFromRight( 'Mass: ' + MassString( Part ) , 8 , InfoGreen, Small_Font );
+	AI_PrintFromRight( 'Mass: ' + MassString( Part ) , 108 , InfoGreen, Info_Font );
 	AI_NextLine;
 	AI_NextLine;
-
-    if Part^.G = GG_Weapon then begin
-
-	end else if Part^.G < 0 then begin
-		AI_NextLine;
-		AI_PrintFromRight( Bstr( Part^.G ) + ',' + BStr( Part^.S ) + ',' + BStr( Part^.V ) , CZone.W div 2 , StdWhite, Small_Font );
-	end;
 
     CDest.X := CZone.X;
+    CDest.Y := OriginalY + 158;
     CDest.W := CZone.W;
     AI_Text( ExtendedDescription( GB, Part ) , InfoGreen );
     msg := SAttValue( Part^.SA , 'DESC' );
@@ -1227,17 +1235,17 @@ begin
         CDest.Y := CDest.Y + 5;
         n := CDest.Y;
         CDest.X := CZone.X;
-	    AI_PrintFromRight( 'MV:' + SgnStr(MechaManeuver(Part)) , 175, InfoGreen, Small_Font );
+	    AI_PrintFromRight( 'MV:' + SgnStr(MechaManeuver(Part)) , 175, InfoGreen, Info_Font );
 	    AI_NextLine;
-	    AI_PrintFromRight( 'TR:' + SgnStr(MechaTargeting(Part)) , 175, InfoGreen, Small_Font );
+	    AI_PrintFromRight( 'TR:' + SgnStr(MechaTargeting(Part)) , 175, InfoGreen, Info_Font );
 	    AI_NextLine;
-	    AI_PrintFromRight( 'SE:' + SgnStr(MechaSensorRating(Part)) , 175, InfoGreen, Small_Font );
+	    AI_PrintFromRight( 'SE:' + SgnStr(MechaSensorRating(Part)) , 175, InfoGreen, Info_Font );
 	    AI_NextLine;
         hispeed := 0;
         for mm := 1 to NumMoveMode do begin
             mspeed := AdjustedMoveRate( GB^.Scene, Part , MM , NAV_NormSpeed );
             if mspeed > 0 then begin
-            	{AI_PrintFromRight( MoveDesc(Part,MM), 175, InfoGreen, Small_Font );}
+            	{AI_PrintFromRight( MoveDesc(Part,MM), 175, InfoGreen, Info_Font );}
             	AI_NextLine;
             end;
             if MoveLegal( GB^.Scene, Part, MM, NAV_FullSpeed, 0 ) then begin
@@ -1245,7 +1253,7 @@ begin
                 if mspeed > hispeed then hispeed := mspeed;
             end;
         end;
-    	AI_PrintFromRight( ReplaceHash(MsgString('MAX_SPEED'),BStr(hispeed)), 175, InfoGreen, Small_Font );
+    	AI_PrintFromRight( ReplaceHash(MsgString('MAX_SPEED'),BStr(hispeed)), 175, InfoGreen, Info_Font );
     	AI_NextLine;
 
 	    MyDest.X := CZone.X;
@@ -1272,20 +1280,20 @@ begin
 	AI_NextLine;
 
 	{ Print HP, ME, and SP. }
-	AI_PrintFromLeft( 'HP:' , 170 , InfoGreen, Small_Font );
-	AI_PrintFromRight( BStr( GearCurrentDamage(Part)) + '/' + BStr( GearMaxDamage(Part)) , 175 , HitsColor( Part ), Small_Font );
+	AI_PrintFromLeft( 'HP:' , 170 , InfoGreen, Info_Font );
+	AI_PrintFromRight( BStr( GearCurrentDamage(Part)) + '/' + BStr( GearMaxDamage(Part)) , 175 , HitsColor( Part ), Info_Font );
 	AI_NextLine;
-	AI_PrintFromLeft( 'St:' , 170 , InfoGreen, Small_Font );
-	AI_PrintFromRight( BStr( CurrentStamina(Part)) + '/' + BStr( CharStamina(Part)) , 175 , EnduranceColor( CharStamina(Part) , CurrentStamina(Part) ), Small_Font );
+	AI_PrintFromLeft( 'St:' , 170 , InfoGreen, Info_Font );
+	AI_PrintFromRight( BStr( CurrentStamina(Part)) + '/' + BStr( CharStamina(Part)) , 175 , EnduranceColor( CharStamina(Part) , CurrentStamina(Part) ), Info_Font );
 	AI_NextLine;
-	AI_PrintFromLeft( 'Me:' , 170 , InfoGreen, Small_Font );
-	AI_PrintFromRight( BStr( CurrentMental(Part)) + '/' + BStr( CharMental(Part)) , 175 , EnduranceColor( CharMental(Part) , CurrentMental(Part) ), Small_Font );
+	AI_PrintFromLeft( 'Me:' , 170 , InfoGreen, Info_Font );
+	AI_PrintFromRight( BStr( CurrentMental(Part)) + '/' + BStr( CharMental(Part)) , 175 , EnduranceColor( CharMental(Part) , CurrentMental(Part) ), Info_Font );
 	AI_NextLine;
     { Get the current mass, max mass of carried equipment. }
     CurM := EquipmentMass( Part );
     MaxM := ( GearEncumberance( Part ) * 2 ) - 1;
-	AI_PrintFromLeft( 'Enc:' , 170 , InfoGreen, Small_Font );
-	AI_PrintFromRight( MakeMassString( CurM, Part^.Scale ), 175 , EnduranceColor( ( MaxM + 1  ) , ( MaxM + 1  ) - CurM ), Small_Font );
+	AI_PrintFromLeft( 'Enc:' , 170 , InfoGreen, Info_Font );
+	AI_PrintFromRight( MakeMassString( CurM, Part^.Scale ), 175 , EnduranceColor( ( MaxM + 1  ) , ( MaxM + 1  ) - CurM ), Info_Font );
     AI_NextLine;
 
     CDest.X := CZone.X + 160;
@@ -1302,19 +1310,19 @@ begin
 
 
     for n := 1 to 4 do begin
-	    AI_PrintFromRight( MsgString( 'STATNAME_'+BStr(n)) + ':' , 8 , InfoGreen, Small_Font );
-	    AI_PrintFromLeft( BStr( CStat( Part, n ) ) , CZone.W div 2 - 8 , InfoGreen, Small_Font );
-	    AI_PrintFromRight( MsgString( 'STATNAME_'+BStr(n+4)) + ':' , CZone.W div 2 + 8 , InfoGreen, Small_Font );
-	    AI_PrintFromLeft( BStr( CStat( Part, n+4 ) ) , CZone.W - 8 , InfoGreen, Small_Font );
+	    AI_PrintFromRight( MsgString( 'STATNAME_'+BStr(n)) + ':' , 8 , InfoGreen, Info_Font );
+	    AI_PrintFromLeft( BStr( CStat( Part, n ) ) , CZone.W div 2 - 8 , InfoGreen, Info_Font );
+	    AI_PrintFromRight( MsgString( 'STATNAME_'+BStr(n+4)) + ':' , CZone.W div 2 + 8 , InfoGreen, Info_Font );
+	    AI_PrintFromLeft( BStr( CStat( Part, n+4 ) ) , CZone.W - 8 , InfoGreen, Info_Font );
 	    AI_NextLine;
     end;
 
     MyDest := CZone;
     MyDest.X := MyDest.X + 10;
-    MyDest.Y := CDest.Y + TTF_FontLineSkip( Small_Font );
+    MyDest.Y := CDest.Y + TTF_FontLineSkip( Info_Font );
     MyDest.W := MyDest.W - 20;
-    MyDest.H := MyDest.H - ( CDest.Y - CZone.Y ) - 40 - TTF_FontLineSkip( Small_Font );
-    GameMsg( SAttValue( Part^.SA, 'BIO1' ) , MyDest , InfoGreen, Small_Font );
+    MyDest.H := MyDest.H - ( CDest.Y - CZone.Y ) - 40 - TTF_FontLineSkip( Info_Font );
+    GameMsg( SAttValue( Part^.SA, 'BIO1' ) , MyDest , InfoGreen, Info_Font );
 end;
 
 Procedure LFGI_ForScenes( Part: GearPtr; gb: GameBoardPtr );
@@ -1331,9 +1339,9 @@ begin
 
     MyDest := CZone;
     MyDest.X := MyDest.X + 10;
-    MyDest.Y := CZone.Y + TTF_FontLineSkip( Small_Font ) + 165;
+    MyDest.Y := CZone.Y + TTF_FontLineSkip( Info_Font ) + 165;
     MyDest.W := MyDest.W - 20;
-    MyDest.H := MyDest.H - ( CDest.Y - CZone.Y ) - 40 - TTF_FontLineSkip( Small_Font );
+    MyDest.H := MyDest.H - ( CDest.Y - CZone.Y ) - 40 - TTF_FontLineSkip( Info_Font );
     GameMsg( SAttValue( Part^.SA , 'DESC' ) , MyDest , InfoGreen );
 end;
 

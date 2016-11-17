@@ -72,6 +72,11 @@ Const
 		X_Anchor: ANC_Mid; X_Justify: -37; W: 74;
 		Y_Anchor: ANC_High; Y_Justify: -3; H: 3;
 	);
+	ZONE_CharGenChar: vgfx_zone = (
+		X_Anchor: ANC_Low; X_Justify: 1; W: 52;
+		Y_Anchor: ANC_Low; Y_Justify: 1; H: 19;
+	);
+
 
 
 	ZONE_Caption: vgfx_zone = (
@@ -104,6 +109,18 @@ Const
 		Y_Anchor: ANC_Mid; Y_Justify: 8; H: 1;
 	);
 
+	ZONE_CharViewChar: vgfx_zone = (
+		X_Anchor: ANC_Low; X_Justify: 1; W: 52;
+		Y_Anchor: ANC_Low; Y_Justify: 1; H: 19;
+	);
+	ZONE_CharViewMenu: vgfx_zone = (
+		X_Anchor: ANC_High; X_Justify: -RightColumnWidth + 1; W: RightColumnWidth - 2;
+		Y_Anchor: ANC_Mid; Y_Justify: -2; H: 10;
+	);
+	ZONE_CharViewDesc: vgfx_zone = (
+		X_Anchor: ANC_High; X_Justify: -RightColumnWidth + 1; W: RightColumnWidth - 2;
+		Y_Anchor: ANC_Mid; Y_Justify: -10; H: 7;
+	);
 
 	ZONE_GetItemMenu: vgfx_zone = (
 		X_Anchor: ANC_Mid; X_Justify: -16; W: 32;
@@ -121,6 +138,10 @@ Const
 	ZONE_ShopMenu: vgfx_zone = (
 		X_Anchor: ANC_Mid; X_Justify: -37; W: 40;
 		Y_Anchor: ANC_Mid; Y_Justify:   1; H:  7;
+	);
+	ZONE_ShopInfo: vgfx_zone = (
+		X_Anchor: ANC_Mid; X_Justify:  5; W: 33;
+		Y_Anchor: ANC_Mid; Y_Justify: -9; H: 14;
 	);
 
 	ZONE_ItemsInfo: vgfx_zone = (
@@ -217,11 +238,6 @@ Const
 	ZONE_LeftInfo: vgfx_zone = (
 		X_Anchor: ANC_High; X_Justify: -21; W: 20;
 		Y_Anchor: ANC_Low; Y_Justify:   3; H:  7;
-	);
-
-	ZONE_CharacterDisplay: vgfx_zone = (
-		X_Anchor: ANC_Low; X_Justify: 1; W: 52;
-		Y_Anchor: ANC_Low; Y_Justify: 1; H: 19;
 	);
 
 	ZONE_WorldMap: vgfx_zone = (

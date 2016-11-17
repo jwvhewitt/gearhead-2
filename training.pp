@@ -48,24 +48,45 @@ var
 	TRAINING_PC: GearPtr;
 	TRAINING_Redrawer: RedrawProcedureType;
 
+Procedure MainMenuRedraw;
+	{ Redraw the training screen. }
+begin
+	TRAINING_Redrawer;
+	CharacterDisplay( TRAINING_PC , TRAINING_GB, ZONE_CharViewChar );
+	InfoBox( ZONE_CharViewMenu );
+    {$IFDEF ASCII}
+	InfoBox( ZONE_CharViewDesc );
+    {$ENDIF}
+end;
+
 Procedure TrainingRedraw;
 	{ Redraw the training screen. }
 begin
 	TRAINING_Redrawer;
-	CharacterDisplay( TRAINING_PC , TRAINING_GB );
-	InfoBox( ZONE_Menu );
-	InfoBox( ZONE_Info );
+	CharacterDisplay( TRAINING_PC , TRAINING_GB, ZONE_CharViewChar );
+	InfoBox( ZONE_CharViewMenu );
+	InfoBox( ZONE_CharViewDesc );
+    {$IFDEF ASCII}
 	CMessage( 'FREE XP: ' + BStr( NAttValue( TRAINING_PC^.NA , NAG_Experience , NAS_TotalXP ) - NAttValue( TRAINING_PC^.NA , NAG_Experience , NAS_SpentXP ) ) , ZONE_Menu1 , InfoHilight );
+    {$ELSE}
+	InfoBox( ZONE_CharViewCaption );
+	CMessage( 'FREE XP: ' + BStr( NAttValue( TRAINING_PC^.NA , NAG_Experience , NAS_TotalXP ) - NAttValue( TRAINING_PC^.NA , NAG_Experience , NAS_SpentXP ) ) , ZONE_CharViewCaption , InfoHilight );
+    {$ENDIF}
 end;
 
 Procedure NewSkillRedraw;
 	{ Redraw the training screen. }
 begin
 	TRAINING_Redrawer;
-	CharacterDisplay( TRAINING_PC , TRAINING_GB );
-	InfoBox( ZONE_Menu );
-	InfoBox( ZONE_Info );
+	CharacterDisplay( TRAINING_PC , TRAINING_GB, ZONE_CharViewChar );
+	InfoBox( ZONE_CharViewMenu );
+	InfoBox( ZONE_CharViewDesc );
+    {$IFDEF ASCII}
 	CMessage( BStr( NumberOfSpecialties( TRAINING_PC ) ) + '/' + BStr( NumberOfSkillSlots( TRAINING_PC ) ) , ZONE_Menu1 , InfoHilight );
+    {$ELSE}
+	InfoBox( ZONE_CharViewCaption );
+	CMessage( BStr( NumberOfSpecialties( TRAINING_PC ) ) + '/' + BStr( NumberOfSkillSlots( TRAINING_PC ) ) , ZONE_CharViewCaption , InfoHilight );
+    {$ENDIF}
 end;
 
 Procedure DoTraining( GB: GameBoardPtr; PC: GearPtr; RD: RedrawProcedureType );
@@ -91,12 +112,16 @@ Procedure DoTraining( GB: GameBoardPtr; PC: GearPtr; RD: RedrawProcedureType );
 			FXP := NAttValue( PC^.NA , NAG_Experience , NAS_TotalXP ) - NAttValue( PC^.NA , NAG_Experience , NAS_SpentXP );
 
 			{ Create the skill menu. }
+            {$IFDEF ASCII}
 			SkMenu := CreateRPGMenu( MenuItem , MenuSelect , ZONE_Menu2 );
+            {$ELSE}
+			SkMenu := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CharViewMenu );
+            {$ENDIF}
 			Sk := PC^.NA;
 
 			SkMenu^.dtexcolor := InfoGreen;
 
-			AttachMenuDesc( SkMenu , ZONE_Info );
+			AttachMenuDesc( SkMenu , ZONE_CharViewDesc );
 
 			while Sk <> Nil do begin
 				if ( Sk^.G = NAG_Skill ) and ( Sk^.S > 0 ) and not SkillMan[ Sk^.S ].Hidden then begin
@@ -194,13 +219,18 @@ Procedure DoTraining( GB: GameBoardPtr; PC: GearPtr; RD: RedrawProcedureType );
 			FXP := NAttValue( PC^.NA , NAG_Experience , NAS_TotalXP ) - NAttValue( PC^.NA , NAG_Experience , NAS_SpentXP );
 
 			{ Create the skill menu. }
+            {$IFDEF ASCII}
 			StMenu := CreateRPGMenu( MenuItem , MenuSelect , ZONE_Menu2 );
+            {$ELSE}
+			StMenu := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CharViewMenu );
+            {$ENDIF}
+			AttachMenuDesc( StMenu , ZONE_CharViewDesc );
 
 			for t := 1 to NumGearStats do begin
 				{ Find out how many times this stat has been }
 				{ improved thus far. }
 				CIV := NAttValue( PC^.NA , NAG_StatImprovementLevel , T );
-				AddRPGMenuItem( StMenu , MsgString( 'StatName_' + BStr( T ) ) + '   (' + BStr( StatImprovementCost( CIV ) ) + ' XP)' , T );
+				AddRPGMenuItem( StMenu , MsgString( 'StatName_' + BStr( T ) ) + '   (' + BStr( StatImprovementCost( CIV ) ) + ' XP)' , T, MsgString( 'StatDesc_' + BStr( T ) ) );
 			end;
 
 			AddRPGMenuItem( StMenu , MsgString( 'RANDCHAR_ASPDone' ) , -1 );
@@ -289,9 +319,13 @@ Procedure DoTraining( GB: GameBoardPtr; PC: GearPtr; RD: RedrawProcedureType );
 		{ Create the skill menu. }
 		{ We only want this menu to contain skills the PC does }
 		{ not currently know. }
+        {$IFDEF ASCII}
 		SkMenu := CreateRPGMenu( MenuItem , MenuSelect , ZONE_Menu2 );
+        {$ELSE}
+		SkMenu := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CharViewMenu );
+        {$ENDIF}
 
-		AttachMenuDesc( SkMenu , ZONE_Info );
+		AttachMenuDesc( SkMenu , ZONE_CharViewDesc );
 
 		SkMenu^.dtexcolor := InfoGreen;
 
@@ -319,9 +353,13 @@ Procedure DoTraining( GB: GameBoardPtr; PC: GearPtr; RD: RedrawProcedureType );
 			end else begin
 				{ Improve the skill, pay the XP. }
 				if NumberOfSpecialties( PC ) >= NumberOfSkillSlots( PC ) then begin
+                    {$IFDEF ASCII}
 					SkMenu := CreateRPGMenu( MenuItem , MenuSelect , ZONE_Menu2 );
+                    {$ELSE}
+			        SkMenu := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CharViewMenu );
+                    {$ENDIF}
 
-					AttachMenuDesc( SkMenu , ZONE_Info );
+					AttachMenuDesc( SkMenu , ZONE_CharViewDesc );
 
 					SkMenu^.dtexcolor := InfoGreen;
 					AddRPGMenuItem( SkMenu , MsgSTring( 'LearnSkill_AcceptPenalty' ) , 1 , MsgString( 'LearnSkill_Warning' ) );
@@ -371,9 +409,13 @@ Procedure DoTraining( GB: GameBoardPtr; PC: GearPtr; RD: RedrawProcedureType );
 		{ Create the skill menu. }
 		{ We only want this menu to contain skills the PC does }
 		{ not currently know. }
+        {$IFDEF ASCII}
 		TMenu := CreateRPGMenu( MenuItem , MenuSelect , ZONE_Menu2 );
+        {$ELSE}
+		TMenu := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CharViewMenu );
+        {$ENDIF}
 
-		AttachMenuDesc( TMenu , ZONE_Info );
+		AttachMenuDesc( TMenu , ZONE_CharViewDesc );
 
 		TMenu^.dtexcolor := InfoGreen;
 
@@ -421,10 +463,14 @@ Procedure DoTraining( GB: GameBoardPtr; PC: GearPtr; RD: RedrawProcedureType );
 		N: LongInt;		{ A number }
 	begin
 		{ Create the skill menu. }
+        {$IFDEF ASCII}
 		TMenu := CreateRPGMenu( MenuItem , MenuSelect , ZONE_Menu2 );
+        {$ELSE}
+		TMenu := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CharViewMenu );
+        {$ENDIF}
 
 
-		AttachMenuDesc( TMenu , ZONE_Info );
+		AttachMenuDesc( TMenu , ZONE_CharViewDesc );
 
 		TMenu^.dtexcolor := InfoGreen;
 
@@ -448,9 +494,13 @@ Procedure DoTraining( GB: GameBoardPtr; PC: GearPtr; RD: RedrawProcedureType );
 		TMenu: RPGMenuPtr;	{ Training Hall Menu }
 	begin
 		{ Create the cyber menu. }
+        {$IFDEF ASCII}
 		TMenu := CreateRPGMenu( MenuItem , MenuSelect , ZONE_Menu2 );
+        {$ELSE}
+		TMenu := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CharViewMenu );
+        {$ENDIF}
 
-		AttachMenuDesc( TMenu , ZONE_Info );
+		AttachMenuDesc( TMenu , ZONE_CharViewDesc );
 
 		TMenu^.dtexcolor := InfoGreen;
 
@@ -482,7 +532,11 @@ begin
 	TRAINING_Redrawer := RD;
 
 	repeat
+        {$IFDEF ASCII}
 		DTMenu := CreateRPGMenu( MenuItem , MenuSelect , ZONE_Menu2 );
+        {$ELSE}
+		DTMenu := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CharViewMenu );
+        {$ENDIF}
 		AddRPGMenuItem( DTMenu , MsgString( 'TRAINING_ImproveSkill' ) , 1 );
 		AddRPGMenuItem( DTMenu , MsgString( 'TRAINING_NewSkill' ) , 2 );
 		AddRPGMenuItem( DTMenu , MsgString( 'TRAINING_ReviewCyberware' ) , 6 );
@@ -495,7 +549,7 @@ begin
 		end;
 		AddRPGMenuItem( DTMenu ,  MsgString( 'Exit' ) , -1 );
 
-		N := SelectMenu( DTMenu , @TrainingRedraw );
+		N := SelectMenu( DTMenu , @MainMenuRedraw );
 
 		DisposeRPGMenu( DTMenu );
 

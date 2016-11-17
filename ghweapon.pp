@@ -1023,7 +1023,7 @@ Function WeaponName( Weapon: GearPtr ): String;
 	{Supply a default name for this particular weapon.}
 begin
 	{Convert the size of the weapon to a string.}
-	if ( Weapon^.G = GS_Missile ) and ( Weapon^.SubCom <> Nil ) then begin
+	if ( Weapon^.S = GS_Missile ) and ( Weapon^.SubCom <> Nil ) then begin
 		WeaponName := 'ML:' + SAttValue( Weapon^.SubCom^.SA , 'NAME' ) + ' ' + BStr( Weapon^.SubCom^.Stat[ STAT_AmmoPresent ] );
 	end else begin
 		WeaponName := DCName( Weapon^.V , Weapon^.Scale ) + ' ' + MsgString( 'WEAPONNAME_' + BStr( Weapon^.S ) );
