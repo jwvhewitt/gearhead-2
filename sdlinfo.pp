@@ -262,8 +262,10 @@ begin
 		{ Create a portrait list based upon the character's gender. }
 		if NAttValue( NPC^.NA , NAG_CharDescription , NAS_Gender ) = NAV_Male then begin
 			PList := CreateFileList( Graphics_Directory + 'por_m_*.*' );
-		end else begin
+		end else if NAttValue( NPC^.NA , NAG_CharDescription , NAS_Gender ) = NAV_Female then begin
 			PList := CreateFileList( Graphics_Directory + 'por_f_*.*' );
+		end else begin
+			PList := CreateFileList( Graphics_Directory + 'por_*_*.*' );
 		end;
 
 		{ Filter the portrait list based on the NPC's traits. }

@@ -1,3 +1,6 @@
+- FillRectWithSprite can now accept offsets (sdlgfx.pp)
+- Bishounen now gives +10 reaction bonus and universal admiration (interact.pp)
+- Added nonbinary, undefined genders and romance options (ghchars.pp)
 - Improve Stats menu shows stat descriptions (training.pp)
 - Default weapon name should now be correct (ghweapon.pp)
 - Color menu is properly recentered when screen resizes (colormenu.pp)

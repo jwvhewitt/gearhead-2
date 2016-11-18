@@ -290,6 +290,12 @@ begin
 		it := it + 5;
 	end;
 
+    { If the PC has Bishounen, they may not be hated. }
+    if HasTalent(PC , NAS_Bishounen ) then begin
+        it := it + 10;
+        if it < 1 then it := 1;
+    end;
+
 	{ Make sure IT doesn't go out of bounds. }
 	if it > 100 then it := 100
 	else if it < -100 then it := -100;

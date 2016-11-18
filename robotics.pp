@@ -418,6 +418,7 @@ begin
 	SetNAtt( Form^.NA , NAG_CharDescription , NAS_DAge , -19 );
 	SetSAtt( Form^.SA , 'ROGUECHAR <R>' );
 	SetSAtt( Form^.SA , 'SDL_COLORS <80 80 85 170 155 230 6 42 120>' );
+    SetNAtt( Form^.NA, NAG_CharDescription, NAS_Gender, NAV_Undefined );
 
 	{ Make a skill roll for the robot stats. You only get one skill roll; }
 	{ the target number is the stat in question. If your skill roll for any }
@@ -504,6 +505,8 @@ begin
 			SetNAtt( Form^.NA , NAG_Personal , NAS_CID , NewCID( FindRoot( GB^.Scene ) ) );
 			AddNAtt( PC^.NA , NAG_ReactionScore , NAttValue( Form^.NA , NAG_Personal , NAS_CID ) , 20 );
 			SetSAtt( Form^.SA , 'JOB <ROBOT>' );
+			SetNAtt( Form^.NA , NAG_CharDescription , NAS_Gender , Random( 3 ) );
+
 			{ Robots typically acquire the personality traits of their creator. }
 			for t := 1 to Num_Personality_Traits do begin
 				if Random( 3 ) <> 1 then begin

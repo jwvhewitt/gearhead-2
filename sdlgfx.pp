@@ -242,8 +242,9 @@ const
 	ZONE_ArenaInfo: DynamicRect = ( dx: 150; dy: -290; w: ItemsRightWidth; h: Arena_List_Height; anchor: ANC_middle );
 
 
-	ZONE_Title_Screen_Version:  TSDL_Rect =  ( x: 555 ; y: 222; w: 50; h: 20 );
-	ZONE_Title_Screen_Menu:  DynamicRect =  ( dx: 585 ; dy: 255; w: 160; h: 140; anchor: ANC_UpperLeft );
+    ZONE_Title_Screen_Version: DynamicRect = ( dx:-70; dy:-25; w:100; h:20; anchor: ANC_lowerright );
+    ZONE_Title_Screen_Menu: DynamicRect = ( dx:-100; dy:50; w:200; h:100; anchor: ANC_middle );
+	ZONE_TitleLogo:  DynamicRect =  ( dx: -312; dy: -161; w: 624; h: 162; anchor: ANC_Middle );
 
 	Animation_Phase_Period = 6000;
 
@@ -256,7 +257,7 @@ var
 	Mouse_X, Mouse_Y: LongInt;
 	Cursor_Sprite: SensibleSpritePtr;
 	Console_History: SAttPtr;
-	Title_Screen: SensibleSpritePtr;
+	Title_Screen,Title_Stars,Title_Logo: SensibleSpritePtr;
 	Ersatz_Mouse_Sprite: SensibleSpritePtr;
 
 	RK_NumKeys:	PInt;
@@ -318,6 +319,7 @@ Procedure SetupFHQDisplay;
 Procedure SetupMemoDisplay;
 Procedure DrawMonologueBorder;
 
+Procedure FillRectWithSprite( MyRect: TSDL_Rect; MySprite: SensibleSpritePtr; MyFrame,OffX,OffY: Integer );
 Procedure FillRectWithSprite( MyRect: TSDL_Rect; MySprite: SensibleSpritePtr; MyFrame: Integer );
 
 Procedure InfoBox( MyBox: TSDL_Rect );
@@ -956,7 +958,7 @@ end;
 Function PrettyPrint( msg: string; Width: Integer; var FG: TSDL_Color; DoCenter: Boolean ): PSDL_Surface;
     { Overloaded version of above, using default font. }
 begin
-    PrettyPrint( msg, width, FG, DoCenter, Game_Font );
+    PrettyPrint := PrettyPrint( msg, width, FG, DoCenter, Game_Font );
 end;
 
 
@@ -1332,7 +1334,7 @@ begin
     GrowRect := MyRect;
 end;
 
-Procedure FillRectWithSprite( MyRect: TSDL_Rect; MySprite: SensibleSpritePtr; MyFrame: Integer );
+Procedure FillRectWithSprite( MyRect: TSDL_Rect; MySprite: SensibleSpritePtr; MyFrame,OffX,OffY: Integer );
     { Fill this area of the screen perfectly with the provided sprite. }
 var
     MyDest: TSDL_Rect;
@@ -1341,6 +1343,9 @@ begin
 	GridW := MyRect.W div MySprite^.W + 1;
 	GridH := MyRect.H div MySprite^.H + 1;
 	SDL_SetClipRect( Game_Screen , @MyRect );
+
+    MyRect.X := MyRect.X + (OffX mod MySprite^.W) - MySprite^.W;
+    MyRect.Y := MyRect.Y + (OffY mod MySprite^.H) - MySprite^.H;
 
 	{ Draw the backdrop. }
 	for X := 0 to GridW do begin
@@ -1354,6 +1359,11 @@ begin
 	SDL_SetClipRect( Game_Screen , Nil );
 end;
 
+Procedure FillRectWithSprite( MyRect: TSDL_Rect; MySprite: SensibleSpritePtr; MyFrame: Integer );
+    { Do a FillRect with offset 0,0. }
+begin
+    FillRectWithSprite( MyRect, MySprite, MyFrame, 0, 0 );
+end;
 
 Procedure InfoBox( MyBox: TSDL_Rect );
 	{ Do a box for drawing something else inside of. }
@@ -1467,8 +1477,17 @@ end;
 
 Procedure SetupTitleScreenDisplay;
 	{ Draw the title screen. }
+var
+    MyRect: TSDL_Rect;
 begin
-	SDL_BlitSurface( Title_Screen^.Img , Nil , Game_Screen , Nil );
+    MyRect.X := 0;
+    MyRect.Y := 0;
+    MyRect.W := Game_Screen^.W;
+    MyRect.H := Game_Screen^.H;
+    FillRectWithSprite(MyRect,Title_Stars,0,Animation_Phase,Animation_Phase div 2);
+    DrawSprite( Title_Logo, ZONE_TitleLogo.GetRect(), 0 );
+    InfoBox( ZONE_Title_Screen_Menu );
+	{SDL_BlitSurface( Title_Screen^.Img , Nil , Game_Screen , Nil );}
 
 end;
 
@@ -1501,6 +1520,8 @@ initialization
 
 	Cursor_Sprite := LocateSprite( 'cursor.png' , 8 , 16 );
 	Title_Screen := LocateSprite( 'title_screen.png' , 800 , 600 );
+    Title_Stars := LocateSprite( 'bg_space.png' , 512 , 512 );
+    Title_Logo := LocateSprite( 'sys_logo.png' , 623 , 161 );
 	Ersatz_Mouse_Sprite := LocateSprite( 'ersatz_mouse.png' , 16 , 16 );
 
 	Console_History := Nil;

@@ -1404,8 +1404,10 @@ begin
 
 	if NAttValue( PC^.NA , NAG_CharDescription , NAS_Gender ) = NAV_Male then begin
 		PList := CreateFileList( Graphics_Directory + 'por_m_*.*' );
-	end else begin
+	end else if NAttValue( PC^.NA , NAG_CharDescription , NAS_Gender ) = NAV_Female then begin
 		PList := CreateFileList( Graphics_Directory + 'por_f_*.*' );
+	end else begin
+		PList := CreateFileList( Graphics_Directory + 'por_*_*.*' );
 	end;
 
 	RCDescMessage := '';

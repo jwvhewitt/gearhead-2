@@ -418,7 +418,7 @@ TALENTDESC5 <As long as you're going fast, you can find a way to avoid most atta
 TALENT6 <Polymath>
 TALENTDESC6 <You are a master of many skills. (can learn 3 more skills without penalty)>
 TALENT7 <Bishounen>
-TALENTDESC7 <You are androgynously beautiful. (may flirt with all NPCs, regardless of gender)>
+TALENTDESC7 <You are androgynously beautiful. (+10 reaction bonus and universal admiration)>
 TALENT8 <Born To Fly>
 TALENTDESC8 <You are an expert with flying mecha. (+3 Mecha Piloting while flying or jumping)>
 TALENT9 <Sure Footed>
