@@ -72,6 +72,8 @@ Const
 	NAS_Gender = 0;
 	NAV_Male = 0;
 	NAV_Female = 1;
+    NAV_Nonbinary = 2;
+    NAV_Undefined = 3;
 
 	NAS_DAge = 1;	{ CharDescription/Delta age - Offset from 20. }
 
@@ -88,6 +90,13 @@ Const
 					{ Random NPCs don't usually get this authority. }
 	NAS_PositiveHeroism = 6;	{ How many times has the character's Heroism }
 					{ been increased- there's a limit. }
+
+    NAS_RomanceType = 7;
+    NAV_RT_NoOne = 0;
+    NAV_RT_Male = 1;
+    NAV_RT_Female = 2;
+    NAV_RT_Anyone = 3;
+
 
 	{ CharDescription / Personality Traits }
 	Num_Personality_Traits = 7;
@@ -766,12 +775,12 @@ Function NPCTraitDesc( NPC: GearPtr ): String;
 	{ Describe this NPC's characteristics. This function is used }
 	{ for selecting characters for plots & stuff. }
 	{ - Age ( Young < 20yo , Old > 40yo ) }
-	{ - Gender ( SEX:Male, SEX:Female ) }
+	{ - Gender ( GENDER:M, GENDER:F, GENDER:N, GENDER:U ) }
 	{ - Personality Traits }
 	{ - Exceptional Stats }
 	{ - Job }
 Const
-	GenderName: Array[0..1] of Char = ( 'M' , 'F' );
+	GenderName: Array[0..3] of Char = ( 'M' , 'F', 'N', 'U' );
 var
 	it: String;
 	T,V: Integer;
@@ -779,7 +788,7 @@ begin
 	if ( NPC = Nil ) or ( NPC^.G <> GG_Character ) then begin
 		NPCTraitDesc := '';
 	end else begin
-		it := 'SEX:' + GenderName[ NATtValue( NPC^.NA , NAG_CharDescription , NAS_Gender ) ];
+		it := 'GENDER:' + GenderName[ NATtValue( NPC^.NA , NAG_CharDescription , NAS_Gender ) ];
 
 		T := NATtValue( NPC^.NA , NAG_CharDescription , NAS_Dage );
 		if T < 0 then begin

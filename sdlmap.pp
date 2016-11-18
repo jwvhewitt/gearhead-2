@@ -230,11 +230,13 @@ const
 	DefaultFemaleSpriteName = 'cha_f_citizen.png';
 	DefaultMaleSpriteHead = 'cha_m_';
 	DefaultFemaleSpriteHead = 'cha_f_';
+	DefaultNonbinarySpriteHead = 'cha_*_';
 	mini_sprite = 'cha_pilot.png';
 	Unknown_Sprite = 'prop_unknown.png';
 var
 	it,fname: String;
 	FList: SAttPtr;
+    gen: Integer;
 begin
 	{ If this model is an out-of-scale character, return the mini-sprite. }
 	if ( M^.G = GG_Character ) and ( GB <> Nil ) and ( M^.Scale < GB^.Scale ) then Exit( mini_sprite );
@@ -242,10 +244,13 @@ begin
 	it := SAttValue( M^.SA , 'SDL_SPRITE' );
 	if it = '' then begin
 		if M^.G = GG_Character then begin
-			if NAttValue( M^.NA , NAG_CharDescription , NAS_Gender ) = NAV_Male then begin
+            gen := NAttValue( M^.NA , NAG_CharDescription , NAS_Gender );
+			if gen = NAV_Male then begin
 				it := DefaultMaleSpriteHead;
-			end else begin
+			end else if gen = NAV_Female then begin
 				it := DefaultFemaleSpriteHead;
+            end else begin
+                it := DefaultNonbinarySpriteHead;
 			end;
 			fname := it + LowerCase( SAttValue( M^.SA , 'JOB' ) ) + '.*';
 			FList := CreateFileList( Graphics_Directory + fname );
@@ -260,11 +265,12 @@ begin
 					it := SelectRandomSAtt( FList )^.Info;
 					DisposeSAtt( FList );
 				end else begin
-					if NAttValue( M^.NA , NAG_CharDescription , NAS_Gender ) = NAV_Male then begin
-						it := DefaultMaleSpriteName;
-					end else begin
-						it := DefaultFemaleSpriteName;
-					end;
+				    if gen = NAV_Male then begin
+					    it := DefaultMaleSpriteName;
+				    end else if gen = NAV_Female then begin
+					    it := DefaultFemaleSpriteName;
+                    end else if random(2) = 1 then it := DefaultMaleSpriteName
+				    else it := DefaultFemaleSpriteName;
 				end;
 			end;
 		end else if ( M^.G = GG_Mecha ) and ( M^.S >= 0 ) and ( M^.S < NumForm ) then begin
@@ -275,64 +281,6 @@ begin
 		SetSAtt( M^.SA , 'SDL_SPRITE <' + it + '>' );
 	end;
 	SpriteName := it;
-end;
-
-Function CuteSpriteName( M: GearPtr ): String;
-	{ Locate the sprite name for this gear. If no sprite name is defined, }
-	{ set the default sprite name for the gear type & store it as a string }
-	{ attribute so we won't need to do this calculation later. }
-const
-	FORM_DEFAULT: Array [1..NumForm] of String = (
-	'c_btr_buruburu.png','c_btr_buruburu.png','c_btr_buruburu.png',
-	'c_btr_buruburu.png', 'c_btr_buruburu.png', 'c_btr_buruburu.png',
-	'c_btr_buruburu.png', 'c_btr_buruburu.png', 'c_btr_buruburu.png'
-	);
-	DefaultMaleSpriteName = 'c_cha_m_citizen.png';
-	DefaultFemaleSpriteName = 'c_cha_f_citizen.png';
-	DefaultMaleSpriteHead = 'c_cha_m_';
-	DefaultFemaleSpriteHead = 'c_cha_f_';
-var
-	it,fname: String;
-	FList: SAttPtr;
-begin
-	it := SAttValue( M^.SA , 'CUTE_SPRITE' );
-	if it = '' then begin
-		if M^.G = GG_Character then begin
-			if NAttValue( M^.NA , NAG_CharDescription , NAS_Gender ) = NAV_Male then begin
-				it := DefaultMaleSpriteHead;
-			end else begin
-				it := DefaultFemaleSpriteHead;
-			end;
-			fname := it + SAttValue( M^.SA , 'JOB' ) + '.*';
-			FList := CreateFileList( Graphics_Directory + fname );
-			if FList <> Nil then begin
-				it := SelectRandomSAtt( FList )^.Info;
-				DisposeSAtt( FList );
-			end else begin
-				fname := it + SAttValue( M^.SA , 'JOB_DESIG' ) + '.*';
-
-				FList := CreateFileList( Graphics_Directory + fname );
-				if FList <> Nil then begin
-					it := SelectRandomSAtt( FList )^.Info;
-					DisposeSAtt( FList );
-				end else begin
-					if NAttValue( M^.NA , NAG_CharDescription , NAS_Gender ) = NAV_Male then begin
-						it := DefaultMaleSpriteName;
-					end else begin
-						it := DefaultFemaleSpriteName;
-					end;
-				end;
-			end;
-		end else if ( M^.G = GG_Mecha ) and ( M^.S >= 0 ) and ( M^.S < NumForm ) then begin
-			it := FORM_DEFAULT[ M^.S + 1 ];
-		end else if M^.G = GG_Prop then begin
-			it := Default_Prop_Sprite_Name;
-		end else begin
-			it := Items_Sprite_Name;
-		end;
-		SetSAtt( M^.SA , 'CUTE_SPRITE <' + it + '>' );
-	end;
-	CuteSpriteName := it;
 end;
 
 Function SpriteColor( GB: GameBoardPtr; M: GearPtr ): String;

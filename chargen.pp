@@ -490,6 +490,7 @@ begin
 
 	AddRPGMenuItem( RPM , MsgString( 'GenderName_0' ) , NAV_Male );
 	AddRPGMenuItem( RPM , MsgString( 'GenderName_1' ) , NAV_Female );
+	AddRPGMenuItem( RPM , MsgString( 'GenderName_2' ) , NAV_Nonbinary );
 
 	RCDescMessage := MsgString( 'RANDCHAR_SGDesc' );
 	RCPromptMessage := MsgString( 'RANDCHAR_SGPrompt' );
@@ -1431,6 +1432,33 @@ begin
 end;
 {$ENDIF}
 
+Procedure SetRomance( PC: GearPtr );
+	{ Decide on the sort of NPCs this PC is interested in (in that way). }
+var
+	RPM: RPGMenuPtr;
+	N: Integer;
+begin
+	{ Create the menu and set up the display. }
+	RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CharGenMenu );
+	RCPromptMessage := MsgString( 'RANDCHAR_RomPrompt' );
+	RCDescMessage := MsgString( 'RANDCHAR_RomDesc' );
+
+	{ Add the romance options to the menu. }
+	for N := 0 to 3 do begin
+		AddRPGMenuItem( RPM , MsgString( 'RANDCHAR_RomOp' + BStr(N)) , N );
+	end;
+    RPMSortAlpha( RPM );
+
+	N := SelectMenu( RPM , @RandCharRedraw );
+    if N = -1 then N := 0;
+
+    SetNAtt( PC^.NA , NAG_CharDescription, NAS_RomanceType, N );
+
+	{ Get rid of the menu. }
+	DisposeRPGMenu( RPM );
+end;
+
+
 Procedure ReputationCompensation( PC: GearPtr );
 	{ If the PC starts the game as Wangtta, Villainous, or Criminal, better }
 	{ give him some bonuses to make up for all the #@@!$! he's gonna get }
@@ -1563,6 +1591,8 @@ begin
 	end else begin
 		SelectRandomTalent( PC );
 	end;
+
+    SetRomance( PC );
 
 	SelectMecha( Egg , PC , M = MODE_Regular );
 

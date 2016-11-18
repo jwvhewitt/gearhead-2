@@ -330,17 +330,17 @@ Procedure DrawPortrait( GB: GameBoardPtr; NPC: GearPtr; MyDest: TSDL_Rect; WithB
 var
     SS: SensibleSpritePtr;
 begin
-{    if NAttValue( NPC^.NA, NAG_CharDescription, NAS_Sentience ) = NAV_IsCharacter then begin}
+    if NotAnAnimal( NPC ) then begin
 	    if WithBackground then DrawSprite( Backdrop_Sprite , MyDest , 0 );
 	    SS := LocateSprite( PortraitName( NPC ) , SpriteColor( GB , NPC ) , 100 , 150 );
     	if SS^.Img = Nil then SetSAtt( NPC^.SA , 'SDL_PORTRAIT <>' );
 	    DrawSprite( SS , MyDest , 0 );
-{    end else begin
+    end else begin
         MyDest.X := MyDest.X + 18;
         MyDest.Y := MyDest.Y + 43;
         SS := LocateSprite( SpriteName(Nil,NPC) , SpriteColor( GB , NPC ) , 64 , 64 );
 	    if SS <> Nil then DrawSprite( SS , MyDest , Animation_Phase div 5 mod 8 );
-    end;}
+    end;
 end;
 
 
@@ -935,7 +935,6 @@ end;
 
 Procedure InjuryViewer( PC: GearPtr; redraw: RedrawProcedureType );
 	{ Display a brief listing of all the PC's major health concerns. }
-	{ Display a brief listing of all the PC's major health concerns. }
 	Procedure ShowSubInjuries( Part: GearPtr );
 		{ Show the injuries of this part, and also for its subcoms. }
 	var
@@ -1195,6 +1194,24 @@ begin
     if msg <> '' then AI_Text( msg, InfoGreen );
 end;
 
+function MoveDesc( Master: GearPtr; mm: Integer ): String;
+    { Return a text description of the model's move speed. }
+var
+    mspeed: Integer;
+begin
+    mspeed := AdjustedMoveRate( Nil, Master , MM , NAV_NormSpeed );
+    if mspeed > 0 then begin
+        if ( mm = MM_Fly ) and ( JumpTime( Nil, Master ) > 0 ) then begin
+            MoveDesc := ReplaceHash( MsgString('MOVEDESC_JUMP'), BStr(JumpTime( Nil, Master )));
+        end else begin
+            MoveDesc := MsgString('MOVEMODENAME_'+BStr(MM))+': '+BStr(mspeed);
+        end;
+    end else begin
+        MoveDesc :=  MsgString('MOVEMODENAME_'+BStr(MM))+': NA';
+    end;
+end;
+
+
 Procedure LFGI_ForMecha( Part: GearPtr; gb: GameBoardPtr; ReallyLong: Boolean );
     { Longform info for whatever the heck this is. }
 var
@@ -1243,13 +1260,13 @@ begin
 	    AI_NextLine;
         hispeed := 0;
         for mm := 1 to NumMoveMode do begin
-            mspeed := AdjustedMoveRate( GB^.Scene, Part , MM , NAV_NormSpeed );
+            mspeed := AdjustedMoveRate( Nil, Part , MM , NAV_NormSpeed );
             if mspeed > 0 then begin
-            	{AI_PrintFromRight( MoveDesc(Part,MM), 175, InfoGreen, Info_Font );}
+            	AI_PrintFromRight( MoveDesc(Part,MM), 175, InfoGreen, Info_Font );
             	AI_NextLine;
             end;
-            if MoveLegal( GB^.Scene, Part, MM, NAV_FullSpeed, 0 ) then begin
-                mspeed := AdjustedMoveRate( GB^.Scene, Part , MM , NAV_FullSpeed );
+            if MoveLegal( Nil, Part, MM, NAV_FullSpeed, 0 ) then begin
+                mspeed := AdjustedMoveRate( Nil, Part , MM , NAV_FullSpeed );
                 if mspeed > hispeed then hispeed := mspeed;
             end;
         end;

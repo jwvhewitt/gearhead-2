@@ -254,7 +254,8 @@ MOVEMODENAME_1 <Walk>
 MOVEMODENAME_2 <Roll>
 MOVEMODENAME_3 <Skim>
 MOVEMODENAME_4 <Fly>
-MOVEMODENAME_5 <Space Flight>
+MOVEMODENAME_5 <Space>
+MOVEDESC_JUMP <Jump: #s>
 UNKNOWNNAME <Unknown Name>
 ACCNAME <Weapon Accessory>
 FOODNAME <Food>
@@ -308,6 +309,8 @@ MODULENAME_7 <Turret>
 MODULENAME_8 <Storage>
 GENDERNAME_0 <Male>
 GENDERNAME_1 <Female>
+GENDERNAME_2 <Nonbinary>
+GENDERNAME_3 <Undefined>
 TRAITNAME_1_+ <Heroic>
 TRAITNAME_1_- <Villainous>
 TRAITNAME_2_+ <Lawful>
@@ -493,12 +496,18 @@ PHONE_NotFound <No person named # can be found in the local dialing area.>
 PHONE_Prompt <You get out your telephone.>
 PHONE_GetName <Who do you want to call?>
 PHONE_NoPhone <You don't have a telephone!>
-OPR_0 <him>
-OPR_1 <her>
 SPR_0 <he>
 SPR_1 <she>
+SPR_2 <ze>
+SPR_3 <it>
+OPR_0 <him>
+OPR_1 <her>
+OPR_2 <zem>
+OPR_3 <it>
 PPR_0 <his>
 PPR_1 <her>
+PPR_2 <zir>
+PPR_3 <its>
 EXTRACT_OK <You remove the #.>
 EXTRACT_WRECK <You remove the #, but completely destroy it in the process.>
 INSTALL_OK <You install the #.>
@@ -775,6 +784,12 @@ RANDCHAR_SelectColorsPrompt <Select the colors for this character.>
 RANDCHAR_SelectSkin <Skin Color>
 RANDCHAR_SelectHair <Hair Color>
 RANDCHAR_SelectClothes <Clothing Color>
+RANDCHAR_RomPrompt <Select Romantic Interest>
+RANDCHAR_RomDesc <What kind of romantic relationship is your character interested in finding?>
+RANDCHAR_RomOp0 <Not looking at all>
+RANDCHAR_RomOp1 <Looking for a man>
+RANDCHAR_RomOp2 <Looking for a woman>
+RANDCHAR_RomOp3 <Looking for anyone>
 RANDMAPS_DoorSign <Door of >
 BACKPACK_Directions <Press [/] to switch between the Inventory and Equipment menus.>
 BACKPACK_EngageSafety <Engage Safety Switch>

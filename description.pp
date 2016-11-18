@@ -558,7 +558,10 @@ begin
 	R := NAttValue( NPC^.NA , NAG_CharDescription , NAS_DAge ) + 20;
 	if R > 0 then msg := BStr( R )
 	else msg := '???';
-	msg := msg + ' year old ' + LowerCase( MsgString( 'GenderName_' + BStr( NAttValue( NPC^.NA , NAG_CharDescription , NAS_Gender ) ) ) );
+	msg := msg + ' year old';
+    if NAttValue( NPC^.NA, NAG_CharDescription, NAS_Gender) <> NAV_Undefined then begin
+        msg := msg + ' ' + LowerCase( MsgString( 'GenderName_' + BStr( NAttValue( NPC^.NA , NAG_CharDescription , NAS_Gender ) ) ) );
+    end;
 	job := SAttValue( NPC^.SA , 'JOB' );
 	if job <> '' then msg := msg + ' ' + LowerCase( job );
 	{ Check the NPC's relationship with the PC. }

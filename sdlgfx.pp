@@ -121,20 +121,17 @@ const
 	RPK_RightButton = #$92;
 
 
-{	ZONE_MoreText: TSDL_Rect = ( x:10; y:10; w: ScreenWidth - 20 ; h: ScreenHeight - 50 );
-	ZONE_MorePrompt: TSDL_Rect = ( x:10; y: ScreenHeight - 40 ; w:ScreenWidth - 20; h:30 );
-}
 	ZONE_MoreText: DynamicRect = ( dx:-350; dy:-270; w: 700 ; h: 385; anchor: ANC_middle );
 	ZONE_MorePrompt: DynamicRect = ( dx:-300; dy: 130 ; w:600; h:30; anchor: ANC_middle );
 
-    ZONE_CharGenChar: DynamicRect = ( dx:-368; dy:-210; w: 500 ; h: 420; anchor: ANC_middle );
+    ZONE_CharGenChar: DynamicRect = ( dx:-368; dy:-210; w: 500 ; h: 400; anchor: ANC_middle );
 	ZONE_CharGenMenu: DynamicRect = ( dx:148; dy:-50; w:220; h:230; anchor: ANC_middle );
 	ZONE_CharGenCaption: DynamicRect = ( dx:148; dy:190; w:220; h:20; anchor: ANC_middle );
 	ZONE_CharGenDesc: DynamicRect = ( dx:148; dy:-210; w:220; h:150; anchor: ANC_middle );
 	ZONE_CharGenPrompt: DynamicRect = ( dx:-150; dy:-245; w:300; h:20; anchor: ANC_middle );
 	ZONE_CharGenHint: DynamicRect = ( dx:-160; dy:225; w:320; h:20; anchor: ANC_middle );
 
-    ZONE_CharViewChar: DynamicRect = ( dx:-368; dy:-260; w: 500 ; h: 420; anchor: ANC_middle );
+    ZONE_CharViewChar: DynamicRect = ( dx:-368; dy:-260; w: 500 ; h: 400; anchor: ANC_middle );
 	ZONE_CharViewMenu: DynamicRect = ( dx:148; dy:-100; w:220; h:230; anchor: ANC_middle );
 	ZONE_CharViewCaption: DynamicRect = ( dx:148; dy:140; w:220; h:20; anchor: ANC_middle );
 	ZONE_CharViewDesc: DynamicRect = ( dx:148; dy:-260; w:220; h:150; anchor: ANC_middle );
@@ -174,6 +171,8 @@ const
 	ZONE_InteractInfo: DynamicRect = ( dx: -250; dy:-165; w:395; h:40; anchor: ANC_middle );
 	ZONE_InteractTotal: DynamicRect = ( dx: -255; dy: -215; w: 510; h: 335; anchor: ANC_middle );
 
+    ZONE_CenterMenu: DynamicRect = ( dx:-120; dy:-155; w:240; h:210; anchor: ANC_middle );
+
 	{ The ITEMS ZONE is used for both the backpack and shopping interfaces. }
 	ItemsLeftWidth = 345;
 	ItemsRightWidth = 225;
@@ -197,10 +196,7 @@ const
 	ZONE_BackpackInstructions: DynamicRect = (dx:-280; dY:90; W: 292; H: 40; anchor: ANC_middle);
 	ZONE_BPInfo: DynamicRect = (dx:30; dY:-210; W: 250; H: 340; anchor: ANC_middle);
 
-{	ZONE_BackpackInstructions: TSDL_Rect = ( x: ItemsZoneLeftTab; y:ScreenHeight Div 2 - 210; w: ItemsLeftWidth; h: 30 );
-	ZONE_EqpMenu: TSDL_Rect = ( x: ItemsZoneLeftTab; y:ScreenHeight Div 2 - 140; w:ItemsLeftWidth; h: 105 );
-	ZONE_InvMenu: TSDL_Rect = ( x: ItemsZoneLeftTab; y:ScreenHeight Div 2 - 30; w:ItemsLeftWidth; h: 120 );
-}
+
 	CaptionWidth = Model_Status_Width;
 	ZONE_Caption: DynamicRect = ( dx: -( CaptionWidth div 2 ); dy: 20; w: CaptionWidth; h: Model_Status_Height; anchor: ANC_upper );
 	SubCaptionWidth = FontSize * 20;

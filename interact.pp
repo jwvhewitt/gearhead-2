@@ -457,11 +457,15 @@ end;
 
 Function IsSexy( PC, NPC: GearPtr ): Boolean;
 	{ Return TRUE if there are some potential sparks between }
-	{ the PC and NPC, or FALSE if there aren't. In this simple }
-	{ universe we'll describe that as being if their genders }
-	{ aren't equal to each other. }
+	{ the PC and NPC, or FALSE if there aren't. }
 begin
-	IsSexy := ( NAttValue( PC^.NA , NAG_CharDescription , NAS_Gender ) <> NAttValue( NPC^.NA , NAG_CharDescription , NAS_Gender ) ) or HasTalent( PC , NAS_Bishounen );
+    if NAttValue( PC^.NA, NAG_CharDescription, NAS_RomanceType ) = NAV_RT_Anyone then begin
+    	IsSexy := True;
+    end else if NAttValue( PC^.NA, NAG_CharDescription, NAS_RomanceType ) = NAV_RT_Male then begin
+    	IsSexy := NAttValue( NPC^.NA , NAG_CharDescription , NAS_Gender ) = NAV_Male;
+    end else if NAttValue( PC^.NA, NAG_CharDescription, NAS_RomanceType ) = NAV_RT_Female then begin
+    	IsSexy := NAttValue( NPC^.NA , NAG_CharDescription , NAS_Gender ) = NAV_Female;
+    end else IsSexy := False;
 end;
 
 Procedure LoadTraitChatter;

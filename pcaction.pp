@@ -82,6 +82,16 @@ begin
 {$ENDIF}
 end;
 
+{$IFNDEF ASCII}
+Procedure CenterMenuRedraw;
+	{ Redraw the map and the PC's info. }
+begin
+	CombatDisplay( PCACTIONRD_GB );
+	InfoBox( ZONE_CenterMenu );
+end;
+{$ENDIF}
+
+
 Procedure FieldHQRedraw;
 	{ Do a redraw for the Field HQ. }
 var
@@ -569,7 +579,11 @@ var
 	N: Integer;
 begin
 	{ Create and fill the menu. }
+    {$IFDEF ASCII}
 	RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_Menu );
+    {$ELSE}
+	RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CenterMenu );
+    {$ENDIF}
 	N := NumVisibleUsableGearsXY( GB , X , Y , Trigger );
 	while N > 0 do begin
 		it := FindVisibleUsableGearXY( GB , X , Y , N , Trigger );
@@ -578,7 +592,11 @@ begin
 	end;
 
 	{ Select an item. }
+    {$IFDEF ASCII}
 	N := SelectMenu( RPM , @PCMenuRedraw );
+    {$ELSE}
+	N := SelectMenu( RPM , @CenterMenuRedraw );
+    {$ENDIF}
 
 	DisposeRPGMenu( RPM );
 
@@ -1120,7 +1138,11 @@ begin
 
 	N := 1;
 	repeat
+        {$IFDEF ASCII}
 		RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_Menu );
+        {$ELSE}
+		RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CenterMenu );
+        {$ENDIF}
 
 		AddRPGMenuItem( RPM , 'Mecha Control: '+ControlTypeName[ControlMethod] , 1 );
 		AddRPGMenuItem( RPM , 'Chara Control: '+ControlTypeName[CharacterMethod] , 5 );
@@ -1165,7 +1187,11 @@ begin
 		AddRPGMenuItem( RPM , '  Exit Prefrences' , -1 );
 		SetItemByValue( RPM , N );
 
+        {$IFDEF ASCII}
 		N := SelectMenu( RPM , @PCMenuRedraw );
+        {$ELSE}
+		N := SelectMenu( RPM , @CenterMenuRedraw );
+        {$ENDIF}
 
 		DisposeRPGMenu( RPM );
 
@@ -1799,7 +1825,11 @@ var
 	A: Integer;
 begin
 	DialogMSG( MSgString( 'HELP_Prompt' ) );
+    {$IFDEF ASCII}
 	RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_Menu );
+    {$ELSE}
+	RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CenterMenu );
+    {$ENDIF}
 
 	AddRPGMenuItem( RPM , MsgString( 'HELP_KeyMap' ) , 1 );
 	AddRPGMenuItem( RPM , MsgString( 'HELP_Chara' ) , 2 );
@@ -1808,7 +1838,11 @@ begin
 	AddRPGMenuItem( RPM , MsgString( 'HELP_Exit' ) , -1 );
 
 	repeat
+        {$IFDEF ASCII}
 		A := SelectMenu( RPM , @PCMenuRedraw );
+        {$ELSE}
+		A := SelectMenu( RPM , @CenterMenuRedraw );
+        {$ENDIF}
 
 
 		case A of
