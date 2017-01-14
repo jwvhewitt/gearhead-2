@@ -1,3 +1,4 @@
+- Obsolete memos no longer appear in browser (arenascript.pp)
 - FillRectWithSprite can now accept offsets (sdlgfx.pp)
 - Bishounen now gives +10 reaction bonus and universal admiration (interact.pp)
 - Added nonbinary, undefined genders and romance options (ghchars.pp)

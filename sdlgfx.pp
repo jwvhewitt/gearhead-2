@@ -200,7 +200,7 @@ const
 	CaptionWidth = Model_Status_Width;
 	ZONE_Caption: DynamicRect = ( dx: -( CaptionWidth div 2 ); dy: 20; w: CaptionWidth; h: Model_Status_Height; anchor: ANC_upper );
 	SubCaptionWidth = FontSize * 20;
-	ZONE_SubCaption: TSDL_Rect = ( x: ScreenWidth div 2 - ( SubCaptionWidth div 2 ); y: 35 + Model_Status_Height; w: SubCaptionWidth; h: FontSize + 2 );
+	ZONE_SubCaption: DynamicRect = ( dx: -( SubCaptionWidth div 2 ); dy: 35 + Model_Status_Height; w: SubCaptionWidth; h: FontSize + 2; anchor: ANC_upper );
 
 //	ZONE_CharacterInfo: TSDL_Rect = ( x: ScreenWidth div 2 - 275; y: ScreenHeight Div 2 - 200; w: 450; h: 295 );
 
@@ -1520,7 +1520,7 @@ initialization
 
 	Cursor_Sprite := LocateSprite( 'cursor.png' , 8 , 16 );
 	Title_Screen := LocateSprite( 'title_screen.png' , 800 , 600 );
-    Title_Stars := LocateSprite( 'bg_space.png' , 512 , 512 );
+    Title_Stars := LocateSprite( 'sys_titlescreenbackground.png' , 512 , 512 );
     Title_Logo := LocateSprite( 'sys_logo.png' , 623 , 161 );
 	Ersatz_Mouse_Sprite := LocateSprite( 'ersatz_mouse.png' , 16 , 16 );
 

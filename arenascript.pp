@@ -437,29 +437,31 @@ var
 		QID: LongInt;
 	begin
 		while Part <> Nil do begin
-			if ( tag = 'MEMO' ) and ( Part^.G = GG_Plot ) then begin
-				{ This is a plot. It may have subplot memos. These are }
-				{ memos that have the PLOTID attached to their butts. Why? }
-				{ Because I realized, somewhat late, that a plot which can }
-				{ contain multiple narrative threads really needs multiple }
-				{ memos as well. }
-				HarvestPlotMemos( Part^.SA );
-			end else begin
-				{ Not a plot. Just do the regular harvesting work, then. }
-				msg := SAttValue( Part^.SA , Tag );
-				if msg <> '' then StoreSAtt( MemoList , msg );
+            if Part^.G <> GG_AbsolutelyNothing then begin
+			    if ( tag = 'MEMO' ) and ( Part^.G = GG_Plot ) then begin
+				    { This is a plot. It may have subplot memos. These are }
+				    { memos that have the PLOTID attached to their butts. Why? }
+				    { Because I realized, somewhat late, that a plot which can }
+				    { contain multiple narrative threads really needs multiple }
+				    { memos as well. }
+				    HarvestPlotMemos( Part^.SA );
+			    end else begin
+				    { Not a plot. Just do the regular harvesting work, then. }
+				    msg := SAttValue( Part^.SA , Tag );
+				    if msg <> '' then StoreSAtt( MemoList , msg );
 
-				{ This part may also have a quest-related message attached }
-				{ to it. See if that's so. }
-				QID := NAttValue( Part^.NA , NAG_Narrative , NAS_PlotID );
-				if ( QID <> 0 ) then begin
-					msg := SAttValue( Part^.SA , Tag + '_' + BStr( NAttValue( Adv^.NA , NAG_PlotStatus , Qid ) ) );
-					if msg <> '' then StoreSAtt( MemoList , msg );
-				end;
-			end;
+				    { This part may also have a quest-related message attached }
+				    { to it. See if that's so. }
+				    QID := NAttValue( Part^.NA , NAG_Narrative , NAS_PlotID );
+				    if ( QID <> 0 ) then begin
+					    msg := SAttValue( Part^.SA , Tag + '_' + BStr( NAttValue( Adv^.NA , NAG_PlotStatus , Qid ) ) );
+					    if msg <> '' then StoreSAtt( MemoList , msg );
+				    end;
+			    end;
 
-			CreateMemoList( Part^.SubCom , Tag );
-			CreateMemoList( Part^.InvCom , Tag );
+			    CreateMemoList( Part^.SubCom , Tag );
+			    CreateMemoList( Part^.InvCom , Tag );
+            end; { if Part = AbsolutelyNothing }
 			Part := Part^.Next;
 		end;
 	end;
