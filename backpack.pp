@@ -1441,6 +1441,11 @@ begin
 	if TI_Menu^.NumItem < 1 then AddRPGMenuItem( TI_Menu , MsgString( 'CANCEL' ) , -1 );
 
 	{ Select a slot for the item to go into. }
+	BP_Source := LList;
+    BP_SeekSibs := True;
+    BP_ActiveMenu := TI_Menu;
+
+	DialogMSG( ReplaceHash( MsgString( 'FHQ_SelectDestination' ), GearName( Item ) ) );
 	N := SelectMenu( TI_Menu , @MiscProcRedraw);
 
 	DisposeRPGMenu( TI_Menu );
@@ -2167,9 +2172,12 @@ begin
 	AddRPGMenuItem( RPM , MsgString( 'FHQ_ReturnToMain' ) , -1 );
 
 	{ Get a menu selection, then exit the menu. }
-	BP_Source := Item;
-	DialogMSG( MsgString( 'FHQ_SelectDestination' ) );
-	N := SelectMenu( RPM , @ThisWargearRedraw );
+	BP_Source := LList;
+    BP_SeekSibs := True;
+    BP_ActiveMenu := RPM;
+	DialogMSG( ReplaceHash( MsgString( 'FHQ_SelectDestination' ), GearName( Item ) ) );
+	N := SelectMenu( RPM , @PartBrowserRedraw );
+	//N := SelectMenu( RPM , @MiscProcRedraw );
 
 	DisposeRPGMenu( RPM );
 
@@ -2230,6 +2238,7 @@ begin
 		BP_GB := GB;
 		BP_Source := M;
 		BP_Redraw := BasicRedrawer;
+		MPB_Redraw := BasicRedrawer;
 		N := SelectMenu( RPM , @ThisWargearRedraw );
 
 		DisposeRPGMenu( RPM );

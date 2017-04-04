@@ -78,6 +78,7 @@ begin
 	if Leader = Nil then Exit;
 
 	FName := Save_Character_Base + GearName(Leader) + Default_File_Ending;
+    SanitizeFilename( FName );
 	Assign( F , FName );
 	Rewrite( F );
 	WriteCGears( F , PC );
@@ -96,6 +97,7 @@ begin
 	if Leader = Nil then Exit;
 
 	FName := Save_Egg_Base + GearName(Leader) + Default_File_Ending;
+    SanitizeFilename( FName );
 	Assign( F , FName );
 	Rewrite( F );
 	WriteCGears( F , Egg );

@@ -914,7 +914,7 @@ FHQ_ReturnToMain <[EXIT]>
 FHQ_GoBackpack <View Inventory>
 FHQ_PartEditor <Examine Components>
 FHQ_SelectMecha <Assign Mecha>
-FHQ_SelectDestination <Select a mecha or character to receive this item.>
+FHQ_SelectDestination <Select a mecha or character to receive #.>
 FHQ_ItemMoved <The item has been moved.>
 FHQ_AssociatePM <# has chosen to pilot this mecha.>
 FHQ_Transfer <Give Item to Mecha>

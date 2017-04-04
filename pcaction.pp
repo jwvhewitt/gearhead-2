@@ -82,6 +82,23 @@ begin
 {$ENDIF}
 end;
 
+Procedure PCMenuPlusDescRedraw;
+	{ Redraw the map and the PC's info. }
+begin
+	CombatDisplay( PCACTIONRD_GB );
+	InfoBox( ZONE_Menu );
+	InfoBox( ZONE_Info );
+{$IFDEF ASCII}
+	ClockBorder;
+	if Tactics_Turn_In_Progess then begin
+		TacticsTimeInfo( PCACTIONRD_GB );
+	end else begin
+		CMessage( TimeString( PCACTIONRD_GB^.ComTime ) , ZONE_Clock , StdWhite );
+	end;
+{$ENDIF}
+end;
+
+
 {$IFNDEF ASCII}
 Procedure CenterMenuRedraw;
 	{ Redraw the map and the PC's info. }
@@ -1021,7 +1038,7 @@ begin
 	DialogMSg( MsgString( 'PCAS_Prompt' ) );
 
 
-	N := SelectMenu( RPM , @PCMenuRedraw );
+	N := SelectMenu( RPM , @PCMenuPlusDescRedraw );
 
 	DisposeRPGMenu( RPM );
 
@@ -1094,6 +1111,7 @@ begin
 	end else begin
 		Name := Save_Campaign_Base + PilotName( PC ) + Default_File_Ending;
 	end;
+    SanitizeFilename( Name );
 
 	Assign( F , Name );
 	Rewrite( F );

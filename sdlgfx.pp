@@ -179,10 +179,8 @@ const
 	ItemsZoneLeftTab = ( ScreenWidth - ItemsLeftWidth - ItemsRightWidth - 10 ) div 2;
 	ItemsZoneRightTab = ItemsZoneLeftTab + ItemsLeftWidth + 10;
 
-	ZONE_ItemsTotal: tSDL_Rect = ( x: ItemsZoneLeftTab - 10; y:ScreenHeight Div 2 - 220; w: ItemsLeftWidth + ItemsRightWidth + 30; h: 330 );
-
 	ZONE_ItemsInfo: DynamicRect = (dx:30; dY:-210; W: 250; H: 340; anchor: ANC_middle);
-	ZONE_ItemsPCInfo: TSDL_Rect = ( x: ItemsZoneRightTab; y:ScreenHeight Div 2 + 70; w: ItemsRightWidth; h: 30 );
+	//ZONE_ItemsPCInfo: TSDL_Rect = ( x: ItemsZoneRightTab; y:ScreenHeight Div 2 + 70; w: ItemsRightWidth; h: 30 );
 
     ZONE_FHQTitle: DynamicRect = ( dx:-165; dy:-255; w:300; h:20; anchor: ANC_middle ); 
     ZONE_FieldHQMenu: DynamicRect = ( dx:-280; dy:-210; w:292; h:340; anchor: ANC_middle );
@@ -207,14 +205,13 @@ const
 
 	SideInfoWidth = FontSize * 16;
 	SideInfoHeight = ( FontSize + 2 ) * 6;
-	ZONE_RightInfo: TSDL_Rect = ( x: ScreenWidth - SideInfoWidth - 10; y: 15; w: SideInfoWidth; h: SideInfoHeight );
-	ZONE_LeftInfo: TSDL_Rect = ( x: 10; y: 15; w: SideInfoWidth; h: SideInfoHeight );
+	ZONE_RightInfo: DynamicRect = ( dx: -SideInfoWidth - 10; dy: 15; w: SideInfoWidth; h: SideInfoHeight; anchor: ANC_upperright );
+	ZONE_LeftInfo: DynamicRect = ( dx: 10; dy: 15; w: SideInfoWidth; h: SideInfoHeight; anchor: ANC_upperleft );
 
-	ZONE_SuperGetItem: TSDL_Rect = ( x:Screenwidth div 2 - 110; y:Screenheight div 2 - 135; w:220; h:270 );
 	ZONE_GetItemMenu: DynamicRect = ( dx:-100; dy:-125; w:200; h:250; anchor: ANC_middle );
 
-	ZONE_UsagePrompt: TSDL_Rect = ( x:500; y:190; w:130; h:170 );
-	ZONE_UsageMenu: TSDL_Rect = ( x:50; y:155; w:380; h:245 );
+	//ZONE_UsagePrompt: TSDL_Rect = ( x:500; y:190; w:130; h:170 );
+	//ZONE_UsageMenu: TSDL_Rect = ( x:50; y:155; w:380; h:245 );
 
 	ZONE_MemoText: DynamicRect = ( dx:-175; dy:-150; w:350; h:200; anchor: ANC_middle );
 	ZONE_MemoMenu: DynamicRect = ( dx:-175; dy:55; w:350; h:50; anchor: ANC_middle );

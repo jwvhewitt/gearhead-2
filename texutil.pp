@@ -38,6 +38,8 @@ Function RetrieveAString(const S: String): String;
 Function RetrieveBracketString(const S: String): String;
 Function RetrieveAPreamble(const S: String ): String;
 
+Procedure SanitizeFilename( var S: String );
+
 Function BStr( N: LongInt ): String;
 Function SgnStr( N: Integer ): String;
 Function WideStr( N,Width: LongInt ): String;
@@ -319,6 +321,21 @@ begin
 	end;
 	Concentrate := CS;
 end;
+
+Procedure SanitizeFilename( var S: String );
+	{ Replace all proscribed characters with an underscore. }
+const
+    ProscribedCharacters = ',?"*~#%&{}:<>+|';
+var
+	T: Integer;
+begin
+	for T := 1 to Length( S ) do begin
+        if Pos( S[T] , ProscribedCharacters ) > 0 then begin
+            S[T] := '_';
+        end;
+	end;
+end;
+
 
 Function Sgn( N: LongInt ): Integer;
 	{ Return the sign of this number, just like in BASIC. }

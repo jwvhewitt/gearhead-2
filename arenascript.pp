@@ -5022,7 +5022,9 @@ begin
 	if ( PC <> Nil ) and ( PC^.G <> GG_Mecha ) then begin
 		Mek := FindPilotsMecha( GB^.Meks , PC );
 		if ( Mek = Nil ) and ( NumPCMeks( GB ) > 0 ) then begin
+            {$IFDEF ASCII}
 			GameMSG( MsgString( 'ARENASCRIPT_CheckMechaEquipped' ) , ZONE_UsagePrompt , InfoGreen );
+            {$ENDIF}
 			FHQ_SelectMechaForPilot( GB , PC );
 		end;
 	end;
