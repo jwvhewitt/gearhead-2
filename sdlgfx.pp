@@ -240,7 +240,7 @@ const
 
 
     ZONE_Title_Screen_Version: DynamicRect = ( dx:-70; dy:-25; w:100; h:20; anchor: ANC_lowerright );
-    ZONE_Title_Screen_Menu: DynamicRect = ( dx:-100; dy:50; w:200; h:100; anchor: ANC_middle );
+    ZONE_Title_Screen_Menu: DynamicRect = ( dx:-100; dy:50; w:200; h:115; anchor: ANC_middle );
 	ZONE_TitleLogo:  DynamicRect =  ( dx: -312; dy: -161; w: 624; h: 162; anchor: ANC_Middle );
 
 	Animation_Phase_Period = 6000;

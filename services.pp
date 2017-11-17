@@ -128,6 +128,28 @@ begin
 	end;
 end;
 
+Procedure BrowseTreeRedraw;
+	{ Redraw the screen for whatever service is going to go on. }
+var
+	Part: GearPtr;
+    N: Integer;
+begin
+    BasicServiceRedraw();
+
+	if ( SERV_Info <> Nil ) and ( Serv_Menu <> Nil ) then begin
+        N := CurrentMenuItemValue( SERV_Menu );
+        if N > 0 then begin
+		    Part := LocateGearByNumber( SERV_Info , N );
+		    if Part <> Nil then begin
+			    BrowserInterfaceInfo( SERV_GB , Part , ZONE_ShopInfo );
+		    end;
+        end;
+	end else if Serv_Info <> Nil then begin
+		BrowserInterfaceInfo( SERV_GB , SERV_Info , ZONE_ShopInfo );
+	end;
+end;
+
+
 Procedure SellStuffRedraw;
 	{ Redraw the screen for whatever service is going to go on. }
 var
@@ -2009,7 +2031,9 @@ begin
 		RPMSortAlpha( RPM );
 		AlphaKeyMenu( RPM );
 		AddRPGMenuItem( RPM , MsgString( 'EXIT' ) , -1 );
-		N := SelectMenu( RPM , @ServiceRedraw );
+        SERV_MENU := RPM;
+        SERV_INFO := FindWorld( GB , GB^.Scene );
+		N := SelectMenu( RPM , @BrowseTreeRedraw );
 		DisposeRPGMenu( RPM );
 
 		if N > -1 then begin

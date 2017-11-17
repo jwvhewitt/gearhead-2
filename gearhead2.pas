@@ -35,7 +35,7 @@ uses 	gears,navigate,randmaps,locale,arenaplay,ghchars,gearutil,gearparser,
 {$IFDEF ASCII}
 	vidgfx,vidmap,vidmenus;
 {$ELSE}
-	sdlgfx,sdlmap,sdlmenus;
+	sdlgfx,sdlmap,sdlmenus,cosplay2;
 {$ENDIF}
 
 const
@@ -183,12 +183,27 @@ begin
 	DisposeRPGMenu( MekMenu );
 end;
 
+Procedure GenNames;
+var
+    t: Integer;
+    mylist: SAttPtr;
+begin
+    mylist := Nil;
+    for t := 1 to 10000 do begin
+       StoreSAtt( mylist, RandomName );
+    end;
+    SaveStringList( 'names.txt', mylist );
+    DisposeSAtt( mylist );
+end;
+
 
 var
 	RPM: RPGMenuPtr;
 	N: Integer;
 
 begin
+    {GenNames;}
+
 	RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_Title_Screen_Menu );
     {$IFNDEF ASCII}
     RPM^.mode := RPMNoCancel;
@@ -201,6 +216,10 @@ begin
 	AddRPGMenuItem( RPM , 'Start Arena Campaign' , 7 );
 
 	AddRPGMenuItem( RPM , 'View Design Files' , 4 );
+
+    {$IFNDEF ASCII}
+	AddRPGMenuItem( RPM , 'View Color Selector' , 8 );
+    {$ENDIF}
 
 	if XXRan_Debug then begin
 		AddRPGMenuItem( RPM , 'View Series Files' , 5 );
@@ -221,6 +240,9 @@ begin
 			5:	SeriesDirBrowser;
 			6:	RestoreArenaCampaign( @RedrawOpening );
 			7:	StartArenaCampaign;
+            {$IFNDEF ASCII}
+            8:  Cosplay;
+            {$ENDIF}
 		end;
 
 		{ Get rid of the console history from previous games. }

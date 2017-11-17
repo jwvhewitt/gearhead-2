@@ -331,6 +331,7 @@ inv
 	XPos 2
 	YPos 0
 	Mesh 6
+    sdl_sprite <prop_mesh6.png>
 	Dir 0
 end
 
@@ -374,6 +375,7 @@ inv
 	XPos 3
 	YPos 1
 	Mesh 6
+    sdl_sprite <prop_mesh6.png>
 	Dir 0
 
 	STC SS-CANNON-0
@@ -454,6 +456,7 @@ inv
 	XPos 3
 	YPos 1
 	Mesh 6
+    sdl_sprite <prop_mesh6.png>
 	Dir 0
 
 	Prop 15
@@ -463,11 +466,13 @@ inv
 	XPos 0
 	YPos 1
 	Mesh 6
+    sdl_sprite <prop_mesh6.png>
 	Dir 4
 
 	STC SS-CANNON-0
 	SetTeam 2
 	Mesh 6
+    sdl_sprite <prop_mesh6.png>
 	XPos 2
 	YPos 0
 	Dir 0
@@ -475,6 +480,7 @@ inv
 	STC SS-CANNON-0
 	SetTeam 2
 	Mesh 6
+    sdl_sprite <prop_mesh6.png>
 	XPos 2
 	YPos 2
 	Dir 0
@@ -559,6 +565,7 @@ inv
 	sdl_skin <tex_spaceship_body.png>
 	SetTeam 1
 	Mesh 6
+    sdl_sprite <prop_mesh6.png>
 	XPos 2
 	YPos 3
 	Dir 0
@@ -568,6 +575,7 @@ inv
 	sdl_skin <tex_spaceship_body.png>
 	SetTeam 1
 	Mesh 6
+    sdl_sprite <prop_mesh6.png>
 	XPos 2
 	YPos 1
 	Dir 0
@@ -577,6 +585,7 @@ inv
 	sdl_skin <tex_spaceship_body.png>
 	SetTeam 1
 	Mesh 6
+    sdl_sprite <prop_mesh6.png>
 	XPos 4
 	YPos 2
 	Dir 0
@@ -586,6 +595,7 @@ inv
 	sdl_skin <tex_spaceship_body.png>
 	SetTeam 1
 	Mesh 6
+    sdl_sprite <prop_mesh6.png>
 	XPos 0
 	YPos 2
 	Dir 4
@@ -620,6 +630,7 @@ inv
 	SetTeam 1
 	sdl_skin <tex_spaceship_body.png>
 	Mesh 6
+    sdl_sprite <prop_mesh6.png>
 	XPos 1
 	YPos 0
 	Dir 6
@@ -629,6 +640,7 @@ inv
 	sdl_skin <tex_spaceship_body.png>
 	SetTeam 1
 	Mesh 6
+    sdl_sprite <prop_mesh6.png>
 	XPos 2
 	YPos 0
 	Dir 6
@@ -684,6 +696,7 @@ inv
 	sdl_skin <tex_spaceship_body.png>
 	SetTeam 1
 	Mesh 6
+    sdl_sprite <prop_mesh6.png>
 	XPos 3
 	YPos 1
 	Dir 0
@@ -694,6 +707,7 @@ inv
 	sdl_skin <tex_spaceship_body.png>
 	SetTeam 1
 	Mesh 6
+    sdl_sprite <prop_mesh6.png>
 	XPos 1
 	YPos 2
 	Dir 2
@@ -703,6 +717,7 @@ inv
 	sdl_skin <tex_spaceship_body.png>
 	SetTeam 1
 	Mesh 6
+    sdl_sprite <prop_mesh6.png>
 	XPos 2
 	YPos 2
 	Dir 2

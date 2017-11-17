@@ -50,6 +50,12 @@
 		name <Foyer>
 		desig <EntranceGrid>
 		special <SHAREDPALETTE>
+        sub
+				SuperProp
+				requires <*BattleShip>
+				SetTeam 2
+
+        end
 
 		room
 		name <PC's Room>

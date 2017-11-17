@@ -1178,7 +1178,7 @@ CombatProp 10
 name <Weapon Platform>
 Desig <SW-WEDGE-0>
 SDL_SKIN <tex_spaceship_body.png>
-Mesh 7
+sdl_sprite <prop_mesh7.png>
 Scale 2
 RangedCombat 8
 Initiative 8
@@ -1202,7 +1202,7 @@ CombatProp 15
 name <Weapon Platform>
 Desig <SW-WEDGE-1>
 SDL_SKIN <tex_spaceship_body.png>
-Mesh 7
+sdl_sprite <prop_mesh7.png>
 Scale 2
 RangedCombat 10
 Initiative 10
@@ -1227,7 +1227,7 @@ CombatProp 20
 name <Weapon Platform>
 Desig <SW-WEDGE-2>
 SDL_SKIN <tex_spaceship_body.png>
-Mesh 7
+sdl_sprite <prop_mesh7.png>
 Scale 2
 RangedCombat 12
 Initiative 12
@@ -1329,7 +1329,7 @@ CombatProp 10
 name <Cannon Mount>
 Desig <SS-CANNON-0>
 SDL_SKIN <tex_spaceship_body.png>
-Mesh 7
+sdl_sprite <prop_mesh7.png>
 Scale 2
 RangedCombat 10
 Initiative 9
@@ -1354,7 +1354,7 @@ CombatProp 15
 name <Cannon Mount>
 Desig <SS-CANNON-1>
 SDL_SKIN <tex_spaceship_body.png>
-Mesh 7
+sdl_sprite <prop_mesh7.png>
 Scale 2
 RangedCombat 12
 Initiative 11

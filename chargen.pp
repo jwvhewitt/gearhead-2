@@ -327,9 +327,19 @@ begin
 	RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CharGenMenu );
 	RPM^.Mode := RPMNoCleanup;
 
+    {$IFDEF ASCII}
 	RCDescMessage := MsgString( 'RANDCHAR_SkillDesc' );
 	RCPromptMessage := '';
 	RCCaption := '';
+	AttachMenuDesc( RPM , ZONE_CharGenPrompt );
+
+    {$ELSE}
+    RCDescMessage := '';
+	RCPromptMessage := MsgString( 'RANDCHAR_SkillPrompt' );
+	RCCaption := '';
+	AttachMenuDesc( RPM , ZONE_CharGenDesc );
+
+    {$ENDIF}
 
 	for t := 1 to NumSkill do begin
 		if ( not SkillMan[ T ].Hidden ) then AddRPGMenuItem( RPM , SkillSelectorMsg( T ) , T , SkillDescription( T ) );
@@ -338,8 +348,6 @@ begin
 	AddRPGMenuItem( RPM , MsgString( 'RANDCHAR_ASPDone' ) , -2 );
 
 	RPM^.dtexcolor := InfoGreen;
-
-	AttachMenuDesc( RPM , ZONE_CharGenPrompt );
 
 
 	{ Add RPGKeys for the left and right buttons, since these will be }
@@ -560,11 +568,17 @@ begin
 
 	{ Create the menu. }
 	RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CharGenMenu );
+    {$IFDEF ASCII}
 	AttachMenuDesc( RPM , ZONE_CharGenPrompt );
-
 	RCDescMessage := MsgString( 'RANDCHAR_CityDesc' );
 	RCPromptMessage := '';
 	RCCaption := MsgString( 'RANDCHAR_CityPrompt' );
+    {$ELSE}
+    RCDescMessage := '';
+	RCPromptMessage := MsgString( 'RANDCHAR_CityPrompt' );
+	RCCaption := '';
+	AttachMenuDesc( RPM , ZONE_CharGenDesc );
+    {$ENDIF}
 
 	{ Add all faction-legal HOMETOWNs to the menu. }
 	N := 1;
@@ -802,9 +816,15 @@ begin
 	AddRPGMenuItem( RPM , MsgString( 'RANDCHAR_FHDecline' ) , -1 );
 
 	if CanEdit then begin
+        {$IFDEF ASCII}
 		RCPromptMessage := '';
 		RCDescMessage := MsgString( 'RANDCHAR_FHDesc' );
 		RCCaption := MsgString( 'RANDCHAR_FHPrompt' );
+        {$ELSE}
+		RCPromptMessage := MsgString( 'RANDCHAR_FHPrompt' );
+		RCDescMessage := MsgString( 'RANDCHAR_FHDesc' );
+		RCCaption := '';
+        {$ENDIF}
 	end;
 
 	Context := SAttValue( PC^.SA , 'HOMETOWN_CONTEXT' ) + ' ' + SAttValue( PC^.SA , 'JOB_DESIG' ) + ' ' + SAttValue( PC^.SA , 'CG_FACDESIG' );
@@ -954,11 +974,19 @@ begin
 
 	if CanEdit then begin
 		RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CharGenMenu );
-		AttachMenuDesc( RPM , ZONE_CharGenPrompt );
 
+        {$IFDEF ASCII}
+		AttachMenuDesc( RPM , ZONE_CharGenPrompt );
 		RCPromptMessage := '';
 		RCDescMessage := MsgString( 'RANDCHAR_JobDesc' );
 		RCCaption := MsgString( 'RANDCHAR_JobPrompt' );
+        {$ELSE}
+        RCDescMessage := '';
+	    RCPromptMessage := MsgString( 'RANDCHAR_JobPrompt' );
+	    RCCaption := '';
+	    AttachMenuDesc( RPM , ZONE_CharGenDesc );
+        {$ENDIF}
+
 
 		{ Fill the menu. }
 		Job := LegalJobList;
@@ -1008,9 +1036,17 @@ begin
 		if CanEdit and ( LegalFactionList <> Nil ) then begin
 			{ Create the menus. }
 			RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CharGenMenu );
-			AttachMenuDesc( RPM , ZONE_CharGenPrompt );
+            {$IFDEF ASCII}
+	        AttachMenuDesc( RPM , ZONE_CharGenPrompt );
+	        RCPromptMessage := '';
 			RCCaption := MsgString( 'RANDCHAR_FactionPrompt' );
 			RCDescMessage := MsgString( 'RANDCHAR_FactionDesc' );
+            {$ELSE}
+            AttachMenuDesc( RPM , ZONE_CharGenDesc );
+            RCDescMessage := '';
+            RCPromptMessage := MsgString( 'RANDCHAR_FactionPrompt' );
+            RCCaption := '';
+            {$ENDIF}
 
 			{ Add the factions. }
 			F := LegalFactionList;
@@ -1085,10 +1121,21 @@ begin
 
 	{ Create the menu & set up the display. }
 	RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CharGenMenu );
-
 	RPM^.Mode := RPMNoCleanup;
-	RCDescMessage := MsgString( 'RANDCHAR_ASPDesc' );
+
+    {$IFDEF ASCII}
+	AttachMenuDesc( RPM , ZONE_CharGenPrompt );
 	RCPromptMessage := '';
+	RCDescMessage := MsgString( 'RANDCHAR_ASPDesc' );
+	RCDescMessage := MsgString( 'RANDCHAR_JobDesc' );
+	RCCaption := MsgString( 'RANDCHAR_JobPrompt' );
+    {$ELSE}
+    RCDescMessage := '';
+    RCPromptMessage := MsgString( 'RANDCHAR_JobPrompt' );
+    RCCaption := '';
+    AttachMenuDesc( RPM , ZONE_CharGenDesc );
+    {$ENDIF}
+
 
 	for t := 1 to NumGearStats do begin
 		AddRPGMenuItem( RPM , StatSelectorMsg( T ) , 1 , MsgString( 'STATDESC_' + BStr( T ) ) );
@@ -1097,7 +1144,6 @@ begin
 
 	RPM^.dtexcolor := InfoGreen;
 
-	AttachMenuDesc( RPM , ZONE_CharGenPrompt );
 
 	{ Add RPGKeys for the left and right buttons, since these will be }
 	{ used to spend & retrieve points. }

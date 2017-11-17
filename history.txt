@@ -1,3 +1,5 @@
+- ExpressDelivery info display now works (services.pp)
+- Cosplay changed from separate program to main menu option (cosplay2.pas)
 - Some illegal characters removed from filenames (texutil.pp)
 - Obsolete memos no longer appear in browser (arenascript.pp)
 - FillRectWithSprite can now accept offsets (sdlgfx.pp)
