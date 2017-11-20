@@ -2177,6 +2177,7 @@ var
 	MergeOK: Boolean;
 begin
 	plot_desc := StoryContext( GB , Story );
+    {plot_desc := '*CORE_F F:++';}
 	Shopping_List := CreateComponentList( Standard_Plots , plot_desc );
 
 	{ If xxran debug is on, print some extra information. }

@@ -17,6 +17,29 @@
 %%
 
 Content
+    name <Meet the New Boss>
+    desc <The invader will announce their intentions.>
+    requires <*CS_END_Intro E:-->
+
+	% E1 is the mood
+	% E2 is the new enemy NPC
+	Element2 <NewNPC -2 -7>
+	Place2 </>
+
+	% P%id%01 = Initialization Counter
+    start <if= P%id%01 0 if= RootSceneID &EpisodeScene ifScene .%id%_scenetype Alert %id%01 Monologue %2% %id%02  History %id%03 P= %id%01 1 SetPlotStatus %plotid1% %id1%>
+    .%id%_scenetype <building public>
+
+    Msg%id%01 <As you enter the building, you see that all public monitors are tuned into the same news broadcast.>
+    Msg%id%02 <This colony is now under our control... Any reistance will be swiftly crushed... Soon you will see the full extent of our power.>
+    Msg%id%03 <%name2% took control of \SCENE &EpisodeScene .>
+
+	% SubPlot1 is the final battle buildup
+	%     This serves the purpose of a RevealEncounter task for the last fight
+	SubPlot1 <*CS_END_Buildup 1 2>
+
+
+Content
 	name <Raid the Command Bunker>
 	desc <The PC will raid the enemy's command bunker, only to find the enemy missing.>
 	requires <*CS_END_Intro E:++>
