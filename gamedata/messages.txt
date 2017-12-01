@@ -753,6 +753,7 @@ RANDCHAR_FHAccept <Accept Family History>
 RANDCHAR_FHDecline <Reroll Family History>
 RANDCHAR_SelectStatsCap <# points>
 RANDCHAR_ASPPrompt <# points; # slots>
+RANDCHAR_StatPrompt <Purchase stats>
 RANDCHAR_ASPDesc <Allocate stat points. Move up and down to choose a stat, then right and left to increase or decrease it. Select [DONE] to finish. Any remaining points will be spent randomly.>
 RANDCHAR_SkillDesc <Purchase skill levels. Move up and down to choose a skill, then right and left to increase or decrease it. Select [DONE] when you are finished.>
 RANDCHAR_SkillPrompt <Purchase skills>
@@ -779,6 +780,7 @@ RANDCHAR_PicturePrompt <Select a portrait for your character.>
 RANDCHAR_GoalPrompt   <What is this character's lifelong goal?>
 RANDCHAR_FocusPrompt  <What is the most important thing to this character?>
 RANDCHAR_TraitDesc <Answer a few questions to determine your character traits.>
+RANDCHAR_TraitPrompt <Determine personality traits>
 RANDCHAR_TalentPrompt <Select Talent>
 RANDCHAR_TalentDesc <Talents are special traits which separate your character from others.>
 RANDCHAR_SelectColorsPrompt <Select the colors for this character.>

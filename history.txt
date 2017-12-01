@@ -1,3 +1,4 @@
+- Updated character generator (chargen.pp)
 - ExpressDelivery info display now works (services.pp)
 - Cosplay changed from separate program to main menu option (cosplay2.pas)
 - Some illegal characters removed from filenames (texutil.pp)

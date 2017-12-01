@@ -1127,11 +1127,10 @@ begin
 	AttachMenuDesc( RPM , ZONE_CharGenPrompt );
 	RCPromptMessage := '';
 	RCDescMessage := MsgString( 'RANDCHAR_ASPDesc' );
-	RCDescMessage := MsgString( 'RANDCHAR_JobDesc' );
-	RCCaption := MsgString( 'RANDCHAR_JobPrompt' );
+	RCCaption := '';
     {$ELSE}
     RCDescMessage := '';
-    RCPromptMessage := MsgString( 'RANDCHAR_JobPrompt' );
+    RCPromptMessage := MsgString( 'RANDCHAR_StatPrompt' );
     RCCaption := '';
     AttachMenuDesc( RPM , ZONE_CharGenDesc );
     {$ENDIF}
@@ -1215,18 +1214,27 @@ var
 	T: Integer;
 begin
 	RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CharGenMenu );
-	AttachMenuDesc( RPM , ZONE_CharGenPrompt );
 
 	{ Add the legal talents. }
 	for t := 1 to NumTalent do begin
 		if CanLearnTalent( PC , T ) then AddRPGMenuItem( RPM , MsgString( 'TALENT' + BStr( T ) ) , T , MsgString( 'TALENTDESC' + BStr( T ) ) );
 	end;
 
-	RCCaption := MsgString( 'RANDCHAR_TalentPrompt' );
-	RCDescMessage := MsgString( 'RANDCHAR_TalentDesc' );
 	RPM^.Mode := RPMNoCancel;
 	RPMSortAlpha( RPM );
 	ALphaKeyMenu( RPM );
+
+    {$IFDEF ASCII}
+	RCCaption := MsgString( 'RANDCHAR_TalentPrompt' );
+	RCDescMessage := MsgString( 'RANDCHAR_TalentDesc' );
+	AttachMenuDesc( RPM , ZONE_CharGenPrompt );
+	RCPromptMessage := '';
+    {$ELSE}
+    RCDescMessage := '';
+    RCPromptMessage := MsgString( 'RANDCHAR_TalentPrompt' );
+    RCCaption := '';
+    AttachMenuDesc( RPM , ZONE_CharGenDesc );
+    {$ENDIF}
 
 	T := SelectMenu( RPM , @RandCharRedraw );
 	DisposeRPGMenu( RPM );
@@ -1329,10 +1337,20 @@ begin
 	if CanEdit then begin
 		{ Allocate the menu. }
 		RPM := CreateRPGMenu( MenuItem , MenuSelect , ZONE_CharGenMenu );
-		AttachMenuDesc( RPM , ZONE_CharGenPrompt );
+		RPM^.Mode := RPMNoCancel;
+
+        {$IFDEF ASCII}
 		RCCaption := MsgString( 'RANDCHAR_MechaPrompt' );
 		RCDescMessage := MsgString( 'RANDCHAR_MechaDesc' );
-		RPM^.Mode := RPMNoCancel;
+	    AttachMenuDesc( RPM , ZONE_CharGenPrompt );
+	    RCPromptMessage := '';
+        {$ELSE}
+        RCDescMessage := '';
+        RCPromptMessage := MsgString( 'RANDCHAR_MechaPrompt' );
+        RCCaption := '';
+        AttachMenuDesc( RPM , ZONE_CharGenDesc );
+        {$ENDIF}
+
 
 		{ Add the mecha to the menu. }
 		Mek := MechaList;
@@ -1411,12 +1429,20 @@ Procedure SetTraits( PC: GearPtr );
 		end;
 	end;
 begin
+    {$IFDEF ASCII}
 	RCDescMessage := MsgString( 'RANDCHAR_TraitDesc' );
-
 	RCPromptMessage := MsgString( 'RANDCHAR_FocusPrompt' );
+    {$ELSE}
+	RCDescMessage := MsgString( 'RANDCHAR_FocusPrompt' );
+	RCPromptMessage := MsgString( 'RANDCHAR_TraitPrompt' );
+    {$ENDIF}
 	DoTraitType( Focus_List );
 
+    {$IFDEF ASCII}
 	RCPromptMessage := MsgString( 'RANDCHAR_GoalPrompt' );
+    {$ELSE}
+	RCDescMessage := MsgString( 'RANDCHAR_GoalPrompt' );
+    {$ENDIF}
 	DoTraitType( Goal_List );
 end;
 
@@ -1459,7 +1485,7 @@ begin
 	RCDescMessage := '';
 	RCPromptMessage := MsgString( 'RANDCHAR_PicturePrompt' );
 	RCCaption := '';
-	P := 1;
+	P := Random( NumSAtts( PList ) ) + 1;
 
 	repeat
 		CleanSpriteList;
@@ -1579,7 +1605,11 @@ begin
 	InitGear( PC );
 	StatPt := 90;
 	SkillPt := 50;
-	SetSAtt( PC^.SA , 'SDL_COLORS <49 91 161 252 212 195 150 112 89>' );
+{$IFNDEF ASCII}
+    SetSAtt( PC^.SA, 'SDL_PORTRAIT <por_x_silhouette.png>' );
+    SetSAtt( PC^.SA, 'SDL_COLORS <' + RandomColorString(CS_Clothing) + ' ' + RandomColorString(CS_Skin) + ' ' + RandomColorString(CS_Hair) + '>' );
+{$ENDIF}
+
 
 	{ First select gender, keeping in mind that the selection may be }
 	{ cancelled. }
