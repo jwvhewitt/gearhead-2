@@ -1416,6 +1416,7 @@ Scale 2
 RangedCombat 8
 Initiative 10
 Mesh 2
+sdl_sprite <prop_mesh2.png>
 sdl_SKIN <tex_building_pillbox.png>
 sub
 	Turret
@@ -1444,6 +1445,7 @@ roguechar <&>
 Scale 2
 Mesh 1
 sdl_SKIN <tex_building_pillbox.png>
+sdl_sprite <prop_mesh1.png>
 Frame 1
 
 

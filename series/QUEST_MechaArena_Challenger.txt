@@ -1537,8 +1537,8 @@ inv
 	CharDesc Female Sociable Passionate
 	Age 7
 	StatLine 17 10 16 13 14 12 10 15
-	SDL_Portrait <por_f_mechpilot(--Y).png>
-	SDL_Colors <152 61 97 255 212 195 220 80 10>
+	SDL_Portrait <por_f_vanda(--Y).png>
+	SDL_Colors <194 16 38 172 114 89 174 238 251>
 	SetTheme 1
 	SetSpecSkill 2
 	Initiative
