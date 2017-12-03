@@ -31,7 +31,7 @@ Content
     .%id%_scenetype <building public>
 
     Msg%id%01 <As you enter the building, you see that all public monitors are tuned into the same news broadcast.>
-    Msg%id%02 <This colony is now under our control... Any reistance will be swiftly crushed... Soon you will see the full extent of our power.>
+    Msg%id%02 <This colony is now under our control... Any resistance will be swiftly crushed... Soon you will see the full extent of our power.>
     Msg%id%03 <%name2% took control of \SCENE &EpisodeScene .>
 
 	% SubPlot1 is the final battle buildup
