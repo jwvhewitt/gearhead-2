@@ -38,7 +38,7 @@ Function RetrieveAString(const S: String): String;
 Function RetrieveBracketString(const S: String): String;
 Function RetrieveAPreamble(const S: String ): String;
 
-Procedure SanitizeFilename( var S: String );
+Function SanitizeFilename( S: String ): String;
 
 Function BStr( N: LongInt ): String;
 Function SgnStr( N: Integer ): String;
@@ -322,7 +322,7 @@ begin
 	Concentrate := CS;
 end;
 
-Procedure SanitizeFilename( var S: String );
+Function SanitizeFilename( S: String ): String;
 	{ Replace all proscribed characters with an underscore. }
 const
     ProscribedCharacters = ',?"*~#%&{}:<>+|';
@@ -334,6 +334,7 @@ begin
             S[T] := '_';
         end;
 	end;
+    SanitizeFilename := S;
 end;
 
 

@@ -1,3 +1,6 @@
+- 
+- Fixed savegame crash on Windows (texutil.pp)
+
 0.700   December 2 2017
 - New graphics for fortress, spaceships
 - Updated character generator (chargen.pp)

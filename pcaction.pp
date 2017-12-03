@@ -1107,11 +1107,12 @@ var
 begin
 	{ Find the PC's name, open the file, and save. }
 	if ( Camp^.Source <> Nil ) and ( Camp^.Source^.S = GS_ArenaCampaign ) then begin
-		Name := Save_Unit_Base + GearName( Camp^.Source ) + Default_File_Ending;
+        Name := SanitizeFilename( GearName( Camp^.Source ) );
+		Name := Save_Unit_Base + Name + Default_File_Ending;
 	end else begin
-		Name := Save_Campaign_Base + PilotName( PC ) + Default_File_Ending;
+        Name := SanitizeFilename( PilotName( PC ) );        
+		Name := Save_Campaign_Base + Name + Default_File_Ending;
 	end;
-    SanitizeFilename( Name );
 
 	Assign( F , Name );
 	Rewrite( F );
