@@ -1186,8 +1186,16 @@ begin
 
 	AI_PrintFromRight( 'Mass: ' + MassString( Part ) , 108 , InfoGreen, Info_Font );
 	AI_NextLine;
+	
+	{ Display the part's Slot value. }
+	
 	AI_NextLine;
-
+	if ( Part^.G = GG_Module ) or ( Part^.G = GG_ExArmor ) or ( Part^.G = GG_Shield ) or ( Part^.G = GG_Harness ) then begin
+			AI_PrintFromRight( 'slots used' + BStr( SubComComplexity( Part ) ) + '/' + BStr( ComponentComplexity( Part ) ) , 108 , InfoGreen, Info_Font );
+		end else begin
+			AI_PrintFromRight( 'slots used' + ComponentComplexity( Part ) , 108 , InfoGreen, Info_Font );
+		end;
+	
     CDest.X := CZone.X;
     CDest.Y := OriginalY + 158;
     CDest.W := CZone.W;
