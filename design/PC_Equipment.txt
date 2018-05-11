@@ -809,7 +809,7 @@ legality 10
 Grenade 18
 Name <Concussion Grenade>
 desc <Used effectively, an explosion from this can render human targets helpless.>
-sdl_portrait <item_grenade.png>
+sdl_portrait <item_grenaderound.png>
 Category <WEAPON GRENADE>
 Factions <GENERAL>
 Type <BLAST 4>

@@ -675,10 +675,24 @@ Content
 		inv
 			Treasure
 			name <Gold Chain>
+			SDL_PORTRAIT <item_chaingold.png>
 			Fudge 100000
 		end
 	end
 
+Content
+	requires <*HIDEOUT_X (!Ne|!Lo)>
+	Minimap <.......1....2............>
+	element1 <PREFAB>
+	element2 <PREFAB>
+	inv
+		STC BOX-1
+		STC CRATE
+		Lock 15
+		RandomLoot 75000
+		Loot_Category <SPACE ANTIQUE PIRATE JEWELRY FOOD>
+		Loot_Factions <GENERAL FCOMS RISHI MAQUI>
+	end
 
 
 

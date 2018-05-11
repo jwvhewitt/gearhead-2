@@ -206,6 +206,7 @@ armor 3
 			melee 22
 			name <Night Scythe>
 			type <Extend ArmorPiercing POISON>
+			SDL_PORTRAIT <item_scythe.png>
 			scale 0
 			mass -15
 		end

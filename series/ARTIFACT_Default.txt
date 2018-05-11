@@ -168,7 +168,7 @@ mass -7
 Treasure
 name <MAGNUS Emerald>
 Fudge 1000000
-SDL_PORTRAIT <item_biskupengine.png>
+SDL_PORTRAIT <item_gemlargeemerald.png>
 desc <This is a rectangular prism of dark green crystal.>
 ITEM_DESC <Although it resembles a gem, it is actually an ancient computer.>
 ITEM_HISTORY <It was the control center of an Imperator Zeta weapons factory.>
@@ -345,4 +345,4 @@ ITEM_HISTORY <It was one of the most important computers in Imperator Zeta.>
 ITEM_USAGE <The Ruby contains invaluable lost knowledge... much of which would be dangerous in the wrong hands.>
 requires <ITEM PREZERO !Ex>
 Context <TL_Ex>
-
+SDL_PORTRAIT <item_gemlargeruby.png>

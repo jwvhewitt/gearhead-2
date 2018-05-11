@@ -93,7 +93,7 @@
 	name <Magna Crossbow>
 	desig <CT-72>
 	desc <This high tech crossbow uses a magnetic accelerator to launch pencil-thin bolts.>
-	sdl_portrait <>
+	sdl_portrait <item_ancientcrosbow.png>
 	category <EXOTIC>
 	factions <GENERAL>
 	caliber <20cm bolt>

@@ -1223,7 +1223,8 @@ Content
 		Treasure
 		name <Bac-Bomb>
 		desc <A home-made bacteriological bomb. There is no obvious way to trigger it.>
-
+		SDL_PORTRAIT <item_bacbomb.png>
+		
 		Meme
 		MaxMemeViews 3
 		Msg <Did you hear that someone set off a bomb in the CometBurger factory? I never thought it could happen here...>
