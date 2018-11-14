@@ -105,6 +105,29 @@ sdl_portrait <item_silversword.png>
 category <WEAPON MELEE>
 factions <SILKN>
 
+Melee 4
+Name <Baton>
+desc <A simple police club.>
+type <STUN>
+UsesBody
+category <WEAPON MELEE>
+factions <L5LAW>
+SDL_PORTRAIT <item_baton.png>
+Speed 4
+Mass -1
+legality -10
+
+Melee 4
+Name <Stun Baton>
+Type <STONE HAYWIRE>
+desc <A police club that transmits an electric pulse which can temporarily disrupt the nervous system of its target.>
+UsesBody
+category <WEAPON MELEE>
+factions <L5LAW>
+SDL_PORTRAIT <item_baton.png>
+Speed 4
+Mass -1
+legality 5
 
 %  ****************************
 %  ***  BALLISTIC  WEAPONS  ***

@@ -232,6 +232,7 @@ Content
 	Inv
 		Treasure
 		name <Necklace>
+		SDL_PORTRAIT <item_chaingold.png>
 		Fudge 70000
 		desc <A gold necklace.>
 		StolenGoods
@@ -249,6 +250,7 @@ Content
 	Inv
 		Treasure
 		name <Emerald Bracelet>
+		SDL_PORTRAIT <item_chainsilver.png>
 		Fudge 700000
 		desc <A golden bracelet decorated with many jewels.>
 		StolenGoods

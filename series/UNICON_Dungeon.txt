@@ -46,6 +46,7 @@ Content
 		Fudge 12000000
 		mass 2
 		desc <An enormous red jewel.>
+		SDL_PORTRAIT <item_gemlargeruby.png>
 		CLUE_SCIENCE <Print 1 if= V1 0 V= 1 1 SkillXP NAS_Science 100>
 		CLUE_INSIGHT <Print 2 if= V2 0 V= 2 1 SkillXP NAS_Insight 100>
 		Msg1 <Jewels like this are often formed on asteroids, but this one is exceptionally large.>
@@ -107,6 +108,7 @@ Content
 		Instrument 2
 		name <Old Harmonica>
 		desc <Scratches and dents cover the silver surface of this instrument.>
+		SDL_PORTRAIT <item_silverharmonica.png>
 	end
 
 %% *DUNGEON_GOAL CONTENT
@@ -140,6 +142,7 @@ Content
 		Treasure
 		name <Massive Geode>
 		desc <This is the biggest geode that you've ever seen.>
+		SDL_PORTRAIT <item_geode.png>
 		Fudge 2550000
 		mass 21
 	end
@@ -171,6 +174,7 @@ Content
 		desc <This jewel is extremely large. It must be worth quite a lot of money.>
 		Fudge 9000000
 		mass 14
+		SDL_PORTRAIT <item_gemlargeemerald.png>
 	end
 
 	Content

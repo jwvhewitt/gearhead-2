@@ -64,7 +64,7 @@
 		name <Rhodonite>
 		Category <TREASURE GEMSTONE MINERAL>
 		Factions <GENERAL>
-		SDL_PORTRAIT <item_gemcairngorm>
+		SDL_PORTRAIT <item_gemcairngorm.png>
 		Legality -50
 
 		Treasure
@@ -81,7 +81,7 @@
 		name <Rhodocrosite>
 		Category <TREASURE GEMSTONE MINERAL>
 		Factions <GENERAL>
-		SDL_PORTRAIT <item_gemcairngorm>
+		SDL_PORTRAIT <item_gemcairngorm.png>
 		Legality -50
 
 		Treasure
@@ -138,7 +138,7 @@
 		Fudge 15000
 		Category <TREASURE GEMSTONE MINERAL>
 		Factions <GENERAL>
-		SDL_PORTRAIT <>
+		SDL_PORTRAIT <item_gemtigereye.png>
 		Legality -50
 
 		Treasure
@@ -259,7 +259,7 @@
 		Fudge 105000
 		Category <TREASURE MINERAL ODDITY>
 		Factions <GENERAL>
-		SDL_PORTRAIT <>
+		SDL_PORTRAIT <item_geode.png>
 		Legality -50
 
 		Treasure
@@ -267,7 +267,7 @@
 		Fudge 1050000
 		Category <TREASURE MINERAL ODDITY>
 		Factions <GENERAL>
-		SDL_PORTRAIT <>
+		SDL_PORTRAIT <item_geode.png>
 		Legality -50
 		Mass 3
 
@@ -317,7 +317,7 @@
 		Fudge 9750000
 		Category <TREASURE GEMSTONE MINERAL>
 		Factions <GENERAL>
-		SDL_PORTRAIT <item_gemruby.png>
+		SDL_PORTRAIT <item_gemlargeruby.png>
 		Legality -50
 		mass 1
 
@@ -326,7 +326,7 @@
 		Fudge 18750000
 		Category <TREASURE GEMSTONE MINERAL>
 		Factions <GENERAL>
-		SDL_PORTRAIT <>
+		SDL_PORTRAIT <item_gemlargeemerald.png>
 		Legality -50
 		mass 1
 
@@ -336,7 +336,8 @@
 	name <Phobos Emerald>
 	desc <A large, flawless emerald.>
 	mass 1
-	Category <TREASURE GENSTONE>
+	Category <TREASURE GEMSTONE>
+	SDL_PORTRAIT <item_gemlargeemerald.png>
 	Factions <GENERAL>
 	Legality -25
 
@@ -427,7 +428,7 @@
 	desc <A cheap necklace made of shiny plastic.>
 	Category <TREASURE JEWELRY>
 	Factions <GENERAL>
-	SDL_PORTRAIT <>
+	SDL_PORTRAIT <item_chaingold.png>
 	Legality -25
 
 	Treasure
@@ -436,7 +437,7 @@
 	desc <A simple chain made of silver.>
 	Category <TREASURE JEWELRY>
 	Factions <GENERAL>
-	SDL_PORTRAIT <>
+	SDL_PORTRAIT <item_chainsilver.png>
 	Legality -25
 
 	Treasure
@@ -445,7 +446,7 @@
 	desc <A simple chain made of gold.>
 	Category <TREASURE JEWELRY>
 	Factions <GENERAL>
-	SDL_PORTRAIT <>
+	SDL_PORTRAIT <item_chaingold.png>
 	Legality -25
 
 	Treasure
@@ -454,7 +455,7 @@
 	desc <A simple chain made of platinum.>
 	Category <TREASURE JEWELRY>
 	Factions <GENERAL>
-	SDL_PORTRAIT <>
+	SDL_PORTRAIT <item_chainsilver.png>
 	Legality -25
 
 	Treasure
@@ -464,7 +465,7 @@
 	Category <TREASURE JEWELRY>
 	Factions <GENERAL>
 	special <ARTIFACT>
-	SDL_PORTRAIT <>
+	SDL_PORTRAIT <item_chainsilver.png>
 	Legality 0
 
 	Treasure
@@ -473,7 +474,7 @@
 	desc <A plush bear doll.>
 	Category <ANTIQUE SOUVENIR>
 	Factions <GENERAL>
-	SDL_PORTRAIT <>
+	SDL_PORTRAIT <item_teddybear.png>
 	Legality -50
 
 	HeadArmor 2
