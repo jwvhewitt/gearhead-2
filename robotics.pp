@@ -173,7 +173,7 @@ begin
 	if ( Part^.G = GG_Weapon ) or ( Part^.G = GG_Shield ) or ( Part^.G = GG_ExArmor ) or ( Part^.G = GG_Computer ) or ( Part^.G = GG_Powersource ) or ( Part^.G = GG_Tool ) then begin
 		IsGoodRobotPart := True;
 	end else if ( Part^.G = GG_RepairFuel ) then begin
-		IsGoodRobotPart := ( ( Part^.S = 15 ) or ( Part^.S = 23 ) );
+		IsGoodRobotPart := ( Part^.S = NAV_Metal );
 	end else if Part^.G = GG_Harness then begin
 		IsGoodRobotPart := ( R_ComputerPoints( Part^.SubCom ) > 0 ) or ( R_PowerPoints( Part^.SubCom ) > 0 );
 	end else begin
