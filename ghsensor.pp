@@ -72,7 +72,7 @@ Function SensorName( Part: GearPtr ): String;
 Function SensorBaseMass( Part: GearPtr ): Integer;
 Function SensorValue( Part: GearPtr ): LongInt;
 Function SensorComplexity( Part: GearPtr ): Integer;
-PowerSource
+
 Procedure CheckSensorRange( Part: GearPtr );
 
 Procedure CheckComputerRange( Part: GearPtr );
@@ -164,7 +164,7 @@ begin
 	else if Part^.V > 5 then Part^.V := 5;
 
 	{ Information software must be clamped to the right range. }
-	if Part^.Stat[ STAT_SW_Type ] =PowerSource S_Information then begin
+	if Part^.Stat[ STAT_SW_Type ] = S_Information then begin
 		if Part^.Stat[ STAT_SW_Param ] < 1 then Part^.Stat[ STAT_SW_Param ] := 1
 		else if Part^.Stat[ STAT_SW_Param ] > Num_SWInfo_Types then Part^.Stat[ STAT_SW_Param ] := Num_SWInfo_Types;
 	end;
@@ -189,7 +189,7 @@ begin
 		{ meant to apply to. }
 		it := Part^.V * Part^.V * 100;
 		for t := 1 to Part^.Stat[ STAT_SW_Param ] do it := it * 5;
-	end else if Part^.Stat[ STAT_SWPowerSource_Type ] = S_SpeedComp then begin
+	end else if Part^.Stat[ STAT_SW_Type ] = S_SpeedComp then begin
 		it := Part^.V * Part^.V * 35;
 		for t := 1 to Part^.Stat[ STAT_SW_Param ] do it := it * 5;
 

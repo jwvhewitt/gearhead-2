@@ -1,3 +1,5 @@
+- Fixed a weird typo in ghsensor. Not even sure how that happened.
+
 0.701   December 3 2017
 - Typo fix by Kaol (MEGA_CORE_Conclusion.txt)
 - Fixed version number. I really ought to automate that. (gearhead2.pas)
