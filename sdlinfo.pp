@@ -1152,8 +1152,10 @@ Procedure LFGI_ForItems( Part: GearPtr; gb: GameBoardPtr );
 var
     AI_Dest: TSDL_Rect;
     msg: String;
+	msg2: String;
     OriginalY: Integer;
 	N: LongInt;
+	M: LongInt;
     SS: SensibleSpritePtr;
 begin
     msg := GenericName( Part );
@@ -1186,8 +1188,22 @@ begin
 
 	AI_PrintFromRight( 'Mass: ' + MassString( Part ) , 108 , InfoGreen, Info_Font );
 	AI_NextLine;
-	AI_NextLine;
+	
+	{ Display the part's Slot value. }
+	
+	N := SubComComplexity( Part );
+	M := ComponentComplexity( Part);
+	if N > 0 then msg := BStr( N )
+	else msg := '-';
+	if M > 0 then msg2 := BStr( M )
+	else msg := '-';
 
+	if ( Part^.G = GG_Module ) or ( Part^.G = GG_ExArmor ) or ( Part^.G = GG_Shield ) or ( Part^.G = GG_Harness ) then begin
+			AI_PrintFromRight( 'Slots:' + msg + '/' + msg2 , 108 , InfoGreen, Info_Font );
+		end else begin
+			AI_PrintFromRight( 'Slots:' + msg2 , 108 , InfoGreen, Info_Font );
+		end;
+	
     CDest.X := CZone.X;
     CDest.Y := OriginalY + 158;
     CDest.W := CZone.W;

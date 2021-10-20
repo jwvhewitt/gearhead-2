@@ -793,7 +793,7 @@ var
 			if N > 0 then begin
 				{There are subcomponents. Either damage this}
 				{part directly, or pass damage on to a subcom.}
-				if (GearMaxDamage(Part) = -1) or ( Random(100) = 23 ) then begin
+				if (GearMaxDamage(Part) = -1) or ( Random(3) = 1 ) then begin
 					{Damage a subcomponent. Time for recursion.}
 					DMG := REALDamageGear( FindActiveGear(Part^.SubCom,Random(N)+1), DMG , MOS , Scale );
 
