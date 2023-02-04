@@ -113,8 +113,15 @@ install Git for Windows and open a Git Bash shell by right clicking without
 shift.
 
 Linux Notes:
-- You need the packages libsdl1.2, libsdl1.2-dev, libsdl-image1.2,
-libsdl-image1.2dev, libsdl-ttf2.0-0, and libsdl-ttf2.0-0dev.
+- On Debian and its derivatives, you need the packages libsdl1.2, libsdl1.2-dev,
+libsdl-image1.2, libsdl-image1.2dev, libsdl-ttf2.0-0, and libsdl-ttf2.0-0dev.
+- On Guix, you need the packages sdl, sdl-image, sdl-ttf and you need to set the '-Fl'
+option of 'fpc'. The following one-liner can be used:
+guix shell --pure bash fpc sdl sdl-image sdl-ttf -- sh -c 'fpc -Fl"$GUIX_ENVIRONMENT/lib" gearhead2.pas'.
+Additionally, to run gearhead, you need to set LD_LIBRARY_PATH:
+guix shell sdl sdl-ttf sdl-image -- sh -c 'LD_LIBRARY_PATH="$GUIX_ENVIRONMENT/lib" ./gearhead2'.
+There is probably a way to set rpath to avoid that, but -Xr is insufficient.  If you find
+a way, let me know.
 
 If you get a blue screen and no graphics, try uncommenting Revert_Slower_Safer
 in gearhead.cfg.
